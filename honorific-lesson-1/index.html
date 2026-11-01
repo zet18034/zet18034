@@ -35,6 +35,13 @@
   #notes { position: fixed; left: 16px; right: 16px; bottom: 40px; max-height: 40vh; overflow: auto; padding: 16px 20px; border-radius: 12px; background: rgba(20,18,28,.92); color: #F7F3EC; font: 16px/1.6 'Noto Sans KR', sans-serif; display: none; }
   #notes.on { display: block; }
   #help { position: fixed; left: 16px; bottom: 12px; font: 13px 'Noto Sans KR', sans-serif; color: rgba(255,255,255,.4); user-select: none; }
+  body.export #help, body.export #counter, body.export #notes { display: none !important; }
+  body.print { overflow: visible; height: auto; background: none; }
+  body.print #stage { position: static; transform: none !important; width: 1920px; height: auto; }
+  body.print #deck > section { position: relative; break-after: page; page-break-after: always; }
+  body.print .bi { transition: none; }
+  body.print, body.print * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { size: 1920px 1080px; margin: 0; }
 </style>
 </head>
 <body>
@@ -1129,8 +1136,18 @@
   });
   document.addEventListener('contextmenu', function (e) { e.preventDefault(); prev(); });
 
+  // ?all: every build shown · ?export: same, without on-screen help · ?print: all slides stacked for PDF
+  var q = location.search.slice(1);
+  function flag(name) { return new RegExp('(^|&)' + name + '(&|=|$)').test(q); }
+  if (flag('print')) {
+    document.body.classList.add('print', 'export');
+    slides.forEach(function (s) { s.classList.remove('off'); });
+    builds.forEach(function (groups) { groups.forEach(function (g) { g.forEach(function (el) { el.classList.remove('hid'); }); }); });
+    return;
+  }
+  if (flag('export')) document.body.classList.add('export');
   var m = /^#slide-(\d+)$/.exec(location.hash);
-  show(m ? +m[1] - 1 : 0, /(^|[?&])all\b/.test(location.search.slice(1)));
+  show(m ? +m[1] - 1 : 0, flag('all') || flag('export'));
 })();
 </script>
 </body>
