@@ -1187,7 +1187,9 @@
   var thumbs = [];
   document.querySelectorAll('.yt').forEach(function (b) {
     thumbs.push({ el: b, html: b.innerHTML });
-    b.addEventListener('click', function () {
+    b.addEventListener('click', function (e) {
+      // the clicked <img> is swapped out below, so the deck's click-to-advance can't recognize it; stop here
+      e.stopPropagation();
       if (b.classList.contains('playing')) return;
       b.classList.add('playing');
       b.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + b.getAttribute('data-yt') +
