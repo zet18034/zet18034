@@ -1,0 +1,1523 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>화학 반응 속도</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;500;700;900&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap">
+<style>
+  :root {
+    --sky: #CFE4F2; --paper: #F7FBFE; --line: #3389C0; --blue: #2F86BF; --blue-deep: #1F5F8F; --blue-soft: #E6F1F9;
+    --ink: #1C2A39; --ink-2: #44586C; --muted: #8094A8;
+    --cons: #2459C9; --cons-soft: #E4ECFB; --prod: #D9443A; --prod-soft: #FCE8E6;
+    --gold: #E9A21F; --gold-soft: #FFF3D6; --green: #16996A; --green-soft: #DDF4EA;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #10202F; overflow: hidden; }
+  body { font-family: 'Noto Sans KR', sans-serif; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  #deck > section {
+    position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; color: var(--ink); word-break: keep-all;
+    background: radial-gradient(1100px 700px at 0% 0%, #E4F1FA 0%, transparent 60%), radial-gradient(900px 600px at 100% 100%, #B9D7EC 0%, transparent 65%), var(--sky);
+  }
+  #deck > section.off { display: none !important; }
+  #deck h1, #deck h2, #deck h3, #deck p { margin: 0; }
+  #deck aside { display: none; }
+  sub { font-size: .62em; vertical-align: -.28em; line-height: 0; }
+  b { font-weight: 700; }
+
+  /* window-style panel, kept from the original template */
+  .panel { position: absolute; left: 88px; top: 64px; width: 1744px; height: 952px; border: 2px solid var(--line); border-radius: 22px; background: var(--paper); overflow: hidden;
+    box-shadow: 0 0 0 10px rgba(255,255,255,.45), 0 40px 80px -40px rgba(20,80,130,.5); }
+  .panel::before { content: ''; position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(51,137,192,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(51,137,192,.07) 1px, transparent 1px); background-size: 48px 48px; }
+  .head { position: relative; z-index: 1; height: 96px; display: flex; align-items: center; gap: 24px; padding: 0 48px; border-bottom: 2px solid var(--line); background: #fff; }
+  .dots { display: flex; gap: 10px; }
+  .dots i { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--line); background: var(--blue-soft); }
+  .dots i:first-child { background: var(--line); }
+  .head h2 { font-size: 36px; font-weight: 700; letter-spacing: -.5px; }
+  .head h2 small { font-size: 28px; font-weight: 500; color: var(--muted); margin-left: 10px; }
+  .brand { font-size: 26px; font-weight: 500; letter-spacing: 3px; color: var(--blue); }
+  .tag { margin-left: auto; font-size: 24px; font-weight: 700; color: #fff; background: var(--blue); padding: 8px 24px; border-radius: 999px; }
+  .tag.act { background: var(--prod); }
+  .tag.deep { background: var(--gold); }
+  .tag.line { background: #fff; color: var(--blue); border: 2px solid var(--blue); }
+  .body { position: absolute; z-index: 1; left: 0; right: 0; top: 96px; bottom: 0; padding: 40px 64px 44px; }
+
+  /* type & building blocks */
+  .m { font-family: 'STIX Two Text', 'Times New Roman', serif; }
+  .m i { font-style: italic; }
+  .frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.15; margin: 0 .15em; }
+  .frac > span { padding: 0 .15em; }
+  .frac > span:first-child { border-bottom: .06em solid currentColor; padding-bottom: .06em; }
+  .frac > span:last-child { padding-top: .06em; }
+  .cons { color: var(--cons); } .prod { color: var(--prod); }
+  .hand { font-family: 'Nanum Pen Script', cursive; }
+  .card { background: #fff; border: 2px solid #D3E5F2; border-radius: 22px; box-shadow: 0 14px 34px -22px rgba(31,95,143,.45); }
+  .lead { font-size: 32px; line-height: 1.5; }
+  .q { display: flex; gap: 22px; align-items: flex-start; background: #fff; border: 2px solid #D3E5F2; border-left: 12px solid var(--prod); border-radius: 18px; padding: 24px 32px; font-size: 32px; line-height: 1.5; font-weight: 500; box-shadow: 0 14px 34px -24px rgba(31,95,143,.45); }
+  .q.small { font-size: 27px; padding: 18px 28px; }
+  .qbadge { flex: none; font-size: 24px; font-weight: 900; color: #fff; background: var(--prod); border-radius: 12px; padding: 4px 14px; margin-top: 6px; }
+  .q.small .qbadge { font-size: 21px; margin-top: 3px; }
+  .note-line { font-size: 27px; color: var(--blue); font-weight: 500; }
+  .btn { font: 700 24px 'Noto Sans KR', sans-serif; padding: 12px 28px; border-radius: 999px; border: 2px solid var(--blue); background: var(--blue); color: #fff; cursor: pointer; transition: transform .15s, background .15s, box-shadow .15s; box-shadow: 0 8px 18px -10px rgba(31,95,143,.8); white-space: nowrap; }
+  .btn:hover { transform: translateY(-2px); background: var(--blue-deep); border-color: var(--blue-deep); }
+  .btn.ghost { background: #fff; color: var(--blue); box-shadow: none; }
+  .btn.ghost:hover { background: var(--blue-soft); }
+  .btn.red { background: var(--prod); border-color: var(--prod); }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 12px; border-radius: 999px; outline: none; cursor: pointer;
+    background: linear-gradient(var(--blue), var(--blue)) 0 / var(--p, 50%) 100% no-repeat, #DCEAF5; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 34px; height: 34px; border-radius: 50%; background: #fff; border: 6px solid var(--blue); box-shadow: 0 4px 10px rgba(31,95,143,.35); }
+  input[type=range]::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 6px solid var(--blue); }
+  .slider { display: grid; grid-template-columns: 210px 1fr 130px; align-items: center; gap: 22px; font-size: 25px; font-weight: 500; }
+  .slider output { font-weight: 900; color: var(--blue-deep); text-align: right; font-size: 28px; }
+  .check { display: flex; align-items: center; gap: 12px; font-size: 25px; cursor: pointer; }
+  .check input { width: 26px; height: 26px; accent-color: var(--gold); }
+
+  /* svg charts */
+  svg text { font-family: 'Noto Sans KR', sans-serif; }
+  .grid { stroke: rgba(51,137,192,.22); stroke-width: 1.5; stroke-dasharray: 6 6; }
+  .axis { stroke: var(--ink); stroke-width: 3.5; }
+  .tick { font-size: 23px; fill: var(--ink-2); }
+  .axlab { font-size: 24px; font-weight: 700; fill: var(--ink); }
+  .series { fill: none; stroke-width: 5; stroke-linejoin: round; stroke-linecap: round; }
+  .series.cons { stroke: var(--cons); } .series.prod { stroke: var(--prod); }
+  .theory { fill: none; stroke-width: 3; stroke-dasharray: 3 9; stroke-linecap: round; opacity: .55; }
+  .theory.cons { stroke: var(--cons); } .theory.prod { stroke: var(--prod); }
+  .guide { stroke: var(--ink-2); stroke-width: 2; stroke-dasharray: 7 7; fill: none; }
+  .nowline { stroke: var(--gold); stroke-width: 3; }
+  .lbl { font-size: 24px; font-weight: 700; }
+
+  /* build animations */
+  .bi { transition: opacity .5s ease, translate .5s ease, scale .5s ease; }
+  .bi.hid { opacity: 0; pointer-events: none; }
+  .bi.hid.rise { translate: 0 30px; }
+  .bi.hid.pop { scale: .85; }
+
+  /* ---------- cover / end ---------- */
+  .fill-canvas { position: absolute; left: 0; top: 0; }
+  .cover-body { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; padding: 0; overflow: hidden; }
+  .cover-body > :not(canvas) { position: relative; }
+  .kicker { font-size: 34px; font-weight: 500; color: var(--ink-2); background: rgba(255,255,255,.8); padding: 8px 28px; border-radius: 999px; }
+  .mega { font-family: 'Black Han Sans', sans-serif; font-weight: 400; font-size: 230px; line-height: 1; color: var(--blue); letter-spacing: 6px; text-shadow: 0 10px 0 #fff, 0 26px 50px rgba(47,134,191,.3); }
+  .mega.dark { color: var(--ink); font-size: 200px; }
+  .cover-chips { display: flex; gap: 18px; }
+  .cover-chips span { font-size: 28px; font-weight: 700; color: var(--blue-deep); background: #fff; border: 2px solid var(--line); border-radius: 999px; padding: 10px 28px; }
+  .cover-eq { font-size: 44px; color: var(--ink-2); background: rgba(255,255,255,.85); border-radius: 18px; padding: 6px 30px; }
+
+  /* ---------- slide 2 ---------- */
+  .goal { display: flex; align-items: center; gap: 26px; background: linear-gradient(90deg, #fff, #F1F8FD); border: 2px solid var(--line); border-radius: 20px; padding: 18px 30px; }
+  .goal-badge { font-size: 26px; font-weight: 900; color: #fff; background: var(--blue); border-radius: 12px; padding: 6px 18px; }
+  .goal p { font-size: 34px; font-weight: 500; }
+  .goal p b { color: var(--blue-deep); box-shadow: inset 0 -14px 0 var(--gold-soft); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; margin-top: 30px; }
+  .two .card { padding: 26px 30px; display: flex; flex-direction: column; gap: 10px; }
+  .card-title { display: flex; align-items: center; gap: 16px; font-size: 32px; font-weight: 700; }
+  .num { width: 46px; height: 46px; border-radius: 50%; background: var(--blue); color: #fff; display: grid; place-items: center; font-size: 26px; font-weight: 900; }
+  .card-foot { display: flex; align-items: center; gap: 22px; min-height: 70px; }
+  .card-foot .note { font-size: 25px; color: var(--ink-2); line-height: 1.45; }
+  .bridge { margin-top: 26px; display: flex; align-items: center; gap: 24px; padding: 16px 30px; border-radius: 20px; background: var(--ink); color: #fff; }
+  .bridge span { font-size: 24px; font-weight: 700; color: #9CCBEA; }
+  .bridge p { font-size: 32px; }
+  .bridge b { color: #FFD45C; }
+  .eqlab { font-family: 'STIX Two Text', serif; font-size: 40px; fill: var(--ink); }
+  .atom-l { font-size: 20px; font-weight: 700; fill: #4B5866; pointer-events: none; }
+  .atom-l.o { fill: #fff; font-size: 24px; }
+  .atom { transition: transform 1.2s cubic-bezier(.65,.05,.3,1); }
+
+  /* ---------- slide 3 ---------- */
+  .top-split { display: grid; grid-template-columns: 1fr 600px; gap: 36px; align-items: start; }
+  .rules { display: flex; flex-direction: column; gap: 14px; margin-top: 14px; }
+  .rule { display: flex; align-items: center; gap: 18px; font-size: 28px; }
+  .rule em { font-style: normal; color: var(--muted); font-size: 24px; }
+  .pill { font-size: 25px; font-weight: 900; padding: 6px 20px; border-radius: 999px; }
+  .pill.cons { background: var(--cons-soft); color: var(--cons); }
+  .pill.prod { background: var(--prod-soft); color: var(--prod); }
+  .fcard { padding: 18px 30px; display: flex; flex-direction: column; gap: 6px; }
+  .fcard .fbig { font-size: 44px; text-align: center; font-weight: 600; }
+  .frow { display: flex; align-items: center; gap: 12px; font-size: 27px; font-weight: 500; }
+  .frow .frac { font-size: 34px; }
+  .sim-row { display: grid; grid-template-columns: 520px 700px 1fr; gap: 28px; margin-top: 26px; height: 486px; }
+  .sim-box { position: relative; border-radius: 22px; overflow: hidden; border: 2px solid #D3E5F2; background: #FBFDFF; box-shadow: inset 0 0 0 6px #fff; }
+  .sim-legend { position: absolute; left: 16px; top: 14px; display: flex; gap: 14px; font-size: 22px; font-weight: 700; background: rgba(255,255,255,.88); padding: 4px 14px; border-radius: 999px; }
+  .readout { padding: 22px 24px; display: flex; flex-direction: column; gap: 16px; }
+  .ro-time { display: flex; align-items: baseline; gap: 10px; font-size: 26px; color: var(--muted); }
+  .ro-time b { font-size: 60px; color: var(--ink); font-variant-numeric: tabular-nums; font-weight: 900; }
+  .ro-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .ro { border-radius: 16px; padding: 10px 16px; font-size: 22px; font-weight: 700; }
+  .ro b { display: block; font-size: 42px; font-variant-numeric: tabular-nums; }
+  .ro.cons { background: var(--cons-soft); } .ro.prod { background: var(--prod-soft); color: var(--prod); }
+  .ro-rate { font-size: 22px; line-height: 1.6; color: var(--ink-2); border-top: 2px dashed #D3E5F2; padding-top: 10px; }
+  .ro-rate b { font-size: 26px; font-variant-numeric: tabular-nums; }
+  .ctrl { display: flex; gap: 10px; margin-top: auto; }
+  .ctrl .btn { padding: 10px 20px; }
+
+  /* ---------- activity slides ---------- */
+  .work { position: relative; margin-top: 28px; height: 590px; border: 3px dashed #B5D2E7; border-radius: 24px; background: rgba(255,255,255,.55); }
+  .work-label { position: absolute; left: 28px; top: 20px; font-size: 22px; color: var(--muted); }
+  .work-label kbd { font: 700 20px 'Noto Sans KR'; background: #fff; border: 2px solid #B5D2E7; border-radius: 8px; padding: 0 10px; }
+  .hints { position: absolute; right: 28px; top: 28px; width: 560px; display: flex; flex-direction: column; gap: 16px; }
+  .hint { background: var(--gold-soft); border: 2px solid #F3D589; border-radius: 18px; padding: 16px 22px; font-size: 25px; line-height: 1.5; }
+  .hint b { color: #B67700; margin-right: 8px; }
+
+  /* ---------- slide 5 ---------- */
+  .nh3-grid { display: grid; grid-template-columns: 840px 1fr; gap: 36px; margin-top: 22px; }
+  .eqcard { padding: 18px; text-align: center; font-size: 76px; font-weight: 600; letter-spacing: 2px; }
+  .rrows { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
+  .rrow { display: grid; grid-template-columns: 120px 1fr 40px 230px 90px; align-items: center; gap: 10px; padding: 14px 24px; border-radius: 18px; font-size: 32px; font-variant-numeric: tabular-nums; }
+  .rrow.cons { background: var(--cons-soft); } .rrow.prod { background: var(--prod-soft); }
+  .rrow .sp { font-weight: 900; }
+  .rrow .res { font-weight: 900; text-align: right; }
+  .rrow .mini { font-size: 22px; font-weight: 700; text-align: center; border-radius: 999px; padding: 4px 0; background: #fff; }
+  .ctlcard { padding: 22px 28px; display: flex; flex-direction: column; gap: 14px; }
+
+  /* ---------- slide 6 ---------- */
+  .def-grid { display: grid; grid-template-columns: 1fr 680px; gap: 32px; }
+  .defcard { padding: 26px 32px; display: flex; flex-direction: column; gap: 18px; }
+  .def { font-size: 31px; line-height: 1.5; font-weight: 500; }
+  .def b { color: var(--blue-deep); box-shadow: inset 0 -14px 0 var(--gold-soft); }
+  .feat { display: flex; gap: 16px; align-items: flex-start; font-size: 26px; line-height: 1.5; }
+  .feat .k { flex: none; font-weight: 900; color: #fff; background: var(--blue); border-radius: 12px; padding: 4px 14px; }
+  .conv { padding: 22px 26px; }
+  .conv-t { font-size: 25px; font-weight: 700; color: var(--ink-2); margin-bottom: 12px; }
+  .conv-grid { display: grid; grid-template-columns: 100px 140px 210px 150px; gap: 10px 14px; align-items: center; font-size: 28px; font-variant-numeric: tabular-nums; }
+  .conv-grid .ch { font-size: 21px; font-weight: 700; color: var(--muted); }
+  .conv-grid .v { border-radius: 12px; padding: 6px 12px; text-align: center; font-weight: 700; }
+  .conv-grid .v.cons { background: var(--cons-soft); } .conv-grid .v.prod { background: var(--prod-soft); }
+  .conv-grid .v.ok { background: var(--green-soft); color: var(--green); }
+  .conv-res { margin-top: 16px; display: flex; align-items: center; gap: 18px; font-size: 34px; font-weight: 900; color: var(--green); }
+  .conv-res small { font-size: 24px; font-weight: 500; color: var(--ink-2); }
+  .gen { margin-top: 32px; padding: 34px 36px; display: flex; flex-direction: column; align-items: center; gap: 20px; background: linear-gradient(180deg, #fff, #F3F9FD); }
+  .gen .m { font-size: 60px; }
+  .gen .vline { font-size: 58px; display: flex; align-items: center; gap: 6px; }
+  .gen .vline .frac { font-size: 52px; }
+  .def-grid .card { min-height: 400px; }
+
+  /* ---------- slide 8 ---------- */
+  .ans-grid { display: grid; grid-template-columns: 1fr 760px; gap: 36px; margin-top: 26px; }
+  .steps { display: flex; flex-direction: column; gap: 18px; }
+  .stp { display: flex; gap: 18px; align-items: center; padding: 20px 26px; font-size: 30px; line-height: 1.45; }
+  .stp .n { flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--blue); color: #fff; font-weight: 900; font-size: 26px; }
+  .stp .big { font-weight: 900; font-size: 34px; }
+  .summary-bar { margin-top: 6px; font-size: 26px; color: var(--ink-2); }
+
+  /* ---------- slide 9 ---------- */
+  .g9 { display: grid; grid-template-columns: 560px 1fr; gap: 36px; height: 100%; }
+  .g9-left { display: flex; flex-direction: column; gap: 16px; }
+  .meter { padding: 16px 22px; border-radius: 18px; border: 2px solid; }
+  .meter p { font-size: 22px; font-weight: 700; }
+  .meter b { display: block; font-size: 40px; font-variant-numeric: tabular-nums; margin-top: 2px; }
+  .meter small { font-size: 21px; font-weight: 500; color: var(--ink-2); }
+  .meter.avg { border-color: #F2B8B2; background: var(--prod-soft); color: var(--prod); }
+  .meter.ins { border-color: #B9CBF3; background: var(--cons-soft); color: var(--cons); }
+  .meter.ini { border-color: #F3D589; background: var(--gold-soft); color: #A86E00; }
+  .gsvg { width: 100%; }
+  .drag-hint { font-size: 22px; color: var(--muted); }
+
+  /* ---------- slides 10, 11 ---------- */
+  .g10 { display: grid; grid-template-columns: 1fr 700px; gap: 30px; margin-top: 20px; }
+  .g10.wide { grid-template-columns: 1fr 800px; margin-top: 0; }
+  .g10.wide .sol { gap: 14px; }
+  .g10.wide .sol p { font-size: 29px; }
+  .g10 .work { margin-top: 0; height: 520px; }
+  .sol { display: flex; flex-direction: column; gap: 10px; }
+  .sol p { font-size: 27px; line-height: 1.45; }
+  .sol .ln { padding: 6px 16px; border-radius: 12px; background: #fff; border: 2px solid #E1EDF6; }
+  .sol .ln b { color: var(--blue-deep); }
+  .legend3 { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+  .leg { display: grid; grid-template-columns: 40px 1fr 190px; align-items: center; gap: 14px; font-size: 26px; padding: 8px 16px; border-radius: 14px; background: #fff; border: 2px solid #E1EDF6; }
+  .leg i { height: 6px; border-radius: 3px; }
+  .leg b { text-align: right; font-variant-numeric: tabular-nums; }
+  .ineq { margin-top: 14px; font-size: 32px; font-weight: 900; text-align: center; padding: 14px; border-radius: 16px; background: var(--ink); color: #fff; }
+  .ineq .c1 { color: #8FB4FF; } .ineq .c2 { color: #FF9A92; } .ineq .c3 { color: #6FE0B0; }
+
+  /* ---------- slide 12 ---------- */
+  .g12 { display: grid; grid-template-columns: 620px 1fr; gap: 36px; height: 100%; }
+  .g12-left { display: flex; flex-direction: column; gap: 16px; }
+  .find { padding: 16px 22px; font-size: 26px; line-height: 1.5; border-radius: 18px; }
+  .find .t { display: block; font-size: 22px; font-weight: 900; letter-spacing: 1px; margin-bottom: 2px; }
+  .find.f1 { background: var(--cons-soft); } .find.f1 .t { color: var(--cons); }
+  .find.f2 { background: var(--prod-soft); } .find.f2 .t { color: var(--prod); }
+  .find.f3 { background: var(--green-soft); } .find.f3 .t { color: var(--green); }
+  .g12-right { display: flex; flex-direction: column; gap: 14px; }
+  .col-ctrl { display: flex; align-items: center; gap: 18px; }
+  .col-ctrl .slider { flex: 1; grid-template-columns: 170px 1fr 70px; }
+  .stat { display: flex; gap: 14px; position: absolute; right: 14px; top: 14px; }
+  .stat span { background: rgba(255,255,255,.92); border-radius: 999px; padding: 4px 16px; font-size: 21px; font-weight: 700; }
+  .plots { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .plots svg { background: #fff; border: 2px solid #E1EDF6; border-radius: 18px; }
+
+  /* ---------- slide 13 ---------- */
+  .quiz { margin: 0 auto; width: 1440px; padding: 34px 44px; display: flex; flex-direction: column; gap: 22px; }
+  .quiz-top { display: flex; align-items: center; gap: 18px; }
+  .quiz-top .rxname { font-size: 26px; font-weight: 700; color: var(--blue); }
+  .quiz-top .cnt { margin-left: auto; font-size: 22px; color: var(--muted); }
+  .quiz-eq { font-size: 64px; text-align: center; padding: 18px; border-radius: 18px; background: var(--blue-soft); }
+  .quiz-q { font-size: 32px; line-height: 1.6; }
+  .quiz-q b { color: var(--prod); }
+  .quiz-ans { display: none; flex-direction: column; gap: 14px; border-top: 3px dashed #D3E5F2; padding-top: 18px; }
+  .quiz-ans.on { display: flex; animation: up .5s ease; }
+  .quiz-ans .ln { font-size: 28px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 14px; }
+  .chips span { font-size: 28px; font-weight: 700; padding: 10px 22px; border-radius: 14px; font-variant-numeric: tabular-nums; }
+  .chips .cons { background: var(--cons-soft); } .chips .prod { background: var(--prod-soft); }
+  .chips .v { background: var(--green-soft); color: var(--green); }
+  @keyframes up { from { opacity: 0; transform: translateY(16px); } }
+
+  /* ---------- slide 14 ---------- */
+  .sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; height: 100%; }
+  .sum .card { padding: 34px 32px; display: flex; flex-direction: column; gap: 18px; }
+  .sum h3 { font-size: 36px; display: flex; align-items: center; gap: 14px; }
+  .sum ul { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 22px; font-size: 30px; line-height: 1.5; }
+  .sum .bigf { font-size: 38px; text-align: center; padding: 16px; border-radius: 16px; background: var(--blue-soft); margin-top: auto; min-height: 130px; display: flex; align-items: center; justify-content: center; }
+
+  /* ---------- viewer chrome ---------- */
+  #ink { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; touch-action: none; }
+  body.pen #ink { pointer-events: auto; cursor: crosshair; }
+  #progress { position: fixed; left: 0; top: 0; height: 4px; background: linear-gradient(90deg, #6FB6E4, #FFD45C); transition: width .4s ease; }
+  #counter { position: fixed; right: 16px; bottom: 12px; font: 14px 'Noto Sans KR', sans-serif; color: rgba(255,255,255,.55); user-select: none; }
+  #help { position: fixed; left: 16px; bottom: 12px; font: 13px 'Noto Sans KR', sans-serif; color: rgba(255,255,255,.4); user-select: none; }
+  #notes { position: fixed; left: 16px; right: 16px; bottom: 40px; max-height: 40vh; overflow: auto; padding: 16px 20px; border-radius: 12px; background: rgba(12,24,36,.94); color: #EAF4FB; font: 16px/1.6 'Noto Sans KR', sans-serif; display: none; }
+  #notes.on { display: block; }
+  #pen-bar { position: fixed; left: 50%; bottom: 18px; translate: -50% 0; display: none; gap: 8px; align-items: center; padding: 8px 12px; border-radius: 999px; background: rgba(12,24,36,.92); box-shadow: 0 10px 30px rgba(0,0,0,.4); font: 14px 'Noto Sans KR', sans-serif; color: #fff; }
+  body.pen #pen-bar { display: flex; }
+  #pen-bar button { border: 0; cursor: pointer; font: inherit; }
+  #pen-bar .sw { width: 28px; height: 28px; border-radius: 50%; border: 3px solid transparent; }
+  #pen-bar .sw.on { border-color: #fff; }
+  #pen-bar .tx { background: rgba(255,255,255,.12); color: #fff; padding: 6px 14px; border-radius: 999px; }
+  body.export #help, body.export #counter, body.export #notes, body.export #progress, body.export #pen-bar { display: none !important; }
+  body.print { overflow: visible; height: auto; background: none; }
+  body.print #stage { position: static; transform: none !important; width: 1920px; height: auto; }
+  body.print #deck > section { position: relative; break-after: page; page-break-after: always; }
+  body.print #ink { display: none; }
+  body.print .bi, body.print .atom { transition: none; }
+  body.print, body.print * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { size: 1920px 1080px; margin: 0; }
+</style>
+</head>
+<body>
+<div id="stage">
+<div id="deck">
+
+<!-- 1 -->
+<section id="cover">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><span class="brand">CHEMISTRY LAB</span><span class="tag line">화학 반응 속도</span></div>
+    <div class="body cover-body">
+      <canvas id="cover-bg" class="fill-canvas"></canvas>
+      <p class="kicker">반응물은 얼마나 빨리 사라지고, 생성물은 얼마나 빨리 생길까?</p>
+      <h1 class="mega">화학 반응 속도</h1>
+      <div class="cover-chips"><span>속도 = 변화량 ÷ 시간</span><span>소모 속도 · 생성 속도</span><span>평균 · 순간 반응 속도</span></div>
+    </div>
+  </div>
+  <aside>[도입] 오늘은 화학 반응이 "얼마나 빠르게" 일어나는지를 수로 나타내는 방법을 배웁니다. 배경의 파란 입자가 빨간 입자로 바뀌는 것이 반응물이 생성물로 바뀌는 모습이에요.</aside>
+</section>
+
+<!-- 2 -->
+<section id="background">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>배경지식</h2><span class="tag">학습 목표</span></div>
+    <div class="body">
+      <div class="goal"><span class="goal-badge">학습 목표</span><p>화학 반응 속도의 <b>정의</b>와 <b>그래프 해석</b> 방법 확인하기</p></div>
+      <div class="two">
+        <div class="card">
+          <div class="card-title"><span class="num">1</span>화학 반응식</div>
+          <svg id="rx-svg" viewBox="0 0 720 340" width="720" height="340"></svg>
+          <div class="card-foot"><button class="btn" id="rx-btn">반응시키기 ▶</button><p class="note" id="rx-note">반응식의 <b>계수</b>는 반응하는 입자 수의 비를 나타내요.</p></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="num">2</span>속도 = 변화량 ÷ 시간</div>
+          <svg id="run-svg" viewBox="0 0 720 340" width="720" height="340"></svg>
+          <div class="card-foot"><button class="btn" id="run-btn">출발 ▶</button><p class="note" id="run-note">1초마다 2 m씩 이동하면 속도는?</p></div>
+        </div>
+      </div>
+      <div class="bridge" data-step="1 rise"><span>①과 ②를 합치면?</span><p><b>화학 반응 속도</b> = 반응식 속 물질의 <b>농도 변화량</b> ÷ <b>시간</b></p></div>
+    </div>
+  </div>
+  <aside>[배경지식 2분] ① 반응식: 버튼을 눌러 원자가 재배열되는 모습을 보여 주세요. 계수 2 : 1 : 2가 분자 수의 비입니다. ② 속도: 운동 속도는 "위치 변화량 ÷ 시간"이었죠. 화학 반응 속도도 똑같이 "농도 변화량 ÷ 시간"으로 정의합니다.</aside>
+</section>
+
+<!-- 3 -->
+<section id="rate-intro">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag">개념</span></div>
+    <div class="body">
+      <div class="top-split">
+        <div>
+          <p class="lead">속도는 <b>변화량 ÷ 시간</b>입니다. 화학 반응이 진행될 때 반응물과 생성물의 양(농도, 단위: <b>M</b>)이 변합니다.</p>
+          <div class="rules">
+            <div class="rule"><span class="pill cons">소모 속도 (−)</span> 반응물의 변화량(−) ÷ 반응 시간 <em>단위: M/s</em></div>
+            <div class="rule"><span class="pill prod">생성 속도 (+)</span> 생성물의 변화량(+) ÷ 반응 시간 <em>단위: M/s</em></div>
+          </div>
+        </div>
+        <div class="card fcard">
+          <div class="m fbig">A → B</div>
+          <div class="frow"><span class="cons">A의 소모 속도</span> = <span class="frac m"><span>Δ[A]</span><span>Δ<i>t</i></span></span><span class="cons">&lt; 0</span></div>
+          <div class="frow"><span class="prod">B의 생성 속도</span> = <span class="frac m"><span>Δ[B]</span><span>Δ<i>t</i></span></span><span class="prod">&gt; 0</span></div>
+        </div>
+      </div>
+      <div class="sim-row">
+        <div class="sim-box"><canvas id="ab-canvas"></canvas><div class="sim-legend"><span class="cons">● A (반응물)</span><span class="prod">● B (생성물)</span></div></div>
+        <svg id="ab-plot" viewBox="0 0 700 486" width="700" height="486" class="card"></svg>
+        <div class="card readout">
+          <div class="ro-time"><span><i class="m">t</i> =</span><b id="ab-t">0</b><span>s</span></div>
+          <div class="ro-pair"><div class="ro cons">A<b id="ab-na">40</b></div><div class="ro prod">B<b id="ab-nb">0</b></div></div>
+          <div class="ro-rate">최근 10초 동안 평균<br><span class="cons">A 소모 속도 <b id="ab-ra">—</b></span><br><span class="prod">B 생성 속도 <b id="ab-rb">—</b></span></div>
+          <div class="ctrl"><button class="btn" id="ab-play">▶ 시작</button><button class="btn ghost" id="ab-reset">↺</button><button class="btn ghost" id="ab-speed">1×</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside>[개념 5분] 시작을 누르면 A 입자가 하나씩 B로 바뀌고 그래프가 그려집니다. 오른쪽 숫자를 보면 A의 소모 속도는 음수, B의 생성 속도는 양수예요. 그래프의 짙은 선분은 최근 10초 동안의 변화(Δ)를 나타냅니다. 처음엔 빠르게, 나중엔 느리게 변한다는 점도 짚어 두면 심화 활동과 연결됩니다.</aside>
+</section>
+
+<!-- 4 -->
+<section id="act1-q">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 1</span></div>
+    <div class="body">
+      <div class="q"><span class="qbadge">활동 1</span><p>암모니아 생성 반응의 화학 반응식을 적고, <b>10초간 질소가 1 M 반응</b>했을 때 반응식의 모든 물질의 생성·소모 속도를 구하시오.</p></div>
+      <div class="work">
+        <span class="work-label">풀이 공간 · <kbd>P</kbd> 키를 누르면 화면에 판서할 수 있어요</span>
+        <div class="hints">
+          <div class="hint" data-step="1 rise"><b>힌트 1</b>암모니아(NH<sub>3</sub>)는 질소(N<sub>2</sub>)와 수소(H<sub>2</sub>)로 만들어져요. 원자 수를 맞춰 계수를 정해 보세요.</div>
+          <div class="hint" data-step="2 rise"><b>힌트 2</b>계수비 = 반응하는 양(M)의 비</div>
+          <div class="hint" data-step="3 rise"><b>힌트 3</b>반응물은 소모 속도(−), 생성물은 생성 속도(+)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside>[활동 1 · 3분] 모둠별로 풀어 보게 하고, 막히면 클릭해서 힌트를 하나씩 공개하세요. P 키로 판서 모드를 켜면 학생 답을 화면에 바로 적을 수 있습니다.</aside>
+</section>
+
+<!-- 5 -->
+<section id="act1-a">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도 <small>— 반응 계수와의 관계</small></h2><span class="tag act">활동 1 풀이</span></div>
+    <div class="body">
+      <div class="q small"><span class="qbadge">활동 1</span><p>10초간 질소가 1 M 반응했을 때 반응식의 모든 물질의 생성·소모 속도를 구하시오.</p></div>
+      <p class="note-line" style="margin-top:14px">※ 각 물질의 반응량은 계수에 비례하므로 생성·소모 속도도 계수에 비례합니다. 소모 속도(−), 생성 속도(+)</p>
+      <div class="nh3-grid">
+        <div>
+          <div class="card eqcard m">N<sub>2</sub> + <span class="cons">3</span>H<sub>2</sub> → <span class="prod">2</span>NH<sub>3</sub></div>
+          <div class="rrows">
+            <div class="rrow cons" data-step="1 rise"><span class="sp">N<sub>2</sub></span><span><b data-nh3="d0">−1</b> M ÷ <b data-nh3="t">10</b> s</span><span>=</span><span class="res cons" data-nh3="r0">−0.1 M/s</span><span class="mini cons">감소</span></div>
+            <div class="rrow cons" data-step="2 rise"><span class="sp">H<sub>2</sub></span><span><b data-nh3="d1">−3</b> M ÷ <b data-nh3="t">10</b> s</span><span>=</span><span class="res cons" data-nh3="r1">−0.3 M/s</span><span class="mini cons">감소</span></div>
+            <div class="rrow prod" data-step="3 rise"><span class="sp">NH<sub>3</sub></span><span><b data-nh3="d2">+2</b> M ÷ <b data-nh3="t">10</b> s</span><span>=</span><span class="res prod" data-nh3="r2">+0.2 M/s</span><span class="mini prod">증가</span></div>
+          </div>
+          <p class="hand" data-step="4 pop" style="font-size:52px;color:var(--blue-deep);margin-top:16px;text-align:center">속도 비 1 : 3 : 2 = 계수 비 1 : 3 : 2 !</p>
+        </div>
+        <div class="card ctlcard">
+          <div class="slider"><span>반응한 N<sub>2</sub></span><input type="range" id="nh3-dn" min="0.5" max="3" step="0.5" value="1"><output id="nh3-dn-o">1 M</output></div>
+          <div class="slider"><span>반응 시간 Δ<i class="m">t</i></span><input type="range" id="nh3-dt" min="5" max="30" step="5" value="10"><output id="nh3-dt-o">10 s</output></div>
+          <svg id="nh3-svg" viewBox="0 0 700 380" width="700" height="380"></svg>
+          <div class="ctrl" style="margin-top:0"><button class="btn" id="nh3-play">▶ 반응 재생</button><span style="font-size:22px;color:var(--muted);align-self:center">처음 농도: N<sub>2</sub> 4 M, H<sub>2</sub> 12 M</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside>[활동 1 풀이] 클릭할 때마다 한 줄씩 풀이가 나옵니다. 오른쪽 슬라이더로 반응량과 시간을 바꾸면 왼쪽 계산이 함께 바뀌어요. 어떤 값을 넣어도 속도 비는 항상 1 : 3 : 2라는 점을 확인시키세요.</aside>
+</section>
+
+<!-- 6 -->
+<section id="definition">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도 <small>— 정의</small></h2><span class="tag">핵심 개념</span></div>
+    <div class="body">
+      <div class="def-grid">
+        <div class="card defcard">
+          <p class="def">📌 <b>화학 반응 속도(<i class="m">v</i>)</b>란 생성 속도 또는 소모 속도를 <b>반응식의 계수로 나누어</b> 나타낸 값이다.</p>
+          <div class="feat"><span class="k">특징 1</span><p><b class="cons">유일한 값</b> — 생성·소모 속도는 물질마다 다르지만, 반응 속도는 한 반응식에서 단 하나다.</p></div>
+          <div class="feat"><span class="k">특징 2</span><p><b class="cons">항상 양수(+)</b> — 소모 속도로 구할 때는 (−)를 곱해 양수로 만든다.</p></div>
+        </div>
+        <div class="card conv">
+          <p class="conv-t">활동 1에 적용해 보기 · N<sub>2</sub> + 3H<sub>2</sub> → 2NH<sub>3</sub></p>
+          <div class="conv-grid">
+            <span class="ch">물질</span><span class="ch">소모·생성 속도</span><span class="ch" data-step="1">÷ 계수</span><span class="ch" data-step="2">부호 → (+)</span>
+            <b>N<sub>2</sub></b><span class="v cons">−0.1</span><span class="v cons" data-step="1 pop">÷ 1 = −0.1</span><span class="v ok" data-step="2 pop">0.1</span>
+            <b>H<sub>2</sub></b><span class="v cons">−0.3</span><span class="v cons" data-step="1 pop">÷ 3 = −0.1</span><span class="v ok" data-step="2 pop">0.1</span>
+            <b>NH<sub>3</sub></b><span class="v prod">+0.2</span><span class="v prod" data-step="1 pop">÷ 2 = +0.1</span><span class="v ok" data-step="2 pop">0.1</span>
+          </div>
+          <div class="conv-res" data-step="3 rise"><span><i class="m">v</i> = 0.1 M/s</span><small>세 값이 하나로 모였다 → 유일!</small></div>
+        </div>
+      </div>
+      <div class="card gen" data-step="4 rise">
+        <div class="m"><i>a</i>A + <i>b</i>B → <i>c</i>C + <i>d</i>D</div>
+        <div class="m vline"><i>v</i> = <span class="cons">−</span><span class="frac"><span>1</span><span><i>a</i></span></span><span class="frac"><span>Δ[A]</span><span>Δ<i>t</i></span></span> = <span class="cons">−</span><span class="frac"><span>1</span><span><i>b</i></span></span><span class="frac"><span>Δ[B]</span><span>Δ<i>t</i></span></span> = <span class="frac"><span>1</span><span><i>c</i></span></span><span class="frac"><span>Δ[C]</span><span>Δ<i>t</i></span></span> = <span class="frac"><span>1</span><span><i>d</i></span></span><span class="frac"><span>Δ[D]</span><span>Δ<i>t</i></span></span></div>
+      </div>
+    </div>
+  </div>
+  <aside>[정의 4분] 물질마다 속도가 다르면 "이 반응의 속도"를 하나로 말할 수 없겠죠? 그래서 계수로 나누어 하나로 맞춥니다. 클릭 ① 계수로 나누기 → ② 부호를 양수로 → ③ 모두 0.1로 모임 → ④ 일반식. 반응물 항 앞의 (−)가 특징 2를 나타냅니다.</aside>
+</section>
+
+<!-- 7 -->
+<section id="act2-q">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 2</span></div>
+    <div class="body">
+      <div class="q"><span class="qbadge">활동 2</span><p>프로페인의 연소 반응 <span class="m" style="font-size:1.1em">C<sub>3</sub>H<sub>8</sub> + 5O<sub>2</sub> → 3CO<sub>2</sub> + 4H<sub>2</sub>O</span> 에서 <b>20초간 CO<sub>2</sub>가 6 M 생성</b>되었을 때 반응 속도를 구하고, 반응 속도를 통해 각 물질의 소모·생성 속도를 구하시오.</p></div>
+      <div class="work">
+        <span class="work-label">풀이 공간 · <kbd>P</kbd> 키로 판서</span>
+        <div class="hints">
+          <div class="hint" data-step="1 rise"><b>힌트 1</b>먼저 CO<sub>2</sub>의 생성 속도 = 변화량 ÷ 시간</div>
+          <div class="hint" data-step="2 rise"><b>힌트 2</b>반응 속도 <i class="m">v</i> = 생성 속도 ÷ CO<sub>2</sub>의 계수</div>
+          <div class="hint" data-step="3 rise"><b>힌트 3</b>각 물질의 속도 = 계수 × <i class="m">v</i> (반응물은 −)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside>[활동 2 · 3분] 이번에는 반대 방향입니다. 생성 속도 → 반응 속도 → 다른 물질의 속도 순서로 구해 보게 하세요.</aside>
+</section>
+
+<!-- 8 -->
+<section id="act2-a">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 2 풀이</span></div>
+    <div class="body">
+      <div class="q small"><span class="qbadge">활동 2</span><p><span class="m">C<sub>3</sub>H<sub>8</sub> + 5O<sub>2</sub> → 3CO<sub>2</sub> + 4H<sub>2</sub>O</span> · 20초간 CO<sub>2</sub>가 6 M 생성</p></div>
+      <div class="ans-grid">
+        <div class="steps">
+          <div class="card stp" data-step="1 rise"><span class="n">1</span><p>CO<sub>2</sub>의 생성 속도 = <span class="prod">+6 M</span> ÷ 20 s = <span class="big prod">+0.3 M/s</span></p></div>
+          <div class="card stp" data-step="2 rise"><span class="n">2</span><p>반응 속도 <i class="m">v</i> = 0.3 ÷ <b>3</b> <small style="color:var(--muted)">(CO<sub>2</sub>의 계수)</small> = <span class="big" style="color:var(--green)">0.1 M/s</span></p></div>
+          <div class="card stp" data-step="3 rise"><span class="n">3</span><p>각 물질의 속도 = <b>계수 × <i class="m">v</i></b><br><span style="font-size:26px;color:var(--ink-2)">반응물은 (−) 소모 속도, 생성물은 (+) 생성 속도</span></p></div>
+          <p class="hand" data-step="4 pop" style="font-size:50px;color:var(--blue-deep);text-align:center">계수만 알면 하나로 나머지를 모두 구한다!</p>
+        </div>
+        <div class="card" data-step="3 rise" style="padding:18px 20px"><svg id="c3h8-svg" viewBox="0 0 720 560" width="720" height="560"></svg></div>
+      </div>
+    </div>
+  </div>
+  <aside>[활동 2 풀이] ① CO₂ 생성 속도 +0.3 → ② 계수 3으로 나누어 v = 0.1 → ③ 계수를 곱해 C₃H₈ −0.1, O₂ −0.5, CO₂ +0.3, H₂O +0.4 M/s. 막대 길이가 계수 1 : 5 : 3 : 4에 비례합니다.</aside>
+</section>
+
+<!-- 9 -->
+<section id="graph-method">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도 <small>— 그래프로 구하는 법</small></h2><span class="tag">그래프 해석</span></div>
+    <div class="body">
+      <div class="g9">
+        <div class="g9-left">
+          <div class="card" style="padding:16px 24px;font-size:38px;text-align:center"><span class="m">N<sub>2</sub>O<sub>4</sub>(<i>g</i>) → 2NO<sub>2</sub>(<i>g</i>)</span></div>
+          <div class="meter avg"><p>평균 반응 속도 = <u>두 점을 잇는 직선</u>의 기울기 × (−1)</p><b id="g9-avg">—</b><small id="g9-avg-d">—</small></div>
+          <div class="meter ins"><p><i class="m">t</i><sub>1</sub>에서 순간 반응 속도 = <u>접선</u>의 기울기 × (−1)</p><b id="g9-ins">—</b></div>
+          <div class="meter ini" id="g9-ini-box" style="display:none"><p>초기 반응 속도 = <i class="m">t</i> = 0 에서 접선 기울기 × (−1)</p><b id="g9-ini">—</b></div>
+          <div class="slider" style="grid-template-columns:70px 1fr 100px"><span><i class="m">t</i><sub>1</sub></span><input type="range" id="g9-t1" min="0" max="90" step="1" value="20"><output id="g9-t1-o">20 s</output></div>
+          <div class="slider" style="grid-template-columns:70px 1fr 100px"><span><i class="m">t</i><sub>2</sub></span><input type="range" id="g9-t2" min="2" max="100" step="1" value="55"><output id="g9-t2-o">55 s</output></div>
+          <div class="ctrl" style="margin-top:4px;align-items:center"><button class="btn" id="g9-zoom">Δ<i class="m">t</i> → 0 ▶</button><label class="check"><input type="checkbox" id="g9-ini-cb">초기 반응 속도</label></div>
+          <p class="drag-hint">그래프 위의 점을 직접 끌어도 돼요. Δ<i class="m">t</i>를 줄이면 평균 반응 속도가 순간 반응 속도에 가까워집니다.</p>
+        </div>
+        <svg id="g9-svg" class="card ui gsvg" viewBox="0 0 1000 772" width="1000" height="772"></svg>
+      </div>
+    </div>
+  </div>
+  <aside>[그래프 해석 5분] 빨간 선(두 점을 잇는 직선)의 기울기 = 평균 반응 속도, 파란 선(접선)의 기울기 = 순간 반응 속도. "Δt → 0" 버튼을 누르면 t₂가 t₁으로 다가가며 빨간 선이 파란 선과 겹쳐집니다. N₂O₄의 계수가 1이므로 반응 속도 = N₂O₄의 소모 속도 × (−1)이고, NO₂의 생성 속도는 그 2배입니다.</aside>
+</section>
+
+<!-- 10 -->
+<section id="act3-q">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 3</span></div>
+    <div class="body">
+      <div class="q small" style="flex-direction:column;gap:6px;border-left-color:var(--prod)">
+        <p><span class="qbadge" style="margin-right:12px">3-1</span>그래프의 반응식이 <b class="m">2A → 3B</b>였다면 20~40 s 사이의 반응 속도를 구하고, B의 20~40 s 사이 평균 생성 속도를 구하시오.</p>
+        <p><span class="qbadge" style="margin-right:12px">3-2</span>(20 s의 순간 반응 속도), (20~40 s의 평균 반응 속도), (40 s의 순간 반응 속도)의 크기를 비교하시오.</p>
+      </div>
+      <div class="g10">
+        <div class="work">
+          <span class="work-label">풀이 공간 · <kbd>P</kbd> 키로 판서</span>
+          <div class="hints" style="width:520px;top:70px">
+            <div class="hint" data-step="1 rise"><b>힌트 1</b>기울기 = 세로 변화량 ÷ 가로 변화량</div>
+            <div class="hint" data-step="2 rise"><b>힌트 2</b>A의 계수 2로 나누는 것을 잊지 마세요</div>
+            <div class="hint" data-step="3 rise"><b>힌트 3</b>접선이 가파를수록 순간 반응 속도가 크다</div>
+          </div>
+        </div>
+        <div class="card" style="padding:10px"><svg id="a-svg-q" viewBox="0 0 680 500" width="680" height="500"></svg></div>
+      </div>
+    </div>
+  </div>
+  <aside>[활동 3 · 4분] 3-1은 그래프에서 두 점의 값을 읽어 평균을 구하고, 3-2는 자를 대어 접선과 직선의 기울기를 비교하게 하세요.</aside>
+</section>
+
+<!-- 11 -->
+<section id="act3-a">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 3 풀이</span></div>
+    <div class="body">
+      <div class="g10 wide">
+        <div class="sol">
+          <p style="font-weight:700"><span class="qbadge" style="margin-right:12px">3-1</span>2A → 3B, 20~40 s</p>
+          <p class="ln" data-step="1 rise">Δ[A] = 0.2 − 0.4 = <b class="cons">−0.2 M</b>, &nbsp;Δ<i class="m">t</i> = 20 s</p>
+          <p class="ln" data-step="2 rise">반응 속도 <i class="m">v</i> = (0.2 M ÷ 20 s) ÷ <b>2</b> = <b style="color:var(--green)">0.005 M/s</b></p>
+          <p class="ln" data-step="3 rise">B의 생성 속도 = <b>3</b> × 0.005 = <b class="prod">+0.015 M/s</b></p>
+          <p style="font-weight:700;margin-top:10px"><span class="qbadge" style="margin-right:12px">3-2</span>기울기로 비교하기 <small style="font-weight:500;color:var(--muted)">(반응 속도 <i class="m">v</i>, 근삿값)</small></p>
+          <div class="legend3">
+            <div class="leg" data-step="4"><i style="background:var(--cons)"></i><span>20 s 순간 (접선)</span><b class="cons">약 0.0069 M/s</b></div>
+            <div class="leg" data-step="5"><i style="background:var(--prod)"></i><span>20~40 s 평균 (두 점 직선)</span><b class="prod">0.005 M/s</b></div>
+            <div class="leg" data-step="6"><i style="background:var(--green)"></i><span>40 s 순간 (접선)</span><b style="color:var(--green)">약 0.0035 M/s</b></div>
+          </div>
+          <div class="ineq" data-step="7 pop"><span class="c1">20 s 순간</span> &gt; <span class="c2">20~40 s 평균</span> &gt; <span class="c3">40 s 순간</span></div>
+        </div>
+        <div class="card" style="padding:14px;align-self:start"><svg id="a-svg-a" viewBox="0 0 680 500" width="768" height="565"></svg></div>
+      </div>
+    </div>
+  </div>
+  <aside>[활동 3 풀이] 3-1: 반응 속도는 A의 소모 속도 0.01 M/s를 계수 2로 나눈 0.005 M/s, B의 생성 속도는 3 × 0.005 = 0.015 M/s. 3-2: 클릭할 때마다 파란 접선(20 s) → 빨간 직선(평균) → 초록 접선(40 s)이 나타납니다. 기울기가 점점 완만해지므로 20 s 순간 > 평균 > 40 s 순간.</aside>
+</section>
+
+<!-- 12 -->
+<section id="deep">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag deep">심화 활동</span></div>
+    <div class="body">
+      <div class="g12">
+        <div class="g12-left">
+          <div class="q small" style="border-left-color:var(--gold)"><span class="qbadge" style="background:var(--gold)">심화</span><p>활동 3의 그래프처럼 반응이 진행될수록 반응 속도는 어떻게 될까? 반응 속도가 변한 이유를 생각해 보세요.</p></div>
+          <div class="find f1" data-step="1 rise"><span class="t">관찰</span>시간이 지날수록 그래프의 기울기가 완만해진다 → <b>반응 속도가 느려진다</b></div>
+          <div class="find f2" data-step="2 rise"><span class="t">이유</span>반응물 A가 소모되어 <b>농도가 감소</b> → A 입자끼리 <b>충돌하는 횟수가 감소</b> → 반응 속도 감소</div>
+          <div class="find f3" data-step="3 rise"><span class="t">더 생각하기</span>처음 A 입자 수를 늘리면? 슬라이더로 바꿔 보세요. 농도가 클수록 충돌이 잦아 반응이 빠르다!</div>
+        </div>
+        <div class="g12-right">
+          <div class="sim-box" style="height:380px"><canvas id="col-canvas"></canvas>
+            <div class="sim-legend"><span class="cons">● A</span><span class="prod">● B</span><span style="color:var(--gold)">✦ 반응</span></div>
+            <div class="stat"><span>A–A 충돌 <b id="col-hit">0</b>회/s</span><span class="prod">반응 <b id="col-rx">0</b>회/s</span></div>
+          </div>
+          <div class="col-ctrl">
+            <button class="btn" id="col-play">▶ 시작</button><button class="btn ghost" id="col-reset">↺</button>
+            <div class="slider"><span>처음 A 입자 수</span><input type="range" id="col-n" min="20" max="80" step="10" value="50"><output id="col-n-o">50</output></div>
+          </div>
+          <div class="plots"><svg id="col-pa" viewBox="0 0 460 250" width="460" height="250"></svg><svg id="col-pr" viewBox="0 0 460 250" width="460" height="250"></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside>[심화 · 5분] 실제 입자처럼 움직이는 시뮬레이션입니다(2A → 3B). A끼리 부딪쳐야 반응하는데, 모든 충돌이 반응으로 이어지지는 않아요. 시간이 지나 A가 줄면 충돌 횟수와 반응 횟수가 함께 줄어드는 것을 오른쪽 아래 그래프로 확인하세요. 입자 수를 80과 20으로 바꿔 비교하면 농도와 반응 속도의 관계(다음 차시)로 이어집니다.</aside>
+</section>
+
+<!-- 13 -->
+<section id="quiz">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>도전! 무한 연습 문제</h2><span class="tag act">확인 문제</span></div>
+    <div class="body">
+      <div class="card quiz">
+        <div class="quiz-top"><span class="pill cons" style="font-size:22px">🎲 랜덤 출제</span><span class="rxname" id="qz-name"></span><span class="cnt" id="qz-cnt"></span></div>
+        <div class="quiz-eq m" id="qz-eq"></div>
+        <p class="quiz-q" id="qz-q"></p>
+        <div class="ctrl" style="margin-top:0"><button class="btn red" id="qz-new">🎲 새 문제</button><button class="btn ghost" id="qz-show">정답 보기</button></div>
+        <div class="quiz-ans" id="qz-ans"></div>
+      </div>
+    </div>
+  </div>
+  <aside>[정리 퀴즈] 누를 때마다 다른 반응식과 수치로 새 문제가 나옵니다. 시간 여유에 따라 2~3문제 풀고 "정답 보기"로 확인하세요.</aside>
+</section>
+
+<!-- 14 -->
+<section id="summary">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>오늘 배운 내용 정리</h2><span class="tag">정리</span></div>
+    <div class="body">
+      <div class="sum">
+        <div class="card" data-step="1 rise"><h3><span class="num">1</span>소모 · 생성 속도</h3>
+          <ul><li>물질의 농도 변화량 ÷ 시간 (M/s)</li><li>반응물: <b class="cons">소모 속도 (−)</b><br>생성물: <b class="prod">생성 속도 (+)</b></li><li>각 물질의 속도는 <b>계수에 비례</b></li></ul>
+          <div class="bigf m">속도 = <span class="frac"><span>Δ[X]</span><span>Δ<i>t</i></span></span></div></div>
+        <div class="card" data-step="2 rise"><h3><span class="num">2</span>반응 속도 <i class="m">v</i></h3>
+          <ul><li>소모·생성 속도를 <b>계수로 나눈 값</b></li><li>한 반응에서 <b>유일한 값</b></li><li>항상 <b>양수(+)</b></li></ul>
+          <div class="bigf m"><i>v</i> = <span class="frac"><span>1</span><span><i>c</i></span></span><span class="frac"><span>Δ[C]</span><span>Δ<i>t</i></span></span></div></div>
+        <div class="card" data-step="3 rise"><h3><span class="num">3</span>그래프 해석</h3>
+          <ul><li><b class="prod">평균</b> 반응 속도 = 두 점을 잇는 직선의 기울기</li><li><b class="cons">순간</b> 반응 속도 = 접선의 기울기</li><li>반응이 진행될수록 농도↓ 충돌↓ → <b>속도↓</b></li></ul>
+          <div class="bigf" style="font-size:30px;font-weight:700">기울기의 크기 = 반응 속도</div></div>
+      </div>
+    </div>
+  </div>
+  <aside>[정리 2분] 세 카드를 하나씩 띄우며 학생들과 함께 말로 정리해 보세요.</aside>
+</section>
+
+<!-- 15 -->
+<section id="thanks">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><span class="brand">CHEMISTRY LAB</span></div>
+    <div class="body cover-body">
+      <canvas id="end-bg" class="fill-canvas"></canvas>
+      <h1 class="mega dark">감사합니다</h1>
+      <p class="kicker">다음 시간: 반응 속도에 영향을 주는 요인 — 농도 · 온도 · 촉매</p>
+    </div>
+  </div>
+  <aside>[마무리] 다음 시간에는 오늘 심화 활동에서 본 "농도"를 포함해 반응 속도를 바꾸는 요인을 배웁니다.</aside>
+</section>
+
+</div>
+<canvas id="ink" width="1920" height="1080"></canvas>
+</div>
+<div id="progress"></div>
+<div id="pen-bar">
+  <button class="sw on" data-color="#D9443A" style="background:#D9443A" title="빨강"></button>
+  <button class="sw" data-color="#2459C9" style="background:#2459C9" title="파랑"></button>
+  <button class="sw" data-color="#1C2A39" style="background:#1C2A39;box-shadow:inset 0 0 0 2px #fff" title="검정"></button>
+  <button class="sw" data-color="hl" style="background:#FFD45C" title="형광펜"></button>
+  <button class="tx" id="pen-clear">지우기 (C)</button>
+  <button class="tx" id="pen-off">닫기 (P)</button>
+</div>
+<div id="help">→ / 클릭 다음 · ← 이전 · F 전체 화면 · N 노트 · P 판서</div>
+<div id="counter"></div>
+<div id="notes"></div>
+
+<script>
+(function () {
+  'use strict';
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var $ = function (id) { return document.getElementById(id); };
+  var PRINT = /(^|&)print(&|=|$)/.test(location.search.slice(1));
+
+  /* ================= helpers ================= */
+  function svgEl(tag, attrs, parent) {
+    var e = document.createElementNS(SVGNS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function svgText(parent, x, y, str, cls, anchor, extra) {
+    var t = svgEl('text', Object.assign({ x: x, y: y, 'class': cls || '', 'text-anchor': anchor || 'start' }, extra || {}), parent);
+    t.textContent = str;
+    return t;
+  }
+  // chemical formula in SVG with real subscripts: "C3H8" → C₃H₈
+  function svgChem(parent, x, y, str, cls, anchor, extra) {
+    var t = svgEl('text', Object.assign({ x: x, y: y, 'class': cls || '', 'text-anchor': anchor || 'start' }, extra || {}), parent);
+    var lowered = false;
+    // digits right after a letter are subscripts; a leading coefficient is not
+    str.split(/(\d+)/).forEach(function (part, i, all) {
+      if (!part) return;
+      var sub = i % 2 === 1 && i > 0 && /[A-Za-z)]$/.test(all[i - 1]);
+      var ts = svgEl('tspan', {}, t);
+      ts.textContent = part;
+      if (sub) { ts.setAttribute('font-size', '0.65em'); ts.setAttribute('dy', '0.3em'); lowered = true; }
+      else if (lowered) { ts.setAttribute('dy', '-0.3em'); lowered = false; }
+    });
+    return t;
+  }
+  function chem(s) { return s.replace(/([A-Za-z)])(\d+)/g, '$1<sub>$2</sub>'); }
+  function fmt(v, d) {
+    if (d === undefined) d = 4;
+    var p = Math.pow(10, d), r = Math.round(v * p) / p;
+    if (r === 0) r = 0;
+    return String(r);
+  }
+  function signed(v, d) { return (v > 0 ? '+' : v < 0 ? '−' : '') + fmt(Math.abs(v), d); }
+  function hidpi(canvas, w, h) {
+    var r = 2;
+    canvas.width = w * r; canvas.height = h * r;
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    var ctx = canvas.getContext('2d');
+    ctx.scale(r, r);
+    return ctx;
+  }
+  var markerSeq = 0;
+  function arrowMarker(svg, color, size) {
+    var defs = svg.querySelector('defs') || svgEl('defs', {}, svg);
+    var id = 'mk' + (++markerSeq);
+    var m = svgEl('marker', { id: id, viewBox: '0 0 10 10', refX: 8, refY: 5, markerWidth: size || 6, markerHeight: size || 6, orient: 'auto-start-reverse', markerUnits: 'strokeWidth' }, defs);
+    svgEl('path', { d: 'M0,0 L10,5 L0,10 z', fill: color }, m);
+    return 'url(#' + id + ')';
+  }
+  function plot(svg, o) {
+    var sx = function (x) { return o.l + (x - o.x[0]) / (o.x[1] - o.x[0]) * o.w; };
+    var sy = function (y) { return o.t + o.h - (y - o.y[0]) / (o.y[1] - o.y[0]) * o.h; };
+    var g = svgEl('g', {}, svg), yf = o.yf || String, fs = o.fs || 23;
+    o.xt.forEach(function (x) {
+      if (x !== o.x[0]) svgEl('line', { x1: sx(x), x2: sx(x), y1: o.t, y2: o.t + o.h, 'class': 'grid' }, g);
+      svgText(g, sx(x), o.t + o.h + fs + 10, String(x), 'tick', 'middle', { 'font-size': fs });
+    });
+    o.yt.forEach(function (y) {
+      if (y !== o.y[0]) svgEl('line', { x1: o.l, x2: o.l + o.w, y1: sy(y), y2: sy(y), 'class': 'grid' }, g);
+      svgText(g, o.l - 12, sy(y) + fs * 0.35, yf(y), 'tick', 'end', { 'font-size': fs });
+    });
+    var mk = arrowMarker(svg, '#1C2A39', 4);
+    svgEl('line', { x1: o.l, y1: o.t + o.h, x2: o.l + o.w + 26, y2: o.t + o.h, 'class': 'axis', 'marker-end': mk }, g);
+    svgEl('line', { x1: o.l, y1: o.t + o.h, x2: o.l, y2: o.t - 22, 'class': 'axis', 'marker-end': mk }, g);
+    if (o.xlab) svgText(g, o.l + o.w / 2, o.t + o.h + fs * 2 + 22, o.xlab, 'axlab', 'middle', { 'font-size': fs + 1 });
+    if (o.ylab) svgText(g, 0, 0, o.ylab, 'axlab', 'middle', { 'font-size': fs + 1, transform: 'translate(' + (o.yl || 28) + ',' + (o.t + o.h / 2) + ') rotate(-90)' });
+    return { sx: sx, sy: sy, layer: svgEl('g', {}, svg) };
+  }
+  function pathOf(P, f, a, b, n) {
+    n = n || 120;
+    var d = '';
+    for (var i = 0; i <= n; i++) {
+      var x = a + (b - a) * i / n;
+      d += (i ? 'L' : 'M') + P.sx(x).toFixed(1) + ',' + P.sy(f(x)).toFixed(1);
+    }
+    return d;
+  }
+  function setLine(line, x1, y1, x2, y2) {
+    line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+    line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+  }
+  function loop(fn) {
+    var running = false, last = 0, id = 0;
+    function frame(ts) {
+      if (!running) return;
+      var dt = Math.min(0.05, (ts - last) / 1000);
+      last = ts;
+      fn(dt);
+      id = requestAnimationFrame(frame);
+    }
+    return {
+      start: function () { if (running) return; running = true; last = performance.now(); id = requestAnimationFrame(frame); },
+      stop: function () { running = false; cancelAnimationFrame(id); }
+    };
+  }
+  function ball(ctx, x, y, r, base, light) {
+    var g = ctx.createRadialGradient(x - r * 0.35, y - r * 0.4, r * 0.1, x, y, r);
+    g.addColorStop(0, '#fff');
+    g.addColorStop(0.3, light);
+    g.addColorStop(1, base);
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  }
+  function setRangeFill(inp) {
+    var p = (inp.value - inp.min) / (inp.max - inp.min) * 100;
+    inp.style.setProperty('--p', p + '%');
+  }
+  document.querySelectorAll('input[type=range]').forEach(function (inp) {
+    setRangeFill(inp);
+    inp.addEventListener('input', function () { setRangeFill(inp); });
+  });
+
+  // slide hooks: enter/leave run while a slide is on screen, print renders a static state
+  var hooks = {};
+  function on(id, h) { hooks[id] = h; }
+
+  /* ================= 1 & 15. drifting molecules ================= */
+  function moleculeBg(canvas, w, h, n) {
+    var ctx = hidpi(canvas, w, h), ps = [];
+    for (var i = 0; i < n; i++) {
+      ps.push({ x: Math.random() * w, y: Math.random() * h, r: 12 + Math.random() * 34,
+        vx: (Math.random() - 0.5) * 26, vy: (Math.random() - 0.5) * 26, b: Math.random() < 0.4 ? 1 : 0, mode: 0, wait: Math.random() * 8 });
+      ps[i].mode = ps[i].b;
+    }
+    function draw(dt) {
+      ctx.clearRect(0, 0, w, h);
+      ps.forEach(function (p) {
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        if (p.x < -p.r) p.x = w + p.r; if (p.x > w + p.r) p.x = -p.r;
+        if (p.y < -p.r) p.y = h + p.r; if (p.y > h + p.r) p.y = -p.r;
+        p.wait -= dt;
+        if (p.wait <= 0) { p.mode = 1 - p.mode; p.wait = 5 + Math.random() * 9; }
+        p.b += (p.mode - p.b) * Math.min(1, dt * 1.2);
+        var c = [Math.round(74 + (226 - 74) * p.b), Math.round(128 + (84 - 128) * p.b), Math.round(214 + (90 - 214) * p.b)];
+        var g = ctx.createRadialGradient(p.x - p.r * 0.35, p.y - p.r * 0.4, p.r * 0.1, p.x, p.y, p.r);
+        g.addColorStop(0, 'rgba(255,255,255,.7)');
+        g.addColorStop(0.35, 'rgba(' + c + ',.30)');
+        g.addColorStop(1, 'rgba(' + c + ',.14)');
+        ctx.fillStyle = g;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+      });
+    }
+    draw(0);
+    return loop(draw);
+  }
+  var coverBg = moleculeBg($('cover-bg'), 1740, 852, 38);
+  on('cover', { enter: coverBg.start, leave: coverBg.stop });
+  var endBg = moleculeBg($('end-bg'), 1740, 852, 38);
+  on('thanks', { enter: endBg.start, leave: endBg.stop });
+
+  /* ================= 2. reaction equation: atoms rearrange ================= */
+  (function () {
+    var svg = $('rx-svg'), defs = svgEl('defs', {}, svg);
+    var gh = svgEl('radialGradient', { id: 'gradH', cx: '.35', cy: '.32', r: '.75' }, defs);
+    svgEl('stop', { offset: '0', 'stop-color': '#fff' }, gh);
+    svgEl('stop', { offset: '.6', 'stop-color': '#E6EAEF' }, gh);
+    svgEl('stop', { offset: '1', 'stop-color': '#AEB8C4' }, gh);
+    var go = svgEl('radialGradient', { id: 'gradO', cx: '.35', cy: '.32', r: '.75' }, defs);
+    svgEl('stop', { offset: '0', 'stop-color': '#FFB3BA' }, go);
+    svgEl('stop', { offset: '.5', 'stop-color': '#F2536A' }, go);
+    svgEl('stop', { offset: '1', 'stop-color': '#B82A3F' }, go);
+
+    svgChem(svg, 108, 50, '2H2', 'eqlab', 'middle');
+    svgText(svg, 210, 50, '+', 'eqlab', 'middle');
+    svgChem(svg, 300, 50, 'O2', 'eqlab', 'middle');
+    svgText(svg, 420, 50, '→', 'eqlab', 'middle');
+    svgChem(svg, 590, 50, '2H2O', 'eqlab', 'middle');
+    svgEl('line', { x1: 380, y1: 210, x2: 462, y2: 210, stroke: '#8094A8', 'stroke-width': 4, 'marker-end': arrowMarker(svg, '#8094A8', 4) }, svg);
+    var ph = svgText(svg, 590, 225, '?', '', 'middle', { 'font-size': 90, fill: '#C9DCEA', 'font-weight': 900 });
+
+    var atoms = [
+      { k: 'H', a: [86, 140], b: [550, 168] }, { k: 'H', a: [128, 140], b: [630, 168] },
+      { k: 'H', a: [86, 280], b: [550, 298] }, { k: 'H', a: [128, 280], b: [630, 298] },
+      { k: 'O', a: [300, 178], b: [590, 140] }, { k: 'O', a: [300, 242], b: [590, 270] }
+    ];
+    atoms.forEach(function (at, i) {
+      var g = svgEl('g', { 'class': 'atom' }, svg), r = at.k === 'H' ? 24 : 36;
+      svgEl('circle', { r: r, fill: at.k === 'H' ? 'url(#gradH)' : 'url(#gradO)', stroke: at.k === 'H' ? '#9AA6B4' : '#A3263A', 'stroke-width': 1.5 }, g);
+      svgText(g, 0, at.k === 'H' ? 7 : 9, at.k, 'atom-l' + (at.k === 'O' ? ' o' : ''), 'middle');
+      g.style.transitionDelay = (i * 70) + 'ms';
+      at.g = g;
+    });
+    var done = false, btn = $('rx-btn'), note = $('rx-note');
+    function place() {
+      atoms.forEach(function (at) {
+        var p = done ? at.b : at.a;
+        at.g.style.transform = 'translate(' + p[0] + 'px,' + p[1] + 'px)';
+      });
+      ph.style.opacity = done ? 0 : 1;
+      btn.textContent = done ? '되돌리기 ↺' : '반응시키기 ▶';
+      note.innerHTML = done
+        ? 'H 원자 4개, O 원자 2개는 그대로! 원자의 <b>배열</b>만 바뀌었어요. 분자 수 비 = <b>2 : 1 : 2</b>'
+        : '반응식의 <b>계수</b>는 반응하는 입자 수의 비를 나타내요.';
+    }
+    btn.addEventListener('click', function () { done = !done; place(); });
+    place();
+    on('background', { leave: function () { done = false; place(); }, enter: function () { runReset(); } });
+
+    /* runner: speed = displacement / time */
+    var rs = $('run-svg'), X0 = 70, PX = 140; // 1 m = 140 px
+    svgEl('line', { x1: 40, y1: 260, x2: 690, y2: 260, stroke: '#1C2A39', 'stroke-width': 4, 'marker-end': arrowMarker(rs, '#1C2A39', 4) }, rs);
+    for (var m = 0; m <= 4; m++) {
+      svgEl('line', { x1: X0 + m * PX, x2: X0 + m * PX, y1: 250, y2: 272, stroke: '#1C2A39', 'stroke-width': 3 }, rs);
+      svgText(rs, X0 + m * PX, 306, String(m), 'tick', 'middle', { 'font-size': 26 });
+    }
+    svgText(rs, 690, 306, '위치(m)', 'axlab', 'end', { 'font-size': 22 });
+    var ghosts = [0, 1, 2].map(function (s) {
+      var g = svgEl('g', { transform: 'translate(' + (X0 + 2 * s * PX) + ',0)', opacity: 0 }, rs);
+      svgText(g, 0, 70, s + '초', 'lbl', 'middle', { 'font-size': 28, fill: '#1C2A39' });
+      svgText(g, 0, 102, '(2 m/s)', 'tick', 'middle', { 'font-size': 22 });
+      svgText(g, 0, 0, '🏃', '', 'middle', { 'font-size': 76, transform: 'translate(0,238) scale(-1,1)', opacity: s < 2 ? 0.28 : 1 });
+      return g;
+    });
+    var runner = svgEl('g', {}, rs);
+    svgText(runner, 0, 0, '🏃', '', 'middle', { 'font-size': 76, transform: 'translate(0,238) scale(-1,1)' });
+    var arrowSpan = svgEl('line', { x1: X0, y1: 140, x2: X0, y2: 140, stroke: '#2F86BF', 'stroke-width': 5, 'marker-end': arrowMarker(rs, '#2F86BF', 3), opacity: 0 }, rs);
+    var rt = 0, rRun = false, rbtn = $('run-btn'), rnote = $('run-note');
+    function runDraw() {
+      var x = X0 + 2 * rt * PX;
+      runner.setAttribute('transform', 'translate(' + x + ',0)');
+      runner.style.opacity = rt >= 2 ? 0 : 1;
+      ghosts.forEach(function (g, s) { g.setAttribute('opacity', rt >= s ? 1 : 0); });
+      setLine(arrowSpan, X0, 140, Math.max(X0 + 1, x - 4), 140);
+      arrowSpan.setAttribute('opacity', rt > 0.05 ? 1 : 0);
+      if (rt >= 2) rnote.innerHTML = '속도 = <b>4 m</b> ÷ <b>2 s</b> = <b style="color:var(--prod);font-size:1.25em">2 m/s</b> &nbsp;(변화량 ÷ 시간)';
+      else if (rt > 0) rnote.innerHTML = '<i class="m">t</i> = <b>' + rt.toFixed(2) + ' s</b> · 이동 거리 = <b>' + (2 * rt).toFixed(2) + ' m</b>';
+      else rnote.textContent = '1초마다 2 m씩 이동하면 속도는?';
+      rbtn.textContent = rt >= 2 ? '다시 ↺' : '출발 ▶';
+    }
+    var runLoop = loop(function (dt) {
+      rt = Math.min(2, rt + dt / 1.3);
+      runDraw();
+      if (rt >= 2) { runLoop.stop(); rRun = false; }
+    });
+    function runReset() { runLoop.stop(); rRun = false; rt = 0; runDraw(); }
+    rbtn.addEventListener('click', function () {
+      if (rt >= 2) { runReset(); return; }
+      if (!rRun) { rRun = true; runLoop.start(); }
+    });
+    runDraw();
+    hooks.background.print = function () { done = true; place(); rt = 2; runDraw(); };
+  })();
+
+  /* ================= 3. A → B particle simulation + live graph ================= */
+  (function () {
+    var W = 520, H = 482, N = 40, K = Math.log(4 / 3) / 10, TMAX = 60;
+    var ctx = hidpi($('ab-canvas'), W, H), svg = $('ab-plot');
+    var P = plot(svg, { l: 92, t: 40, w: 560, h: 340, x: [0, 60], y: [0, 40], xt: [0, 10, 20, 30, 40, 50, 60], yt: [0, 10, 20, 30, 40], xlab: 't (s)', ylab: '입자 수 (개)' });
+    svgEl('path', { d: pathOf(P, function (t) { return N * Math.exp(-K * t); }, 0, 60), 'class': 'theory cons' }, P.layer);
+    svgEl('path', { d: pathOf(P, function (t) { return N * (1 - Math.exp(-K * t)); }, 0, 60), 'class': 'theory prod' }, P.layer);
+    var now = svgEl('line', { 'class': 'nowline' }, P.layer);
+    var lineA = svgEl('polyline', { 'class': 'series cons' }, P.layer), lineB = svgEl('polyline', { 'class': 'series prod' }, P.layer);
+    var tri = svgEl('g', {}, P.layer);
+    var dots = svgEl('g', {}, P.layer);
+    svgText(svg, P.sx(60) + 20, P.sy(0) + 70, '점선: 이론 곡선', 'tick', 'end', { 'font-size': 18, fill: '#8094A8' });
+
+    var ps, t, rec, playing = false, speed = 4, flashes = [];
+    function counts() { var a = 0; ps.forEach(function (p) { if (!p.b) a++; }); return [a, N - a]; }
+    function reset() {
+      ps = [];
+      for (var i = 0; i < N; i++) {
+        var ang = Math.random() * Math.PI * 2, sp = 40 + Math.random() * 50;
+        ps.push({ x: 28 + Math.random() * (W - 56), y: 60 + Math.random() * (H - 90), vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, b: false });
+      }
+      t = 0; rec = [[N, 0]]; flashes = []; playing = false;
+      $('ab-play').textContent = '▶ 시작';
+      update(); draw();
+    }
+    function update() {
+      var c = counts(), tt = rec.length - 1;
+      var ptsA = rec.map(function (r, i) { return P.sx(i) + ',' + P.sy(r[0]); });
+      var ptsB = rec.map(function (r, i) { return P.sx(i) + ',' + P.sy(r[1]); });
+      ptsA.push(P.sx(t) + ',' + P.sy(c[0])); ptsB.push(P.sx(t) + ',' + P.sy(c[1]));
+      lineA.setAttribute('points', ptsA.join(' ')); lineB.setAttribute('points', ptsB.join(' '));
+      setLine(now, P.sx(t), P.sy(0), P.sx(t), P.sy(40));
+      now.style.opacity = t > 0 ? 1 : 0;
+      dots.innerHTML = '';
+      for (var s = 0; s <= tt; s += 10) {
+        svgEl('circle', { cx: P.sx(s), cy: P.sy(rec[s][0]), r: 7, fill: '#2459C9' }, dots);
+        svgEl('circle', { cx: P.sx(s), cy: P.sy(rec[s][1]), r: 7, fill: '#D9443A' }, dots);
+      }
+      tri.innerHTML = '';
+      if (tt >= 10) {
+        var a0 = rec[tt - 10], a1 = rec[tt];
+        [[0, '#2459C9'], [1, '#D9443A']].forEach(function (s) {
+          var x0 = P.sx(tt - 10), x1 = P.sx(tt), y0 = P.sy(a0[s[0]]), y1 = P.sy(a1[s[0]]);
+          svgEl('path', { d: 'M' + x0 + ',' + y0 + 'L' + x1 + ',' + y0 + 'L' + x1 + ',' + y1, fill: 'none', stroke: s[1], 'stroke-width': 2, 'stroke-dasharray': '5 5' }, tri);
+          svgEl('line', { x1: x0, y1: y0, x2: x1, y2: y1, stroke: s[1], 'stroke-width': 9, 'stroke-linecap': 'round', opacity: 0.35 }, tri);
+        });
+        $('ab-ra').textContent = signed((a1[0] - a0[0]) / 10, 2) + ' 개/s';
+        $('ab-rb').textContent = signed((a1[1] - a0[1]) / 10, 2) + ' 개/s';
+      } else { $('ab-ra').textContent = '—'; $('ab-rb').textContent = '—'; }
+      $('ab-t').textContent = Math.floor(t);
+      $('ab-na').textContent = c[0]; $('ab-nb').textContent = c[1];
+    }
+    function draw() {
+      ctx.fillStyle = '#FBFDFF'; ctx.fillRect(0, 0, W, H);
+      flashes.forEach(function (f) {
+        ctx.strokeStyle = 'rgba(233,162,31,' + (f.life * 0.9) + ')'; ctx.lineWidth = 4;
+        ctx.beginPath(); ctx.arc(f.x, f.y, 18 + (1 - f.life) * 26, 0, Math.PI * 2); ctx.stroke();
+      });
+      ctx.font = '700 15px "Noto Sans KR"'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ps.forEach(function (p) {
+        if (p.b) ball(ctx, p.x, p.y, 16, '#C6362C', '#F59A92'); else ball(ctx, p.x, p.y, 16, '#1E4FB8', '#86A8EE');
+        ctx.fillStyle = 'rgba(255,255,255,.95)'; ctx.fillText(p.b ? 'B' : 'A', p.x, p.y + 1);
+      });
+    }
+    function advance(dts) {
+      var pr = 1 - Math.exp(-K * dts);
+      ps.forEach(function (p) {
+        if (!p.b && Math.random() < pr) { p.b = true; flashes.push({ x: p.x, y: p.y, life: 1 }); }
+      });
+      t = Math.min(TMAX, t + dts);
+      while (rec.length - 1 < Math.floor(t + 1e-9)) rec.push(counts());
+    }
+    var L = loop(function (dt) {
+      ps.forEach(function (p) {
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        if (p.x < 18 || p.x > W - 18) { p.vx *= -1; p.x = Math.max(18, Math.min(W - 18, p.x)); }
+        if (p.y < 18 || p.y > H - 18) { p.vy *= -1; p.y = Math.max(18, Math.min(H - 18, p.y)); }
+      });
+      flashes.forEach(function (f) { f.life -= dt * 1.6; });
+      flashes = flashes.filter(function (f) { return f.life > 0; });
+      if (playing) {
+        advance(dt * speed);
+        if (t >= TMAX) { playing = false; $('ab-play').textContent = '✓ 완료'; }
+        update();
+      }
+      draw();
+    });
+    $('ab-play').addEventListener('click', function () {
+      if (t >= TMAX) { reset(); }
+      playing = !playing;
+      this.textContent = playing ? '⏸ 멈춤' : '▶ 계속';
+    });
+    $('ab-reset').addEventListener('click', reset);
+    $('ab-speed').addEventListener('click', function () {
+      speed = speed === 4 ? 8 : speed === 8 ? 2 : 4;
+      this.textContent = (speed / 4) + '×';
+    });
+    reset();
+    on('rate-intro', { enter: L.start, leave: function () { L.stop(); playing = false; if (t < TMAX && t > 0) $('ab-play').textContent = '▶ 계속'; },
+      print: function () { reset(); while (t < TMAX) advance(0.25); update(); draw(); } });
+  })();
+
+  /* ================= 5. ammonia: rates ∝ coefficients ================= */
+  (function () {
+    var svg = $('nh3-svg'), C0 = [4, 12, 0], coef = [-1, -3, 2], names = ['N2', 'H2', 'NH3'];
+    var colors = ['#2459C9', '#2459C9', '#D9443A'], soft = ['#E4ECFB', '#E4ECFB', '#FCE8E6'];
+    var BASE = 300, PXM = 20, XS = [130, 350, 570], BW = 120; // 20 px per M
+    svgEl('line', { x1: 40, x2: 680, y1: BASE, y2: BASE, stroke: '#1C2A39', 'stroke-width': 3 }, svg);
+    var timer = svgText(svg, 30, 36, '', 'lbl', 'start', { fill: '#8094A8', 'font-size': 24 });
+    var bars = XS.map(function (x, i) {
+      var ghost = svgEl('rect', { x: x - BW / 2, width: BW, fill: 'none', stroke: colors[i], 'stroke-width': 3, 'stroke-dasharray': '8 6', rx: 8 }, svg);
+      var bar = svgEl('rect', { x: x - BW / 2, width: BW, fill: soft[i], stroke: colors[i], 'stroke-width': 3, rx: 8 }, svg);
+      var val = svgText(svg, x, 0, '', 'lbl', 'middle', { fill: '#1C2A39', 'font-size': 24 });
+      var dl = svgText(svg, x, 0, '', 'lbl', 'middle', { fill: colors[i], 'font-size': 26 });
+      svgChem(svg, x, BASE + 40, names[i], 'lbl', 'middle', { 'font-size': 30, fill: '#1C2A39' });
+      return { ghost: ghost, bar: bar, val: val, dl: dl };
+    });
+    var dn = 1, dts = 10, tau = 1, playing = false;
+    function render() {
+      bars.forEach(function (b, i) {
+        var c0 = C0[i], c1 = c0 + coef[i] * dn, c = c0 + coef[i] * dn * tau;
+        b.ghost.setAttribute('y', BASE - c0 * PXM); b.ghost.setAttribute('height', Math.max(0, c0 * PXM));
+        b.ghost.style.opacity = c0 ? 1 : 0;
+        b.bar.setAttribute('y', BASE - c * PXM); b.bar.setAttribute('height', Math.max(0, c * PXM));
+        b.val.setAttribute('y', BASE - Math.max(c0, c) * PXM - 44); b.val.textContent = fmt(c, 2) + ' M';
+        b.dl.setAttribute('y', BASE - Math.max(c0, c) * PXM - 14); b.dl.textContent = 'Δ ' + signed(coef[i] * dn * tau, 2);
+      });
+      timer.textContent = 't = ' + (dts * tau).toFixed(1) + ' s / ' + dts + ' s';
+    }
+    function text() {
+      $('nh3-dn-o').textContent = fmt(dn, 1) + ' M'; $('nh3-dt-o').textContent = dts + ' s';
+      document.querySelectorAll('[data-nh3]').forEach(function (e) {
+        var k = e.getAttribute('data-nh3');
+        if (k === 't') e.textContent = dts;
+        else if (k[0] === 'd') e.textContent = signed(coef[+k[1]] * dn, 2);
+        else e.textContent = signed(coef[+k[1]] * dn / dts, 4) + ' M/s';
+      });
+    }
+    var L = loop(function (dt) {
+      tau = Math.min(1, tau + dt / 2.2);
+      render();
+      if (tau >= 1) { L.stop(); playing = false; }
+    });
+    $('nh3-dn').addEventListener('input', function () { dn = +this.value; tau = 1; text(); render(); });
+    $('nh3-dt').addEventListener('input', function () { dts = +this.value; tau = 1; text(); render(); });
+    $('nh3-play').addEventListener('click', function () { tau = 0; playing = true; L.start(); });
+    text(); render();
+    on('act1-a', { leave: function () { L.stop(); tau = 1; render(); } });
+  })();
+
+  /* ================= 8. propane: rate bars ================= */
+  (function () {
+    var svg = $('c3h8-svg'), v = 0.1;
+    var sp = [['C3H8', -1], ['O2', -5], ['CO2', 3], ['H2O', 4]];
+    var BASE = 250, K = 360; // px per M/s
+    svgText(svg, 360, 36, '각 물질의 속도 = 계수 × v (M/s)', 'lbl', 'middle', { 'font-size': 26, fill: '#44586C' });
+    svgEl('line', { x1: 30, x2: 690, y1: BASE, y2: BASE, stroke: '#1C2A39', 'stroke-width': 3 }, svg);
+    sp.forEach(function (s, i) {
+      var x = 110 + i * 166, val = s[1] * v, h = Math.abs(val) * K, pos = val > 0;
+      var col = pos ? '#D9443A' : '#2459C9', bg = pos ? '#FCE8E6' : '#E4ECFB';
+      svgEl('rect', { x: x - 52, y: pos ? BASE - h : BASE, width: 104, height: h, rx: 8, fill: bg, stroke: col, 'stroke-width': 3 }, svg);
+      svgText(svg, x, pos ? BASE - h - 14 : BASE + h + 34, signed(val, 2), 'lbl', 'middle', { fill: col, 'font-size': 30 });
+      svgChem(svg, x, pos ? BASE + 40 : BASE - 18, s[0], 'lbl', 'middle', { 'font-size': 28, fill: '#1C2A39' });
+      svgText(svg, x, pos ? BASE + 72 : BASE - 50, '× ' + Math.abs(s[1]), 'tick', 'middle', { 'font-size': 22 });
+    });
+    svgText(svg, 360, 548, '막대 길이 비 = 계수 비 1 : 5 : 3 : 4', 'lbl', 'middle', { 'font-size': 24, fill: '#1F5F8F' });
+  })();
+
+  /* ================= 9. average vs instantaneous rate ================= */
+  (function () {
+    var svg = $('g9-svg'), TAU = 30, C0 = 0.8;
+    var f = function (t) { return C0 * Math.exp(-t / TAU); }, df = function (t) { return -f(t) / TAU; };
+    var P = plot(svg, { l: 128, t: 50, w: 800, h: 590, x: [0, 100], y: [0, 0.8], xt: [0, 20, 40, 60, 80, 100], yt: [0, 0.2, 0.4, 0.6, 0.8], yf: function (y) { return y.toFixed(1); }, xlab: '시간 (s)', ylab: 'N₂O₄의 농도 (M)', fs: 25, yl: 30 });
+    var L = P.layer;
+    svgEl('path', { d: pathOf(P, f, 0, 100, 200), fill: 'none', stroke: '#1C2A39', 'stroke-width': 5 }, L);
+    var gx1 = svgEl('path', { 'class': 'guide' }, L), gx2 = svgEl('path', { 'class': 'guide' }, L);
+    var ini = svgEl('line', { stroke: '#E9A21F', 'stroke-width': 5, 'stroke-linecap': 'round', opacity: 0 }, L);
+    var tan = svgEl('line', { stroke: '#2459C9', 'stroke-width': 5, 'stroke-linecap': 'round' }, L);
+    var sec = svgEl('line', { stroke: '#D9443A', 'stroke-width': 6, 'stroke-linecap': 'round' }, L);
+    var mkD = arrowMarker(svg, '#44586C', 4);
+    var dC = svgEl('line', { stroke: '#44586C', 'stroke-width': 3, 'marker-start': mkD, 'marker-end': mkD }, L);
+    var dT = svgEl('line', { stroke: '#44586C', 'stroke-width': 3, 'marker-start': mkD, 'marker-end': mkD }, L);
+    var dCl = svgText(L, 0, 0, 'Δ[N₂O₄]', 'lbl', 'end', { 'font-size': 24, fill: '#44586C' });
+    var dTl = svgText(L, 0, 0, 'Δt', 'lbl', 'middle', { 'font-size': 26, fill: '#44586C', 'font-style': 'italic' });
+    var tanL = svgText(L, 0, 0, '접선 (순간)', 'lbl', 'start', { fill: '#2459C9' });
+    var secL = svgText(L, 0, 0, '두 점 직선 (평균)', 'lbl', 'start', { fill: '#D9443A' });
+    var h1 = svgEl('circle', { r: 12, fill: '#2459C9', stroke: '#fff', 'stroke-width': 4, style: 'cursor:ew-resize' }, L);
+    var h2 = svgEl('circle', { r: 12, fill: '#D9443A', stroke: '#fff', 'stroke-width': 4, style: 'cursor:ew-resize' }, L);
+    var t1l = svgText(L, 0, 0, '', 'lbl', 'middle', { fill: '#2459C9', 'font-size': 26 });
+    var t2l = svgText(L, 0, 0, '', 'lbl', 'middle', { fill: '#D9443A', 'font-size': 26 });
+    var t1 = 20, t2 = 55, s1 = $('g9-t1'), s2 = $('g9-t2');
+    function lineThrough(el, t0, a, b) {
+      var y0 = f(t0), m = df(t0);
+      setLine(el, P.sx(a), P.sy(y0 + m * (a - t0)), P.sx(b), P.sy(y0 + m * (b - t0)));
+    }
+    function render() {
+      var c1 = f(t1), c2 = f(t2);
+      gx1.setAttribute('d', 'M' + P.sx(0) + ',' + P.sy(c1) + 'L' + P.sx(t1) + ',' + P.sy(c1) + 'L' + P.sx(t1) + ',' + P.sy(0));
+      gx2.setAttribute('d', 'M' + P.sx(0) + ',' + P.sy(c2) + 'L' + P.sx(t2) + ',' + P.sy(c2) + 'L' + P.sx(t2) + ',' + P.sy(0));
+      // tangent spans ±0.32 M vertically, clipped to the plot
+      var span = Math.min(30, 0.25 / Math.max(1e-4, -df(t1)));
+      lineThrough(tan, t1, Math.max(0, t1 - span), Math.min(100, t1 + span));
+      lineThrough(ini, 0, 0, Math.min(100, 0.75 / (C0 / TAU)));
+      var ex = (c2 - c1) / (t2 - t1);
+      var a = Math.max(0, t1 - 6), b = Math.min(100, t2 + 6);
+      setLine(sec, P.sx(a), P.sy(c1 + ex * (a - t1)), P.sx(b), P.sy(c1 + ex * (b - t1)));
+      setLine(dC, P.sx(t1) - 26, P.sy(c1) + 6, P.sx(t1) - 26, P.sy(c2) - 6);
+      dC.style.opacity = P.sy(c2) - P.sy(c1) > 30 ? 1 : 0;
+      dCl.setAttribute('x', P.sx(t1) - 38); dCl.setAttribute('y', (P.sy(c1) + P.sy(c2)) / 2 + 8);
+      dCl.style.opacity = dC.style.opacity;
+      setLine(dT, P.sx(t1) + 6, P.sy(c2) + 30, P.sx(t2) - 6, P.sy(c2) + 30);
+      dT.style.opacity = P.sx(t2) - P.sx(t1) > 30 ? 1 : 0;
+      dTl.setAttribute('x', (P.sx(t1) + P.sx(t2)) / 2); dTl.setAttribute('y', P.sy(c2) + 62);
+      dTl.style.opacity = dT.style.opacity;
+      tanL.setAttribute('x', P.sx(t1) + 18); tanL.setAttribute('y', P.sy(c1) - 40);
+      secL.setAttribute('x', P.sx(t2) + 18); secL.setAttribute('y', P.sy(c2) - 14);
+      h1.setAttribute('cx', P.sx(t1)); h1.setAttribute('cy', P.sy(c1));
+      h2.setAttribute('cx', P.sx(t2)); h2.setAttribute('cy', P.sy(c2));
+      t1l.setAttribute('x', P.sx(t1) - 18); t1l.setAttribute('y', P.sy(0) - 12); t1l.textContent = 't₁';
+      t2l.setAttribute('x', P.sx(t2) + 18); t2l.setAttribute('y', P.sy(0) - 12); t2l.textContent = 't₂';
+      var avg = -(c2 - c1) / (t2 - t1);
+      $('g9-avg').textContent = fmt(avg, 4) + ' M/s';
+      $('g9-avg-d').textContent = '= −(' + c2.toFixed(3) + ' − ' + c1.toFixed(3) + ') ÷ (' + fmt(t2, 1) + ' − ' + fmt(t1, 1) + ')  ·  NO₂ 생성 속도 = 2v = ' + fmt(2 * avg, 4) + ' M/s';
+      $('g9-ins').textContent = fmt(-df(t1), 4) + ' M/s';
+      $('g9-ini').textContent = fmt(C0 / TAU, 4) + ' M/s';
+      s1.value = t1; s2.value = t2; setRangeFill(s1); setRangeFill(s2);
+      $('g9-t1-o').textContent = fmt(t1, 1) + ' s'; $('g9-t2-o').textContent = fmt(t2, 1) + ' s';
+    }
+    s1.addEventListener('input', function () { t1 = Math.min(+this.value, t2 - 1); render(); });
+    s2.addEventListener('input', function () { t2 = Math.max(+this.value, t1 + 1); render(); });
+    $('g9-ini-cb').addEventListener('change', function () {
+      ini.setAttribute('opacity', this.checked ? 1 : 0);
+      $('g9-ini-box').style.display = this.checked ? '' : 'none';
+    });
+    // dragging the points on the curve
+    var drag = null;
+    function svgT(e) {
+      var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+      var p = pt.matrixTransform(svg.getScreenCTM().inverse());
+      return (p.x - P.sx(0)) / (P.sx(100) - P.sx(0)) * 100;
+    }
+    svg.addEventListener('pointerdown', function (e) {
+      var t = svgT(e);
+      drag = Math.abs(t - t1) <= Math.abs(t - t2) ? 1 : 2;
+      svg.setPointerCapture(e.pointerId);
+      move(e);
+    });
+    function move(e) {
+      if (!drag) return;
+      var t = Math.round(Math.max(0, Math.min(100, svgT(e))) * 2) / 2;
+      if (drag === 1) t1 = Math.min(t, t2 - 1); else t2 = Math.max(t, t1 + 1);
+      render();
+    }
+    svg.addEventListener('pointermove', move);
+    svg.addEventListener('pointerup', function () { drag = null; });
+    // Δt → 0: slide t2 toward t1
+    var from = 0, prog = 1;
+    var Z = loop(function (dt) {
+      prog = Math.min(1, prog + dt / 3);
+      var e = 1 - Math.pow(1 - prog, 3);
+      t2 = from + (t1 + 1 - from) * e;
+      render();
+      if (prog >= 1) Z.stop();
+    });
+    $('g9-zoom').addEventListener('click', function () {
+      if (t2 - t1 <= 1.5) { t2 = Math.min(100, t1 + 35); render(); return; }
+      from = t2; prog = 0; Z.start();
+    });
+    render();
+    on('graph-method', { leave: Z.stop });
+  })();
+
+  /* ================= 10, 11. 2A → 3B concentration graph ================= */
+  function graphA(svg, withLines) {
+    var f = function (t) { return 0.8 * Math.pow(0.5, t / 20); };
+    var df = function (t) { return -f(t) * Math.LN2 / 20; };
+    var P = plot(svg, { l: 120, t: 40, w: 520, h: 360, x: [0, 90], y: [0, 0.9], xt: [0, 20, 40, 60, 80], yt: [0.2, 0.4, 0.6, 0.8], yf: function (y) { return y.toFixed(1) + ' M'; }, xlab: '시간 (s)', ylab: 'A의 농도 (M)' });
+    var L = P.layer;
+    [20, 40].forEach(function (t) {
+      svgEl('path', { d: 'M' + P.sx(0) + ',' + P.sy(f(t)) + 'L' + P.sx(t) + ',' + P.sy(f(t)) + 'L' + P.sx(t) + ',' + P.sy(0), 'class': 'guide' }, L);
+    });
+    svgEl('path', { d: pathOf(P, f, 0, 88), fill: 'none', stroke: '#1C2A39', 'stroke-width': 4.5 }, L);
+    if (withLines) {
+      var tl = function (t0, a, b, color, step, label, lx, ly) {
+        var g = svgEl('g', { 'data-step': step }, L);
+        svgEl('line', { x1: P.sx(a), y1: P.sy(f(t0) + df(t0) * (a - t0)), x2: P.sx(b), y2: P.sy(f(t0) + df(t0) * (b - t0)), stroke: color, 'stroke-width': 6, 'stroke-linecap': 'round' }, g);
+        svgText(g, lx, ly, label, 'lbl', 'start', { fill: color, 'font-size': 22 });
+      };
+      tl(20, 6, 34, '#2459C9', '4', '20 s 접선', P.sx(23), P.sy(0.52));
+      var g = svgEl('g', { 'data-step': '5' }, L);
+      svgEl('line', { x1: P.sx(20), y1: P.sy(0.4), x2: P.sx(40), y2: P.sy(0.2), stroke: '#D9443A', 'stroke-width': 7, 'stroke-linecap': 'round' }, g);
+      svgText(g, P.sx(31), P.sy(0.36), '평균', 'lbl', 'start', { fill: '#D9443A', 'font-size': 22 });
+      tl(40, 26, 60, '#16996A', '6', '40 s 접선', P.sx(51), P.sy(0.17));
+    }
+    [20, 40].forEach(function (t) { svgEl('circle', { cx: P.sx(t), cy: P.sy(f(t)), r: 9, fill: '#1C2A39', stroke: '#fff', 'stroke-width': 3 }, L); });
+  }
+  graphA($('a-svg-q'), false);
+  graphA($('a-svg-a'), true);
+
+  /* ================= 12. collision simulation (2A → 3B) ================= */
+  (function () {
+    var W = 932, H = 376, RA = 13, RB = 9, SPEED = 150, PREACT = 0.1, TMAX = 30;
+    var ctx = hidpi($('col-canvas'), W, H);
+    var PA = plot($('col-pa'), { l: 70, t: 34, w: 360, h: 150, x: [0, 30], y: [0, 80], xt: [0, 10, 20, 30], yt: [0, 40, 80], xlab: '시간 (s)', fs: 19, yl: 22 });
+    var PR = plot($('col-pr'), { l: 70, t: 34, w: 360, h: 150, x: [0, 30], y: [0, 8], xt: [0, 10, 20, 30], yt: [0, 4, 8], xlab: '시간 (s)', fs: 19, yl: 22 });
+    svgText($('col-pa'), 96, 26, 'A 입자 수 (개)', 'lbl', 'start', { fill: '#2459C9', 'font-size': 20 });
+    svgText($('col-pr'), 96, 26, '반응 속도 (반응 횟수/s)', 'lbl', 'start', { fill: '#D9443A', 'font-size': 20 });
+    var la = svgEl('polyline', { 'class': 'series cons', 'stroke-width': 4 }, PA.layer);
+    var lr = svgEl('polyline', { 'class': 'series prod', 'stroke-width': 4 }, PR.layer);
+    var ps, t, playing, events, hits, recA, recR, sparks, n0 = 50, acc;
+    function spawn(x, y, kind) {
+      var a = Math.random() * Math.PI * 2;
+      return { x: x, y: y, vx: Math.cos(a) * SPEED, vy: Math.sin(a) * SPEED, k: kind, dead: false };
+    }
+    function reset() {
+      ps = []; t = 0; playing = false; events = []; hits = []; recA = [[0, n0]]; recR = [[0, 0]]; sparks = []; acc = 0;
+      for (var i = 0; i < n0; i++) ps.push(spawn(RA + Math.random() * (W - 2 * RA), RA + Math.random() * (H - 2 * RA), 'A'));
+      $('col-play').textContent = '▶ 시작';
+      graph(); draw(); stats();
+    }
+    function nA() { var c = 0; ps.forEach(function (p) { if (p.k === 'A') c++; }); return c; }
+    function rateNow(list) {
+      var w = Math.min(3, Math.max(t, 0.5));
+      return list.filter(function (x) { return x > t - w; }).length / w;
+    }
+    function stats() {
+      $('col-hit').textContent = playing || t > 0 ? rateNow(hits).toFixed(1) : '0';
+      $('col-rx').textContent = playing || t > 0 ? rateNow(events).toFixed(1) : '0';
+    }
+    function graph() {
+      la.setAttribute('points', recA.map(function (r) { return PA.sx(r[0]) + ',' + PA.sy(r[1]); }).join(' '));
+      lr.setAttribute('points', recR.map(function (r) { return PR.sx(r[0]) + ',' + PR.sy(Math.min(8, r[1])); }).join(' '));
+    }
+    function physics(dt) {
+      var n = ps.length, born = [];
+      for (var i = 0; i < n; i++) {
+        var p = ps[i];
+        p.x += p.vx * dt; p.y += p.vy * dt;
+        var r = p.k === 'A' ? RA : RB;
+        if (p.x < r) { p.x = r; p.vx = Math.abs(p.vx); } else if (p.x > W - r) { p.x = W - r; p.vx = -Math.abs(p.vx); }
+        if (p.y < r) { p.y = r; p.vy = Math.abs(p.vy); } else if (p.y > H - r) { p.y = H - r; p.vy = -Math.abs(p.vy); }
+      }
+      for (i = 0; i < n; i++) {
+        var a = ps[i];
+        if (a.dead) continue;
+        for (var j = i + 1; j < n; j++) {
+          var b = ps[j];
+          if (b.dead) continue;
+          var ra = a.k === 'A' ? RA : RB, rb = b.k === 'A' ? RA : RB;
+          var dx = b.x - a.x, dy = b.y - a.y, d2 = dx * dx + dy * dy, rr = ra + rb;
+          if (d2 >= rr * rr || d2 === 0) continue;
+          var d = Math.sqrt(d2), nx = dx / d, ny = dy / d;
+          var vn = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
+          var push = (rr - d) / 2;
+          a.x -= nx * push; a.y -= ny * push; b.x += nx * push; b.y += ny * push;
+          if (vn >= 0) continue;
+          a.vx += vn * nx; a.vy += vn * ny; b.vx -= vn * nx; b.vy -= vn * ny;
+          if (playing && a.k === 'A' && b.k === 'A') {
+            hits.push(t);
+            if (Math.random() < PREACT) {
+              a.dead = b.dead = true;
+              var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+              for (var k = 0; k < 3; k++) {
+                var ang = k * 2.094 + Math.random();
+                born.push(spawn(Math.max(RB, Math.min(W - RB, mx + Math.cos(ang) * 12)), Math.max(RB, Math.min(H - RB, my + Math.sin(ang) * 12)), 'B'));
+              }
+              sparks.push({ x: mx, y: my, life: 1 });
+              events.push(t);
+              break;
+            }
+          }
+        }
+      }
+      ps = ps.filter(function (p) { return !p.dead; }).concat(born);
+    }
+    function step(dt) {
+      if (playing) {
+        t += dt;
+        acc += dt;
+        if (acc >= 0.25) {
+          acc = 0;
+          recA.push([t, nA()]);
+          recR.push([t, rateNow(events)]);
+          graph();
+        }
+        if (t >= TMAX) { playing = false; $('col-play').textContent = '✓ 완료'; }
+      }
+      // substeps keep fast particles from tunnelling
+      physics(dt / 2); physics(dt / 2);
+      sparks.forEach(function (s) { s.life -= dt * 1.8; });
+      sparks = sparks.filter(function (s) { return s.life > 0; });
+      hits = hits.filter(function (x) { return x > t - 4; });
+      draw(); stats();
+    }
+    function draw() {
+      ctx.fillStyle = '#FBFDFF'; ctx.fillRect(0, 0, W, H);
+      sparks.forEach(function (s) {
+        ctx.fillStyle = 'rgba(255,212,92,' + s.life * 0.55 + ')';
+        ctx.beginPath(); ctx.arc(s.x, s.y, 14 + (1 - s.life) * 34, 0, Math.PI * 2); ctx.fill();
+      });
+      ps.forEach(function (p) {
+        if (p.k === 'A') ball(ctx, p.x, p.y, RA, '#1E4FB8', '#86A8EE');
+        else ball(ctx, p.x, p.y, RB, '#C6362C', '#F59A92');
+      });
+    }
+    var L = loop(step);
+    $('col-play').addEventListener('click', function () {
+      if (t >= TMAX) reset();
+      playing = !playing;
+      this.textContent = playing ? '⏸ 멈춤' : '▶ 계속';
+    });
+    $('col-reset').addEventListener('click', reset);
+    $('col-n').addEventListener('input', function () { n0 = +this.value; $('col-n-o').textContent = n0; reset(); });
+    reset();
+    on('deep', { enter: L.start, leave: function () { L.stop(); if (playing) { playing = false; $('col-play').textContent = '▶ 계속'; } },
+      print: function () { reset(); playing = true; for (var i = 0; i < 600; i++) step(1 / 40); playing = false; graph(); draw(); } });
+  })();
+
+  /* ================= 13. random problem generator ================= */
+  (function () {
+    var RX = [
+      { n: '암모니아 생성', r: [[1, 'N2'], [3, 'H2']], p: [[2, 'NH3']] },
+      { n: '물 생성', r: [[2, 'H2'], [1, 'O2']], p: [[2, 'H2O']] },
+      { n: '프로페인 연소', r: [[1, 'C3H8'], [5, 'O2']], p: [[3, 'CO2'], [4, 'H2O']] },
+      { n: '메테인 연소', r: [[1, 'CH4'], [2, 'O2']], p: [[1, 'CO2'], [2, 'H2O']] },
+      { n: '삼산화 황 생성', r: [[2, 'SO2'], [1, 'O2']], p: [[2, 'SO3']] },
+      { n: '오산화 이질소 분해', r: [[2, 'N2O5']], p: [[4, 'NO2'], [1, 'O2']] },
+      { n: '과산화 수소 분해', r: [[2, 'H2O2']], p: [[2, 'H2O'], [1, 'O2']] },
+      { n: '사산화 이질소 분해', r: [[1, 'N2O4']], p: [[2, 'NO2']] },
+      { n: '아이오딘화 수소 생성', r: [[1, 'H2'], [1, 'I2']], p: [[2, 'HI']] }
+    ];
+    var pick = function (a) { return a[Math.floor(Math.random() * a.length)]; };
+    var count = 0, cur = null;
+    function side(list) { return list.map(function (s) { return (s[0] > 1 ? s[0] : '') + chem(s[1]); }).join(' + '); }
+    function gen() {
+      var rx, all, s, v, dt, d;
+      do {
+        rx = pick(RX);
+        all = rx.r.map(function (x) { return { c: x[0], f: x[1], sg: -1 }; }).concat(rx.p.map(function (x) { return { c: x[0], f: x[1], sg: 1 }; }));
+        s = pick(all); v = pick([0.01, 0.02, 0.05, 0.1, 0.2]); dt = pick([5, 10, 20, 50]);
+        d = s.c * v * dt;
+      } while (d > 12 || d < 0.1 || (cur && cur.rx === rx));
+      cur = { rx: rx, all: all, s: s, v: v, dt: dt, d: d };
+      count++;
+      $('qz-name').textContent = rx.n + ' 반응';
+      $('qz-cnt').textContent = '문제 #' + count;
+      $('qz-eq').innerHTML = side(rx.r) + ' → ' + side(rx.p);
+      $('qz-q').innerHTML = '<b>' + dt + '초</b> 동안 <b>' + chem(s.f) + '</b>의 농도가 <b>' + fmt(d, 3) + ' M ' + (s.sg < 0 ? '감소' : '증가') + '</b>했습니다.<br>① 반응 속도 <i class="m">v</i>를 구하고 ② 나머지 물질의 생성·소모 속도를 구하시오.';
+      $('qz-ans').classList.remove('on');
+      $('qz-show').textContent = '정답 보기';
+    }
+    function answer() {
+      var c = cur, own = c.s.sg * c.d / c.dt;
+      var h = '<p class="ln">' + chem(c.s.f) + '의 ' + (c.s.sg < 0 ? '소모' : '생성') + ' 속도 = ' + signed(c.s.sg * c.d, 3) + ' M ÷ ' + c.dt + ' s = <b>' + signed(own, 4) + ' M/s</b></p>';
+      h += '<p class="ln">반응 속도 <i class="m">v</i> = ' + fmt(Math.abs(own), 4) + ' ÷ ' + c.s.c + ' = <b style="color:var(--green)">' + fmt(c.v, 4) + ' M/s</b></p><div class="chips">';
+      h += '<span class="v"><i class="m">v</i> = ' + fmt(c.v, 4) + ' M/s</span>';
+      c.all.forEach(function (x) {
+        h += '<span class="' + (x.sg < 0 ? 'cons' : 'prod') + '">' + chem(x.f) + ' ' + signed(x.sg * x.c * c.v, 4) + ' M/s</span>';
+      });
+      $('qz-ans').innerHTML = h + '</div>';
+    }
+    $('qz-new').addEventListener('click', gen);
+    $('qz-show').addEventListener('click', function () {
+      var a = $('qz-ans'), showing = a.classList.toggle('on');
+      if (showing) answer();
+      this.textContent = showing ? '정답 숨기기' : '정답 보기';
+    });
+    gen();
+    on('quiz', { print: function () { answer(); $('qz-ans').classList.add('on'); } });
+  })();
+
+  /* ================= viewer ================= */
+  var stage = $('stage');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('#deck > section'));
+
+  // data-step="n [effect]": click-by-click reveals
+  var builds = slides.map(function (s) {
+    var steps = {};
+    s.querySelectorAll('[data-step]').forEach(function (el) {
+      var parts = el.getAttribute('data-step').trim().split(/\s+/);
+      el.classList.add('bi');
+      if (parts[1] && !(el instanceof SVGElement)) el.classList.add(parts[1]);
+      (steps[+parts[0]] = steps[+parts[0]] || []).push(el);
+    });
+    return Object.keys(steps).map(Number).sort(function (a, b) { return a - b; }).map(function (k) { return steps[k]; });
+  });
+
+  var cur = -1, step = 0;
+  var counter = $('counter'), notes = $('notes'), progress = $('progress');
+
+  // pen / annotation layer
+  var ink = $('ink'), ictx = ink.getContext('2d'), strokes = {}, pen = { color: '#D9443A' }, drawing = null;
+  function paint(s) {
+    if (s.pts.length < 1) return;
+    ictx.save();
+    ictx.lineCap = 'round'; ictx.lineJoin = 'round';
+    ictx.strokeStyle = s.c === 'hl' ? 'rgba(255,212,92,.45)' : s.c;
+    ictx.lineWidth = s.c === 'hl' ? 30 : 6;
+    ictx.beginPath(); ictx.moveTo(s.pts[0][0], s.pts[0][1]);
+    s.pts.forEach(function (p) { ictx.lineTo(p[0], p[1]); });
+    if (s.pts.length === 1) ictx.lineTo(s.pts[0][0] + 0.1, s.pts[0][1]);
+    ictx.stroke();
+    ictx.restore();
+  }
+  function redrawInk() { ictx.clearRect(0, 0, 1920, 1080); (strokes[cur] || []).forEach(paint); }
+  function inkPt(e) {
+    var r = stage.getBoundingClientRect(), k = r.width / 1920;
+    return [(e.clientX - r.left) / k, (e.clientY - r.top) / k];
+  }
+  ink.addEventListener('pointerdown', function (e) {
+    drawing = { c: pen.color, pts: [inkPt(e)] };
+    (strokes[cur] = strokes[cur] || []).push(drawing);
+    ink.setPointerCapture(e.pointerId);
+    redrawInk();
+  });
+  ink.addEventListener('pointermove', function (e) { if (drawing) { drawing.pts.push(inkPt(e)); redrawInk(); } });
+  ink.addEventListener('pointerup', function () { drawing = null; });
+  function togglePen(onOff) { document.body.classList.toggle('pen', onOff === undefined ? !document.body.classList.contains('pen') : onOff); }
+  function clearInk() { strokes[cur] = []; redrawInk(); }
+  document.querySelectorAll('#pen-bar .sw').forEach(function (b) {
+    b.addEventListener('click', function (e) {
+      e.stopPropagation();
+      pen.color = b.getAttribute('data-color');
+      document.querySelectorAll('#pen-bar .sw').forEach(function (x) { x.classList.toggle('on', x === b); });
+    });
+  });
+  $('pen-clear').addEventListener('click', function (e) { e.stopPropagation(); clearInk(); });
+  $('pen-off').addEventListener('click', function (e) { e.stopPropagation(); togglePen(false); });
+
+  function show(i, built) {
+    var prev = cur;
+    cur = Math.max(0, Math.min(slides.length - 1, i));
+    if (prev !== cur && prev >= 0) { var hp = hooks[slides[prev].id]; if (hp && hp.leave) hp.leave(); }
+    step = built ? builds[cur].length : 0;
+    slides.forEach(function (s, j) { s.classList.toggle('off', j !== cur); });
+    builds[cur].forEach(function (group, k) {
+      group.forEach(function (el) { el.classList.toggle('hid', k >= step); });
+    });
+    if (prev !== cur) { var hn = hooks[slides[cur].id]; if (hn && hn.enter) hn.enter(); }
+    var aside = slides[cur].querySelector('aside');
+    notes.textContent = aside ? aside.textContent : '(노트 없음)';
+    counter.textContent = (cur + 1) + ' / ' + slides.length;
+    progress.style.width = ((cur + 1) / slides.length * 100) + '%';
+    history.replaceState(null, '', '#slide-' + (cur + 1));
+    redrawInk();
+  }
+  function next() {
+    if (step < builds[cur].length) {
+      builds[cur][step].forEach(function (el) { el.classList.remove('hid'); });
+      step++;
+    } else if (cur < slides.length - 1) {
+      show(cur + 1, false);
+    }
+  }
+  function prev() { if (cur > 0) show(cur - 1, true); }
+
+  function fit() {
+    var k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    stage.style.transform = 'scale(' + k + ') translate(-50%, -50%)';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  var INTERACTIVE = 'button, input, label, select, a, .ui, #pen-bar, #notes';
+  document.addEventListener('keydown', function (e) {
+    if (e.target.matches && e.target.matches('input[type=range]') && /Arrow/.test(e.key)) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].indexOf(e.key) >= 0) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].indexOf(e.key) >= 0) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') show(0, false);
+    else if (e.key === 'End') show(slides.length - 1, true);
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
+    }
+    else if (e.key === 'n' || e.key === 'N') notes.classList.toggle('on');
+    else if (e.key === 'p' || e.key === 'P') togglePen();
+    else if (e.key === 'c' || e.key === 'C') clearInk();
+    else if (e.key === 'Escape') togglePen(false);
+  });
+  document.addEventListener('click', function (e) {
+    if (document.body.classList.contains('pen') || e.target.closest(INTERACTIVE)) return;
+    next();
+  });
+  document.addEventListener('contextmenu', function (e) { e.preventDefault(); prev(); });
+  // give keyboard focus back to the deck after using a control
+  document.addEventListener('pointerup', function () {
+    setTimeout(function () {
+      var a = document.activeElement;
+      if (a && a.matches && a.matches('button, input')) a.blur();
+    }, 0);
+  });
+
+  // ?all: every build shown · ?export: same, without on-screen help · ?print: all slides stacked for PDF
+  var q = location.search.slice(1);
+  function flag(name) { return new RegExp('(^|&)' + name + '(&|=|$)').test(q); }
+  if (PRINT) {
+    document.body.classList.add('print', 'export');
+    slides.forEach(function (s) { s.classList.remove('off'); });
+    builds.forEach(function (groups) { groups.forEach(function (g) { g.forEach(function (el) { el.classList.remove('hid'); }); }); });
+    Object.keys(hooks).forEach(function (id) { if (hooks[id].print) hooks[id].print(); });
+    return;
+  }
+  if (flag('export')) document.body.classList.add('export');
+  var m = /^#slide-(\d+)$/.exec(location.hash);
+  show(m ? +m[1] - 1 : 0, flag('all') || flag('export'));
+})();
+</script>
+</body>
+</html>
