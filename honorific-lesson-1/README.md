@@ -6,8 +6,8 @@
 ## 파일
 
 - `index.html` — 클릭하면 내용이 하나씩 나타나는 발표용 웹 슬라이드
-- `honorific-lesson-1.pdf` — 전체 34장 PDF (모든 내용이 펼쳐진 상태)
-- `images/slide-01.png` ~ `slide-34.png` — 슬라이드별 이미지 (1920×1080)
+- `honorific-lesson-1.pdf` — 전체 36장 PDF (모든 내용이 펼쳐진 상태)
+- `images/slide-01.png` ~ `slide-36.png` — 슬라이드별 이미지 (1920×1080)
 
 ## 보는 방법
 
@@ -24,3 +24,8 @@
 - `index.html?print`로 열고 인쇄하면 한 장에 한 슬라이드씩 PDF로 저장됩니다.
 - `index.html#slide-5`처럼 주소 끝에 붙이면 5번 슬라이드부터 시작합니다.
 - `index.html?all`로 열면 모든 내용이 처음부터 다 펼쳐진 상태로 보입니다.
+
+## 수업 중 링크
+
+- 24번 슬라이드의 단어 버튼을 누르면 표준국어대사전 검색 결과가 새 탭으로 열립니다.
+- 30번 슬라이드의 영상 썸네일을 누르면 슬라이드 안에서 바로 재생됩니다. 파일을 직접 연 경우(`file://`) YouTube가 재생을 막을 수 있으니, 그럴 땐 공개 주소(https://zet18034.github.io/zet18034/honorific-lesson-1/)로 열거나 "YouTube에서 열기" 버튼을 쓰세요.

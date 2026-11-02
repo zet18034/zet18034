@@ -27,6 +27,17 @@
   #deck th, #deck td { padding: 0.35em 0.6em; text-align: left; border-bottom: 1px solid rgba(46,42,59,0.12); }
   #deck aside { display: none; }
   #deck a { color: inherit; }
+  #deck a.dict { font-size: 26px; font-weight: 700; color: #6A58A6; background: #FFFDF9; border: 2px solid #6A58A6; border-radius: 999px; padding: 6px 22px; text-decoration: none; transition: background .2s, color .2s; }
+  #deck a.dict.no { color: #B04568; border-color: #B04568; border-style: dashed; }
+  #deck a.dict:hover { background: #6A58A6; color: #FFFDF9; }
+  #deck a.dict.no:hover { background: #B04568; }
+  .yt { position: absolute; cursor: pointer; border: 0; padding: 0; border-radius: 28px; overflow: hidden; background: #000; box-shadow: 0 24px 50px rgba(46,42,59,.28); }
+  .yt img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease, filter .4s ease; }
+  .yt:hover img { transform: scale(1.03); filter: brightness(.85); }
+  .yt .play { position: absolute; left: 50%; top: 50%; width: 150px; height: 106px; margin: -53px 0 0 -75px; border-radius: 30px; background: #FF0033; display: grid; place-items: center; box-shadow: 0 10px 30px rgba(0,0,0,.35); transition: transform .2s; }
+  .yt:hover .play { transform: scale(1.08); }
+  .yt .play::after { content: ''; border-left: 44px solid #fff; border-top: 26px solid transparent; border-bottom: 26px solid transparent; margin-left: 10px; }
+  .yt iframe { width: 100%; height: 100%; border: 0; display: block; }
   .bi { transition: opacity .45s ease, translate .45s ease, scale .45s ease; }
   .bi.hid { opacity: 0; }
   .bi.hid.rise { translate: 0 40px; }
@@ -144,40 +155,40 @@
 <p style="font-size:24px;font-weight:700;color:#6A58A6">이렇게 고치면</p>
 <p style="font-size:24px;font-weight:700;color:#5E5870">왜?</p>
 </div>
-<div data-build-in="rise" style="position:absolute;left:128px;top:350px;width:1100px;height:88px;display:grid;grid-template-columns:300px 330px 1fr;align-items:center;gap:20px;padding:0 24px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:18px">
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:350px;width:1100px;height:88px;display:grid;grid-template-columns:300px 330px 1fr;align-items:center;gap:20px;padding:0 24px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:18px">
 <p style="font-size:26px;color:#B04568">잘 있으셨어요?</p>
-<p style="font-size:28px;font-weight:700;color:#6A58A6">잘 계셨어요?</p>
-<p style="font-size:26px">‘있다’의 높임은 ‘계시다’</p>
+<p data-build-in="fade 2" style="font-size:28px;font-weight:700;color:#6A58A6">잘 계셨어요?</p>
+<p data-build-in="fade 3" style="font-size:26px">‘있다’의 높임은 ‘계시다’</p>
 </div>
-<div data-build-in="rise" style="position:absolute;left:128px;top:450px;width:1100px;height:88px;display:grid;grid-template-columns:300px 330px 1fr;align-items:center;gap:20px;padding:0 24px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:18px">
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:450px;width:1100px;height:88px;display:grid;grid-template-columns:300px 330px 1fr;align-items:center;gap:20px;padding:0 24px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:18px">
 <p style="font-size:26px;color:#B04568">보내 준 김치</p>
-<p style="font-size:28px;font-weight:700;color:#6A58A6">보내 주신 김치</p>
-<p style="font-size:26px">할머니를 높이는 ‘-시-’가 빠짐</p>
+<p data-build-in="fade 2" style="font-size:28px;font-weight:700;color:#6A58A6">보내 주신 김치</p>
+<p data-build-in="fade 3" style="font-size:26px">할머니를 높이는 ‘-시-’가 빠짐</p>
 </div>
-<div data-build-in="rise" style="position:absolute;left:128px;top:550px;width:1100px;height:88px;display:grid;grid-template-columns:300px 330px 1fr;align-items:center;gap:20px;padding:0 24px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:18px">
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:550px;width:1100px;height:88px;display:grid;grid-template-columns:300px 330px 1fr;align-items:center;gap:20px;padding:0 24px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:18px">
 <p style="font-size:26px;color:#B04568">할아버지도 밥 잘 먹으시는지</p>
-<p style="font-size:28px;font-weight:700;color:#6A58A6">진지 잘 잡수시는지</p>
-<p style="font-size:26px">‘밥’→‘진지’, ‘먹다’→‘잡수시다’</p>
+<p data-build-in="fade 2" style="font-size:28px;font-weight:700;color:#6A58A6">진지 잘 잡수시는지</p>
+<p data-build-in="fade 3" style="font-size:26px">‘밥’→‘진지’, ‘먹다’→‘잡수시다’</p>
 </div>
-<div data-build-in="rise" style="position:absolute;left:128px;top:650px;width:1100px;height:88px;display:grid;grid-template-columns:300px 330px 1fr;align-items:center;gap:20px;padding:0 24px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:18px">
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:650px;width:1100px;height:88px;display:grid;grid-template-columns:300px 330px 1fr;align-items:center;gap:20px;padding:0 24px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:18px">
 <p style="font-size:26px;color:#B04568">할머니를 데리고</p>
-<p style="font-size:28px;font-weight:700;color:#6A58A6">할머니를 모시고</p>
-<p style="font-size:26px">‘데리다’의 높임은 ‘모시다’</p>
+<p data-build-in="fade 2" style="font-size:28px;font-weight:700;color:#6A58A6">할머니를 모시고</p>
+<p data-build-in="fade 3" style="font-size:26px">‘데리다’의 높임은 ‘모시다’</p>
 </div>
-<div data-build-in="rise" style="position:absolute;left:128px;top:750px;width:1100px;height:88px;display:grid;grid-template-columns:300px 330px 1fr;align-items:center;gap:20px;padding:0 24px;background:#FFFDF9;border:2px dashed #C9A85C;border-radius:18px">
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:750px;width:1100px;height:88px;display:grid;grid-template-columns:300px 330px 1fr;align-items:center;gap:20px;padding:0 24px;background:#FFFDF9;border:2px dashed #C9A85C;border-radius:18px">
 <p style="font-size:26px;color:#B04568">할머니 집 / 보고 싶어요</p>
-<p style="font-size:28px;font-weight:700;color:#6A58A6">할머니 댁 / 뵙고 싶어요</p>
-<p style="font-size:26px">친근한 사이라 이해해 주실 만해요</p>
+<p data-build-in="fade 2" style="font-size:28px;font-weight:700;color:#6A58A6">할머니 댁 / 뵙고 싶어요</p>
+<p data-build-in="fade 3" style="font-size:26px">친근한 사이라 이해해 주실 만해요</p>
 </div>
-<div data-build-in="pop" style="position:absolute;left:1268px;top:350px;width:524px;display:flex;flex-direction:column;gap:14px;background:#F6EBCB;border-radius:24px;padding:36px;transform:rotate(1deg)">
+<div data-build-in="pop 4" style="position:absolute;left:1268px;top:350px;width:524px;display:flex;flex-direction:column;gap:14px;background:#F6EBCB;border-radius:24px;padding:36px;transform:rotate(1deg)">
 <h3 style="font-family:'Do Hyeon', sans-serif;font-size:42px;font-weight:400;color:#2E2A3B">함정! “마음이 가실지”</h3>
 <p style="font-size:26px;line-height:1.55">맞는 말이에요! ‘가시다’는 <b>어떤 상태가 없어지거나 달라지다</b>라는 뜻의 단어예요.</p>
 </div>
-<div data-build-in="pop" style="position:absolute;left:1268px;top:660px;width:524px;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border:3px dashed #6A58A6;border-radius:24px;padding:36px">
+<div data-build-in="pop 5" style="position:absolute;left:1268px;top:660px;width:524px;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border:3px dashed #6A58A6;border-radius:24px;padding:36px">
 <h3 style="font-family:'Do Hyeon', sans-serif;font-size:42px;font-weight:400;color:#6A58A6">“건강하세요”는?</h3>
 <p style="font-size:26px;line-height:1.55;color:#5E5870">‘건강하다’는 형용사! 문장 종결 표현에서 다시 만나요.</p>
 </div>
-<aside>(클릭할 때마다 고친 표현이 한 줄씩) 그렇죠. 잘 있으셨어요, 보내 준, 할아버지 밥 잘 먹으시는지, 할머니 데리고 등이 잘못된 표현이에요. 할머니 집이랑 할머니 보고 싶다도 높임 표현으로 할 수 있죠? 할머니 댁이랑 뵙다로 바꾸는 것이 높임 표현에 맞는데, 편지로 보면 지수가 할머니랑 친근한 사이니까 이 정도는 이해해 주실 것 같네요. 여기서 ‘마음이 가시다’가 이상하다고 생각한 친구들이 있을 텐데, ‘가시다’는 사전을 찾아보면 있는 말이에요. 어떤 상태가 없어지거나 달라지다. 보고 싶은 마음이 없어지는 거니까 맞는 말입니다. (‘잡수시는지’ 대신 ‘드시는지’도 가능. ‘모시다’는 객체 높임이라 다음 시간에 자세히.)</aside>
+<aside>(클릭 ① 편지 속 표현 전체 → ② 고친 표현 → ③ 이유 → ④⑤ 함정 카드) 그렇죠. 잘 있으셨어요, 보내 준, 할아버지 밥 잘 먹으시는지, 할머니 데리고 등이 잘못된 표현이에요. 할머니 집이랑 할머니 보고 싶다도 높임 표현으로 할 수 있죠? 할머니 댁이랑 뵙다로 바꾸는 것이 높임 표현에 맞는데, 편지로 보면 지수가 할머니랑 친근한 사이니까 이 정도는 이해해 주실 것 같네요. 여기서 ‘마음이 가시다’가 이상하다고 생각한 친구들이 있을 텐데, ‘가시다’는 사전을 찾아보면 있는 말이에요. 어떤 상태가 없어지거나 달라지다. 보고 싶은 마음이 없어지는 거니까 맞는 말입니다. (‘잡수시는지’ 대신 ‘드시는지’도 가능. ‘모시다’는 객체 높임이라 다음 시간에 자세히.)</aside>
 </section>
 
 <section id="goal" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
@@ -656,31 +667,38 @@
 <svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
 <p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">② 주격 조사 ‘께서’</p>
 <h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">공손 지수를 재 보자</h2>
-<div data-build-in="rise 1" style="position:absolute;left:128px;top:320px;width:1664px;height:110px;display:flex;flex-direction:row;align-items:center;gap:40px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:0 44px">
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:300px;width:1664px;height:100px;display:flex;flex-direction:row;align-items:center;gap:40px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:0 44px">
 <p style="width:760px;font-size:42px;font-weight:500">아버지<b>가</b> 신문을 읽<b>는</b>다.</p>
 <div style="width:360px;height:32px;display:flex;flex-direction:row;background:#E8E2D6;border-radius:999px;overflow:hidden">
 <div style="width:40px;background:#B04568"></div>
 </div>
 <p style="flex:1;font-size:30px;font-weight:700;color:#B04568">버릇없어 보여요</p>
 </div>
-<div data-build-in="rise 2" style="position:absolute;left:128px;top:450px;width:1664px;height:110px;display:flex;flex-direction:row;align-items:center;gap:40px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:0 44px">
+<div data-build-in="rise 2" style="position:absolute;left:128px;top:415px;width:1664px;height:100px;display:flex;flex-direction:row;align-items:center;gap:40px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:0 44px">
 <p style="width:760px;font-size:42px;font-weight:500">아버지<span style="color:#6A58A6"><b>께서</b></span> 신문을 읽<b>는</b>다.</p>
 <div style="width:360px;height:32px;display:flex;flex-direction:row;background:#E8E2D6;border-radius:999px;overflow:hidden">
 <div style="width:180px;background:#C9A85C"></div>
 </div>
 <p style="flex:1;font-size:30px;font-weight:700;color:#7A5F1E">어딘가 어색해요</p>
 </div>
-<div data-build-in="rise 3" style="position:absolute;left:128px;top:580px;width:1664px;height:110px;display:flex;flex-direction:row;align-items:center;gap:40px;background:#FFFDF9;border:3px solid #6A58A6;border-radius:24px;padding:0 44px">
+<div data-build-in="rise 3" style="position:absolute;left:128px;top:530px;width:1664px;height:100px;display:flex;flex-direction:row;align-items:center;gap:40px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:0 44px">
+<p style="width:760px;font-size:42px;font-weight:500">아버지<b>가</b> 신문을 읽<span style="color:#6A58A6"><b>으신</b></span>다.</p>
+<div style="width:360px;height:32px;display:flex;flex-direction:row;background:#E8E2D6;border-radius:999px;overflow:hidden">
+<div style="width:270px;background:#8A7BC0"></div>
+</div>
+<p style="flex:1;font-size:30px;font-weight:700;color:#6A58A6">자연스러워요 (‘-시-’로 높임)</p>
+</div>
+<div data-build-in="rise 4" style="position:absolute;left:128px;top:645px;width:1664px;height:100px;display:flex;flex-direction:row;align-items:center;gap:40px;background:#FFFDF9;border:3px solid #6A58A6;border-radius:24px;padding:0 44px">
 <p style="width:760px;font-size:42px;font-weight:500">아버지<span style="color:#6A58A6"><b>께서</b></span> 신문을 읽<span style="color:#6A58A6"><b>으신</b></span>다.</p>
 <div style="width:360px;height:32px;display:flex;flex-direction:row;background:#E8E2D6;border-radius:999px;overflow:hidden">
 <div style="width:360px;background:#6A58A6"></div>
 </div>
-<p style="flex:1;font-size:30px;font-weight:700;color:#6A58A6">자연스러워요 ○</p>
+<p style="flex:1;font-size:30px;font-weight:700;color:#6A58A6">가장 공손해요 ○</p>
 </div>
-<div data-build-in="fade 4" style="position:absolute;left:128px;top:740px;width:1664px;background:#FBE7A1;border-radius:22px;padding:30px 44px">
+<div data-build-in="fade 5" style="position:absolute;left:128px;top:775px;width:1664px;background:#FBE7A1;border-radius:22px;padding:30px 44px">
 <p style="font-size:34px;line-height:1.5">주어가 가리키는 대상을 높이니까, 주어 자리에 ‘<b>께서</b>’가 붙어요.</p>
 </div>
-<aside>그런데 여기 보면 주체 높임의 다른 방법도 들어가 있는 걸 볼 수 있는데, 다들 알고 있죠? 주격 조사 ‘께서’도 주체 높임으로 쓰이고 있습니다. 주어의 대상을 높이는 거니까 주어에 ‘께서’ 붙는 건 쉽게 생각할 수 있을 것 같습니다. ‘아버지께서 신문을 읽으신다.’ 이거 봅시다. 주격 조사 ‘께서’를 ‘아버지가’로 바꾸면 좀 버릇없어 보이겠죠? 마찬가지로 ‘아버지께서 신문을 읽는다.’ 이것도 좀 아닌 것 같아요.</aside>
+<aside>그런데 여기 보면 주체 높임의 다른 방법도 들어가 있는 걸 볼 수 있는데, 다들 알고 있죠? 주격 조사 ‘께서’도 주체 높임으로 쓰이고 있습니다. 주어의 대상을 높이는 거니까 주어에 ‘께서’ 붙는 건 쉽게 생각할 수 있을 것 같습니다. ‘아버지께서 신문을 읽으신다.’ 이거 봅시다. 주격 조사 ‘께서’를 ‘아버지가’로 바꾸면 좀 버릇없어 보이겠죠? 마찬가지로 ‘아버지께서 신문을 읽는다.’ 이것도 좀 아닌 것 같아요. 반대로 ‘아버지가 신문을 읽으신다.’는 어때요? ‘께서’ 없이 ‘-시-’만 있어도 자연스럽죠? 일상에서는 이렇게 많이 말해요. 여기에 ‘께서’까지 쓰면 가장 공손한 표현이 됩니다.</aside>
 </section>
 
 <section id="special-quiz" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
@@ -742,7 +760,16 @@
 <p style="font-size:30px;font-weight:700;color:#6A58A6;white-space:nowrap">예외 하나</p>
 <p style="font-size:30px;line-height:1.5">드시다 ← ‘<b>들다</b>’라는 동사가 있어요. “자네도 새참 좀 <b>들게</b>.” (옛날 말투)</p>
 </div>
-<aside>보면 다 선어말 어미 ‘-(으)시-’가 들어가 있는 것처럼 보이는데, 그러면 형태소 분석할 때 선어말 어미 ‘-시-’ 들어간다고 봐야 할까요? 아닙니다. 얘들은 원래 높임으로만 써서 단어 자체가 이렇게 된 것으로 봐요. ‘계시다’에서 ‘-시-’를 떼면 ‘계다’가 남는데, ‘계다’라는 말 있어요? 없죠. ‘주무다’도 없죠. 그래서 통째로 한 단어로 보는 거예요. 사전에서 한번 찾아볼까요? 유일하게 ‘드시다’에서 ‘들다’만 동사가 나오는데, ‘자네도 새참 좀 들게.’ 이런 옛날 말에서 볼 수 있습니다. 예외라고 보면 돼요.</aside>
+<div style="position:absolute;left:128px;top:932px;width:1664px;display:flex;flex-direction:row;align-items:center;gap:14px">
+<p style="font-size:26px;font-weight:700;color:#2E2A3B;white-space:nowrap;margin-right:6px">📖 표준국어대사전에서 직접 확인</p>
+<a class="dict" href="https://stdict.korean.go.kr/search/searchResult.do?pageSize=10&amp;searchKeyword=계시다" target="_blank" rel="noopener">계시다</a>
+<a class="dict no" href="https://stdict.korean.go.kr/search/searchResult.do?pageSize=10&amp;searchKeyword=계다" target="_blank" rel="noopener">계다?</a>
+<a class="dict" href="https://stdict.korean.go.kr/search/searchResult.do?pageSize=10&amp;searchKeyword=주무시다" target="_blank" rel="noopener">주무시다</a>
+<a class="dict no" href="https://stdict.korean.go.kr/search/searchResult.do?pageSize=10&amp;searchKeyword=주무다" target="_blank" rel="noopener">주무다?</a>
+<a class="dict" href="https://stdict.korean.go.kr/search/searchResult.do?pageSize=10&amp;searchKeyword=드시다" target="_blank" rel="noopener">드시다</a>
+<a class="dict" href="https://stdict.korean.go.kr/search/searchResult.do?pageSize=10&amp;searchKeyword=들다" target="_blank" rel="noopener">들다</a>
+</div>
+<aside>보면 다 선어말 어미 ‘-(으)시-’가 들어가 있는 것처럼 보이는데, 그러면 형태소 분석할 때 선어말 어미 ‘-시-’ 들어간다고 봐야 할까요? 아닙니다. 얘들은 원래 높임으로만 써서 단어 자체가 이렇게 된 것으로 봐요. ‘계시다’에서 ‘-시-’를 떼면 ‘계다’가 남는데, ‘계다’라는 말 있어요? 없죠. ‘주무다’도 없죠. 그래서 통째로 한 단어로 보는 거예요. 사전에서 한번 찾아볼까요? (아래 단어 버튼을 누르면 표준국어대사전 검색 결과가 새 탭으로 열려요. ‘계다’, ‘주무다’는 결과가 없는 것을 함께 확인) 유일하게 ‘드시다’에서 ‘들다’만 동사가 나오는데, ‘자네도 새참 좀 들게.’ 이런 옛날 말에서 볼 수 있습니다. 예외라고 보면 돼요.</aside>
 </section>
 
 <section id="direct-indirect" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
@@ -880,8 +907,22 @@
 <div data-build-in="pop 6" style="position:absolute;left:128px;top:740px;width:1664px;background:#2E2A3B;border-radius:24px;padding:30px 44px">
 <p style="font-size:38px;font-weight:700;color:#F7F3EC">더 높일 걸 찾다가 잘못 번진 것 → <span style="color:#F6D98A">사물 높임</span></p>
 </div>
-<p style="position:absolute;left:128px;top:880px;width:1664px;font-size:24px;color:#5E5870">관련 영상: <a href="https://www.youtube.com/watch?v=J-PrL3eM33U">youtube.com/watch?v=J-PrL3eM33U</a> (시간이 넉넉하면 시청)</p>
-<aside>[4분] 그런데 이런 현상이 왜 생겼을까요? 민찬이, 어떻게 생각해요? 그렇죠. 손님을 너무 높이려다가 생기는 문제라고 볼 수 있죠. (시간이 넉넉하면 영상 시청, 아닐 시 구두 설명) 이걸 높임 인플레이션으로 설명하는 경우가 있던데 꽤 생각해 볼 만한 것 같아요. 여러분 선생님한테 ‘고맙습니다’라고 해요, ‘감사합니다’라고 해요? 대부분 ‘감사합니다’ 하죠? 근데 ‘고맙습니다’도 문법적으로는 완벽한 높임말이에요. 그런데 ‘고맙습니다’ 하면 왠지 ‘고마워’랑 비슷하게 들려서 좀 덜 예의 바른 느낌이 들죠? ‘미안합니다’랑 ‘죄송합니다’도 마찬가지예요. 이게 바로 기존 높임말의 존대력이 떨어진 거예요. 사람들이 공손해 보이려고 최대한 높이는 표현을 쓰려고 하고, 그러면 그게 기본 표현이 돼 버리고, 그러면 더 센 걸 찾고, 계속 이렇게 하는 게 인플레이션이라고 볼 수 있는 거죠. 그래서 더 높은 걸 찾다가 잘못되어 버린 게 이 사물 높임이라고 볼 수 있겠어요.</aside>
+<aside>[4분] 그런데 이런 현상이 왜 생겼을까요? 민찬이, 어떻게 생각해요? 그렇죠. 손님을 너무 높이려다가 생기는 문제라고 볼 수 있죠. (시간이 넉넉하면 다음 장의 영상 시청, 아닐 시 구두 설명 후 넘기기) 이걸 높임 인플레이션으로 설명하는 경우가 있던데 꽤 생각해 볼 만한 것 같아요. 여러분 선생님한테 ‘고맙습니다’라고 해요, ‘감사합니다’라고 해요? 대부분 ‘감사합니다’ 하죠? 근데 ‘고맙습니다’도 문법적으로는 완벽한 높임말이에요. 그런데 ‘고맙습니다’ 하면 왠지 ‘고마워’랑 비슷하게 들려서 좀 덜 예의 바른 느낌이 들죠? ‘미안합니다’랑 ‘죄송합니다’도 마찬가지예요. 이게 바로 기존 높임말의 존대력이 떨어진 거예요. 사람들이 공손해 보이려고 최대한 높이는 표현을 쓰려고 하고, 그러면 그게 기본 표현이 돼 버리고, 그러면 더 센 걸 찾고, 계속 이렇게 하는 게 인플레이션이라고 볼 수 있는 거죠. 그래서 더 높은 걸 찾다가 잘못되어 버린 게 이 사물 높임이라고 볼 수 있겠어요.</aside>
+</section>
+
+<section id="video" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">2. 높임 표현 · 관련 영상</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">영상으로 더 알아보기</h2>
+<div class="yt" data-yt="J-PrL3eM33U" role="button" aria-label="영상 재생" style="position:absolute;left:128px;top:320px;width:1120px;height:630px"><img src="https://img.youtube.com/vi/J-PrL3eM33U/maxresdefault.jpg" alt="영상 썸네일" onerror="this.onerror=null;this.src='https://img.youtube.com/vi/J-PrL3eM33U/hqdefault.jpg'"><span class="play"></span></div>
+<div style="position:absolute;left:1300px;top:320px;width:492px;height:630px;display:flex;flex-direction:column;gap:22px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:28px;padding:40px">
+<p style="font-size:24px;font-weight:700;color:#B04568">YouTube · 지식해적단</p>
+<p style="font-family:'Do Hyeon', sans-serif;font-size:50px;line-height:1.25">호칭 인플레이션?? 왜 일어나는 걸까</p>
+<p style="font-size:28px;line-height:1.55;color:#5E5870">앞에서 본 ‘높임 인플레이션’이 실제로 어떻게 일어나는지 영상으로 확인해 봐요.</p>
+<p style="font-size:24px;line-height:1.5;color:#5E5870;margin-top:auto">▶ 썸네일을 누르면 이 화면에서 바로 재생돼요.</p>
+<a href="https://www.youtube.com/watch?v=J-PrL3eM33U" target="_blank" rel="noopener" style="align-self:flex-start;font-size:26px;font-weight:700;color:#FFFDF9;background:#2E2A3B;border-radius:999px;padding:12px 30px;text-decoration:none">YouTube에서 열기 ↗</a>
+</div>
+<aside>[영상 · 시간이 넉넉할 때] 썸네일을 누르면 슬라이드 안에서 바로 재생됩니다. 재생이 안 되면 오른쪽의 'YouTube에서 열기'를 누르세요. 다른 슬라이드로 넘어가면 영상은 자동으로 멈춥니다. 시간이 부족하면 이 장은 건너뛰어도 됩니다.</aside>
 </section>
 
 <section id="apjon" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
@@ -949,7 +990,6 @@
 <p style="font-size:30px;line-height:1.5">• 평서문·의문문·명령문·청유문·감탄문은 <b>종결 어미</b>로 구분</p>
 <p style="font-size:30px;line-height:1.5">• 명령문·청유문의 서술어는 <b>동사</b>만 (바람·기원은 예외)</p>
 <p style="font-size:30px;line-height:1.5">• 문장의 <b>형식</b>과 실제 <b>의도(기능)</b>는 다를 수 있음</p>
-<p style="font-size:30px;line-height:1.5">• 판정 의문문 · 설명 의문문 · 수사 의문문</p>
 </div>
 <div data-build-in="rise 2" style="position:absolute;left:980px;top:320px;width:812px;height:580px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #B04568;border-radius:24px;padding:40px;box-shadow:0 10px 24px rgba(46,42,59,0.07)">
 <h3 style="font-family:'Do Hyeon', sans-serif;font-size:52px;font-weight:400;color:#B04568">높임 표현 · 주체 높임</h3>
@@ -959,6 +999,58 @@
 <p style="font-size:30px;line-height:1.5">• 사물 높임은 잘못된 표현, 압존법은 존대를 누르는 높임법</p>
 </div>
 <aside>[정리 · 복습] 자, 오늘 문장 종결 표현이랑 주체 높임법까지 배웠는데, 배운 거 한번 정리해 볼게요.</aside>
+</section>
+
+<section id="mindmap" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">정리 · 마인드맵</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">한눈에 보는 마인드맵</h2>
+<svg aria-label="마인드맵 연결선" width="1920" height="1080" viewBox="0 0 1920 1080" style="position:absolute;left:0px;top:0px;width:1920px;height:1080px;pointer-events:none" fill="none" stroke-width="5" stroke-linecap="round">
+<path data-build-in="fade 1" d="M838 640H788" stroke="#6A58A6"/>
+<path data-build-in="fade 2" d="M568 640C538 640 538 395 508 395" stroke="#6A58A6"/>
+<path data-build-in="fade 2" d="M568 640H508" stroke="#6A58A6"/>
+<path data-build-in="fade 2" d="M568 640C538 640 538 885 508 885" stroke="#6A58A6"/>
+<path data-build-in="fade 3" d="M1082 640H1132" stroke="#B04568"/>
+<path data-build-in="fade 4" d="M1352 640C1382 640 1382 356 1412 356" stroke="#B04568"/>
+<path data-build-in="fade 4" d="M1352 640C1382 640 1382 496 1412 496" stroke="#B04568"/>
+<path data-build-in="fade 4" d="M1352 640C1382 640 1382 636 1412 636" stroke="#B04568"/>
+<path data-build-in="fade 4" d="M1352 640C1382 640 1382 776 1412 776" stroke="#B04568"/>
+<path data-build-in="fade 4" d="M1352 640C1382 640 1382 916 1412 916" stroke="#B04568"/>
+</svg>
+<div style="position:absolute;left:838px;top:560px;width:244px;height:160px;justify-content:center;align-items:center;background:#2E2A3B;border-radius:80px;box-shadow:0 14px 30px rgba(46,42,59,0.25)">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:44px;line-height:1.15;text-align:center;color:#F6D98A">오늘<br>배운 것</p>
+</div>
+<div data-build-in="pop 1" style="position:absolute;left:568px;top:580px;width:220px;height:120px;justify-content:center;align-items:center;background:#6A58A6;border-radius:24px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:40px;line-height:1.15;text-align:center;color:#F7F3EC">문장 종결<br>표현</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:128px;top:320px;width:380px;height:150px;justify-content:center;background:#FFFDF9;border:3px solid #6A58A6;border-radius:22px;padding:0 24px">
+<p style="font-size:25px;line-height:1.45">평서·의문·명령·청유·감탄문<br>→ <b>종결 어미</b>로 구분</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:128px;top:565px;width:380px;height:150px;justify-content:center;background:#FFFDF9;border:3px solid #6A58A6;border-radius:22px;padding:0 24px">
+<p style="font-size:25px;line-height:1.45">명령문·청유문 서술어는 <b>동사</b>만<br><span style="color:#5E5870">(바람·기원은 예외)</span></p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:128px;top:810px;width:380px;height:150px;justify-content:center;background:#FFFDF9;border:3px solid #6A58A6;border-radius:22px;padding:0 24px">
+<p style="font-size:25px;line-height:1.45">문장의 <b>형식</b>과 실제<br><b>의도(기능)</b>는 다를 수 있음</p>
+</div>
+<div data-build-in="pop 3" style="position:absolute;left:1132px;top:580px;width:220px;height:120px;justify-content:center;align-items:center;background:#B04568;border-radius:24px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:40px;line-height:1.15;text-align:center;color:#F7F3EC">높임<br>표현</p>
+</div>
+<div data-build-in="rise 4" style="position:absolute;left:1412px;top:300px;width:380px;height:112px;justify-content:center;background:#FFFDF9;border:3px solid #B04568;border-radius:22px;padding:0 24px">
+<p style="font-size:24px;line-height:1.4"><b>높임법</b>: 높이고 <b>낮추는</b> 정도 구별<br><span style="color:#5E5870">주체 · 객체 · 상대 높임</span></p>
+</div>
+<div data-build-in="rise 4" style="position:absolute;left:1412px;top:440px;width:380px;height:112px;justify-content:center;background:#F8E4EA;border:3px solid #B04568;border-radius:22px;padding:0 24px">
+<p style="font-size:24px;line-height:1.4"><b>주체 높임</b> (오늘!)<br><b style="color:#B04568">-(으)시-</b> · <b style="color:#B04568">께서</b> · <b style="color:#B04568">특수 어휘</b></p>
+</div>
+<div data-build-in="rise 4" style="position:absolute;left:1412px;top:580px;width:380px;height:112px;justify-content:center;background:#FFFDF9;border:3px solid #B04568;border-radius:22px;padding:0 24px">
+<p style="font-size:24px;line-height:1.4"><b>직접</b> 높임 vs <b>간접</b> 높임<br><span style="color:#5E5870">간접 높임엔 특수 어휘 ✕</span></p>
+</div>
+<div data-build-in="rise 4" style="position:absolute;left:1412px;top:720px;width:380px;height:112px;justify-content:center;background:#FFFDF9;border:3px solid #B04568;border-radius:22px;padding:0 24px">
+<p style="font-size:24px;line-height:1.4"><b>사물 높임</b>은 잘못된 표현 ✕<br><span style="color:#5E5870">높임 인플레이션의 결과</span></p>
+</div>
+<div data-build-in="rise 4" style="position:absolute;left:1412px;top:860px;width:380px;height:112px;justify-content:center;background:#FFFDF9;border:3px solid #B04568;border-radius:22px;padding:0 24px">
+<p style="font-size:24px;line-height:1.4"><b>압존법</b><br><span style="color:#5E5870">존대를 ‘누르는’ 높임법</span></p>
+</div>
+<aside>[정리 · 마인드맵] 클릭할 때마다 가지가 하나씩 뻗어 나갑니다. ① 문장 종결 표현 → ② 세부 내용 → ③ 높임 표현 → ④ 세부 내용. 가지를 띄우기 전에 학생들에게 "여기엔 뭐가 들어갈까?" 먼저 물어보면 스스로 떠올리며 정리할 수 있어요.</aside>
 </section>
 
 <section id="worksheet" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
@@ -1091,7 +1183,25 @@
   var counter = document.getElementById('counter');
   var notes = document.getElementById('notes');
 
+  // .yt thumbnails play inline on click; leaving the slide restores the thumbnail (and stops the video)
+  var thumbs = [];
+  document.querySelectorAll('.yt').forEach(function (b) {
+    thumbs.push({ el: b, html: b.innerHTML });
+    b.addEventListener('click', function () {
+      if (b.classList.contains('playing')) return;
+      b.classList.add('playing');
+      b.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + b.getAttribute('data-yt') +
+        '?autoplay=1&rel=0" title="YouTube 영상" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+    });
+  });
+  function resetVideos() {
+    thumbs.forEach(function (t) {
+      if (t.el.classList.contains('playing')) { t.el.classList.remove('playing'); t.el.innerHTML = t.html; }
+    });
+  }
+
   function show(i, built) {
+    if (Math.max(0, Math.min(slides.length - 1, i)) !== cur) resetVideos();
     cur = Math.max(0, Math.min(slides.length - 1, i));
     step = built ? builds[cur].length : 0;
     slides.forEach(function (s, j) { s.classList.toggle('off', j !== cur); });
@@ -1131,7 +1241,7 @@
     else if (e.key === 'n' || e.key === 'N') notes.classList.toggle('on');
   });
   document.addEventListener('click', function (e) {
-    if (e.target.closest('a') || e.target.closest('#notes')) return;
+    if (e.target.closest('a') || e.target.closest('#notes') || e.target.closest('.yt')) return;
     next();
   });
   document.addEventListener('contextmenu', function (e) { e.preventDefault(); prev(); });
