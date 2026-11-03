@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>객체 높임과 상대 높임 (2차시)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@700&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #1E1B27; overflow: hidden; }
+  body { font-family: 'Noto Sans KR', sans-serif; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  #deck > section { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+  #deck > section.off { display: none !important; }
+  #deck > section > :not([style*="position:absolute"]) { position: relative; }
+  #deck { word-break: keep-all; }
+  #deck div { display: flex; flex-direction: column; }
+  #deck h1, #deck h2, #deck h3, #deck p, #deck ul, #deck ol { margin: 0; }
+  #deck h1 { font-size: 96px; font-weight: 600; line-height: 1.1; }
+  #deck h2 { font-size: 64px; font-weight: 600; line-height: 1.15; }
+  #deck h3 { font-size: 44px; font-weight: 600; line-height: 1.2; }
+  #deck p { font-size: 32px; line-height: 1.4; }
+  #deck img { display: block; }
+  #deck table { width: 100%; border-collapse: collapse; }
+  #deck th, #deck td { padding: 0.35em 0.6em; text-align: left; border-bottom: 1px solid rgba(46,42,59,0.12); }
+  #deck aside { display: none; }
+  #deck a { color: inherit; }
+  .bi { transition: opacity .45s ease, translate .45s ease, scale .45s ease; }
+  .bi.hid { opacity: 0; }
+  .bi.hid.rise { translate: 0 40px; }
+  .bi.hid.pop { scale: .8; }
+  #counter { position: fixed; right: 16px; bottom: 12px; font: 14px 'Noto Sans KR', sans-serif; color: rgba(255,255,255,.55); user-select: none; }
+  #notes { position: fixed; left: 16px; right: 16px; bottom: 40px; max-height: 40vh; overflow: auto; padding: 16px 20px; border-radius: 12px; background: rgba(20,18,28,.92); color: #F7F3EC; font: 16px/1.6 'Noto Sans KR', sans-serif; display: none; }
+  #notes.on { display: block; }
+  #help { position: fixed; left: 16px; bottom: 12px; font: 13px 'Noto Sans KR', sans-serif; color: rgba(255,255,255,.4); user-select: none; }
+  body.export #help, body.export #counter, body.export #notes { display: none !important; }
+  body.print { overflow: visible; height: auto; background: none; }
+  body.print #stage { position: static; transform: none !important; width: 1920px; height: auto; }
+  body.print #deck > section { position: relative; break-after: page; page-break-after: always; }
+  body.print .bi { transition: none; }
+  body.print, body.print * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { size: 1920px 1080px; margin: 0; }
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+<section id="cover" data-transition="fade" style="background:#2E2A3B;color:#F7F3EC;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:32px">
+<x-shape kind="ellipse" style="position:absolute;left:1140px;top:150px;width:640px;height:640px;background:#3B3552"></x-shape>
+<x-shape kind="ellipse" style="position:absolute;left:1560px;top:660px;width:220px;height:220px;background:#C9A85C;opacity:0.85"></x-shape>
+<x-shape kind="ellipse" style="position:absolute;left:1150px;top:170px;width:90px;height:90px;background:#B04568;opacity:0.9"></x-shape>
+<p style="position:absolute;left:1270px;top:300px;width:320px;font-family:'Do Hyeon', sans-serif;font-size:60px;text-align:center;color:#2E2A3B;background:#F8E4EA;border-radius:20px;padding:12px 0;transform:rotate(-6deg)">께 · 드리다</p>
+<p style="position:absolute;left:1430px;top:440px;width:300px;font-family:'Do Hyeon', sans-serif;font-size:60px;text-align:center;color:#2E2A3B;background:#F6EBCB;border-radius:20px;padding:12px 0;transform:rotate(4deg)">-습니다</p>
+<p style="position:absolute;left:1250px;top:580px;width:260px;font-family:'Do Hyeon', sans-serif;font-size:60px;text-align:center;color:#2E2A3B;background:#ECE6F6;border-radius:20px;padding:12px 0;transform:rotate(-3deg)">봬요</p>
+<p style="font-size:28px;font-weight:700;color:#E6C77E;letter-spacing:1px">화법과 언어 · 3. 문장과 담화, 국어의 변화</p>
+<h1 style="font-family:'Do Hyeon', sans-serif;font-size:128px;font-weight:400;line-height:1.1;color:#F7F3EC">객체 높임과<br>상대 높임</h1>
+<div style="width:120px;height:6px;background:#C9A85C;border-radius:3px"></div>
+<p style="font-size:34px;color:#CFC8DC">(1) 문장의 짜임과 문법 요소 · 2차시</p>
+<aside>[도입 · 인사 1분] 안녕하세요, 여러분. 지난 시간에 이어서 오늘도 높임 표현을 이어 가겠습니다.</aside>
+</section>
+
+<section id="recap" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">도입 · 지난 시간 복습</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">지난 시간, 기억나요?</h2>
+<div style="position:absolute;left:128px;top:320px;width:1000px;height:170px;display:flex;flex-direction:row;align-items:center;gap:28px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:0 36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:56px;color:#6A58A6">Q1</p>
+<p style="font-size:34px;line-height:1.45;font-weight:500">주체 높임을 실현하는<br>세 가지 방법은?</p>
+</div>
+<div data-build-in="pop 1" style="position:absolute;left:1160px;top:320px;width:632px;height:170px;display:flex;justify-content:center;background:#ECE6F6;border-radius:24px;padding:0 32px">
+<p style="font-size:30px;line-height:1.5;font-weight:700">‘-(으)시-’, 주격 조사 ‘께서’,<br>특수 어휘 (계시다·주무시다…)</p>
+</div>
+<div style="position:absolute;left:128px;top:520px;width:1000px;height:170px;display:flex;flex-direction:row;align-items:center;gap:28px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:0 36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:56px;color:#6A58A6">Q2</p>
+<p style="font-size:34px;line-height:1.45;font-weight:500">“할머니께서는 귀가 밝으시다.”<br>직접 높임? 간접 높임?</p>
+</div>
+<div data-build-in="pop 2" style="position:absolute;left:1160px;top:520px;width:632px;height:170px;display:flex;justify-content:center;background:#ECE6F6;border-radius:24px;padding:0 32px">
+<p style="font-size:30px;line-height:1.5;font-weight:700">간접 높임<br>(귀를 높여 할머니를 높임)</p>
+</div>
+<div style="position:absolute;left:128px;top:720px;width:1000px;height:170px;display:flex;flex-direction:row;align-items:center;gap:28px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:0 36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:56px;color:#6A58A6">Q3</p>
+<p style="font-size:34px;line-height:1.45;font-weight:500">“주문하신 커피 나오셨습니다.”<br>바르게 고치면?</p>
+</div>
+<div data-build-in="pop 3" style="position:absolute;left:1160px;top:720px;width:632px;height:170px;display:flex;justify-content:center;background:#FBE7A1;border-radius:24px;padding:0 32px">
+<p style="font-size:30px;line-height:1.5;font-weight:700">“주문하신 커피 나왔습니다.”<br>(커피는 높임의 대상이 아님)</p>
+</div>
+<aside>[선수 학습 점검 3분] 지난 시간에 문장 종결 표현이랑 주체 높임법 배웠죠? 몇 가지만 빠르게 확인하고 갈게요. (질문 → 대답 듣고 → 클릭해서 정답 확인) 주체 높임을 실현하는 방법 세 가지 뭐였죠? 선어말 어미 ‘-(으)시-’, 주격 조사 ‘께서’, 특수 어휘. ‘할머니께서는 귀가 밝으시다’는요? 귀를 높여서 할머니를 높였으니까 간접 높임. ‘주문하신 커피 나오셨습니다’는 사물 높임이라 ‘나왔습니다’가 맞죠.</aside>
+</section>
+
+<section id="map" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">도입 · 오늘 배울 것</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">높임법 세 가지, 오늘은 나머지 둘!</h2>
+<div style="display:flex;flex-direction:row;justify-content:center;align-items:flex-start;gap:10px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:28px;padding:36px 32px;box-shadow:0 10px 24px rgba(46,42,59,0.07)">
+<div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+<p style="font-size:48px;font-weight:700;background:#ECE6F6;border-bottom:6px solid #6A58A6;padding:8px 20px">할머니께서</p>
+<p style="font-size:26px;font-weight:700;color:#6A58A6">주체</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+<p style="font-size:48px;font-weight:700;background:#F8E4EA;border-bottom:6px solid #B04568;padding:8px 20px">할아버지께</p>
+<p style="font-size:26px;font-weight:700;color:#B04568">객체</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+<p style="font-size:48px;font-weight:700;padding:8px 20px">선물을</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+<p style="font-size:48px;font-weight:700;background:#F8E4EA;border-bottom:6px solid #B04568;padding:8px 14px">드리</p>
+<p style="font-size:26px;font-weight:700;color:#B04568">객체</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+<p style="font-size:48px;font-weight:700;background:#ECE6F6;border-bottom:6px solid #6A58A6;padding:8px 14px">시</p>
+<p style="font-size:26px;font-weight:700;color:#6A58A6">주체</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+<p style="font-size:48px;font-weight:700;padding:8px 6px">었</p>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+<p style="font-size:48px;font-weight:700;background:#F6EBCB;border-bottom:6px solid #C9A85C;padding:8px 14px">어요.</p>
+<p style="font-size:26px;font-weight:700;color:#7A5F1E">상대</p>
+</div>
+</div>
+<div style="position:absolute;left:128px;top:580px;width:536px;display:flex;flex-direction:column;gap:14px;background:#F1EFEA;border:2px solid #E6DDCB;border-radius:24px;padding:34px">
+<div style="display:flex;flex-direction:row;align-items:center;justify-content:space-between">
+<h3 style="font-family:'Do Hyeon', sans-serif;font-size:48px;font-weight:400;color:#6A58A6">주체 높임법</h3>
+<p style="font-size:24px;color:#5E5870;background:#FFFDF9;padding:4px 16px;border-radius:999px">지난 시간 ✓</p>
+</div>
+<p style="font-size:28px;line-height:1.5;color:#5E5870">서술의 <b>주체</b><br>= 주어가 가리키는 대상</p>
+</div>
+<div data-build-in="rise 1" style="position:absolute;left:692px;top:580px;width:536px;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border:3px solid #B04568;border-radius:24px;padding:34px">
+<div style="display:flex;flex-direction:row;align-items:center;justify-content:space-between">
+<h3 style="font-family:'Do Hyeon', sans-serif;font-size:48px;font-weight:400;color:#B04568">객체 높임법</h3>
+<p style="font-size:24px;font-weight:700;color:#FFFDF9;background:#B04568;padding:4px 16px;border-radius:999px">오늘 ①</p>
+</div>
+<p style="font-size:28px;line-height:1.5">서술의 <b>객체</b><br>= 목적어·부사어가 가리키는 대상</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:1256px;top:580px;width:536px;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border:3px solid #C9A85C;border-radius:24px;padding:34px">
+<div style="display:flex;flex-direction:row;align-items:center;justify-content:space-between">
+<h3 style="font-family:'Do Hyeon', sans-serif;font-size:48px;font-weight:400;color:#7A5F1E">상대 높임법</h3>
+<p style="font-size:24px;font-weight:700;color:#2E2A3B;background:#E6C77E;padding:4px 16px;border-radius:999px">오늘 ②</p>
+</div>
+<p style="font-size:28px;line-height:1.5">말을 듣는 <b>상대</b><br>= 청자</p>
+</div>
+<aside>[차시 안내] 지난 시간에 높임법 세 가지 있다고 했죠? 주체, 객체, 상대. 주체 높임까지 했으니까 오늘은 나머지 두 개, 객체 높임과 상대 높임을 할 거예요. 이 문장 다시 볼까요? ‘할머니께서 할아버지께 선물을 드리셨어요.’ 할머니는 지난 시간에 배운 주체 높임으로, 할아버지는 오늘 배울 객체 높임으로, 그리고 마지막 ‘-어요’는 이 말을 듣는 사람을 높이는 상대 높임이에요.</aside>
+</section>
+
+<section id="goal" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">학습 목표</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">오늘 우리가 할 일</h2>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:340px;width:1664px;display:flex;flex-direction:row;align-items:center;gap:40px;background:#FFFDF9;border:2px solid #E6DDCB;border-left:14px solid #B04568;border-radius:24px;padding:44px 52px;box-shadow:0 10px 24px rgba(46,42,59,0.07)">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:96px;color:#B04568;line-height:1">1</p>
+<p style="font-size:44px;font-weight:700;line-height:1.35"><span style="color:#B04568">객체 높임</span>의 개념과 실현 방법을 이해한다.</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:128px;top:560px;width:1664px;display:flex;flex-direction:row;align-items:center;gap:40px;background:#FFFDF9;border:2px solid #E6DDCB;border-left:14px solid #C9A85C;border-radius:24px;padding:44px 52px;box-shadow:0 10px 24px rgba(46,42,59,0.07)">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:96px;color:#9C7A2C;line-height:1">2</p>
+<p style="font-size:44px;font-weight:700;line-height:1.35"><span style="color:#7A5F1E">상대 높임</span>의 체계를 이해하고, 맥락에 맞는 표현을 고른다.</p>
+</div>
+<p data-build-in="fade 3" style="position:absolute;left:128px;top:820px;width:1664px;font-size:26px;line-height:1.5;color:#5E5870">성취기준 [12화언01-05] 담화의 맥락에 적절한 어휘와 문법 요소를 선택하여 화자의 태도를 드러낸다.</p>
+<aside>[학습 목표 1분] 오늘은 객체 높임이 무엇이고 어떻게 실현되는지 알아보고, 상대 높임의 여섯 가지 등급을 정리한 다음, 상황에 맞게 골라 쓰는 연습까지 해 볼 거예요.</aside>
+</section>
+
+<section id="obj-def" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">2. 높임 표현 · (2) 객체 높임법 · 교과서 102쪽</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">객체 높임, 누구를 높일까?</h2>
+<div style="display:flex;flex-direction:column;gap:12px;background:#FFFDF9;border:2px solid #E6DDCB;border-left:14px solid #B04568;border-radius:24px;padding:32px 44px">
+<p style="font-size:38px;line-height:1.5;font-weight:500"><span style="color:#B04568"><b>목적어나 부사어</b></span>가 가리키는 대상, 즉 서술의 <b>객체</b>를 높이는 방법</p>
+</div>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:500px;width:812px;display:flex;flex-direction:column;gap:22px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:40px;box-shadow:0 10px 24px rgba(46,42,59,0.07)">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:34px;color:#FFFDF9;background:#B04568;padding:2px 22px;border-radius:999px;align-self:flex-start">가</p>
+<p style="font-size:46px;font-weight:700"><span style="background:#F8E4EA">할아버지를</span> <span style="color:#B04568">모시고</span> 식당에 갔다.</p>
+<div style="display:flex;flex-direction:row;gap:14px">
+<p style="font-size:26px;background:#F1EFEA;padding:8px 18px;border-radius:12px">할아버지를 = 목적어</p>
+<p style="font-size:26px;background:#F1EFEA;padding:8px 18px;border-radius:12px">모시다 = 특수 어휘</p>
+</div>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:980px;top:500px;width:812px;display:flex;flex-direction:column;gap:22px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:40px;box-shadow:0 10px 24px rgba(46,42,59,0.07)">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:34px;color:#FFFDF9;background:#B04568;padding:2px 22px;border-radius:999px;align-self:flex-start">나</p>
+<p style="font-size:46px;font-weight:700"><span style="background:#F8E4EA">할아버지<span style="color:#B04568">께</span></span> 과일을 <span style="color:#B04568">드렸다</span>.</p>
+<div style="display:flex;flex-direction:row;gap:14px">
+<p style="font-size:26px;background:#F1EFEA;padding:8px 18px;border-radius:12px">할아버지께 = 부사어</p>
+<p style="font-size:26px;background:#F1EFEA;padding:8px 18px;border-radius:12px">드리다 = 특수 어휘</p>
+</div>
+</div>
+<p data-build-in="pop 3" style="position:absolute;left:128px;top:820px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:54px;color:#B04568">주어(나)는 생략됐지만, 높임을 받는 사람은 바로 할아버지!</p>
+<aside>[객체 높임 개념 3분] 주체 높임이 주어가 가리키는 대상을 높이는 거였다면, 객체 높임은 목적어나 부사어가 가리키는 대상, 즉 서술의 객체를 높이는 방법이에요. 교과서 102쪽 볼까요? 가 ‘할아버지를 모시고 식당에 갔다.’ 할아버지를은 문장 성분으로 뭐죠? 목적어. 그 목적어가 가리키는 할아버지를 ‘모시다’로 높였어요. 나 ‘할아버지께 과일을 드렸다.’ 할아버지께는 부사어죠. 부사격 조사 ‘께’와 ‘드리다’로 할아버지를 높였어요. 두 문장 모두 주어는 생략된 ‘나’예요. 그런데 높임을 받는 건 할아버지죠.</aside>
+</section>
+
+<section id="obj-ways" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">2. 높임 표현 · (2) 객체 높임법</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">객체를 높이는 두 가지 방법</h2>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:320px;width:812px;display:flex;flex-direction:column;gap:20px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #B04568;border-radius:26px;padding:40px;box-shadow:0 10px 24px rgba(46,42,59,0.07)">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:80px;color:#B04568;line-height:1">①</p>
+<h3 style="font-family:'Do Hyeon', sans-serif;font-size:50px;font-weight:400">부사격 조사 ‘께’</h3>
+<p style="font-size:28px;line-height:1.5;color:#5E5870">‘에게·한테’ 대신 ‘께’</p>
+<div style="flex:1"></div>
+<p style="font-size:34px;line-height:1.5;background:#F8E4EA;border-radius:16px;padding:22px 26px">이 문제는 선생님<span style="color:#B04568"><b>께</b></span> 여쭤봐.</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:980px;top:320px;width:812px;display:flex;flex-direction:column;gap:20px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #B04568;border-radius:26px;padding:40px;box-shadow:0 10px 24px rgba(46,42,59,0.07)">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:80px;color:#B04568;line-height:1">②</p>
+<h3 style="font-family:'Do Hyeon', sans-serif;font-size:50px;font-weight:400">높임의 특수 어휘</h3>
+<p style="font-size:28px;line-height:1.5;color:#5E5870">모시다 · 드리다 · 뵈다(뵙다) · 여쭈다(여쭙다)</p>
+<div style="flex:1"></div>
+<p style="font-size:34px;line-height:1.5;background:#F8E4EA;border-radius:16px;padding:22px 26px">중학교 때 선생님을 <span style="color:#B04568"><b>뵈니</b></span> 정말 반가웠다.</p>
+</div>
+<div data-build-in="rise 3" style="position:absolute;left:128px;top:760px;width:1664px;display:flex;flex-direction:row;align-items:center;gap:32px;background:#2E2A3B;border-radius:24px;padding:32px 44px">
+<p style="font-size:34px;line-height:1.5;color:#F7F3EC">주체 높임의 ‘-(으)시-’ 같은 <span style="color:#F6D98A"><b>선어말 어미</b></span>는? → 지금의 객체 높임에는 <b>없어요</b>. (옛날에는 있었어요!)</p>
+</div>
+<aside>[객체 높임 실현 방법 2분] 객체 높임은 어떻게 실현될까요? 첫째, 부사격 조사 ‘께’. ‘선생님에게’, ‘선생님한테’ 대신 ‘선생님께’라고 하죠. 둘째, 특수 어휘. 모시다, 드리다, 뵈다, 여쭈다. 학습지 예문 볼게요. ‘이 문제는 선생님께 여쭤봐.’ ‘중학교 때 선생님을 뵈니 정말 반가웠다.’ 그런데 주체 높임에는 ‘-(으)시-’라는 선어말 어미가 있었잖아요. 객체 높임에도 그런 게 있을까요? 지금 국어에는 없어요. 그런데 옛날 국어에는 있었어요. 이건 조금 뒤에 볼게요.</aside>
+</section>
+
+<section id="obj-words" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">객체 높임의 특수 어휘 · 학습지 3쪽</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">이 말들, 높이면?</h2>
+<div style="position:absolute;left:128px;top:320px;width:398px;height:400px;display:flex;flex-direction:column;align-items:center;gap:20px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:36px 20px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:60px">데리다</p>
+<x-shape kind="arrow-down" style="width:48px;height:72px;background:#C9A85C"></x-shape>
+<p style="width:300px;height:130px;font-family:'Do Hyeon', sans-serif;font-size:56px;text-align:center;color:#B9B3C6;background:#F1EFEA;border:2px dashed #D9D0C0;border-radius:16px;padding:30px 0">?</p>
+</div>
+<div style="position:absolute;left:550px;top:320px;width:398px;height:400px;display:flex;flex-direction:column;align-items:center;gap:20px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:36px 20px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:60px">주다</p>
+<x-shape kind="arrow-down" style="width:48px;height:72px;background:#C9A85C"></x-shape>
+<p style="width:300px;height:130px;font-family:'Do Hyeon', sans-serif;font-size:56px;text-align:center;color:#B9B3C6;background:#F1EFEA;border:2px dashed #D9D0C0;border-radius:16px;padding:30px 0">?</p>
+</div>
+<div style="position:absolute;left:972px;top:320px;width:398px;height:400px;display:flex;flex-direction:column;align-items:center;gap:20px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:36px 20px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:60px">보다</p>
+<x-shape kind="arrow-down" style="width:48px;height:72px;background:#C9A85C"></x-shape>
+<p style="width:300px;height:130px;font-family:'Do Hyeon', sans-serif;font-size:56px;text-align:center;color:#B9B3C6;background:#F1EFEA;border:2px dashed #D9D0C0;border-radius:16px;padding:30px 0">?</p>
+</div>
+<div style="position:absolute;left:1394px;top:320px;width:398px;height:400px;display:flex;flex-direction:column;align-items:center;gap:20px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:36px 20px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:60px">묻다</p>
+<x-shape kind="arrow-down" style="width:48px;height:72px;background:#C9A85C"></x-shape>
+<p style="width:300px;height:130px;font-family:'Do Hyeon', sans-serif;font-size:56px;text-align:center;color:#B9B3C6;background:#F1EFEA;border:2px dashed #D9D0C0;border-radius:16px;padding:30px 0">?</p>
+</div>
+<div data-build-in="pop" style="position:absolute;left:177px;top:552px;width:300px;height:130px;display:flex;align-items:center;justify-content:center;background:#F8E4EA;border-radius:16px"><p style="font-family:'Do Hyeon', sans-serif;font-size:50px;text-align:center">모시다</p></div>
+<div data-build-in="pop" style="position:absolute;left:599px;top:552px;width:300px;height:130px;display:flex;align-items:center;justify-content:center;background:#F8E4EA;border-radius:16px"><p style="font-family:'Do Hyeon', sans-serif;font-size:50px;text-align:center">드리다</p></div>
+<div data-build-in="pop" style="position:absolute;left:1021px;top:552px;width:300px;height:130px;display:flex;align-items:center;justify-content:center;background:#F8E4EA;border-radius:16px"><p style="font-family:'Do Hyeon', sans-serif;font-size:50px;text-align:center">뵈다 / 뵙다</p></div>
+<div data-build-in="pop" style="position:absolute;left:1443px;top:552px;width:300px;height:130px;display:flex;align-items:center;justify-content:center;background:#F8E4EA;border-radius:16px"><p style="font-family:'Do Hyeon', sans-serif;font-size:46px;text-align:center;line-height:1.15">여쭈다 /<br>여쭙다</p></div>
+<p data-build-in="rise" style="position:absolute;left:128px;top:780px;width:1664px;font-size:36px;line-height:1.5">그런데 ‘보다’와 ‘묻다’는 왜 <b style="color:#B04568">두 개</b>씩일까요?</p>
+<aside>(클릭할 때마다 답이 하나씩) 학습지 3쪽 표 같이 채워 볼게요. 데리다를 높이면? 모시다. 지난 시간 편지에서 ‘할머니를 데리고’가 어색했던 거 기억나죠? 주다는? 드리다. 보다는? 뵈다, 뵙다. 묻다는? 여쭈다, 여쭙다. 그런데 보다랑 묻다는 왜 높임말이 두 개씩일까요?</aside>
+</section>
+
+<section id="obj-why" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">객체 높임 · 더 알아보기</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">뵙다·여쭙다 속 ‘ㅂ’의 비밀</h2>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:320px;width:1664px;display:flex;flex-direction:row;align-items:center;gap:36px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:32px 44px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:44px;color:#FFFDF9;background:#6A58A6;border-radius:16px;padding:10px 24px;white-space:nowrap">옛날 국어</p>
+<p style="font-size:32px;line-height:1.5">객체 높임 <b>선어말 어미</b>가 있었어요.  <span style="font-family:'Noto Serif KR', 'New Gulim', serif;font-size:40px;color:#B04568"><b>-ᄉᆞᆸ- · -ᅀᆞᆸ- · -ᄌᆞᆸ-</b></span></p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:128px;top:480px;width:812px;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #B04568;border-radius:24px;padding:36px 40px">
+<p style="font-size:30px;line-height:1.6"><span style="font-family:'Noto Serif KR', 'New Gulim', serif">뵈<b style="color:#B04568">ᅀᆞᆸ</b>다</span> → <b style="font-size:40px">뵙다</b></p>
+<p style="font-size:30px;line-height:1.6"><span style="font-family:'Noto Serif KR', 'New Gulim', serif">엳<b style="color:#B04568">ᄌᆞᆸ</b>다</span> → <b style="font-size:40px">여쭙다</b></p>
+<p style="font-size:26px;line-height:1.5;color:#5E5870">선어말 어미는 사라졌지만, 몇몇 단어 속에 ‘ㅂ’으로 굳어 남았어요.</p>
+</div>
+<div data-build-in="rise 3" style="position:absolute;left:980px;top:480px;width:812px;display:flex;flex-direction:column;gap:14px;background:#FBE7A1;border-radius:24px;padding:36px 40px">
+<p style="font-size:34px;font-weight:700;line-height:1.4">그래서 ‘ㅂ’이 있는 쪽이</p>
+<p style="font-size:34px;font-weight:700;line-height:1.4">높임이 한 겹 더!</p>
+<p style="font-size:28px;line-height:1.5">‘뵙다’는 ‘뵈다’보다 더 겸양의 뜻을 나타내요. (지도서)</p>
+</div>
+<p data-build-in="pop 4" style="position:absolute;left:128px;top:820px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:52px;color:#6A58A6">‘-습니다’의 ‘습’에도 이 흔적이 있어요 → 상대 높임에서 다시 만나요!</p>
+<aside>[뵈다/뵙다, 여쭈다/여쭙다 3분] 왜 두 개씩일까요? 옛날 국어, 그러니까 중세 국어에는 객체를 높이는 선어말 어미가 따로 있었어요. ‘-ᄉᆞᆸ-, -ᅀᆞᆸ-, -ᄌᆞᆸ-’처럼 앞소리에 따라 모양이 바뀌었죠. ‘뵙다’는 ‘뵈다’에 이 어미가 붙은 ‘뵈ᅀᆞᆸ다’에서, ‘여쭙다’는 ‘엳-’(아뢰다)에 붙은 ‘엳ᄌᆞᆸ다’에서 온 말이에요. 선어말 어미 자체는 없어졌지만 몇몇 단어 속에 ‘ㅂ’으로 굳어서 남은 거예요. 그래서 지도서에서도 ‘뵙다’가 ‘뵈다’보다 더 겸양의 뜻을 나타낸다고 해요. 그리고 이 흔적은 ‘-습니다’의 ‘습’에도 남아 있어요. 상대 높임 할 때 다시 볼게요. (※ 옛한글이 깨져 보이면 판서로 대체)</aside>
+</section>
+
+<section id="obj-boeyo" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">객체 높임 · 실생활 맞춤법</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">“내일 봬요” vs “내일 뵈요”</h2>
+<div style="position:absolute;left:128px;top:320px;width:812px;display:flex;flex-direction:column;gap:12px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:30px 36px">
+<p style="font-size:28px;font-weight:700;color:#6A58A6">뵙- + 자음으로 시작하는 어미</p>
+<p style="font-size:34px;font-weight:700">뵙고 · 뵙지 · 뵙겠습니다</p>
+</div>
+<div style="position:absolute;left:980px;top:320px;width:812px;display:flex;flex-direction:column;gap:12px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:30px 36px">
+<p style="font-size:28px;font-weight:700;color:#B04568">뵈- + 모음으로 시작하는 어미</p>
+<p style="font-size:34px;font-weight:700">뵈어 → 봬 · 뵈었다 → 뵀다</p>
+</div>
+<div style="position:absolute;left:128px;top:500px;width:1180px;height:96px;display:flex;flex-direction:row;align-items:center;gap:24px;background:#FFFDF9;border-radius:20px;padding:0 36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:44px;color:#6A58A6">1</p>
+<p style="font-size:38px;font-weight:500">선생님, 내일 학교에서 ( 봬요 / 뵈요 ).</p>
+</div>
+<div style="position:absolute;left:128px;top:612px;width:1180px;height:96px;display:flex;flex-direction:row;align-items:center;gap:24px;background:#FFFDF9;border-radius:20px;padding:0 36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:44px;color:#6A58A6">2</p>
+<p style="font-size:38px;font-weight:500">처음 ( 뵙겠습니다 / 봬겠습니다 ).</p>
+</div>
+<div style="position:absolute;left:128px;top:724px;width:1180px;height:96px;display:flex;flex-direction:row;align-items:center;gap:24px;background:#FFFDF9;border-radius:20px;padding:0 36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:44px;color:#6A58A6">3</p>
+<p style="font-size:38px;font-weight:500">그럼 그때 ( 뵐게요 / 뵙을게요 ).</p>
+</div>
+<p data-build-in="pop" style="position:absolute;left:1340px;top:514px;width:452px;font-family:'Do Hyeon', sans-serif;font-size:46px;text-align:center;color:#FFFDF9;background:#B04568;padding:6px 0;border-radius:999px">봬요</p>
+<p data-build-in="pop" style="position:absolute;left:1340px;top:626px;width:452px;font-family:'Do Hyeon', sans-serif;font-size:46px;text-align:center;color:#FFFDF9;background:#B04568;padding:6px 0;border-radius:999px">뵙겠습니다</p>
+<p data-build-in="pop" style="position:absolute;left:1340px;top:738px;width:452px;font-family:'Do Hyeon', sans-serif;font-size:46px;text-align:center;color:#FFFDF9;background:#B04568;padding:6px 0;border-radius:999px">뵐게요</p>
+<div data-build-in="rise" style="position:absolute;left:128px;top:848px;width:1664px;display:flex;flex-direction:row;align-items:center;gap:24px;background:#FBE7A1;border-radius:20px;padding:18px 36px">
+<p style="font-size:30px;line-height:1.4"><b>꿀팁</b> ‘뵈’ 자리에 ‘하’, ‘봬’ 자리에 ‘해’를 넣어 보기 → “내일 <b>해요</b>”(○) “내일 하요”(×) → <b>봬요</b>!</p>
+</div>
+<aside>[3분] 이 차이를 알면 맞춤법도 해결돼요. ‘뵙-’은 ‘-고, -지, -겠-’처럼 자음으로 시작하는 어미 앞에서만 쓰고, 모음으로 시작하는 어미 앞에서는 ‘뵈-’를 써요. ‘뵈어’가 줄면 ‘봬’, ‘뵈었다’가 줄면 ‘뵀다’. 그래서 선생님께 문자 보낼 때 ‘내일 뵈요’가 아니라 ‘내일 봬요’가 맞아요. ‘되/돼’ 구별할 때처럼 ‘하/해’를 넣어 보면 쉬워요. ‘내일 해요’는 되는데 ‘내일 하요’는 안 되죠? 그러니까 ‘봬요’. (여쭙다는 ‘여쭙고, 여쭈워’처럼 ㅂ 불규칙으로 활용하고, 여쭈다는 ‘여쭈어(여쭤)’로 활용. 지도서: ‘여쭈어’, ‘여쭈워’ 모두 맞는 표기.)</aside>
+</section>
+
+<section id="obj-life" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">객체 높임 · 생활 속으로</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">객체 높임, 매일 쓰고 있어요</h2>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:320px;width:812px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:36px 40px;box-shadow:0 10px 24px rgba(46,42,59,0.07)">
+<p style="font-size:34px;line-height:1.5">선생님<b style="color:#B04568">께</b> 전화 <b style="color:#B04568">드렸어요</b>.</p>
+<p style="font-size:34px;line-height:1.5">교수님<b style="color:#B04568">께</b> 메일 <b style="color:#B04568">드리겠습니다</b>.</p>
+<p style="font-size:34px;line-height:1.5">부모님을 <b style="color:#B04568">모시고</b> 여행을 갔다.</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:980px;top:320px;width:812px;display:flex;flex-direction:column;gap:16px;background:#ECE6F6;border-radius:24px;padding:36px 40px">
+<p style="font-family:'Nanum Pen Script', cursive;font-size:48px;color:#6A58A6">1차시 편지 기억나죠?</p>
+<p style="font-size:32px;line-height:1.5">아빠가 할머니를 <span style="color:#B04568"><b>데리고</b></span>(×)<br>→ 할머니를 <b>모시고</b>(○)</p>
+</div>
+<div data-build-in="rise 3" style="position:absolute;left:128px;top:640px;width:1664px;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border:3px dashed #C9A85C;border-radius:24px;padding:32px 44px">
+<p style="font-size:30px;font-weight:700;color:#7A5F1E">하나 더! 나를 낮춰서 상대를 높이는 ‘겸양’</p>
+<p style="font-size:32px;line-height:1.5"><b>저희</b> 어머니께 어울릴 만한 옷 좀 보여 주세요. · <b>제가</b> 할게요.</p>
+<p style="font-size:28px;line-height:1.5;color:#5E5870">단, 나라는 낮출 수 없으니 ‘저희 나라’(×) → ‘<b style="color:#2E2A3B">우리나라</b>’(○)</p>
+</div>
+<aside>[2분] 객체 높임은 생각보다 매일 써요. 선생님께 전화 드렸어요, 교수님께 메일 드리겠습니다, 부모님을 모시고. 지난 시간 편지의 ‘할머니를 데리고’도 객체 높임 ‘모시고’로 고쳐야 했죠. 하나 더, 나를 낮춰서 상대를 높이는 표현도 있어요. ‘저, 저희, 제가’. 이건 겸양 표현이라고 해요. 3차시 활동지에도 ‘저희 어머니께’가 나와요. 다만 ‘저희 나라’는 우리끼리 이야기하면서 나라를 낮추는 꼴이 되니까 ‘우리나라’가 맞아요.</aside>
+</section>
+
+<section id="rel-intro" data-transition="fade" style="background:#6A58A6;color:#F7F3EC;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:32px">
+<x-shape kind="ellipse" style="position:absolute;left:1480px;top:80px;width:360px;height:360px;background:#7A69B4"></x-shape>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#6A58A6;background:#F7F3EC;border-radius:999px;padding:6px 26px">2. 높임 표현 · (3) 상대 높임법</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:84px;font-weight:400;line-height:1.25;color:#F7F3EC">이번엔 <span style="color:#F6D98A">듣는 사람</span> 차례!<br>화자가 청자를 높이거나 낮추는 방법</h2>
+<p data-build-in="pop 1" style="position:absolute;left:128px;top:600px;width:300px;font-size:52px;font-weight:700;text-align:center;color:#2E2A3B;background:#F7F3EC;border-radius:22px;padding:18px 0">가십니다</p>
+<p data-build-in="pop 1" style="position:absolute;left:460px;top:600px;width:200px;font-size:52px;font-weight:700;text-align:center;color:#2E2A3B;background:#F7F3EC;border-radius:22px;padding:18px 0">가요</p>
+<p data-build-in="pop 1" style="position:absolute;left:692px;top:600px;width:150px;font-size:52px;font-weight:700;text-align:center;color:#2E2A3B;background:#F7F3EC;border-radius:22px;padding:18px 0">가</p>
+<p data-build-in="rise 2" style="position:absolute;left:890px;top:608px;width:902px;font-family:'Nanum Pen Script', cursive;font-size:60px;color:#F6D98A">← 1차시에 미리 봤던 그 친구!</p>
+<div data-build-in="rise 3" style="position:absolute;left:128px;top:760px;width:1664px;background:#594A92;border-radius:24px;padding:30px 44px">
+<p style="font-size:36px;font-weight:700;color:#F7F3EC">상대 높임은 주로 <span style="color:#F6D98A">종결 어미</span>로 실현돼요. → 그래서 문장 종결 표현을 먼저 배웠죠!</p>
+</div>
+<aside>[상대 높임 도입 2분] 이제 듣는 사람 차례예요. 상대 높임법은 화자가 청자, 그러니까 내 말을 듣는 사람을 높이거나 낮추어 표현하는 방법이에요. 1차시 처음에 ‘가십니다, 가요, 가’ 보여 주면서 높임법 중에 종결 어미로 실현되는 게 있다고 했죠? 그게 바로 상대 높임이에요. 그래서 문장 종결 표현을 먼저 배운 거예요.</aside>
+</section>
+
+<section id="rel-context" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">상대 높임법 · 교과서 103쪽</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">같은 학생, 다른 말투</h2>
+<img src="assets/textbook-103.png" alt="교과서 103쪽 그림. 가: 쉬는 시간에 여학생이 친구에게 ‘난 오늘 발표 준비를 해야 돼.’(해체)라고 말함. 나: 같은 여학생이 교실 앞에서 ‘지금부터 발표를 시작하겠습니다.’(하십시오체)라고 발표함." style="position:absolute;left:128px;top:320px;width:1120px;height:544px;object-fit:contain;background:#FFFFFF;border-radius:24px;box-shadow:0 14px 30px rgba(46,42,59,0.12)">
+<div data-build-in="rise 1" style="position:absolute;left:1280px;top:320px;width:512px;display:flex;flex-direction:column;gap:10px;background:#FFFDF9;border:2px solid #E6DDCB;border-left:12px solid #B04568;border-radius:20px;padding:24px 28px">
+<p style="font-size:26px;color:#5E5870">가 · 쉬는 시간, 친구에게</p>
+<p style="font-size:32px;font-weight:700">‘돼’ = <span style="color:#B04568">-어</span> → 해체</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:1280px;top:480px;width:512px;display:flex;flex-direction:column;gap:10px;background:#FFFDF9;border:2px solid #E6DDCB;border-left:12px solid #6A58A6;border-radius:20px;padding:24px 28px">
+<p style="font-size:26px;color:#5E5870">나 · 반 전체 앞, 발표</p>
+<p style="font-size:32px;font-weight:700">‘-<span style="color:#6A58A6">습니다</span>’ → 하십시오체</p>
+</div>
+<div data-build-in="rise 3" style="position:absolute;left:1280px;top:640px;width:512px;display:flex;flex-direction:column;gap:10px;background:#2E2A3B;border-radius:20px;padding:24px 28px">
+<p style="font-size:28px;line-height:1.5;color:#F7F3EC">왜 다를까?<br>→ <span style="color:#F6D98A"><b>담화 맥락</b></span>이 다르니까!</p>
+</div>
+<p data-build-in="fade 4" style="position:absolute;left:128px;top:892px;width:1664px;font-size:28px;color:#5E5870">생각하기 · 높임 표현을 통해 화자의 어떤 태도가 드러날까?</p>
+<aside>[교과서 그림 3분] 교과서 103쪽 그림 볼게요. 같은 여학생인데 가에서는 친구한테 ‘난 오늘 발표 준비를 해야 돼.’, 나에서는 반 친구들 앞에서 ‘지금부터 발표를 시작하겠습니다.’ 라고 해요. ‘돼’는 종결 어미 ‘-어’가 쓰인 해체, ‘시작하겠습니다’는 ‘-습니다’가 쓰인 하십시오체예요. 같은 사람인데 왜 다르게 말했을까요? 듣는 사람과 상황, 즉 담화 맥락이 다르니까요. 교과서 날개의 생각하기 질문도 같이 생각해 봅시다. 높임 표현을 통해 화자의 어떤 태도가 드러날까요? (예: 상대를 존중하는 태도, 공적인 자리에 대한 예의, 친밀감)</aside>
+</section>
+
+<section id="rel-table" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">상대 높임법의 단계 · 교과서 103쪽</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">‘가다’ 하나로 여섯 단계</h2>
+<div style="position:absolute;left:128px;top:316px;width:1664px;height:64px;display:grid;grid-template-columns:230px 174px 252px 252px 252px 252px 252px;align-items:center;background:#2E2A3B;border-radius:14px">
+<p style="font-size:26px;font-weight:700;color:#F7F3EC;padding:0 0 0 28px">등급</p>
+<p style="font-size:26px;font-weight:700;color:#F7F3EC">정도</p>
+<p style="font-size:26px;font-weight:700;color:#F7F3EC;text-align:center">평서법</p>
+<p style="font-size:26px;font-weight:700;color:#F7F3EC;text-align:center">의문법</p>
+<p style="font-size:26px;font-weight:700;color:#F7F3EC;text-align:center">명령법</p>
+<p style="font-size:26px;font-weight:700;color:#F7F3EC;text-align:center">청유법</p>
+<p style="font-size:26px;font-weight:700;color:#F7F3EC;text-align:center">감탄법</p>
+</div>
+<p style="position:absolute;left:128px;top:390px;width:600px;font-size:24px;font-weight:700;color:#6A58A6">격식체</p>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:424px;width:1664px;height:74px;display:grid;grid-template-columns:230px 174px 252px 252px 252px 252px 252px;align-items:center;background:#ECE6F6;border-radius:12px">
+<p style="font-size:30px;font-weight:700;padding:0 0 0 28px">하십시오체</p><p style="font-size:24px;color:#5E5870">아주 높임</p>
+<p style="font-size:30px;text-align:center">가십니다</p><p style="font-size:30px;text-align:center">가십니까?</p><p style="font-size:30px;text-align:center">가십시오</p><p style="font-size:30px;text-align:center;color:#B04568">(가시지요)</p><p style="font-size:30px;text-align:center;color:#B04568">–</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:128px;top:506px;width:1664px;height:74px;display:grid;grid-template-columns:230px 174px 252px 252px 252px 252px 252px;align-items:center;background:#ECE6F6;border-radius:12px">
+<p style="font-size:30px;font-weight:700;padding:0 0 0 28px">하오체</p><p style="font-size:24px;color:#5E5870">예사 높임</p>
+<p style="font-size:30px;text-align:center">가(시)오</p><p style="font-size:30px;text-align:center">가(시)오?</p><p style="font-size:30px;text-align:center">가(시)오</p><p style="font-size:30px;text-align:center">갑시다</p><p style="font-size:30px;text-align:center">가는구려</p>
+</div>
+<div data-build-in="rise 3" style="position:absolute;left:128px;top:588px;width:1664px;height:74px;display:grid;grid-template-columns:230px 174px 252px 252px 252px 252px 252px;align-items:center;background:#ECE6F6;border-radius:12px">
+<p style="font-size:30px;font-weight:700;padding:0 0 0 28px">하게체</p><p style="font-size:24px;color:#5E5870">예사 낮춤</p>
+<p style="font-size:30px;text-align:center">가네, 감세</p><p style="font-size:28px;text-align:center">가는가?, 가나?</p><p style="font-size:30px;text-align:center">가게</p><p style="font-size:30px;text-align:center">가세</p><p style="font-size:30px;text-align:center">가는구먼</p>
+</div>
+<div data-build-in="rise 4" style="position:absolute;left:128px;top:670px;width:1664px;height:74px;display:grid;grid-template-columns:230px 174px 252px 252px 252px 252px 252px;align-items:center;background:#ECE6F6;border-radius:12px">
+<p style="font-size:30px;font-weight:700;padding:0 0 0 28px">해라체</p><p style="font-size:24px;color:#5E5870">아주 낮춤</p>
+<p style="font-size:30px;text-align:center">간다</p><p style="font-size:30px;text-align:center">가니?</p><p style="font-size:30px;text-align:center">가(거)라</p><p style="font-size:30px;text-align:center">가자</p><p style="font-size:30px;text-align:center">가는구나</p>
+</div>
+<p data-build-in="fade 5" style="position:absolute;left:128px;top:756px;width:600px;font-size:24px;font-weight:700;color:#7A5F1E">비격식체</p>
+<div data-build-in="rise 5" style="position:absolute;left:128px;top:790px;width:1664px;height:74px;display:grid;grid-template-columns:230px 174px 252px 252px 252px 252px 252px;align-items:center;background:#F6EBCB;border-radius:12px">
+<p style="font-size:30px;font-weight:700;padding:0 0 0 28px">해요체</p><p style="font-size:24px;color:#5E5870">두루 높임</p>
+<p style="font-size:30px;text-align:center">가요</p><p style="font-size:30px;text-align:center">가요?</p><p style="font-size:28px;text-align:center">가(세/셔)요</p><p style="font-size:28px;text-align:center">가(세/셔)요</p><p style="font-size:28px;text-align:center">가(세/셔)요</p>
+</div>
+<div data-build-in="rise 6" style="position:absolute;left:128px;top:872px;width:1664px;height:74px;display:grid;grid-template-columns:230px 174px 252px 252px 252px 252px 252px;align-items:center;background:#F6EBCB;border-radius:12px">
+<p style="font-size:30px;font-weight:700;padding:0 0 0 28px">해체</p><p style="font-size:24px;color:#5E5870">두루 낮춤</p>
+<p style="font-size:30px;text-align:center">가, 가지</p><p style="font-size:30px;text-align:center">가?, 가지?</p><p style="font-size:30px;text-align:center">가, 가지</p><p style="font-size:30px;text-align:center">가, 가지</p><p style="font-size:30px;text-align:center">가, 가지</p>
+</div>
+<aside>[상대 높임 체계 5분] (클릭할 때마다 한 줄씩) 상대 높임은 크게 격식체와 비격식체로 나뉘어요. 격식체는 높임의 순서대로 하십시오체, 하오체, 하게체, 해라체. 비격식체는 해요체, 해체. 이름이 왜 이렇냐면, ‘하다’에 각 등급의 명령형을 붙인 이름이에요. 하십시오, 하오, 하게, 해라, 해요, 해. 표는 ‘가다’로 정리했고, 학습지에는 ‘하다’로 되어 있어요. 학습지 3쪽 표랑 같이 보세요. 빨간색 칸 두 개 보이죠? 하십시오체 청유형은 괄호, 감탄형은 비어 있어요. 이건 조금 뒤에 따로 볼게요. (※ 높임 정도 이름: 아주 높임·예사 높임·예사 낮춤·아주 낮춤·두루 높임·두루 낮춤은 학교 문법의 일반적 명칭)</aside>
+</section>
+
+<section id="rel-formal" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">상대 높임법 · 격식체와 비격식체</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">격식을 차릴까, 편하게 말할까?</h2>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:320px;width:812px;height:380px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E2D9EE;border-top:12px solid #6A58A6;border-radius:24px;padding:36px 40px">
+<h3 style="font-family:'Do Hyeon', sans-serif;font-size:52px;font-weight:400;color:#6A58A6">격식체</h3>
+<p style="font-size:30px;line-height:1.5">공적이고 예의를 갖추어야 하는 상황</p>
+<p style="font-size:30px;line-height:1.5">→ <b>심리적 거리감</b>이 드러나기도 해요</p>
+<div style="flex:1"></div>
+<p style="font-size:28px;color:#5E5870">하십시오체 · 하오체 · 하게체 · 해라체</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:980px;top:320px;width:812px;height:380px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E2D9EE;border-top:12px solid #C9A85C;border-radius:24px;padding:36px 40px">
+<h3 style="font-family:'Do Hyeon', sans-serif;font-size:52px;font-weight:400;color:#7A5F1E">비격식체</h3>
+<p style="font-size:30px;line-height:1.5">격식을 덜 차리는 상황</p>
+<p style="font-size:30px;line-height:1.5">→ 화자와 청자의 <b>친밀함</b>이 드러나요</p>
+<div style="flex:1"></div>
+<p style="font-size:28px;color:#5E5870">해요체 · 해체</p>
+</div>
+<div data-build-in="rise 3" style="position:absolute;left:128px;top:740px;width:1664px;display:flex;flex-direction:column;gap:10px;background:#FBE7A1;border-radius:24px;padding:30px 44px">
+<p style="font-size:32px;font-weight:700">같은 사람에게도 상황에 따라 오갈 수 있어요.</p>
+<p style="font-size:30px;line-height:1.5">쉬는 시간엔 친구에게 “이따 매점 가?” (해체) → 학급 회의 사회를 볼 땐 “다음 안건으로 넘어가겠습니다.” (하십시오체)</p>
+</div>
+<aside>[격식체·비격식체 2분] 격식체는 공적이고 예의를 갖추어야 하는 상황에서 써요. 그래서 듣는 사람과 심리적 거리가 느껴지기도 하죠. 비격식체는 격식을 덜 차리는 상황, 친한 사이에서 써요. 한 사람에게도 상황에 따라 바뀔 수 있어요. 친구에게 쉬는 시간엔 해체를 쓰다가, 학급 회의 사회를 볼 때는 하십시오체를 쓰는 것처럼요. 학습지 3쪽 맨 아래 별표 내용이에요.</aside>
+</section>
+
+<section id="rel-formal-use" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">상대 높임법 · 하십시오체</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">공식적인 자리엔 하십시오체</h2>
+<div data-build-in="rise" style="position:absolute;left:128px;top:320px;width:812px;height:180px;display:flex;flex-direction:column;gap:12px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:30px 36px">
+<p style="font-size:26px;font-weight:700;color:#6A58A6">뉴스 앵커 → 시청자</p>
+<p style="font-size:36px;font-weight:700">“안녕하십니까, 9시 뉴스입니다.”</p>
+</div>
+<div data-build-in="rise" style="position:absolute;left:980px;top:320px;width:812px;height:180px;display:flex;flex-direction:column;gap:12px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:30px 36px">
+<p style="font-size:26px;font-weight:700;color:#6A58A6">지하철 안내 방송 → 승객</p>
+<p style="font-size:36px;font-weight:700">“이번 역은 시청역입니다.”</p>
+</div>
+<div data-build-in="rise" style="position:absolute;left:128px;top:530px;width:812px;height:180px;display:flex;flex-direction:column;gap:12px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:30px 36px">
+<p style="font-size:26px;font-weight:700;color:#6A58A6">발표자 → 청중</p>
+<p style="font-size:36px;font-weight:700">“지금부터 발표를 시작하겠습니다.”</p>
+</div>
+<div data-build-in="rise" style="position:absolute;left:980px;top:530px;width:812px;height:180px;display:flex;flex-direction:column;gap:12px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:30px 36px">
+<p style="font-size:26px;font-weight:700;color:#6A58A6">면접관 ↔ 지원자</p>
+<p style="font-size:36px;font-weight:700">“자기소개를 해 주십시오.” “네, 알겠습니다.”</p>
+</div>
+<div data-build-in="rise" style="position:absolute;left:128px;top:750px;width:1664px;background:#2E2A3B;border-radius:24px;padding:30px 44px">
+<p style="font-size:34px;line-height:1.5;color:#F7F3EC">여러 사람 앞, 공적인 자리, 처음 만나는 윗사람 → <span style="color:#F6D98A"><b>-습니다 / -습니까?</b></span></p>
+</div>
+<aside>[하십시오체 3분] 교과서에서 격식체는 공적이고 예의를 갖추어야 하는 상황에서 쓴다고 했죠. 그 대표가 하십시오체예요. 뉴스 앵커가 ‘안녕하십니까’, 안내 방송 ‘이번 역은 시청역입니다’, 발표 ‘지금부터 발표를 시작하겠습니다’, 면접. 모두 여러 사람 앞이거나 공적인 자리죠. 여러분 수행평가 발표할 때도 하십시오체로 시작하면 훨씬 격식 있어 보여요. 반대로 이런 자리에서 해요체만 쓰면 조금 덜 격식 있게 들릴 수 있어요.</aside>
+</section>
+
+<section id="rel-chungyu" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">상대 높임법 · 하십시오체의 빈칸</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">선생님께 “같이 갑시다”?</h2>
+<div style="position:absolute;left:128px;top:316px;width:1664px;height:84px;display:grid;grid-template-columns:230px 286px 286px 286px 288px 288px;align-items:center;background:#ECE6F6;border-radius:14px">
+<p style="font-size:30px;font-weight:700;padding:0 0 0 28px">하십시오체</p>
+<p style="font-size:30px;text-align:center">가십니다</p><p style="font-size:30px;text-align:center">가십니까?</p><p style="font-size:30px;text-align:center">가십시오</p>
+<p style="font-size:32px;font-weight:700;text-align:center;color:#B04568;background:#F8E4EA;border-radius:12px;padding:6px 0">(가시지요)</p>
+<p style="font-size:32px;font-weight:700;text-align:center;color:#B04568;background:#F8E4EA;border-radius:12px;padding:6px 0">–</p>
+</div>
+<p style="position:absolute;left:128px;top:412px;width:1664px;font-size:26px;color:#5E5870;text-align:right">청유법은 괄호, 감탄법은 빈칸 → 하십시오체에는 제대로 된 청유형·감탄형이 없어요</p>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:480px;width:812px;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border:3px solid #B04568;border-radius:24px;padding:32px 36px">
+<p style="font-size:26px;font-weight:700;color:#B04568">× 윗사람에게 쓰면 어색해요</p>
+<p style="font-size:38px;font-weight:700">“선생님, 같이 사진 찍<span style="color:#B04568">읍시다</span>!”</p>
+<p style="font-size:26px;line-height:1.5;color:#5E5870">‘-ㅂ시다’는 하오체 청유형 → 윗사람에겐 높임이 모자라요</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:980px;top:480px;width:812px;display:flex;flex-direction:column;gap:12px;background:#FFFDF9;border:3px solid #6A58A6;border-radius:24px;padding:32px 36px">
+<p style="font-size:26px;font-weight:700;color:#6A58A6">○ 이렇게 바꿔 말해요</p>
+<p style="font-size:32px;font-weight:700">“같이 사진 찍<span style="color:#6A58A6">으시지요</span>.”</p>
+<p style="font-size:32px;font-weight:700">“같이 사진 찍<span style="color:#6A58A6">어요</span>, 선생님.” <span style="font-size:24px;font-weight:400;color:#5E5870">(해요체)</span></p>
+<p style="font-size:32px;font-weight:700">“같이 사진 찍어 주<span style="color:#6A58A6">시겠어요</span>?”</p>
+</div>
+<p data-build-in="pop 3" style="position:absolute;left:128px;top:840px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:52px;color:#6A58A6">마지막 건 의문문으로 부탁하기 — 1차시 ‘형식 ≠ 기능’ 기억나죠?</p>
+<aside>[하십시오체 청유형 3분] 아까 표에서 빨간 칸 두 개 기억나죠? 하십시오체 청유형은 괄호로 ‘가시지요’, 감탄형은 비어 있어요. 하십시오체에는 제대로 된 청유형이 없다는 뜻이에요. ‘가시지요’도 사실 해요체 ‘-지요’에 ‘-시-’를 붙여서 빌려 온 거라 괄호를 친 거고요. 그래서 문제가 생겨요. 선생님께 ‘선생님, 같이 사진 찍읍시다!’ 하면 어때요? 좀 이상하죠? ‘-ㅂ시다’는 표에서 보면 하오체 청유형이에요. 윗사람에게 쓰기엔 높임이 모자라요. 그럼 어떻게 말할까요? ‘같이 사진 찍으시지요’, 해요체로 ‘같이 찍어요, 선생님’, 아니면 ‘같이 사진 찍어 주시겠어요?’처럼 의문문으로 부탁하는 거예요. 1차시에 배운 문장의 형식과 기능이 다른 경우죠.</aside>
+</section>
+
+<section id="rel-hao" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">상대 높임법 · 하오체</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">하오체, 여러분 매일 보고 있어요</h2>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:320px;width:1000px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:36px 40px;box-shadow:0 10px 24px rgba(46,42,59,0.07)">
+<p style="font-size:26px;font-weight:700;color:#6A58A6">대학수학능력시험 국어 영역 문제지</p>
+<p style="font-family:'Noto Serif KR', 'Batang', serif;font-size:38px;font-weight:700;line-height:1.5">[1~3] 다음 글을 읽고 물음에 답하<span style="color:#B04568">시오</span>.</p>
+<p style="font-family:'Noto Serif KR', 'Batang', serif;font-size:30px;line-height:1.5;color:#5E5870">문제지의 해당란에 성명과 수험 번호를 정확히 쓰<span style="color:#B04568">시오</span>.</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:1160px;top:320px;width:632px;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:40px;font-weight:900;text-align:center;color:#FFFDF9;background:#B04568;border-radius:16px;padding:16px 0">잔디밭에 들어가지 마<span style="color:#FBE7A1">시오</span></p>
+<div style="display:flex;flex-direction:row;gap:16px">
+<p style="flex:1;font-size:40px;font-weight:900;text-align:center;color:#2E2A3B;background:#FBE7A1;border:4px solid #2E2A3B;border-radius:12px;padding:12px 0">미<span style="color:#B04568">시오</span></p>
+<p style="flex:1;font-size:40px;font-weight:900;text-align:center;color:#2E2A3B;background:#FBE7A1;border:4px solid #2E2A3B;border-radius:12px;padding:12px 0">당기<span style="color:#B04568">시오</span></p>
+</div>
+<p style="font-size:34px;font-weight:900;text-align:center;color:#FFFDF9;background:#2E5A8A;border-radius:16px;padding:14px 0">안전모를 착용하<span style="color:#FBE7A1">시오</span></p>
+</div>
+<div data-build-in="pop 3" style="position:absolute;left:128px;top:640px;width:1664px;display:flex;flex-direction:row;align-items:center;gap:36px;background:#2E2A3B;border-radius:24px;padding:30px 44px">
+<p style="font-size:36px;font-weight:700;color:#F7F3EC">‘-시오’는 하십시오체? → <span style="color:#F6D98A">하오체!</span>  (주체 높임 ‘-시-’ + 하오체 명령형 ‘-오’)</p>
+</div>
+<p data-build-in="fade 4" style="position:absolute;left:128px;top:790px;width:1664px;font-size:32px;line-height:1.5">말로는 거의 안 쓰지만 시험지·안내문·표지판 같은 <b>글</b> 속에 살아 있어요.<br><span style="color:#5E5870">→ 수능은 수험생을 ‘예사 높임’으로 대하는 셈!</span></p>
+<aside>[하오체 3분] 하오체는 요즘 말로는 거의 안 쓰죠. 그런데 여러분 매일 보고 있어요. 모의고사, 수능 국어 문제지 펴면 맨 처음에 뭐라고 쓰여 있어요? ‘[1~3] 다음 글을 읽고 물음에 답하시오.’ 문 손잡이에는 ‘미시오, 당기시오’, 공원에는 ‘잔디밭에 들어가지 마시오’. 이 ‘-시오’ 왠지 되게 높여 주는 것 같죠? 하십시오체일까요? 아니에요. 주체 높임 ‘-시-’에 하오체 명령형 ‘-오’가 붙은 하오체예요. 표에서 하오체 명령법 ‘가(시)오’ 봤죠? 말로는 거의 안 쓰지만 시험지나 안내문처럼 글에서는 아직 살아 있어요. (※ 실제 수능·모의평가 문제지를 함께 보여 주면 좋음. 문제지 표지 문구는 실물로 한 번 더 확인)</aside>
+</section>
+
+<section id="rel-video" data-transition="fade" style="background:#2E2A3B;color:#F7F3EC;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#2E2A3B;background:#E6C77E;border-radius:999px;padding:6px 26px">상대 높임법 · 하오체와 하게체</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#F7F3EC">사극 속으로 — 영화 〈왕과 사는 남자〉</h2>
+<div style="position:absolute;left:128px;top:320px;width:1000px;height:562px;display:flex;align-items:center;justify-content:center;gap:18px;background:#1E1B27;border:3px dashed #6A6380;border-radius:24px">
+<x-shape kind="arrow-right" style="width:120px;height:120px;background:#E6C77E"></x-shape>
+<p style="font-size:30px;color:#CFC8DC">[영상 클립 삽입 · 구간 00:00 ~ 00:00]</p>
+<p style="font-size:24px;color:#9A93AE">영상 링크나 파일을 여기에 넣어 주세요</p>
+</div>
+<div data-build-in="rise 1" style="position:absolute;left:1160px;top:320px;width:632px;display:flex;flex-direction:column;gap:18px;background:#3B3552;border-radius:24px;padding:34px">
+<p style="font-size:30px;font-weight:700;color:#F6D98A">보면서 찾아보기</p>
+<p style="font-size:28px;line-height:1.5">① 누가 누구에게 말하나요?</p>
+<p style="font-size:28px;line-height:1.5">② 문장 끝(종결 어미)은?</p>
+<p style="font-size:28px;line-height:1.5">③ 어떤 등급이고, 왜 그 등급을 골랐을까요?</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:1160px;top:660px;width:632px;display:flex;flex-direction:column;gap:12px;background:#3B3552;border-radius:24px;padding:30px 34px">
+<p style="font-size:26px;color:#CFC8DC">이런 말투를 찾아봐요</p>
+<p style="font-size:30px;font-weight:700">하오체 “어디 가<span style="color:#F6D98A">시오</span>?” “그러<span style="color:#F6D98A">오</span>.”</p>
+<p style="font-size:30px;font-weight:700">하게체 “자네 왔<span style="color:#F6D98A">는가</span>?” “앉<span style="color:#F6D98A">게</span>.”</p>
+</div>
+<aside>[하오체·하게체 영상 5분] 하오체와 하게체는 요즘 일상 대화에서는 잘 안 쓰다 보니 감이 잘 안 오죠. 그래서 사극에서 찾아볼 거예요. 영화 〈왕과 사는 남자〉의 한 장면을 볼게요. 보면서 세 가지를 찾아봐요. 누가 누구에게 말하는지, 문장 끝이 어떻게 끝나는지, 그리고 그게 어떤 등급이고 왜 그 등급을 썼는지. (※ 교사 준비: 사용할 장면과 구간을 정해 자리 표시에 넣기. 장면 속 실제 대사를 받아 적어 하오체/하게체 근거를 미리 정리해 두기. 하게체는 오늘날에도 장인이 사위에게, 나이 든 선생님이 성인 제자에게 “자네, 왔는가?”처럼 쓰는 경우가 있음.)</aside>
+</section>
+
+<section id="rel-match" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">상대 높임법 · 등급 맞히기</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">누가 누구에게, 어떤 등급?</h2>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:14px">
+<div style="width:1240px;height:92px;display:flex;flex-direction:row;align-items:center;gap:24px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:18px;padding:0 28px">
+<p style="width:280px;font-size:24px;color:#5E5870;background:#F1EFEA;border-radius:8px;padding:2px 12px">앵커 → 시청자</p>
+<p style="font-size:34px;font-weight:500">“안녕하십니까, 저녁 뉴스입니다.”</p>
+</div>
+<div style="width:1240px;height:92px;display:flex;flex-direction:row;align-items:center;gap:24px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:18px;padding:0 28px">
+<p style="width:280px;font-size:24px;color:#5E5870;background:#F1EFEA;border-radius:8px;padding:2px 12px">공원 표지판</p>
+<p style="font-size:34px;font-weight:500">“잔디밭에 들어가지 마시오.”</p>
+</div>
+<div style="width:1240px;height:92px;display:flex;flex-direction:row;align-items:center;gap:24px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:18px;padding:0 28px">
+<p style="width:280px;font-size:24px;color:#5E5870;background:#F1EFEA;border-radius:8px;padding:2px 12px">장인 → 사위</p>
+<p style="font-size:34px;font-weight:500">“자네, 이리 와서 앉게.”</p>
+</div>
+<div style="width:1240px;height:92px;display:flex;flex-direction:row;align-items:center;gap:24px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:18px;padding:0 28px">
+<p style="width:280px;font-size:24px;color:#5E5870;background:#F1EFEA;border-radius:8px;padding:2px 12px">어머니 → 아들</p>
+<p style="font-size:34px;font-weight:500">“숙제 다 하고 놀아라.”</p>
+</div>
+<div style="width:1240px;height:92px;display:flex;flex-direction:row;align-items:center;gap:24px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:18px;padding:0 28px">
+<p style="width:280px;font-size:24px;color:#5E5870;background:#F1EFEA;border-radius:8px;padding:2px 12px">학생 → 담임 선생님</p>
+<p style="font-size:34px;font-weight:500">“선생님, 질문이 있어요.”</p>
+</div>
+<div style="width:1240px;height:92px;display:flex;flex-direction:row;align-items:center;gap:24px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:18px;padding:0 28px">
+<p style="width:280px;font-size:24px;color:#5E5870;background:#F1EFEA;border-radius:8px;padding:2px 12px">친구 → 친구</p>
+<p style="font-size:34px;font-weight:500">“매점 같이 갈래?”</p>
+</div>
+</div>
+<p data-build-in="pop" style="position:absolute;left:1400px;top:313px;width:392px;font-family:'Do Hyeon', sans-serif;font-size:44px;text-align:center;color:#FFFDF9;background:#6A58A6;padding:6px 0;border-radius:999px">하십시오체</p>
+<p data-build-in="pop" style="position:absolute;left:1400px;top:419px;width:392px;font-family:'Do Hyeon', sans-serif;font-size:44px;text-align:center;color:#FFFDF9;background:#6A58A6;padding:6px 0;border-radius:999px">하오체</p>
+<p data-build-in="pop" style="position:absolute;left:1400px;top:525px;width:392px;font-family:'Do Hyeon', sans-serif;font-size:44px;text-align:center;color:#FFFDF9;background:#6A58A6;padding:6px 0;border-radius:999px">하게체</p>
+<p data-build-in="pop" style="position:absolute;left:1400px;top:631px;width:392px;font-family:'Do Hyeon', sans-serif;font-size:44px;text-align:center;color:#FFFDF9;background:#6A58A6;padding:6px 0;border-radius:999px">해라체</p>
+<p data-build-in="pop" style="position:absolute;left:1400px;top:737px;width:392px;font-family:'Do Hyeon', sans-serif;font-size:44px;text-align:center;color:#2E2A3B;background:#E6C77E;padding:6px 0;border-radius:999px">해요체</p>
+<p data-build-in="pop" style="position:absolute;left:1400px;top:843px;width:392px;font-family:'Do Hyeon', sans-serif;font-size:44px;text-align:center;color:#2E2A3B;background:#E6C77E;padding:6px 0;border-radius:999px">해체</p>
+<aside>(클릭할 때마다 정답이 하나씩) 이제 다양한 예문으로 확인해 볼게요. 누가 누구에게 하는 말인지 보고, 종결 어미를 찾아서 등급을 맞혀 보세요. 앵커가 시청자에게 ‘-습니까/-ㅂ니다’ 하십시오체. 표지판 ‘마시오’ 하오체. 장인이 사위에게 ‘앉게’ 하게체. 어머니가 아들에게 ‘놀아라’ 해라체. 학생이 선생님께 ‘있어요’ 해요체. 친구끼리 ‘갈래?’ 해체. 위에서 아래로 갈수록 듣는 사람과 가까워지거나 낮춰 부르는 관계죠.</aside>
+</section>
+
+<section id="rel-practice" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">상대 높임법 · 직접 말해 보기</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">“창문 좀 닫아 줘” — 듣는 사람이 바뀌면?</h2>
+<div style="display:flex;flex-direction:column;align-items:flex-start;gap:16px">
+<div style="width:760px;height:110px;display:flex;flex-direction:row;align-items:center;gap:20px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:20px;padding:0 30px">
+<p style="font-size:30px;font-weight:700">교장 선생님께</p>
+<p style="font-size:24px;color:#5E5870">(조회 시간, 여러 사람 앞)</p>
+</div>
+<div style="width:760px;height:110px;display:flex;flex-direction:row;align-items:center;gap:20px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:20px;padding:0 30px">
+<p style="font-size:30px;font-weight:700">담임 선생님께</p>
+<p style="font-size:24px;color:#5E5870">(교무실에서)</p>
+</div>
+<div style="width:760px;height:110px;display:flex;flex-direction:row;align-items:center;gap:20px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:20px;padding:0 30px">
+<p style="font-size:30px;font-weight:700">짝꿍에게</p>
+<p style="font-size:24px;color:#5E5870">(쉬는 시간)</p>
+</div>
+<div style="width:760px;height:110px;display:flex;flex-direction:row;align-items:center;gap:20px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:20px;padding:0 30px">
+<p style="font-size:30px;font-weight:700">어린 동생에게</p>
+<p style="font-size:24px;color:#5E5870">(집에서)</p>
+</div>
+</div>
+<p data-build-in="rise" style="position:absolute;left:920px;top:323px;width:872px;font-size:36px;font-weight:700;background:#ECE6F6;border-radius:18px;padding:16px 28px">창문 좀 닫아 주<span style="color:#6A58A6">십시오</span>. <span style="font-size:24px;font-weight:400;color:#5E5870">하십시오체</span></p>
+<p data-build-in="rise" style="position:absolute;left:920px;top:449px;width:872px;font-size:36px;font-weight:700;background:#F6EBCB;border-radius:18px;padding:16px 28px">창문 좀 닫아 주<span style="color:#7A5F1E">세요</span>. <span style="font-size:24px;font-weight:400;color:#5E5870">해요체</span></p>
+<p data-build-in="rise" style="position:absolute;left:920px;top:575px;width:872px;font-size:36px;font-weight:700;background:#F6EBCB;border-radius:18px;padding:16px 28px">창문 좀 닫아 <span style="color:#7A5F1E">줘</span>. <span style="font-size:24px;font-weight:400;color:#5E5870">해체</span></p>
+<p data-build-in="rise" style="position:absolute;left:920px;top:701px;width:872px;font-size:36px;font-weight:700;background:#ECE6F6;border-radius:18px;padding:16px 28px">창문 좀 닫아 <span style="color:#6A58A6">줘라</span>. <span style="font-size:24px;font-weight:400;color:#5E5870">해라체</span></p>
+<p data-build-in="pop" style="position:absolute;left:128px;top:850px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:50px;color:#B04568">더 공손하게? → “창문 좀 닫아 주시겠어요?” (의문문으로 부탁하기)</p>
+<aside>[적용 3분] 직접 말해 볼까요? ‘창문 좀 닫아 줘’를 듣는 사람에 따라 바꿔 보세요. 짝이랑 1분 동안 말로 해 보고, 발표해 볼게요. (클릭하며 예시 답 확인) 조회 시간 교장 선생님께는 하십시오체 ‘닫아 주십시오’, 교무실 담임 선생님께는 해요체 ‘닫아 주세요’, 짝꿍에게는 해체 ‘닫아 줘’, 어린 동생에게는 해라체 ‘닫아 줘라’. 그리고 1차시에서 배운 것처럼 의문문으로 부탁하면 더 공손하죠. ‘창문 좀 닫아 주시겠어요?’ (※ 정답은 하나가 아님. 학생이 말한 표현의 등급과 그 이유를 묻는 데 초점)</aside>
+</section>
+
+<section id="rel-yo" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">상대 높임법 · 하나 더</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">‘요’의 정체</h2>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:320px;width:1664px;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:28px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:72px;color:#2E2A3B;background:#F6EBCB;border-radius:18px;padding:6px 32px">해체</p>
+<p style="font-size:60px;color:#B9B3C6">+</p>
+<p style="font-family:'Do Hyeon', sans-serif;font-size:72px;color:#FFFDF9;background:#B04568;border-radius:18px;padding:6px 32px">요</p>
+<p style="font-size:60px;color:#B9B3C6">=</p>
+<p style="font-family:'Do Hyeon', sans-serif;font-size:72px;color:#2E2A3B;background:#F6EBCB;border-radius:18px;padding:6px 32px">해요체</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:128px;top:530px;width:1664px;display:flex;flex-direction:row;gap:24px">
+<p style="flex:1;font-size:38px;font-weight:700;text-align:center;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:20px;padding:26px 0">그래서<span style="color:#B04568">요</span>?</p>
+<p style="flex:1;font-size:38px;font-weight:700;text-align:center;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:20px;padding:26px 0">밥을<span style="color:#B04568">요</span>, 다 먹었어<span style="color:#B04568">요</span>.</p>
+<p style="flex:1;font-size:38px;font-weight:700;text-align:center;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:20px;padding:26px 0">왜<span style="color:#B04568">요</span>?</p>
+</div>
+<div data-build-in="rise 3" style="position:absolute;left:128px;top:720px;width:1664px;background:#2E2A3B;border-radius:24px;padding:32px 44px">
+<p style="font-size:34px;line-height:1.5;color:#F7F3EC">‘요’는 문장 끝이 아닌 자리에도 붙어 높임을 더하는 <span style="color:#F6D98A"><b>보조사</b></span>예요.<br>그래서 교과서는 상대 높임이 “<b>주로</b> 종결 어미로 실현된다”고 해요.</p>
+</div>
+<aside>[2분] 해요체를 잘 보면, 해체 ‘가’에 ‘요’를 붙인 ‘가요’죠. 이 ‘요’는 문장 끝에만 붙는 게 아니에요. ‘그래서요?’, ‘밥을요, 다 먹었어요.’, ‘왜요?’처럼 단어 뒤 여기저기에 붙어서 듣는 사람을 높여 줘요. 이런 ‘요’를 보조사라고 해요. 그래서 상대 높임은 ‘종결 어미로만’이 아니라 ‘주로 종결 어미로’ 실현된다고 말하는 거예요.</aside>
+</section>
+
+<section id="rel-history" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">더 알아보기 · 옛날 국어의 상대 높임</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">‘-습니다’는 어디서 왔을까?</h2>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:320px;width:812px;height:380px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #C9A85C;border-radius:24px;padding:36px 40px">
+<p style="font-size:30px;font-weight:700;color:#7A5F1E">옛날엔 상대 높임 선어말 어미가 따로!</p>
+<p style="font-size:34px;line-height:1.6">평서 <span style="font-family:'Noto Serif KR', 'New Gulim', serif">ᄒᆞᄂᆞ니<b style="color:#B04568">이</b>다</span> → 합니다</p>
+<p style="font-size:34px;line-height:1.6">의문 <span style="font-family:'Noto Serif KR', 'New Gulim', serif">ᄒᆞᄂᆞ니<b style="color:#B04568">잇</b>가</span> → 합니까</p>
+<p style="font-size:28px;color:#5E5870">‘-이-’, ‘-잇-’이 듣는 사람을 높였어요.</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:980px;top:320px;width:812px;height:380px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #B04568;border-radius:24px;padding:36px 40px">
+<p style="font-size:30px;font-weight:700;color:#B04568">‘습’의 고향은 객체 높임</p>
+<p style="font-size:34px;line-height:1.6">객체 높임 <span style="font-family:'Noto Serif KR', 'New Gulim', serif"><b style="color:#B04568">-ᄉᆞᆸ-</b></span></p>
+<p style="font-size:34px;line-height:1.6">→ 오늘날 <b>-습니다</b>의 ‘습’</p>
+<p style="font-size:28px;color:#5E5870">객체를 높이던 말이 듣는 사람을 높이는 말 속으로 들어갔어요.</p>
+</div>
+<p data-build-in="pop 3" style="position:absolute;left:128px;top:760px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:56px;color:#6A58A6">높임법도 시간이 흐르며 모양과 쓰임이 바뀌어요 → 3단원 ‘국어의 변화’에서 또 만나요!</p>
+<aside>[더 알아보기 2분 · 시간이 부족하면 생략 가능] 지금은 상대 높임이 주로 종결 어미로 실현되지만, 중세 국어에는 상대 높임 선어말 어미가 따로 있었어요. 평서문에는 ‘-이-’, 의문문에는 ‘-잇-’. ‘ᄒᆞᄂᆞ니이다’가 지금의 ‘합니다’, ‘ᄒᆞᄂᆞ니잇가’가 ‘합니까’ 정도예요. 그리고 아까 객체 높임에서 본 ‘-ᄉᆞᆸ-’ 기억나죠? 이게 지금 ‘-습니다’의 ‘습’ 속에 흔적으로 남아 있어요. 원래는 객체를 높이던 말이었는데, 듣는 사람을 높이는 어미 속에 들어가 굳어진 거예요. (※ 옛한글이 깨져 보이면 판서로 대체)</aside>
+</section>
+
+<section id="check" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">정리 · 교과서 103쪽 확인하기</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">어떤 높임 표현이 쓰였을까?</h2>
+<div style="position:absolute;left:128px;top:320px;width:1000px;height:150px;display:flex;flex-direction:row;align-items:center;gap:28px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:0 36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:56px;color:#6A58A6">㉠</p>
+<p style="font-size:40px;font-weight:500">어머니께 옷을 사 드렸다.</p>
+</div>
+<div data-build-in="pop 1" style="position:absolute;left:1160px;top:320px;width:632px;height:150px;display:flex;justify-content:center;background:#F8E4EA;border-radius:24px;padding:0 32px">
+<p style="font-size:32px;font-weight:700">객체 높임</p>
+<p style="font-size:26px;line-height:1.5;color:#5E5870">부사격 조사 ‘께’ + 특수 어휘 ‘드리다’</p>
+</div>
+<div style="position:absolute;left:128px;top:500px;width:1000px;height:150px;display:flex;flex-direction:row;align-items:center;gap:28px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:0 36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:56px;color:#6A58A6">㉡</p>
+<p style="font-size:40px;font-weight:500">선생님께서 책을 주셨다.</p>
+</div>
+<div data-build-in="pop 2" style="position:absolute;left:1160px;top:500px;width:632px;height:150px;display:flex;justify-content:center;background:#ECE6F6;border-radius:24px;padding:0 32px">
+<p style="font-size:32px;font-weight:700">주체 높임</p>
+<p style="font-size:26px;line-height:1.5;color:#5E5870">주격 조사 ‘께서’ + 선어말 어미 ‘-시-’</p>
+</div>
+<div style="position:absolute;left:128px;top:680px;width:1000px;height:150px;display:flex;flex-direction:row;align-items:center;gap:28px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:0 36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:56px;color:#6A58A6">㉢</p>
+<p style="font-size:40px;font-weight:500">아버지, 버스 왔어요.</p>
+</div>
+<div data-build-in="pop 3" style="position:absolute;left:1160px;top:680px;width:632px;height:150px;display:flex;justify-content:center;background:#F6EBCB;border-radius:24px;padding:0 32px">
+<p style="font-size:32px;font-weight:700">상대 높임 (해요체)</p>
+<p style="font-size:26px;line-height:1.5;color:#5E5870">청자인 아버지를 ‘-어요’로 높임</p>
+</div>
+<p data-build-in="fade 4" style="position:absolute;left:128px;top:860px;width:1664px;font-size:28px;line-height:1.5;color:#5E5870">㉢에서 ‘버스 오셨어요’라고 하면? → 사물 높임(×)! 높이는 건 듣는 아버지예요.</p>
+<aside>[형성 평가 3분] 교과서 103쪽 확인하기 문제 풀어 볼게요. 각 문장에 어떤 종류의 높임 표현이 쓰였는지 말해 보세요. ㉠ ‘어머니께 옷을 사 드렸다’는 부사어가 가리키는 어머니를 ‘께’와 ‘드리다’로 높였으니까 객체 높임. ㉡ ‘선생님께서 책을 주셨다’는 ‘께서’와 ‘-시-’로 주어인 선생님을 높였으니까 주체 높임. ㉢ ‘아버지, 버스 왔어요’는 주어가 버스니까 주체 높임은 없고, 말을 듣는 아버지를 ‘-어요’로 높였으니까 상대 높임, 해요체예요. 여기서 ‘버스 오셨어요’ 하면 지난 시간에 배운 사물 높임이 되겠죠.</aside>
+</section>
+
+<section id="summary" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">정리</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">높임법 세 가지, 한눈에</h2>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:320px;width:536px;height:580px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #6A58A6;border-radius:24px;padding:36px;box-shadow:0 10px 24px rgba(46,42,59,0.07)">
+<h3 style="font-family:'Do Hyeon', sans-serif;font-size:50px;font-weight:400;color:#6A58A6">주체 높임</h3>
+<p style="font-size:26px;color:#5E5870">누구를?</p>
+<p style="font-size:30px;font-weight:700">주어가 가리키는 대상</p>
+<p style="font-size:26px;color:#5E5870">어떻게?</p>
+<p style="font-size:30px;font-weight:700;line-height:1.4">-(으)시-, 께서, 특수 어휘</p>
+<div style="flex:1"></div>
+<p style="font-size:28px;background:#ECE6F6;border-radius:14px;padding:16px 20px">할머니께서 오셨어요.</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:692px;top:320px;width:536px;height:580px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #B04568;border-radius:24px;padding:36px;box-shadow:0 10px 24px rgba(46,42,59,0.07)">
+<h3 style="font-family:'Do Hyeon', sans-serif;font-size:50px;font-weight:400;color:#B04568">객체 높임</h3>
+<p style="font-size:26px;color:#5E5870">누구를?</p>
+<p style="font-size:30px;font-weight:700">목적어·부사어가 가리키는 대상</p>
+<p style="font-size:26px;color:#5E5870">어떻게?</p>
+<p style="font-size:30px;font-weight:700;line-height:1.4">께, 특수 어휘<br>(모시다·드리다·뵙다·여쭙다)</p>
+<div style="flex:1"></div>
+<p style="font-size:28px;background:#F8E4EA;border-radius:14px;padding:16px 20px">할아버지께 과일을 드렸다.</p>
+</div>
+<div data-build-in="rise 3" style="position:absolute;left:1256px;top:320px;width:536px;height:580px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #C9A85C;border-radius:24px;padding:36px;box-shadow:0 10px 24px rgba(46,42,59,0.07)">
+<h3 style="font-family:'Do Hyeon', sans-serif;font-size:50px;font-weight:400;color:#7A5F1E">상대 높임</h3>
+<p style="font-size:26px;color:#5E5870">누구를?</p>
+<p style="font-size:30px;font-weight:700">말을 듣는 사람(청자)</p>
+<p style="font-size:26px;color:#5E5870">어떻게?</p>
+<p style="font-size:30px;font-weight:700;line-height:1.4">주로 종결 어미<br>격식체 4 + 비격식체 2</p>
+<div style="flex:1"></div>
+<p style="font-size:28px;background:#F6EBCB;border-radius:14px;padding:16px 20px">발표를 시작하겠습니다.</p>
+</div>
+<aside>[정리 2분] 오늘까지 높임법 세 가지를 다 배웠어요. 주체 높임은 주어가 가리키는 대상을 ‘-(으)시-, 께서, 특수 어휘’로. 객체 높임은 목적어나 부사어가 가리키는 대상을 ‘께’와 ‘모시다, 드리다, 뵙다, 여쭙다’로. 상대 높임은 말을 듣는 사람을 주로 종결 어미로, 격식체 네 개와 비격식체 두 개로 높이거나 낮춰요.</aside>
+</section>
+
+<section id="worksheet" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">정리 · 학습지 작성</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">학습지 3쪽 채우기</h2>
+<div data-build-in="rise 1" style="position:absolute;left:128px;top:320px;width:812px;height:560px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:40px">
+<p style="font-size:26px;font-weight:700;color:#FFFDF9;background:#B04568;padding:4px 18px;border-radius:999px;align-self:flex-start">(2) 객체 높임법</p>
+<p style="font-size:32px;line-height:1.5">• 괄호: 서술의 객체인 ( 목적어 )나 ( 부사어 )</p>
+<p style="font-size:32px;line-height:1.5">• 특수 어휘 표</p>
+<p style="font-size:30px;line-height:1.5;color:#5E5870;padding:0 0 0 28px">데리다 · 주다 · 보다 · 묻다</p>
+<div style="flex:1"></div>
+<p style="font-family:'Nanum Pen Script', cursive;font-size:44px;color:#B04568">보다·묻다는 두 칸 다 채우기!</p>
+</div>
+<div data-build-in="rise 2" style="position:absolute;left:980px;top:320px;width:812px;height:560px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:40px">
+<p style="font-size:26px;font-weight:700;color:#2E2A3B;background:#E6C77E;padding:4px 18px;border-radius:999px;align-self:flex-start">(3) 상대 높임법</p>
+<p style="font-size:32px;line-height:1.5">• 괄호: 말을 듣는 상대인 ( 청자 )</p>
+<p style="font-size:32px;line-height:1.5">• 상대 높임 표에서 오늘 본 것 표시하기</p>
+<p style="font-size:30px;line-height:1.5;color:#5E5870;padding:0 0 0 28px">하십시오체 청유형 빈칸 / ‘-시오’는 어느 줄?</p>
+<div style="flex:1"></div>
+<p style="font-family:'Nanum Pen Script', cursive;font-size:44px;color:#7A5F1E">‘하다’로 된 학습지 표와 ‘가다’ 표 비교해 보기</p>
+</div>
+<aside>[학습지 작성 5분] 학습지 3쪽 보면 오늘 배운 객체 높임과 상대 높임이 정리되어 있어요. 괄호 비어 있는 데 채우고, 객체 높임 특수 어휘 표도 채워 보세요. 보다랑 묻다는 두 칸 다 채워야 해요. 상대 높임 표는 오늘 슬라이드에서 ‘가다’로 봤던 걸 학습지의 ‘하다’ 표랑 비교해 보면서, 하십시오체 청유형 칸이랑 ‘-시오’가 어느 줄에 있는지 표시해 보세요.</aside>
+</section>
+
+<section id="next" data-transition="fade" style="background:#2E2A3B;color:#F7F3EC;font-family:'Noto Sans KR', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:32px">
+<x-shape kind="ellipse" style="position:absolute;left:1180px;top:200px;width:600px;height:600px;background:#3B3552"></x-shape>
+<x-shape kind="ellipse" style="position:absolute;left:1600px;top:140px;width:180px;height:180px;background:#B04568;opacity:0.85"></x-shape>
+<p style="position:absolute;left:1270px;top:330px;width:420px;font-family:'Do Hyeon', sans-serif;font-size:50px;text-align:center;color:#2E2A3B;background:#ECE6F6;border-radius:20px;padding:14px 0;transform:rotate(-4deg)">학습 활동</p>
+<p style="position:absolute;left:1300px;top:460px;width:420px;font-family:'Do Hyeon', sans-serif;font-size:50px;text-align:center;color:#2E2A3B;background:#F8E4EA;border-radius:20px;padding:14px 0;transform:rotate(3deg)">활동지</p>
+<p style="position:absolute;left:1250px;top:590px;width:420px;font-family:'Do Hyeon', sans-serif;font-size:50px;text-align:center;color:#2E2A3B;background:#F6EBCB;border-radius:20px;padding:14px 0;transform:rotate(-2deg)">수능 기출</p>
+<p style="font-size:28px;font-weight:700;color:#E6C77E;letter-spacing:1px">다음 시간 예고 · 3차시</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:100px;font-weight:400;line-height:1.15;color:#F7F3EC">배운 걸<br>직접 써 보기</h2>
+<p data-build-in="fade 1" style="position:absolute;left:128px;top:600px;width:1000px;font-size:34px;line-height:1.5;color:#CFC8DC">교과서 학습 활동 · 활동지 ‘높임의 대상 찾기’<br>대학수학능력시험 기출 문제로 확인하기</p>
+<p data-build-in="pop 2" style="position:absolute;left:128px;top:780px;width:1000px;font-family:'Nanum Pen Script', cursive;font-size:72px;color:#F6D98A">오늘도 수고 많았어요!</p>
+<aside>[차시 예고 및 인사 2분] 다음 시간에는 지금까지 배운 문장 종결 표현과 높임 표현을 직접 써 볼 거예요. 교과서 학습 활동이랑 활동지 ‘높임의 대상 찾기’를 하고, 대학수학능력시험 기출 문제로 마무리할게요. 오늘 수업은 여기까지 하겠습니다. 수고 많았어요.</aside>
+</section>
+
+</div></div>
+<div id="notes"></div>
+<div id="counter"></div>
+<div id="help">→ / 스페이스 / 클릭: 다음 · ←: 이전 · F: 전체 화면 · N: 발표자 노트</div>
+<script>
+(function () {
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var stage = document.getElementById('stage');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('#deck > section'));
+
+  function copyData(from, to) {
+    for (var i = 0; i < from.attributes.length; i++) {
+      var a = from.attributes[i];
+      if (a.name.indexOf('data-') === 0) to.setAttribute(a.name, a.value);
+    }
+  }
+
+  // <x-shape>: ellipse → rounded div, arrows → inline SVG
+  var ARROWS = {
+    'arrow-right': '0,30 60,30 60,0 100,50 60,100 60,70 0,70',
+    'arrow-left': '100,30 40,30 40,0 0,50 40,100 40,70 100,70',
+    'arrow-down': '30,0 70,0 70,60 100,60 50,100 0,60 30,60',
+    'arrow-up': '30,100 70,100 70,40 100,40 50,0 0,40 30,40'
+  };
+  document.querySelectorAll('x-shape').forEach(function (el) {
+    var kind = el.getAttribute('kind');
+    var d = document.createElement('div');
+    d.setAttribute('style', el.getAttribute('style') || '');
+    copyData(el, d);
+    d.style.flexShrink = '0';
+    if (kind === 'ellipse') {
+      d.style.borderRadius = '50%';
+    } else if (ARROWS[kind]) {
+      var color = d.style.backgroundColor || '#333';
+      d.style.background = 'transparent';
+      d.innerHTML = '<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:100%;display:block"><polygon points="' + ARROWS[kind] + '" fill="' + color + '"/></svg>';
+    }
+    el.replaceWith(d);
+  });
+
+  // <x-connector>: straight line with an arrowhead, drawn in slide coordinates
+  document.querySelectorAll('x-connector').forEach(function (el) {
+    var x1 = +el.getAttribute('x1'), y1 = +el.getAttribute('y1');
+    var x2 = +el.getAttribute('x2'), y2 = +el.getAttribute('y2');
+    var probe = document.createElement('div');
+    probe.setAttribute('style', el.getAttribute('style') || '');
+    var color = probe.style.color || '#333';
+    var w = parseFloat(probe.style.borderWidth) || 2;
+    var wrap = document.createElement('div');
+    wrap.setAttribute('style', 'position:absolute;left:0;top:0;width:1920px;height:1080px;pointer-events:none');
+    copyData(el, wrap);
+    var svg = document.createElementNS(SVGNS, 'svg');
+    svg.setAttribute('width', '1920'); svg.setAttribute('height', '1080');
+    svg.setAttribute('viewBox', '0 0 1920 1080');
+    var ang = Math.atan2(y2 - y1, x2 - x1), hl = w * 4, hw = w * 2.6;
+    var bx = x2 - hl * Math.cos(ang), by = y2 - hl * Math.sin(ang);
+    var line = document.createElementNS(SVGNS, 'line');
+    line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+    line.setAttribute('x2', bx); line.setAttribute('y2', by);
+    line.setAttribute('stroke', color); line.setAttribute('stroke-width', w);
+    line.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(line);
+    if (el.getAttribute('head') !== 'none') {
+      var head = document.createElementNS(SVGNS, 'polygon');
+      var px = -Math.sin(ang) * hw, py = Math.cos(ang) * hw;
+      head.setAttribute('points', x2 + ',' + y2 + ' ' + (bx + px) + ',' + (by + py) + ' ' + (bx - px) + ',' + (by - py));
+      head.setAttribute('fill', color);
+      svg.appendChild(head);
+    }
+    wrap.appendChild(svg);
+    el.replaceWith(wrap);
+  });
+
+  // data-build-in="effect [order]": group into click steps
+  var builds = slides.map(function (s) {
+    var els = Array.prototype.slice.call(s.querySelectorAll('[data-build-in]'));
+    var next = 1, steps = {};
+    els.forEach(function (el) {
+      var parts = el.getAttribute('data-build-in').trim().split(/\s+/);
+      var effect = parts[0];
+      var n = parts.length > 1 && /^\d+$/.test(parts[1]) ? +parts[1] : next;
+      next = Math.max(next, n + 1);
+      el.classList.add('bi', effect);
+      (steps[n] = steps[n] || []).push(el);
+    });
+    return Object.keys(steps).map(Number).sort(function (a, b) { return a - b; }).map(function (k) { return steps[k]; });
+  });
+
+  var cur = 0, step = 0;
+  var counter = document.getElementById('counter');
+  var notes = document.getElementById('notes');
+
+  function show(i, built) {
+    cur = Math.max(0, Math.min(slides.length - 1, i));
+    step = built ? builds[cur].length : 0;
+    slides.forEach(function (s, j) { s.classList.toggle('off', j !== cur); });
+    builds[cur].forEach(function (group, k) {
+      group.forEach(function (el) { el.classList.toggle('hid', k >= step); });
+    });
+    var aside = slides[cur].querySelector('aside');
+    notes.textContent = aside ? aside.textContent : '(노트 없음)';
+    counter.textContent = (cur + 1) + ' / ' + slides.length;
+    history.replaceState(null, '', '#slide-' + (cur + 1));
+  }
+  function next() {
+    if (step < builds[cur].length) {
+      builds[cur][step].forEach(function (el) { el.classList.remove('hid'); });
+      step++;
+    } else if (cur < slides.length - 1) {
+      show(cur + 1, false);
+    }
+  }
+  function prev() { if (cur > 0) show(cur - 1, true); }
+
+  function fit() {
+    var k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    stage.style.transform = 'scale(' + k + ') translate(-50%, -50%)';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  document.addEventListener('keydown', function (e) {
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].indexOf(e.key) >= 0) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].indexOf(e.key) >= 0) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') show(0, false);
+    else if (e.key === 'End') show(slides.length - 1, true);
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
+    }
+    else if (e.key === 'n' || e.key === 'N') notes.classList.toggle('on');
+  });
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('a') || e.target.closest('#notes')) return;
+    next();
+  });
+  document.addEventListener('contextmenu', function (e) { e.preventDefault(); prev(); });
+
+  // ?all: every build shown · ?export: same, without on-screen help · ?print: all slides stacked for PDF
+  var q = location.search.slice(1);
+  function flag(name) { return new RegExp('(^|&)' + name + '(&|=|$)').test(q); }
+  if (flag('print')) {
+    document.body.classList.add('print', 'export');
+    slides.forEach(function (s) { s.classList.remove('off'); });
+    builds.forEach(function (groups) { groups.forEach(function (g) { g.forEach(function (el) { el.classList.remove('hid'); }); }); });
+    return;
+  }
+  if (flag('export')) document.body.classList.add('export');
+  var m = /^#slide-(\d+)$/.exec(location.hash);
+  show(m ? +m[1] - 1 : 0, flag('all') || flag('export'));
+})();
+</script>
+</body>
+</html>
