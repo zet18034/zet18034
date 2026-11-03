@@ -6,6 +6,7 @@
 ## 파일
 
 - `index.html` — 클릭하면 내용이 하나씩 나타나는 발표용 웹 슬라이드 (31장)
+- `honorific-lesson-2.pdf` — 전체 31장 PDF (모든 내용이 펼쳐진 상태, 영상은 재생되지 않음)
 - `lesson-plan/lesson-plan-2.pdf` · `.hwp` · `.hwpx` — 2차시 교수·학습 과정안 (1차시 수업안과 같은 양식)
 
 ## 보는 방법
