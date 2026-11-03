@@ -29,7 +29,7 @@
 
 | 슬라이드 | 영상 | 구간 | 대사 |
 | --- | --- | --- | --- |
-| 20 하오체 | [〈왕과 사는 남자〉 유배 온 단종 VS 흥도 (쇼박스)](https://www.youtube.com/shorts/HQuabL44sc0) | 0:00~0:35 | (단종) 그만 물러가시오 · (시비) 물러가라 하시지 않소 |
+| 20 하오체 | [〈왕과 사는 남자〉 유배 온 단종 VS 흥도 (쇼박스)](https://www.youtube.com/shorts/HQuabL44sc0) | 0:00~0:35 | (단종) 그만 물러가시오 · (매화) 물러가라 하시지 않소 |
 | 20 하오체 | [〈왕과 사는 남자〉 압도적 등장씬 (쇼박스)](https://www.youtube.com/shorts/bdmT6qnIaEs) | 0:00~0:20 | …드시오 |
 | 21 하게체 | [〈왕과 사는 남자〉 출발! 비디오여행](https://www.youtube.com/watch?v=GIstlM0Xa38&t=355s) | 5:55~6:08 | 좋은 건 자네가 먹게 |
 | 21 하게체 | [〈관상〉 내가 왕이 될 상인가](https://www.youtube.com/watch?v=oT21gLHH-h0) | 0:00~0:35 | 내가 왕이 될 상인가? · 어서 말해 보게 |
