@@ -6,7 +6,7 @@
 ## 파일
 
 - `index.html` — 클릭하면 내용이 하나씩 나타나는 발표용 웹 슬라이드 (26장)
-- `lesson-plan/lesson-plan-2.pdf` · `.hwp` — 2차시 교수·학습 과정안(세안)
+- `lesson-plan/lesson-plan-2.pdf` · `.hwp` · `.hwpx` — 2차시 교수·학습 과정안 (1차시 수업안과 같은 양식)
 
 ## 보는 방법
 
