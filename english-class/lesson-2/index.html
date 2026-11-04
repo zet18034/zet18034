@@ -136,6 +136,23 @@
   body.print .bi { transition: none; }
   body.print, body.print * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   @page { size: 1920px 1080px; margin: 0; }
+  /* lesson 2: plot timeline */
+  .plot { position: relative; display: flex; justify-content: space-between; margin-top: 70px; }
+  .plot::before { content: ''; position: absolute; left: 110px; right: 110px; top: 14px; height: 3px; background: var(--gold-soft); }
+  .plot .st { width: 220px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
+  .plot .st i { width: 30px; height: 30px; border-radius: 50%; background: var(--paper); border: 4px solid var(--gold); }
+  .plot .st.done i { background: var(--gold); }
+  .plot .st.on i { background: var(--wine); border-color: var(--wine); transform: scale(1.35); box-shadow: 0 0 0 8px rgba(140,47,57,.15); }
+  .plot .st b { margin-top: 20px; font: 600 34px/1.2 var(--serif); }
+  .plot .st small { margin-top: 4px; font: 24px 'Noto Sans KR', sans-serif; color: var(--ink-soft); }
+  .plot .st.on b, .plot .st.on small { color: var(--wine); }
+  .story { margin: auto 0 !important; align-self: center; max-width: 1400px; text-align: center; font: 54px/1.5 var(--serif); }
+
+  /* lesson 2: diary paper + blanks */
+  .diary { margin: auto 0 !important; padding: 56px 80px 44px; font: 48px/1.75 var(--serif); text-align: justify; border-left: 6px double var(--wine); }
+  .diary .sign { display: block; margin-top: 18px; text-align: right; font: italic 32px var(--serif); color: var(--gold); }
+  .blank { display: inline-block; min-width: 230px; border-bottom: 3px solid var(--ink); text-align: center; line-height: 1.15; }
+  .blank > span { display: inline-block; color: var(--wine); font-style: italic; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -144,7 +161,7 @@
 <!-- ============ INTRODUCTION ============ -->
 
 <section class="slide dark" style="justify-content:center">
-  <p class="kicker">High School English Ⅱ · Special Lesson 1 · Lesson 2</p>
+  <p class="kicker">High School English Ⅱ · Special Lesson 2</p>
   <h1 style="font:600 150px/1.02 var(--serif);margin-top:30px">The Model<br><em style="color:var(--gold-soft)">Millionaire</em></h1>
   <div class="rule" style="margin-top:44px"></div>
   <p style="margin-top:32px;font:italic 44px var(--serif);color:rgba(244,238,226,.85)">Writing a Short Diary</p>
@@ -155,67 +172,76 @@ Small talk about any topic (weekend, lunch, weather…).
 Check that everyone has the textbook. "Please open your textbook to page 149."</aside>
 </section>
 
-<section class="slide">
-  <p class="kicker">Review · Last Class</p>
-  <h2 class="title">Do you remember them?</h2>
-  <div class="row grow" style="justify-content:space-between;align-items:center;margin-top:10px;padding:0 10px">
-    <div class="col" style="align-items:center">
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #35594F, #1F3A33)">H.E.</div>
-      <p class="who">Hughie Erskine<small>the main character</small></p>
-    </div>
-    <div class="col" style="align-items:center">
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #A8474F, #7A2832)">L.M.</div>
-      <p class="who">Laura Merton<small>the colonel’s daughter</small></p>
-    </div>
-    <div class="col" style="align-items:center">
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #5B6A72, #2F3B41)">Col.</div>
-      <p class="who">The Retired Colonel<small>Laura’s father</small></p>
-    </div>
-    <div class="col" style="align-items:center">
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #C49A52, #8E6A2C)">A.T.</div>
-      <p class="who">Alan Trevor<small>a painter · Hughie’s friend</small></p>
-    </div>
-    <div class="col" style="align-items:center">
-      <div class="cameo" style="background:#F6F0E3"><img src="../assets/beggar.png" alt="An old beggar"></div>
-      <p class="who">Baron Hausberg<small>the “beggar” · a millionaire</small></p>
-    </div>
-  </div>
-  <p class="ref">P. 140 ~ 148</p>
-  <aside>[Review · 3m]
-"Last class, we read 'The Model Millionaire'. Do you remember these people?"
-Point to each one: Hughie, Laura, the colonel, Alan Trevor…
-"And this old beggar — who was he really?" → Baron Hausberg, one of the richest men in Europe!</aside>
+<section class="slide dark divider">
+  <p class="big-roman">“</p>
+  <p class="part">Review</p>
+  <h2>Previously…</h2>
+  <aside>[Review · 3m] "Before we start, let's remember the story we read last time."</aside>
 </section>
 
-<section class="slide" style="padding-top:100px">
-  <p class="kicker">Review · The Story</p>
-  <h2 class="title" style="font-size:70px">What happened in the story?</h2>
-  <div class="col" style="margin-top:40px;gap:16px">
-    <div class="card row" style="padding:20px 36px;gap:36px;align-items:center;border-left:8px solid var(--green)">
-      <p style="width:270px;flex-shrink:0;font:600 34px var(--serif)">Exposition<small class="ko muted" style="display:block;font:400 22px 'Noto Sans KR'">발단</small></p>
-      <p style="font-size:30px;line-height:1.4">Hughie is kind but has no money. Laura’s father won’t let them marry until Hughie has enough money.</p>
-    </div>
-    <div class="card row" style="padding:20px 36px;gap:36px;align-items:center;border-left:8px solid var(--green)">
-      <p style="width:270px;flex-shrink:0;font:600 34px var(--serif)">Rising Action<small class="ko muted" style="display:block;font:400 22px 'Noto Sans KR'">전개</small></p>
-      <p style="font-size:30px;line-height:1.4">At Alan’s studio, Hughie feels sorry for an old beggar and gives him a coin.</p>
-    </div>
-    <div class="card row" style="padding:20px 36px;gap:36px;align-items:center;border-left:8px solid var(--gold)">
-      <p style="width:270px;flex-shrink:0;font:600 34px var(--serif)">Crisis<small class="ko muted" style="display:block;font:400 22px 'Noto Sans KR'">위기</small></p>
-      <p style="font-size:30px;line-height:1.4">Hughie learns that the “beggar” is really Baron Hausberg, a millionaire.</p>
-    </div>
-    <div class="card row" style="padding:20px 36px;gap:36px;align-items:center;border-left:8px solid var(--wine)">
-      <p style="width:270px;flex-shrink:0;font:600 34px var(--serif);color:var(--wine)">Climax<small class="ko muted" style="display:block;font:400 22px 'Noto Sans KR'">절정</small></p>
-      <p style="font-size:30px;line-height:1.4">The Baron sends Hughie and Laura a wedding present — the money they need.</p>
-    </div>
-    <div class="card row" style="padding:20px 36px;gap:36px;align-items:center;border-left:8px solid var(--gold)">
-      <p style="width:270px;flex-shrink:0;font:600 34px var(--serif)">Resolution<small class="ko muted" style="display:block;font:400 22px 'Noto Sans KR'">결말</small></p>
-      <p style="font-size:30px;line-height:1.4">Hughie and Laura finally get married.</p>
-    </div>
+<section class="slide">
+  <h2 class="title" style="text-align:center;font-size:80px">The Model Millionaire</h2>
+  <div class="plot">
+    <div class="st on"><i></i><b>Exposition</b><small>발단</small></div>
+    <div class="st"><i></i><b>Rising Action</b><small>전개</small></div>
+    <div class="st"><i></i><b>Crisis</b><small>위기</small></div>
+    <div class="st"><i></i><b>Climax</b><small>절정</small></div>
+    <div class="st"><i></i><b>Resolution</b><small>결말</small></div>
   </div>
-  <p class="ref">P. 140 ~ 148</p>
-  <aside>Briefly retell the story with the five plot steps from last class.
-"Hughie had no money… he gave his coin to a beggar… but the beggar was a millionaire, Baron Hausberg! The Baron sent them a wedding present, and Hughie and Laura got married."
-Optional: mention one or two lessons groups wrote on the Padlet last time.</aside>
+  <p class="story">Hughie Erskine is a handsome, poor man and loves Laura Merton. But her father, a retired colonel, insists that Hughie must have <mark>10,000 pounds</mark> before they can marry.</p>
+  <aside>"First, the exposition. Hughie is handsome but poor. He loves Laura, but her father says Hughie needs ten thousand pounds before they can marry."</aside>
+</section>
+
+<section class="slide">
+  <h2 class="title" style="text-align:center;font-size:80px">The Model Millionaire</h2>
+  <div class="plot">
+    <div class="st done"><i></i><b>Exposition</b><small>발단</small></div>
+    <div class="st on"><i></i><b>Rising Action</b><small>전개</small></div>
+    <div class="st"><i></i><b>Crisis</b><small>위기</small></div>
+    <div class="st"><i></i><b>Climax</b><small>절정</small></div>
+    <div class="st"><i></i><b>Resolution</b><small>결말</small></div>
+  </div>
+  <p class="story">Hughie visits his artist friend Alan Trevor’s studio, and sees an old beggar posing as a model. Hughie feels sorry for him and secretly gives him <mark>a gold coin</mark>.</p>
+  <aside>"Rising action: Hughie visits Alan's studio and sees an old beggar. He feels sorry for him and secretly gives him a gold coin."</aside>
+</section>
+
+<section class="slide">
+  <h2 class="title" style="text-align:center;font-size:80px">The Model Millionaire</h2>
+  <div class="plot">
+    <div class="st done"><i></i><b>Exposition</b><small>발단</small></div>
+    <div class="st done"><i></i><b>Rising Action</b><small>전개</small></div>
+    <div class="st on"><i></i><b>Crisis</b><small>위기</small></div>
+    <div class="st"><i></i><b>Climax</b><small>절정</small></div>
+    <div class="st"><i></i><b>Resolution</b><small>결말</small></div>
+  </div>
+  <p class="story">Hughie learns from Alan that the beggar is actually millionaire <mark>Baron Hausberg</mark>. Hughie feels embarrassed and worried.</p>
+  <aside>"Crisis: Alan tells Hughie that the beggar was really Baron Hausberg, a millionaire! Hughie feels embarrassed and worried."</aside>
+</section>
+
+<section class="slide">
+  <h2 class="title" style="text-align:center;font-size:80px">The Model Millionaire</h2>
+  <div class="plot">
+    <div class="st done"><i></i><b>Exposition</b><small>발단</small></div>
+    <div class="st done"><i></i><b>Rising Action</b><small>전개</small></div>
+    <div class="st done"><i></i><b>Crisis</b><small>위기</small></div>
+    <div class="st on"><i></i><b>Climax</b><small>절정</small></div>
+    <div class="st"><i></i><b>Resolution</b><small>결말</small></div>
+  </div>
+  <p class="story">Baron Hausberg sends Hughie <mark>10,000 pounds</mark> as a wedding gift.</p>
+  <aside>"Climax: the Baron sends Hughie ten thousand pounds as a wedding gift."</aside>
+</section>
+
+<section class="slide">
+  <h2 class="title" style="text-align:center;font-size:80px">The Model Millionaire</h2>
+  <div class="plot">
+    <div class="st done"><i></i><b>Exposition</b><small>발단</small></div>
+    <div class="st done"><i></i><b>Rising Action</b><small>전개</small></div>
+    <div class="st done"><i></i><b>Crisis</b><small>위기</small></div>
+    <div class="st done"><i></i><b>Climax</b><small>절정</small></div>
+    <div class="st on"><i></i><b>Resolution</b><small>결말</small></div>
+  </div>
+  <p class="story">Hughie and Laura marry, and the Baron makes <mark>a speech</mark> at the wedding breakfast.</p>
+  <aside>"Resolution: Hughie and Laura get married, and the Baron makes a speech at the wedding breakfast."</aside>
 </section>
 
 <section class="slide">
@@ -223,7 +249,7 @@ Optional: mention one or two lessons groups wrote on the Padlet last time.</asid
   <h2 class="title">We will be able to…</h2>
   <div class="col" style="margin-top:80px;gap:46px">
     <div data-build-in="glide" class="row" style="align-items:baseline;gap:30px"><p class="num">1</p><p class="lead" style="font-size:48px"><b>write</b> a short diary as one of the characters in the story.</p></div>
-    <div data-build-in="glide" class="row" style="align-items:baseline;gap:30px"><p class="num">2</p><p class="lead" style="font-size:48px"><b>read</b> another student’s writing and <b>contrast</b> it with my own writing.</p></div>
+    <div data-build-in="glide" class="row" style="align-items:baseline;gap:30px"><p class="num">2</p><p class="lead" style="font-size:48px"><b>read</b> another student’s writing and <b>contrast</b> it with one’s own writing.</p></div>
   </div>
   <aside>[Lesson Objectives · 1m]
 "These are today's lesson objectives. Let's read them together. 3, 2, 1 — We will be able to…"</aside>
@@ -232,212 +258,228 @@ Optional: mention one or two lessons groups wrote on the Padlet last time.</asid
 <!-- ============ DEVELOPMENT · BARON'S DIARY ============ -->
 
 <section class="slide dark divider">
-  <p class="big-roman">I</p>
-  <p class="part">After You Read · A</p>
+  <p class="big-roman">A</p>
+  <p class="part">P. 149 · A</p>
   <h2>Baron’s Diary</h2>
-  <p class="sub">P. 149</p>
-  <aside>"Now look at part A on page 149. This is a diary — written by Baron Hausberg on the day of Hughie's wedding."</aside>
-</section>
-
-<section class="slide dark center" style="justify-content:center">
-  <p class="kicker" style="justify-content:center">P. 149 · A</p>
-  <h2 style="font:600 120px/1.1 var(--serif);margin-top:20px">Fill in the blanks!</h2>
-  <p style="margin-top:26px;font:italic 40px var(--serif);color:rgba(244,238,226,.8)">Use the words in the box.</p>
+  <p class="sub">read and fill in the blanks</p>
   <div style="margin-top:56px"><div class="timer" data-min="3"><span class="t">3:00</span><small>click to start</small></div></div>
   <aside>[Reading Baron's Diary · 8m]
-"Look at the word list in A. Is there any word you don't know?" (Explain unknown words.)
+"Look at part A on page 149. This is a diary written by Baron Hausberg."
+"Is there any word you don't know in the list?" (Explain unknown words.)
 "You have three minutes. Fill in the blanks by yourself." Start the timer.</aside>
 </section>
 
-<section class="slide center" style="justify-content:center">
-  <p class="kicker" style="justify-content:center">P. 149 · A</p>
-  <h2 class="title" style="font-size:130px">Checking Answers</h2>
-  <aside>Read the diary out loud and stop at each blank: "What's the answer for number one?"
-Check every blank together.</aside>
+<section class="slide">
+  <p class="kicker">P. 149 · A</p>
+  <h2 class="title">Baron’s Diary</h2>
+  <div class="card diary">
+    <p>Today I gave a speech at Hughie Erskine’s wedding. I first met this young man at Alan Trevor’s studio. I had asked Trevor, a very gifted <span class="blank"><span data-build-in="pop">artist</span></span>, to paint me as a(n) <span class="blank"><span data-build-in="pop">beggar</span></span>, and he accepted my commission.</p>
+  </div>
+  <p class="ref">1 / 4</p>
+  <aside>Read the diary out loud and stop at each blank. "What's the first word?" → click to show it.
+Answers: artist, beggar</aside>
+</section>
+
+<section class="slide">
+  <p class="kicker">P. 149 · A</p>
+  <h2 class="title">Baron’s Diary</h2>
+  <div class="card diary">
+    <p>He was painting me wearing <span class="blank"><span data-build-in="pop">rags</span></span> when Hughie came into the studio. Hughie said I should receive some of the money that Trevor would get for the painting, saying that I was <span class="blank"><span data-build-in="pop">miserable</span></span> and poor.</p>
+  </div>
+  <p class="ref">2 / 4</p>
+  <aside>Answers: rags, miserable</aside>
+</section>
+
+<section class="slide">
+  <p class="kicker">P. 149 · A</p>
+  <h2 class="title">Baron’s Diary</h2>
+  <div class="card diary">
+    <p>What I didn’t expect was that he would give me a(n) <span class="blank"><span data-build-in="pop">coin</span></span>. After he left the studio, I asked Trevor to tell me everything about him: his <span class="blank"><span data-build-in="pop">income</span></span>, his prospects, and his girlfriend.</p>
+  </div>
+  <p class="ref">3 / 4</p>
+  <aside>Answers: coin, income</aside>
+</section>
+
+<section class="slide">
+  <p class="kicker">P. 149 · A</p>
+  <h2 class="title">Baron’s Diary</h2>
+  <div class="card diary">
+    <p>After hearing about Hughie and what he needed to get <span class="blank"><span data-build-in="pop">married</span></span> to Laura, I decided to return his kindness. I sent him a letter, enclosing a check for ten thousand pounds. It was a wedding present for somebody who deserved it!</p>
+    <span class="sign">— Baron Hausberg</span>
+  </div>
+  <p class="ref">4 / 4</p>
+  <aside>Answer: married</aside>
 </section>
 
 <!-- ============ DEVELOPMENT · PRE-WRITING ============ -->
 
 <section class="slide dark divider">
-  <p class="big-roman">II</p>
+  <p class="big-roman">✎</p>
   <p class="part">Today’s Activity</p>
-  <h2>Writing a<br>Short Diary</h2>
-  <div class="row" style="margin-top:50px;gap:24px">
-    <span class="chip">as one of the characters</span>
-    <span class="chip">in English</span>
-    <span class="chip">3 ~ 5 sentences</span>
-  </div>
+  <h2>Writing a Diary</h2>
   <aside>[Pre-writing · 5m] Hand out the worksheets.
-"Today, you will write a short diary — just like the Baron — but as one of the characters in the story. In English, three to five sentences."</aside>
+"Today's activity is writing a diary — just like the Baron, but as one of the characters in the story."</aside>
 </section>
 
 <section class="slide">
-  <p class="kicker">Pre-writing · What’s in the Diary?</p>
-  <h2 class="title">What does Baron’s diary tell us?</h2>
-  <div class="row" style="margin-top:80px;gap:28px">
-    <div data-build-in="rise" class="card col grow center" style="padding:44px 20px;border-top:6px solid var(--green)">
-      <p style="font:italic 600 64px var(--serif);color:var(--green)">Who</p>
-      <p class="muted" style="margin-top:18px !important;font-size:28px;line-height:1.35">Who wrote it?<br>Who is in it?</p>
-    </div>
-    <div data-build-in="rise" class="card col grow center" style="padding:44px 20px;border-top:6px solid var(--green)">
-      <p style="font:italic 600 64px var(--serif);color:var(--green)">When</p>
-      <p class="muted" style="margin-top:18px !important;font-size:28px;line-height:1.35">What day<br>was it?</p>
-    </div>
-    <div data-build-in="rise" class="card col grow center" style="padding:44px 20px;border-top:6px solid var(--green)">
-      <p style="font:italic 600 64px var(--serif);color:var(--green)">Where</p>
-      <p class="muted" style="margin-top:18px !important;font-size:28px;line-height:1.35">Where<br>was he?</p>
-    </div>
-    <div data-build-in="rise" class="card col grow center" style="padding:44px 20px;border-top:6px solid var(--green)">
-      <p style="font:italic 600 64px var(--serif);color:var(--green)">What</p>
-      <p class="muted" style="margin-top:18px !important;font-size:28px;line-height:1.35">What did<br>he do?</p>
-    </div>
-    <div data-build-in="rise" class="card col grow center" style="padding:44px 20px;border-top:6px solid var(--wine)">
-      <p style="font:italic 600 64px var(--serif);color:var(--wine)">Impression</p>
-      <p class="muted" style="margin-top:18px !important;font-size:28px;line-height:1.35">How did<br>he feel?</p>
-    </div>
+  <p class="kicker">Writing a Diary</p>
+  <h2 class="title">We will…</h2>
+  <div class="col" style="margin-top:70px;gap:34px">
+    <div data-build-in="glide" class="card row" style="padding:36px 50px;gap:40px;align-items:center"><p class="num">1</p><p class="lead">choose <b>a scene</b> and <b>a character</b> from the scene.</p></div>
+    <div data-build-in="glide" class="card row" style="padding:36px 50px;gap:40px;align-items:center"><p class="num">2</p><p class="lead">write <b>a diary</b> as the character.</p></div>
+    <div data-build-in="glide" class="card row" style="padding:36px 50px;gap:40px;align-items:center"><p class="num">3</p><p class="lead">read your partner’s diary and give <b>a comment</b>.</p></div>
   </div>
-  <p class="ref">P. 149</p>
-  <aside>Analyze the Baron's diary together. For each card, ask the class and find the answer in the diary:
-Who wrote it? When? Where? What did he do? How did he feel about it?
-"Your diary should have these things, too."</aside>
+  <aside>"First, you choose a scene and a character. Then you write a short diary as that character — in English, three to five sentences. Finally, you read your partner's diary and write a comment."</aside>
+</section>
+
+<section class="slide dark divider">
+  <p class="big-roman">1</p>
+  <p class="part">Pre-writing 1</p>
+  <h2>What’s in<br>the diary?</h2>
+  <aside>"Let's look at the Baron's diary again. What is in a diary?"</aside>
 </section>
 
 <section class="slide">
-  <p class="kicker">Pre-writing · Grammar</p>
-  <h2 class="title">How do we write a diary?</h2>
-  <div class="row" style="margin-top:70px;gap:60px">
-    <div data-build-in="rise" class="card col grow" style="padding:54px 56px">
-      <p style="font:600 110px/1 var(--serif);color:var(--green)">‘I’</p>
-      <p style="margin-top:24px !important;font:600 44px var(--serif)">1st person singular</p>
-      <p class="lead muted" style="margin-top:12px !important">Write as the character — <i>I</i>, not <i>he</i> or <i>she</i>.</p>
-    </div>
-    <div data-build-in="rise" class="card col grow" style="padding:54px 56px">
-      <p style="font:italic 600 110px/1 var(--serif);color:var(--wine)">-ed</p>
-      <p style="margin-top:24px !important;font:600 44px var(--serif)">Past tense</p>
-      <p class="lead muted" style="margin-top:12px !important">Write about what <i>already happened</i> today.</p>
-    </div>
+  <p class="kicker">Pre-writing 1 · Components</p>
+  <h2 class="title">Components</h2>
+  <div class="col" style="margin-top:50px;gap:16px">
+    <div data-build-in="rise" class="card row" style="padding:20px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Who</p><p class="lead">‘Baron’s’ diary</p></div>
+    <div data-build-in="rise" class="card row" style="padding:20px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">What</p><p class="lead">I gave a speech</p></div>
+    <div data-build-in="rise" class="card row" style="padding:20px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Where</p><p class="lead">at Hughie Erskine’s wedding</p></div>
+    <div data-build-in="rise" class="card row" style="padding:20px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">When</p><p class="lead">today (wedding day)</p></div>
+    <div data-build-in="rise" class="card row" style="padding:20px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Impression</p><p class="lead">“It was a wedding present for somebody who deserved it!”</p></div>
+    <div data-build-in="rise" class="card row" style="padding:20px 40px;gap:40px;align-items:center;border-left:8px solid var(--gold)"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--gold)">Elaboration</p><p class="lead">more details</p></div>
   </div>
-  <div data-build-in="fade" class="card row center" style="margin-top:46px;padding:30px 40px;gap:34px;font:italic 42px var(--serif)">
-    <span class="muted" style="text-decoration:line-through;text-decoration-color:var(--wine)">He gives the beggar a coin.</span>
-    <span style="color:var(--gold);font-style:normal">→</span>
-    <span><b style="color:var(--green)">I</b> <b style="color:var(--wine)">gave</b> the beggar a coin.</span>
-  </div>
-  <aside>"Look at the Baron's diary again. Does he say 'he' or 'I'? — 'I'. And is it present or past? — Past."
-"So in your diary: use 'I', and use the past tense."
-Example: if I am Hughie — "I gave the beggar a coin."</aside>
+  <aside>Analyze the Baron's diary together, one component at a time:
+"Whose diary is it? — The Baron's. What did he do? — He gave a speech. Where? — At Hughie's wedding. When? — Today, the wedding day. How did he feel? — 'It was a wedding present for somebody who deserved it!'"
+"And you can add more details — elaboration."</aside>
 </section>
 
 <section class="slide">
-  <p class="kicker">Pre-writing · Brainstorming</p>
-  <h2 class="title">With your partner, choose…</h2>
-  <div class="row" style="margin-top:60px;gap:60px;align-items:stretch">
-    <div class="card col grow" style="padding:50px 56px">
-      <p class="num">1</p>
-      <p style="margin-top:14px !important;font:600 56px var(--serif)">a scene</p>
-      <p class="lead muted" style="margin-top:12px !important">from the whole story<br>(write the page #)</p>
-    </div>
-    <div class="card col grow" style="padding:50px 56px">
-      <p class="num">2</p>
-      <p style="margin-top:14px !important;font:600 56px var(--serif)">a character</p>
-      <p class="lead muted" style="margin-top:12px !important">who is in that scene</p>
-    </div>
-    <div class="col center" style="width:420px">
-      <div class="timer" data-min="5"><span class="t">5:00</span><small>click to start</small></div>
-    </div>
+  <p class="kicker">Pre-writing 1 · Grammar</p>
+  <h2 class="title">Grammar</h2>
+  <p style="margin-top:90px !important;align-self:center;text-align:center;font:58px/1.5 var(--serif)">“Today <b style="color:var(--wine)">I</b> <b style="color:var(--green);text-decoration:underline;text-decoration-thickness:4px;text-underline-offset:10px">gave</b> a speech<br>at Hughie Erskine’s wedding.”</p>
+  <div class="row center" style="margin-top:80px;gap:60px">
+    <div data-build-in="rise" class="card row" style="padding:34px 50px;gap:26px;align-items:center;border-top:6px solid var(--wine)"><p style="font:italic 50px var(--serif);color:var(--wine)">→</p><p class="lead">In <b style="color:var(--wine)">first person singular</b></p></div>
+    <div data-build-in="rise" class="card row" style="padding:34px 50px;gap:26px;align-items:center;border-top:6px solid var(--green)"><p style="font:italic 50px var(--serif);color:var(--green)">→</p><p class="lead">In <b style="color:var(--green)">past tense</b></p></div>
   </div>
-  <p style="margin-top:50px !important;font:italic 40px var(--serif)">You and your partner will write on <mark>the same topic</mark>.</p>
-  <aside>[Brainstorming · 8m]
-"Make pairs with your partner."
-"Together, choose one scene from the story and one character in that scene. Write them in part 1 of your worksheet — the page number and the character."
-"You and your partner will both write a diary on the same scene and character, so agree together."
-"You can talk in Korean or English. You have five minutes." Start the timer. Walk around and check.</aside>
+  <aside>"Look at this sentence. Does the Baron say 'he' or 'I'? — 'I'. First person singular."
+"Is 'gave' present or past? — Past tense."
+"So when you write your diary, use 'I' and the past tense."</aside>
+</section>
+
+<section class="slide dark divider">
+  <p class="big-roman">2</p>
+  <p class="part">Pre-writing 2</p>
+  <h2>Brainstorming</h2>
+  <aside>"Now, brainstorming with your partner."</aside>
+</section>
+
+<section class="slide">
+  <p class="kicker">Pre-writing 2</p>
+  <h2 class="title">Brainstorming</h2>
+  <div class="col" style="margin-top:60px;gap:20px">
+    <div class="card row" style="padding:28px 44px;gap:40px;align-items:center"><p style="width:250px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Topic</p><p class="lead">a scene (page) &amp; a character</p></div>
+    <div class="card row" style="padding:28px 44px;gap:40px;align-items:center"><p style="width:250px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Purpose</p><p class="lead">to write a diary</p></div>
+    <div class="card row" style="padding:28px 44px;gap:40px;align-items:center"><p style="width:250px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">With</p><p class="lead">your partner</p></div>
+    <div class="card row" style="padding:28px 44px;gap:40px;align-items:center"><p style="width:250px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Time</p><p class="lead">5 minutes</p></div>
+  </div>
+  <aside>[Brainstorming · 8m] "Make pairs with your partner."
+"Together, choose one scene from the story — write the page number — and one character in that scene. Write them in part 1 of your worksheet."
+"You can talk in Korean or English."</aside>
+</section>
+
+<section class="slide">
+  <svg class="abs" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080" aria-label="topic diagram">
+    <path d="M960 450 V540 M560 540 H1360 M560 540 V620 M1360 540 V620" fill="none" stroke="#1F2A2E" stroke-width="4"/>
+  </svg>
+  <div class="abs col center" style="left:820px;top:170px;width:280px;height:280px;border-radius:50%;border:5px solid var(--gold);background:var(--card);box-shadow:0 0 0 10px var(--paper), 0 0 0 12px var(--gold-soft)">
+    <p style="font:italic 600 66px var(--serif);color:var(--wine)">Topic</p>
+    <p class="muted" style="font-size:24px;margin-top:6px">scene &amp; character</p>
+  </div>
+  <div class="abs card col center" style="left:380px;top:640px;width:360px;height:150px"><p style="font:600 50px var(--serif)">My writing</p></div>
+  <div class="abs card col center" style="left:1180px;top:640px;width:360px;height:150px"><p style="font:600 50px var(--serif)">Partner’s</p></div>
+  <svg data-build-in="pop" class="abs" style="left:860px;top:655px" width="200" height="120" viewBox="0 0 200 120" aria-label="exchange">
+    <path d="M20 40 H170 M150 18 L178 40 L150 62" fill="none" stroke="#8C2F39" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M180 82 H30 M50 60 L22 82 L50 104" fill="none" stroke="#8C2F39" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <p data-build-in="fade 1" class="abs" style="left:0;width:1920px;top:850px;text-align:center;font:italic 50px var(--serif);color:var(--wine)">Read and give comments</p>
+  <aside>"You and your partner choose the same topic. Then each of you writes your own diary on it."
+(Click) "After writing, you exchange your diaries, read them, and give comments. Same topic — but different writing!"</aside>
+</section>
+
+<section class="slide dark center" style="justify-content:center">
+  <p class="kicker" style="justify-content:center">Pre-writing 2</p>
+  <h2 style="font:600 130px/1.1 var(--serif);margin-top:20px">Brainstorming Time!</h2>
+  <div style="margin-top:60px"><div class="timer" data-min="5"><span class="t">5:00</span><small>click to start</small></div></div>
+  <aside>"You have five minutes. Choose your scene and character together." Start the timer.
+Walk around and check each pair. When time is up: "OK, please stop."</aside>
 </section>
 
 <!-- ============ DEVELOPMENT · WRITING ============ -->
 
-<section class="slide">
-  <p class="kicker">While-writing · Before You Start</p>
-  <h2 class="title">Remember!</h2>
-  <div class="col" style="margin-top:60px;gap:28px">
-    <div data-build-in="glide" class="card row" style="padding:34px 50px;gap:40px;align-items:center"><p class="num">1</p><p class="lead">Small grammar mistakes are <b>OK</b> — <mark>what you say</mark> matters more.</p></div>
-    <div data-build-in="glide" class="card row" style="padding:34px 50px;gap:40px;align-items:center"><p class="num">2</p><p class="lead">Your diary must <b>connect logically</b> to the story.</p></div>
-    <div data-build-in="glide" class="row" style="gap:28px">
-      <div class="card row grow" style="padding:34px 50px;gap:30px;align-items:center;border-left:8px solid var(--wine)"><p style="font:700 54px var(--sans);color:var(--wine)">✕</p><p class="lead">No AI tools</p></div>
-      <div class="card row grow" style="padding:34px 50px;gap:30px;align-items:center;border-left:8px solid var(--green)"><p style="font:700 54px var(--sans);color:var(--green)">✓</p><p class="lead">A dictionary is OK</p></div>
-    </div>
-  </div>
-  <aside>"Before you write: grammar is not so important today, as long as your sentences make sense."
-"What matters is the logical connection — your diary must match the story."
-"Don't use AI tools. But you can use a dictionary, like the Naver dictionary, to look up words."</aside>
-</section>
-
-<section class="slide dark" style="justify-content:center">
-  <div class="abs col" style="right:200px;top:250px;gap:20px">
-    <span class="chip" style="font-size:30px;padding:12px 30px">In English · 3 ~ 5 sentences</span>
-    <span class="chip" style="font-size:30px;padding:12px 30px">who · what · when · where · impression</span>
-    <span class="chip" style="font-size:30px;padding:12px 30px">‘I’ · past tense</span>
-    <span class="chip" style="font-size:30px;padding:12px 30px">✋ Raise your hand if you need help</span>
-  </div>
-  <p class="kicker">While-writing</p>
-  <h2 style="font:600 120px/1.08 var(--serif);margin-top:20px">Write your<br><em style="color:var(--gold-soft)">diary!</em></h2>
+<section class="slide dark center" style="justify-content:center">
+  <p class="kicker" style="justify-content:center">While-writing</p>
+  <h2 style="font:600 130px/1.1 var(--serif);margin-top:20px">Writing Time!</h2>
   <div style="margin-top:60px"><div class="timer" data-min="10"><span class="t">10:00</span><small>click to start</small></div></div>
-  <aside>[While-writing · 12m]
-"Now write your diary in part 2 of the worksheet. You have ten minutes." Start the timer (adjust if needed).
+  <aside>[While-writing · 12m] Before starting:
+"Grammar is not so important today, as long as your sentences make sense. What matters is the logical connection between the story and your diary."
+"Don't use AI tools. But you can use a dictionary, like the Naver dictionary."
+"Write in part 2 of your worksheet — in English, three to five sentences, with 'I' and the past tense. You have ten minutes." Start the timer.
 Walk around and help students who raise their hands. When time is up: "Please stop writing."</aside>
 </section>
 
 <!-- ============ DEVELOPMENT · COMMENTS ============ -->
 
+<section class="slide dark divider">
+  <p class="big-roman">3</p>
+  <p class="part">After-writing</p>
+  <h2>Comments</h2>
+  <aside>[After-writing: Comments · 7m] "Now exchange your worksheets with your partner."</aside>
+</section>
+
 <section class="slide">
-  <p class="kicker">After-writing · Comments</p>
-  <h2 class="title">Exchange &amp; comment</h2>
-  <div class="row" style="margin-top:60px;gap:60px;align-items:stretch">
-    <div class="col grow" style="gap:24px">
-      <div class="card col" style="padding:40px 50px">
-        <p class="lead">Swap worksheets with your partner and read the diary.</p>
-        <p class="lead muted" style="margin-top:14px !important">Write a comment — <b style="color:var(--ink)">in English, 1 ~ 2 sentences</b>.</p>
-      </div>
-      <div class="card col" style="padding:36px 50px;gap:18px;font:italic 40px var(--serif)">
+  <p class="kicker">After-writing</p>
+  <h2 class="title">Comments</h2>
+  <div class="col" style="margin-top:60px;gap:20px">
+    <div class="card row" style="padding:28px 44px;gap:40px;align-items:center"><p style="width:250px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Length</p><p class="lead">1 ~ 2 sentences</p></div>
+    <div class="card row" style="padding:28px 44px;gap:40px;align-items:flex-start"><p style="width:250px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Ex)</p>
+      <div class="col" style="gap:8px;font:italic 42px/1.4 var(--serif)">
         <p>I think <span class="accent">~</span> is <span class="accent">~</span>.</p>
         <p>I liked the idea of <span class="accent">~</span>.</p>
-        <p>Your writing is <span class="accent">~</span> because <span class="accent">~</span>.</p>
+        <p>Your writing is <span class="accent">~</span> because <span class="accent">~</span>…</p>
       </div>
     </div>
-    <div class="col center" style="width:420px">
-      <div class="timer" data-min="5"><span class="t">5:00</span><small>click to start</small></div>
-    </div>
+    <div class="card row" style="padding:28px 44px;gap:40px;align-items:center"><p style="width:250px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Time</p><p class="lead">5 minutes</p></div>
   </div>
-  <aside>[After-writing: Comments · 7m]
-"Exchange your worksheets with your partner. Read your partner's diary and write a short comment in part 3 — in English, one or two sentences. You can use these expressions."
-"You have about five minutes." Start the timer.
-When time is up: "Give the worksheet back and read the comment from your partner." You wrote about the same scene — how is your partner's diary different from yours?</aside>
+  <aside>"Read your partner's diary and write a short comment in part 3 — in English, one or two sentences. You can use these expressions."</aside>
+</section>
+
+<section class="slide dark center" style="justify-content:center">
+  <p class="kicker" style="justify-content:center">After-writing</p>
+  <h2 style="font:600 130px/1.1 var(--serif);margin-top:20px">Writing Comments</h2>
+  <div style="margin-top:60px"><div class="timer" data-min="5"><span class="t">5:00</span><small>click to start</small></div></div>
+  <aside>"You have five minutes." Start the timer.
+When time is up: "Give the worksheet back to your partner and read the comment." "You wrote about the same topic — how is your partner's diary different from yours?"</aside>
 </section>
 
 <!-- ============ CONSOLIDATION ============ -->
 
 <section class="slide">
   <p class="kicker">Review</p>
-  <h2 class="title">In two lessons, we were able to…</h2>
-  <div class="row" style="margin-top:80px;gap:60px">
-    <div data-build-in="rise" class="card col grow" style="padding:50px 56px;border-top:8px solid var(--green)">
-      <p class="muted" style="font-size:28px;letter-spacing:4px;text-transform:uppercase">Lesson 1</p>
-      <p style="margin-top:14px !important;font:600 84px var(--serif);color:var(--green)">Reading</p>
-      <p class="lead" style="margin-top:20px !important">read a short novel and summarize it based on plot structure.</p>
-    </div>
-    <div data-build-in="rise" class="card col grow" style="padding:50px 56px;border-top:8px solid var(--wine)">
-      <p class="muted" style="font-size:28px;letter-spacing:4px;text-transform:uppercase">Lesson 2</p>
-      <p style="margin-top:14px !important;font:600 84px var(--serif);color:var(--wine)">Writing</p>
-      <p class="lead" style="margin-top:20px !important">write a short diary as a character and share comments.</p>
-    </div>
+  <h2 class="title">We were able to…</h2>
+  <div class="col" style="margin-top:80px;gap:46px">
+    <div data-build-in="glide" class="row" style="align-items:center;gap:30px"><svg width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="none" stroke="#B8924A" stroke-width="4"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#1F3A33" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="lead" style="font-size:48px"><b>write</b> a short diary as one of the characters in the story.</p></div>
+    <div data-build-in="glide" class="row" style="align-items:center;gap:30px"><svg width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="none" stroke="#B8924A" stroke-width="4"/><path d="M18 33 L28 43 L47 22" fill="none" stroke="#1F3A33" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg><p class="lead" style="font-size:48px"><b>read</b> another student’s writing and <b>contrast</b> it with one’s own writing.</p></div>
   </div>
-  <aside>[Review · 2m]
-"Through these two lessons, you read a story and summarized it, and today you wrote your own diary as a character. You developed your reading and writing skills!"</aside>
+  <aside>[Review · 2m] "Let's review. Today we were able to write a short diary as a character, and read and compare our partner's writing."
+"Through these two lessons, you developed both your reading and writing skills!"</aside>
 </section>
 
 <section class="slide dark center" style="justify-content:center">
   <p style="font:400 230px/1 'Pinyon Script', cursive;color:var(--paper)">Thank you!</p>
   <div class="rule" style="margin-top:50px"></div>
-  <p style="margin-top:34px;font:italic 36px var(--serif);color:var(--gold-soft)">The Model Millionaire · Special Lesson 1</p>
+  <p style="margin-top:34px;font:italic 36px var(--serif);color:var(--gold-soft)">The Model Millionaire · Special Lesson 2</p>
   <aside>[Thank You · 1m]
 "Thank you so much for taking part so well. You gave me great memories!" Applaud together.
 Collect the worksheets (to evaluate with the criteria later). End class.</aside>

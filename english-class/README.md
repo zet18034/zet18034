@@ -6,7 +6,7 @@ High School English Ⅱ Special Lesson 「The Model Millionaire」(Oscar Wilde) 
 ## 파일
 
 - `index.html` — 클릭하면 내용이 하나씩 나타나는 발표용 웹 슬라이드 (27장)
-- `lesson-2/index.html` — 2차시(Writing a Short Diary) 발표용 웹 슬라이드 (16장)
+- `lesson-2/index.html` — 2차시(Writing a Short Diary) 발표용 웹 슬라이드 (28장)
 - `assets/` — 원래 PPT에서 가져온 이미지 (잡지 표지, 포스터, 거지 삽화, 패들렛 QR)
 
 ## 보는 방법
@@ -36,10 +36,10 @@ High School English Ⅱ Special Lesson 「The Model Millionaire」(Oscar Wilde) 
 
 ## 2차시 · Writing a Short Diary (`lesson-2/`)
 
-2차시 수업안과 학습지(Writing a Short Diary)에 맞춘 슬라이드입니다. 조작 방법은 1차시와 같습니다.
+원래 PPT(`Special Lesson 2.pdf`)의 흐름을 따르고 2차시 수업안·학습지에 맞춰 만든 슬라이드입니다. 조작 방법은 1차시와 같습니다.
 
 | 단계 | 슬라이드 |
 | --- | --- |
-| Introduction | 1 표지 · 2–3 지난 시간 복습(인물, 5단계 줄거리) · 4 학습 목표 |
-| Development | 5–7 Baron’s Diary(p.149 A 빈칸 채우기 3분 타이머, 정답 확인은 구두) · 8–11 Pre-writing(오늘의 활동, 일기 요소 who·when·where·what·impression, 'I'·과거 시제, 짝과 장면·인물 정하기 5분 타이머) · 12–13 While-writing(유의 사항, 10분 타이머) · 14 Comments(5분 타이머) |
-| Consolidation | 15 두 차시 Review · 16 Thank you |
+| Introduction | 1 표지 · 2–7 Previously…(플롯 5단계를 한 장씩) · 8 학습 목표 |
+| Development | 9 Baron’s Diary(p.149 A, 3분 타이머) · 10–13 일기 본문(클릭하면 빈칸 정답 표시) · 14–15 Today’s activity · 16–18 Pre-writing 1(Components, Grammar) · 19–22 Pre-writing 2(Brainstorming, Topic 그림, 5분 타이머) · 23 Writing Time(10분 타이머) · 24–26 Comments(5분 타이머) |
+| Consolidation | 27 Review · 28 Thank you |
