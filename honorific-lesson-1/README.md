@@ -8,6 +8,7 @@
 - `index.html` — 클릭하면 내용이 하나씩 나타나는 발표용 웹 슬라이드
 - `honorific-lesson-1.pdf` — 전체 36장 PDF (모든 내용이 펼쳐진 상태)
 - `images/slide-01.png` ~ `slide-36.png` — 슬라이드별 이미지 (1920×1080)
+- `lesson-plan/lesson-plan-1.hwp` (`.hwpx`, `.pdf`) — 1차시 교수·학습 과정안(약안)
 
 ## 보는 방법
 
