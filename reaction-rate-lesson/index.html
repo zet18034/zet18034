@@ -127,7 +127,36 @@
   .atom-l.o { fill: #fff; font-size: 24px; }
   .atom { transition: transform 1.2s cubic-bezier(.65,.05,.3,1); }
 
-  /* ---------- slide 3 ---------- */
+  /* ---------- slide 3 (Δ) ---------- */
+  .dl-two { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 36px; }
+  .dl-two .card { padding: 24px 32px; display: flex; flex-direction: column; gap: 16px; min-height: 330px; }
+  .dl-sym { font-family: 'STIX Two Text', serif; font-size: 40px; color: var(--blue-deep); }
+  .candy { display: grid; grid-template-columns: auto 44px auto 1fr; align-items: center; gap: 10px; font-size: 30px; padding: 14px 20px; border-radius: 16px; }
+  .candy.up { background: var(--prod-soft); } .candy.down { background: var(--cons-soft); }
+  .candy .jar { display: flex; flex-wrap: nowrap; white-space: nowrap; gap: 4px; align-items: center; font-size: 30px; line-height: 1; }
+  .candy .jar small { font-size: 24px; font-weight: 700; color: var(--ink-2); margin-left: 8px; }
+  .candy .arr { font-size: 34px; color: var(--ink-2); text-align: center; }
+  .candy .d { font-family: 'STIX Two Text', serif; font-size: 40px; font-weight: 600; text-align: right; white-space: nowrap; }
+  .dl-note { font-size: 25px; color: var(--ink-2); }
+  .dl-note b { color: var(--blue-deep); }
+  .dl-frac { display: flex; align-items: center; justify-content: center; gap: 26px; flex: 1; }
+  .dl-frac .m { font-size: 84px; }
+  .dl-frac .eqs { font-size: 54px; color: var(--ink-2); }
+  .dl-frac .lbl2 { display: flex; flex-direction: column; gap: 18px; font-size: 28px; font-weight: 500; }
+  .dl-frac .lbl2 span { padding: 6px 16px; border-radius: 12px; background: var(--blue-soft); }
+  .dl-unit { align-self: center; font-size: 28px; font-weight: 700; color: #fff; background: var(--blue); border-radius: 999px; padding: 6px 26px; }
+  .dl-goal { margin-top: 26px; display: flex; align-items: center; gap: 26px; padding: 14px 32px; border-radius: 20px; background: var(--ink); color: #fff; }
+  .dl-goal > span { flex: none; font-size: 26px; font-weight: 900; color: var(--ink); background: #FFD45C; border-radius: 12px; padding: 6px 18px; }
+  .dl-goal p { font-size: 32px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .dl-goal b { color: #FFD45C; }
+  .dl-goal .frac { font-size: 36px; color: #FFD45C; }
+  .dl-ab { margin-top: 24px; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 6px 40px; padding: 18px 40px; border: 3px solid var(--gold); }
+  .dl-ab .rx { font-size: 52px; font-weight: 600; }
+  .dl-ab .vline { font-size: 52px; display: flex; align-items: center; gap: 14px; }
+  .dl-ab .vline .frac { font-size: 46px; }
+  .dl-ab .why { grid-column: 1 / -1; font-size: 25px; color: var(--ink-2); }
+
+  /* ---------- slide 4 ---------- */
   .top-split { display: grid; grid-template-columns: 1fr 600px; gap: 36px; align-items: start; }
   .rules { display: flex; flex-direction: column; gap: 14px; margin-top: 14px; }
   .rule { display: flex; align-items: center; gap: 18px; font-size: 28px; }
@@ -162,7 +191,7 @@
   .hint { background: var(--gold-soft); border: 2px solid #F3D589; border-radius: 18px; padding: 16px 22px; font-size: 25px; line-height: 1.5; }
   .hint b { color: #B67700; margin-right: 8px; }
 
-  /* ---------- slide 5 ---------- */
+  /* ---------- slide 6 ---------- */
   .nh3-grid { display: grid; grid-template-columns: 840px 1fr; gap: 36px; margin-top: 22px; }
   .eqcard { padding: 18px; text-align: center; font-size: 76px; font-weight: 600; letter-spacing: 2px; }
   .rrows { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
@@ -173,7 +202,7 @@
   .rrow .mini { font-size: 22px; font-weight: 700; text-align: center; border-radius: 999px; padding: 4px 0; background: #fff; }
   .ctlcard { padding: 22px 28px; display: flex; flex-direction: column; gap: 14px; }
 
-  /* ---------- slide 6 ---------- */
+  /* ---------- slide 7 ---------- */
   .def-grid { display: grid; grid-template-columns: 1fr 680px; gap: 32px; }
   .defcard { padding: 26px 32px; display: flex; flex-direction: column; gap: 18px; }
   .def { font-size: 31px; line-height: 1.5; font-weight: 500; }
@@ -195,7 +224,7 @@
   .gen .vline .frac { font-size: 52px; }
   .def-grid .card { min-height: 400px; }
 
-  /* ---------- slide 8 ---------- */
+  /* ---------- slide 9 ---------- */
   .ans-grid { display: grid; grid-template-columns: 1fr 760px; gap: 36px; margin-top: 26px; }
   .steps { display: flex; flex-direction: column; gap: 18px; }
   .stp { display: flex; gap: 18px; align-items: center; padding: 20px 26px; font-size: 30px; line-height: 1.45; }
@@ -203,7 +232,7 @@
   .stp .big { font-weight: 900; font-size: 34px; }
   .summary-bar { margin-top: 6px; font-size: 26px; color: var(--ink-2); }
 
-  /* ---------- slide 9 ---------- */
+  /* ---------- slide 10 ---------- */
   .g9 { display: grid; grid-template-columns: 560px 1fr; gap: 36px; height: 100%; }
   .g9-left { display: flex; flex-direction: column; gap: 16px; }
   .meter { padding: 16px 22px; border-radius: 18px; border: 2px solid; }
@@ -233,7 +262,7 @@
   .ineq { margin-top: 14px; font-size: 32px; font-weight: 900; text-align: center; padding: 14px; border-radius: 16px; background: var(--ink); color: #fff; }
   .ineq .c1 { color: #8FB4FF; } .ineq .c2 { color: #FF9A92; } .ineq .c3 { color: #6FE0B0; }
 
-  /* ---------- slide 12 ---------- */
+  /* ---------- slide 13 ---------- */
   .g12 { display: grid; grid-template-columns: 620px 1fr; gap: 36px; height: 100%; }
   .g12-left { display: flex; flex-direction: column; gap: 16px; }
   .find { padding: 16px 22px; font-size: 26px; line-height: 1.5; border-radius: 18px; }
@@ -249,7 +278,7 @@
   .plots { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .plots svg { background: #fff; border: 2px solid #E1EDF6; border-radius: 18px; }
 
-  /* ---------- slide 13 ---------- */
+  /* ---------- slide 14 ---------- */
   .quiz { margin: 0 auto; width: 1440px; padding: 34px 44px; display: flex; flex-direction: column; gap: 22px; }
   .quiz-top { display: flex; align-items: center; gap: 18px; }
   .quiz-top .rxname { font-size: 26px; font-weight: 700; color: var(--blue); }
@@ -266,7 +295,7 @@
   .chips .v { background: var(--green-soft); color: var(--green); }
   @keyframes up { from { opacity: 0; transform: translateY(16px); } }
 
-  /* ---------- slide 14 ---------- */
+  /* ---------- slide 15 ---------- */
   .sum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; height: 100%; }
   .sum .card { padding: 34px 32px; display: flex; flex-direction: column; gap: 18px; }
   .sum h3 { font-size: 36px; display: flex; align-items: center; gap: 14px; }
@@ -340,6 +369,39 @@
 </section>
 
 <!-- 3 -->
+<section id="delta">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도 <small>— Δ(델타)로 나타내기</small></h2><span class="tag">핵심 목표</span></div>
+    <div class="body">
+      <div class="dl-two">
+        <div class="card">
+          <div class="card-title"><span class="num">1</span><span class="dl-sym">Δ</span> = 변화</div>
+          <div class="candy up" data-step="1 rise"><div class="jar">🍬<small>1개</small></div><span class="arr">→</span><div class="jar">🍬🍬🍬🍬🍬<small>5개</small></div><span class="d prod">Δ = +4개</span></div>
+          <div class="candy down" data-step="2 rise"><div class="jar">🍬🍬🍬🍬🍬<small>5개</small></div><span class="arr">→</span><div class="jar">🍬<small>1개</small></div><span class="d cons">Δ = −4개</span></div>
+          <p class="dl-note" data-step="2 rise">Δ = <b>나중 − 처음</b> · 늘어나면 <b class="prod">(+)</b>, 줄어들면 <b class="cons">(−)</b></p>
+        </div>
+        <div class="card" data-step="3 rise">
+          <div class="card-title"><span class="num">2</span>시간에 따른 X의 몰농도 변화</div>
+          <div class="dl-frac">
+            <span class="m"><span class="frac"><span>Δ<i>X</i></span><span>Δ<i>t</i></span></span></span>
+            <span class="eqs">→</span>
+            <div class="lbl2"><span>X의 <b>몰농도 변화</b> (M)</span><span><b>걸린 시간</b> (s)</span></div>
+          </div>
+          <span class="dl-unit">단위 = M/s</span>
+        </div>
+      </div>
+      <div class="dl-goal" data-step="4 rise"><span>오늘의 핵심 목표</span><p>화학 반응 속도(<i class="m">v</i>)를 반응식의 물질 X(A, B, …)의 <span class="frac m"><span>Δ<i>X</i></span><span>Δ<i>t</i></span></span> 로 나타내기!</p></div>
+      <div class="card dl-ab" data-step="5 rise">
+        <div class="m rx">A → B</div>
+        <div class="m vline">반응 속도 <i>v</i> = <span class="frac prod"><span>Δ[B]</span><span>Δ<i>t</i></span></span> = <span class="cons">−</span><span class="frac cons"><span>Δ[A]</span><span>Δ<i>t</i></span></span></div>
+        <p class="why">[A]는 A의 몰농도 · A는 줄어들어 Δ[A]가 (−)이므로 앞에 <b class="cons">−</b>를 붙여 같은 양수 값으로 맞춰요.</p>
+      </div>
+    </div>
+  </div>
+  <aside>[Δ 도입 3분] 클릭 ① 사탕 1개 → 5개, 변화량 Δ = +4개입니다. ② 반대로 5개 → 1개면 Δ = −4개예요. Δ는 항상 "나중 − 처음"이라 줄어들면 음수가 됩니다. ③ ΔX/Δt는 시간에 따른 X의 몰농도 변화이고 단위는 M/s입니다. ④ 오늘의 핵심 목표는 반응 속도 v를 반응식 속 물질의 ΔX/Δt로 나타내는 거예요. ⑤ A → B에서 v = Δ[B]/Δt = −Δ[A]/Δt. A는 줄어드니까 (−)를 붙여서 같은 양수로 맞춘다는 점을 짚어 주세요.</aside>
+</section>
+
+<!-- 4 -->
 <section id="rate-intro">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag">개념</span></div>
@@ -373,7 +435,7 @@
   <aside>[개념 5분] 시작을 누르면 A 입자가 하나씩 B로 바뀌고 그래프가 그려집니다. 오른쪽 숫자를 보면 A의 소모 속도는 음수, B의 생성 속도는 양수예요. 그래프의 짙은 선분은 최근 10초 동안의 변화(Δ)를 나타냅니다. 처음엔 빠르게, 나중엔 느리게 변한다는 점도 짚어 두면 심화 활동과 연결됩니다.</aside>
 </section>
 
-<!-- 4 -->
+<!-- 5 -->
 <section id="act1-q">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 1</span></div>
@@ -392,7 +454,7 @@
   <aside>[활동 1 · 3분] 모둠별로 풀어 보게 하고, 막히면 클릭해서 힌트를 하나씩 공개하세요. P 키로 판서 모드를 켜면 학생 답을 화면에 바로 적을 수 있습니다.</aside>
 </section>
 
-<!-- 5 -->
+<!-- 6 -->
 <section id="act1-a">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도 <small>— 반응 계수와의 관계</small></h2><span class="tag act">활동 1 풀이</span></div>
@@ -421,7 +483,7 @@
   <aside>[활동 1 풀이] 클릭할 때마다 한 줄씩 풀이가 나옵니다. 오른쪽 슬라이더로 반응량과 시간을 바꾸면 왼쪽 계산이 함께 바뀌어요. 어떤 값을 넣어도 속도 비는 항상 1 : 3 : 2라는 점을 확인시키세요.</aside>
 </section>
 
-<!-- 6 -->
+<!-- 7 -->
 <section id="definition">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도 <small>— 정의</small></h2><span class="tag">핵심 개념</span></div>
@@ -452,7 +514,7 @@
   <aside>[정의 4분] 물질마다 속도가 다르면 "이 반응의 속도"를 하나로 말할 수 없겠죠? 그래서 계수로 나누어 하나로 맞춥니다. 클릭 ① 계수로 나누기 → ② 부호를 양수로 → ③ 모두 0.1로 모임 → ④ 일반식. 반응물 항 앞의 (−)가 특징 2를 나타냅니다.</aside>
 </section>
 
-<!-- 7 -->
+<!-- 8 -->
 <section id="act2-q">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 2</span></div>
@@ -471,7 +533,7 @@
   <aside>[활동 2 · 3분] 이번에는 반대 방향입니다. 생성 속도 → 반응 속도 → 다른 물질의 속도 순서로 구해 보게 하세요.</aside>
 </section>
 
-<!-- 8 -->
+<!-- 9 -->
 <section id="act2-a">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 2 풀이</span></div>
@@ -491,7 +553,7 @@
   <aside>[활동 2 풀이] ① CO₂ 생성 속도 +0.3 → ② 계수 3으로 나누어 v = 0.1 → ③ 계수를 곱해 C₃H₈ −0.1, O₂ −0.5, CO₂ +0.3, H₂O +0.4 M/s. 막대 길이가 계수 1 : 5 : 3 : 4에 비례합니다.</aside>
 </section>
 
-<!-- 9 -->
+<!-- 10 -->
 <section id="graph-method">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도 <small>— 그래프로 구하는 법</small></h2><span class="tag">그래프 해석</span></div>
@@ -514,7 +576,7 @@
   <aside>[그래프 해석 5분] 빨간 선(두 점을 잇는 직선)의 기울기 = 평균 반응 속도, 파란 선(접선)의 기울기 = 순간 반응 속도. "Δt → 0" 버튼을 누르면 t₂가 t₁으로 다가가며 빨간 선이 파란 선과 겹쳐집니다. N₂O₄의 계수가 1이므로 반응 속도 = N₂O₄의 소모 속도 × (−1)이고, NO₂의 생성 속도는 그 2배입니다.</aside>
 </section>
 
-<!-- 10 -->
+<!-- 11 -->
 <section id="act3-q">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 3</span></div>
@@ -539,7 +601,7 @@
   <aside>[활동 3 · 4분] 3-1은 그래프에서 두 점의 값을 읽어 평균을 구하고, 3-2는 자를 대어 접선과 직선의 기울기를 비교하게 하세요.</aside>
 </section>
 
-<!-- 11 -->
+<!-- 12 -->
 <section id="act3-a">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 3 풀이</span></div>
@@ -565,7 +627,7 @@
   <aside>[활동 3 풀이] 3-1: 반응 속도는 A의 소모 속도 0.01 M/s를 계수 2로 나눈 0.005 M/s, B의 생성 속도는 3 × 0.005 = 0.015 M/s. 3-2: 클릭할 때마다 파란 접선(20 s) → 빨간 직선(평균) → 초록 접선(40 s)이 나타납니다. 기울기가 점점 완만해지므로 20 s 순간 > 평균 > 40 s 순간.</aside>
 </section>
 
-<!-- 12 -->
+<!-- 13 -->
 <section id="deep">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag deep">심화 활동</span></div>
@@ -594,7 +656,7 @@
   <aside>[심화 · 5분] 실제 입자처럼 움직이는 시뮬레이션입니다(2A → 3B). A끼리 부딪쳐야 반응하는데, 모든 충돌이 반응으로 이어지지는 않아요. 시간이 지나 A가 줄면 충돌 횟수와 반응 횟수가 함께 줄어드는 것을 오른쪽 아래 그래프로 확인하세요. 입자 수를 80과 20으로 바꿔 비교하면 농도와 반응 속도의 관계(다음 차시)로 이어집니다.</aside>
 </section>
 
-<!-- 13 -->
+<!-- 14 -->
 <section id="quiz">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>도전! 무한 연습 문제</h2><span class="tag act">확인 문제</span></div>
@@ -611,7 +673,7 @@
   <aside>[정리 퀴즈] 누를 때마다 다른 반응식과 수치로 새 문제가 나옵니다. 시간 여유에 따라 2~3문제 풀고 "정답 보기"로 확인하세요.</aside>
 </section>
 
-<!-- 14 -->
+<!-- 15 -->
 <section id="summary">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>오늘 배운 내용 정리</h2><span class="tag">정리</span></div>
@@ -632,7 +694,7 @@
   <aside>[정리 2분] 세 카드를 하나씩 띄우며 학생들과 함께 말로 정리해 보세요.</aside>
 </section>
 
-<!-- 15 -->
+<!-- 16 -->
 <section id="thanks">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><span class="brand">CHEMISTRY LAB</span></div>
