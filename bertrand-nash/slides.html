@@ -172,7 +172,7 @@ body.print,body.print *{-webkit-print-color-adjust:exact;print-color-adjust:exac
   </div>
   <div class="formula" data-b>
     <div class="eq">A의 판매량 &nbsp; q₁ = 20 − 2<i>p</i>₁ + <i>p</i>₂</div>
-    <p>p₁ = A의 가격, p₂ = B의 가격 (단위: 천 원). B도 똑같이 q₂ = 20 − 2p₂ + p₁</p>
+    <p>p₁ = A의 가격, p₂ = B의 가격 (단위: 천 원), q₁ = A의 판매량 (단위: 조각, 손님 한 명이 한 조각). B도 똑같이 q₂ = 20 − 2p₂ + p₁</p>
   </div>
   <p class="say" data-b style="font-size:32px;color:var(--muted)">💡 '내 가격의 영향(2)'이 '상대 가격의 영향(1)'보다 커야 현실적이에요. 이게 나중에 중요해집니다.</p>
   <aside>이번에는 손님이 전부 떠나지 않고 일부만 옮겨 간다고 해 볼게요. 규칙은 세 개예요. 단골 20명, 내 가격이 천 원 오르면 2명이 떠나고, 상대 가격이 천 원 오르면 1명이 넘어옵니다. 이 세 문장을 기호로 쓰면 아래 식이 됩니다.</aside>
@@ -184,7 +184,7 @@ body.print,body.print *{-webkit-print-color-adjust:exact;print-color-adjust:exac
   <h2>B가 8천 원일 때, A가 가격을 바꿔 보자</h2>
   <div class="row top">
     <table class="t" data-b>
-      <tr><th>A의 가격</th><th>한 조각당 남는 돈</th><th>판매량</th><th>이윤</th></tr>
+      <tr><th>A의 가격<br>(천 원)</th><th>한 조각당 남는 돈<br>(천 원)</th><th>판매량<br>(조각)</th><th>이윤<br>(천 원)</th></tr>
       <tr><td>2</td><td>0</td><td>24</td><td>0</td></tr>
       <tr><td>4</td><td>2</td><td>20</td><td>40</td></tr>
       <tr><td>6</td><td>4</td><td>16</td><td>64</td></tr>
@@ -243,7 +243,7 @@ body.print,body.print *{-webkit-print-color-adjust:exact;print-color-adjust:exac
   <h2>상대 가격을 정하면, 내 최선의 가격이 정해진다</h2>
   <div class="row top">
     <table class="t" data-b>
-      <tr><th>B의 가격</th><th>A의 최선 가격</th></tr>
+      <tr><th>B의 가격<br>(천 원)</th><th>A의 최선 가격<br>(천 원)</th></tr>
       <tr><td>0</td><td>6</td></tr>
       <tr><td>4</td><td>7</td></tr>
       <tr><td>8</td><td>8</td></tr>
@@ -436,7 +436,7 @@ function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.set
 function tx(p,x,y,s,a={}){const t=el('text',Object.assign({x,y,'font-size':24,fill:C.muted,'font-family':'Noto Sans KR'},a),p);t.textContent=s;return t;}
 function frame(svg,o){
   svg.innerHTML='';
-  const W=svg.viewBox.baseVal.width,H=svg.viewBox.baseVal.height,L=70,R=24,T=30,B=64;
+  const W=svg.viewBox.baseVal.width,H=svg.viewBox.baseVal.height,L=70,R=24,T=30,B=96;
   const sx=x=>L+(x-o.x0)/(o.x1-o.x0)*(W-L-R), sy=y=>H-B-(y-o.y0)/(o.y1-o.y0)*(H-T-B);
   el('rect',{x:0,y:0,width:W,height:H,rx:24,fill:'#fff'},svg);
   for(let x=o.x0;x<=o.x1+1e-9;x+=o.dx){el('line',{x1:sx(x),x2:sx(x),y1:sy(o.y0),y2:sy(o.y1),stroke:C.grid,'stroke-width':1.5},svg);tx(svg,sx(x),sy(o.y0)+30,String(x),{'text-anchor':'middle','font-size':21});}
@@ -453,7 +453,7 @@ const fmt=x=>(+x.toFixed(2)).toString();
 const won=x=>Math.round(x*1000).toLocaleString('ko-KR')+'원';
 
 /* slide 5 */
-(function(){const svg=document.getElementById('g-homog');const s=frame(svg,{x0:0,x1:16,y0:0,y1:100,dx:2,dy:20,xl:'A의 가격',yl:'A의 이윤'});
+(function(){const svg=document.getElementById('g-homog');const s=frame(svg,{x0:0,x1:16,y0:0,y1:100,dx:2,dy:20,xl:'A의 가격 (단위: 천 원)',yl:'A의 이윤 (단위: 천 원)'});
   curve(svg,p=>(p-2)*(20-p),10,14,s,{stroke:C.muted,'stroke-width':2.5,'stroke-dasharray':'8 8'});
   el('line',{x1:s.sx(0),x2:s.sx(2),y1:s.sy(0),y2:s.sy(0),stroke:C.A,'stroke-width':5},svg);
   curve(svg,p=>(p-2)*(20-p),2,10,s,{stroke:C.A});
@@ -465,7 +465,7 @@ const won=x=>Math.round(x*1000).toLocaleString('ko-KR')+'원';
 })();
 
 /* slide 8 */
-(function(){const svg=document.getElementById('g-mount');const s=frame(svg,{x0:0,x1:16,y0:0,y1:80,dx:2,dy:20,xl:'A의 가격',yl:'A의 이윤'});
+(function(){const svg=document.getElementById('g-mount');const s=frame(svg,{x0:0,x1:16,y0:0,y1:80,dx:2,dy:20,xl:'A의 가격 (단위: 천 원)',yl:'A의 이윤 (단위: 천 원)'});
   const f=p=>(p-2)*(28-2*p);
   curve(svg,f,2,14,s,{stroke:C.A});
   [2,4,6,10,12,14].forEach(p=>dot(svg,s,p,f(p),C.A,false,7));
@@ -479,7 +479,7 @@ const won=x=>Math.round(x*1000).toLocaleString('ko-KR')+'원';
 
 /* slide 9 */
 function drawMove(){const p2=+document.getElementById('p2s').value;const svg=document.getElementById('g-move');
-  const s=frame(svg,{x0:0,x1:22,y0:0,y1:180,dx:2,dy:30,xl:'A의 가격',yl:'A의 이윤'});
+  const s=frame(svg,{x0:0,x1:22,y0:0,y1:180,dx:2,dy:30,xl:'A의 가격 (단위: 천 원)',yl:'A의 이윤 (단위: 천 원)'});
   const pi=(p,q)=>(p-2)*(20-2*p+q);
   [0,20].forEach(q=>curve(svg,x=>pi(x,q),2,(20+q)/2,s,{stroke:C.muted,'stroke-width':2,opacity:.35}));
   const r=(20+p2)/2,v=6+p2/4,pv=pi(v,p2);
@@ -495,7 +495,7 @@ function drawMove(){const p2=+document.getElementById('p2s').value;const svg=doc
 function drawReact(svg,c2,x0,label){
   const R1=p=>6+p/4,R2=p=>(20+2*c2)/4+p/4;
   const e1=(100+16+2*c2)/15,e2=R2(e1);
-  const s=frame(svg,{x0:0,x1:20,y0:0,y1:20,dx:2,dy:2,xl:'A의 가격 →',yl:'↑ B의 가격'});
+  const s=frame(svg,{x0:0,x1:20,y0:0,y1:20,dx:2,dy:2,xl:'A의 가격 (단위: 천 원) →',yl:'↑ B의 가격 (단위: 천 원)'});
   el('line',{x1:s.sx(0),y1:s.sy(0),x2:s.sx(20),y2:s.sy(20),stroke:C.muted,'stroke-width':2,'stroke-dasharray':'4 8'},svg);
   tx(svg,s.sx(19.3),s.sy(19.3)+30,'y = x',{'text-anchor':'end'});
   curve(svg,R2,0,20,s,{stroke:C.B},2);
@@ -514,7 +514,7 @@ function drawDyn(){const x0=+document.getElementById('x0s').value;document.getEl
 (function(){const svg=document.getElementById('g-bars');svg.innerHTML='';
   el('rect',{x:0,y:0,width:860,height:520,rx:24,fill:'#fff'},svg);
   const g=x=>7.5+x/16;let x=20;const ds=[];for(let k=0;k<4;k++){ds.push(Math.abs(x-8));x=g(x);}
-  tx(svg,40,52,'균형(8)까지의 거리 · 처음 가격 20에서 출발',{fill:C.ink,'font-weight':700,'font-size':26});
+  tx(svg,40,52,'균형(8천 원)까지의 거리 (단위: 천 원) · 처음 가격 2만 원에서 출발',{fill:C.ink,'font-weight':700,'font-size':26});
   ds.forEach((d,k)=>{const y=100+k*100,w=Math.max(4,d/12*600);
     tx(svg,40,y+44,k===0?'처음':k+'바퀴 후',{fill:C.ink,'font-size':24});
     el('rect',{x:170,y:y+10,width:w,height:52,rx:10,fill:k===0?C.A:C.gold},svg);
