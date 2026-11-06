@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>베르트랑 가격 경쟁</title>
+<style>
+:root{
+  --bg:#fbfaf7; --card:#ffffff; --ink:#1f2328; --muted:#5d6570; --line:#d9dce1;
+  --accent:#2f6fde; --accent2:#d9534f; --accent3:#2e9d6a; --soft:#eef3fc; --warn:#fff6e0; --warnline:#e7b84a;
+  --grid:#eceef1;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16181c; --card:#1e2126; --ink:#e7e9ec; --muted:#a3abb6; --line:#363b43;
+    --accent:#6ea0ff; --accent2:#ff7b72; --accent3:#4cc38a; --soft:#1f2a3d; --warn:#2f2918; --warnline:#9c7a2b;
+    --grid:#2a2e35;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16181c; --card:#1e2126; --ink:#e7e9ec; --muted:#a3abb6; --line:#363b43;
+  --accent:#6ea0ff; --accent2:#ff7b72; --accent3:#4cc38a; --soft:#1f2a3d; --warn:#2f2918; --warnline:#9c7a2b;
+  --grid:#2a2e35;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;line-height:1.75;font-size:16.5px}
+main{max-width:860px;margin:0 auto;padding:28px 16px 80px}
+h1{font-size:1.75rem;line-height:1.35;margin:.2em 0 .3em}
+h2{font-size:1.3rem;margin:2.4em 0 .6em;padding-top:.6em;border-top:1px solid var(--line)}
+h3{font-size:1.08rem;margin:1.6em 0 .4em}
+.sub{color:var(--muted);margin:0 0 1.2em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
+.verdict{border-left:5px solid var(--accent3)}
+.note{background:var(--warn);border:1px solid var(--warnline);border-radius:10px;padding:12px 16px;margin:14px 0}
+.note b:first-child{display:block;margin-bottom:2px}
+.teacher{background:var(--soft);border-radius:10px;padding:12px 16px;margin:14px 0}
+.teacher::before{content:"교사용 메모";display:block;font-weight:700;font-size:.85rem;color:var(--accent);margin-bottom:2px}
+.eq{font-family:"Cambria Math","Times New Roman",serif;font-size:1.12rem;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin:10px 0;overflow-x:auto;white-space:nowrap}
+.eq.multi{white-space:normal}
+.m{font-family:"Cambria Math","Times New Roman",serif;font-style:italic;white-space:nowrap}
+table{border-collapse:collapse;width:100%;font-size:.95rem;margin:10px 0}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--soft)}
+.tablewrap{overflow-x:auto}
+svg{width:100%;height:auto;display:block;background:var(--card);border:1px solid var(--line);border-radius:10px}
+.ctrl{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;margin:10px 0 4px;font-size:.95rem}
+.ctrl label{display:flex;align-items:center;gap:8px}
+.ctrl input[type=range]{width:180px}
+.readout{font-family:"Cambria Math","Times New Roman",serif;color:var(--muted);font-size:.95rem}
+.legend{font-size:.9rem;color:var(--muted);margin:6px 0 0}
+.sw{display:inline-block;width:14px;height:3px;vertical-align:middle;margin:0 4px 0 10px;border-radius:2px}
+ol li,ul li{margin:.25em 0}
+.toc a{color:var(--accent);text-decoration:none}
+.toc ol{margin:.3em 0;padding-left:1.4em}
+button{font:inherit;padding:4px 12px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.step{display:flex;gap:12px;margin:10px 0}
+.step .n{flex:0 0 28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+</style>
+</head>
+<body>
+<main>
+<h1>베르트랑 가격 경쟁과 내쉬균형<br><span style="font-size:.7em;font-weight:500">고1 함수(이차함수·합성함수·역함수)로 탐구하기</span></h1>
+<p class="sub">수학 탐구 과제 지원 자료 · 학생 설명용 해설 + 교사용 검토 의견</p>
+
+<div class="card toc">
+<b>차례</b>
+<ol>
+<li><a href="#s1">검토 결론: 가능한가?</a></li>
+<li><a href="#s2">먼저 알아 둘 함정: '순수' 베르트랑 모형</a></li>
+<li><a href="#s3">해결책: 차별화된 상품의 베르트랑 모형 세우기</a></li>
+<li><a href="#s4">이윤 그래프는 왜 포물선인가</a></li>
+<li><a href="#s5">최적반응함수: 상대 가격 → 내 최적 가격</a></li>
+<li><a href="#s6">내쉬균형 = 두 반응직선의 교점 (역함수와의 연결)</a></li>
+<li><a href="#s7">합성함수를 어떻게 잡을까: R₁∘R₂의 고정점</a></li>
+<li><a href="#s8">합성을 반복하면: 가격이 균형으로 수렴하는 이유</a></li>
+<li><a href="#s9">합성함수가 꼭 필요한 경우: 원가가 다른 두 기업</a></li>
+<li><a href="#s10">해석: 담합하면 더 이득인데 왜 안 할까</a></li>
+<li><a href="#s11">유리·무리함수, 다른 합성 방식에 대한 의견</a></li>
+<li><a href="#s12">탐구 보고서 구성안과 예상 질문</a></li>
+</ol>
+</div>
+
+<!-- ============ 1 ============ -->
+<h2 id="s1">1. 검토 결론: 가능한가?</h2>
+<div class="card verdict">
+<p style="margin-top:0"><b>가능합니다.</b> 다만 모형을 한 가지 바꿔야 고1 수준의 함수로 끝까지 풀 수 있습니다.</p>
+<ol>
+<li><b>교과서에 나오는 '순수' 베르트랑 모형(두 기업이 완전히 같은 상품을 파는 경우)은 고1 도구로 다루기 어렵습니다.</b> 이윤 그래프가 중간에 끊어져서 이차함수의 꼭짓점을 쓸 수 없고, 결론도 "가격 = 원가"로 바로 끝나 버려 함수 탐구 거리가 적습니다. (→ 2절)</li>
+<li><b>'차별화된 상품'의 베르트랑 모형</b>(예: 두 카페, 두 브랜드 운동화처럼 비슷하지만 똑같지는 않은 상품)으로 바꾸면,
+  <ul>
+  <li>각 기업의 이윤 = <b>이차함수</b> → 꼭짓점이 최적 가격</li>
+  <li>최적 가격을 상대 가격의 함수로 쓴 <b>최적반응함수</b> = 일차함수</li>
+  <li>내쉬균형 = <b>합성함수 R₁∘R₂의 고정점</b> (R₁(R₂(p)) = p 인 p)</li>
+  <li>두 반응직선을 한 평면에 그릴 때 <b>역함수 그래프</b> 개념이 자연스럽게 등장</li>
+  </ul>
+  으로 고1 함수 단원 전체가 한 흐름에 엮입니다. (→ 3~9절)</li>
+<li><b>합성함수는 '계산 도구'보다 '논리 구조'로 쓰는 것이 핵심</b>입니다. 연립방정식으로도 균형값은 나오지만, 합성함수로 보면 "상대의 반응에 대한 나의 반응"이라는 게임의 구조와, 가격이 왜 균형으로 수렴하는지까지 설명할 수 있습니다. 이 점을 보고서에서 강조해야 "합성함수를 억지로 넣었다"는 인상을 피할 수 있습니다.</li>
+</ol>
+</div>
+
+<div class="tablewrap">
+<table>
+<tr><th>탐구 단계</th><th>쓰는 교과 내용 (2022 개정)</th></tr>
+<tr><td>수요함수, 이윤함수 세우기</td><td>다항식의 연산(전개), 일차함수</td></tr>
+<tr><td>이윤 최대화</td><td>공통수학1 – 이차함수의 최대·최소(꼭짓점), 이차방정식의 근</td></tr>
+<tr><td>최적반응함수</td><td>함수의 뜻(대응), 일차함수의 기울기 해석</td></tr>
+<tr><td>내쉬균형 찾기</td><td>공통수학2 – <b>합성함수</b>, 방정식 f(x)=x</td></tr>
+<tr><td>반응직선 두 개를 한 그래프에</td><td>공통수학2 – <b>역함수</b>와 그 그래프(y=x 대칭)</td></tr>
+<tr><td>가격 조정의 수렴(심화)</td><td>합성함수의 반복, 등비적으로 줄어드는 거리(수열 선행 없이 표로 관찰)</td></tr>
+</table>
+</div>
+
+<!-- ============ 2 ============ -->
+<h2 id="s2">2. 먼저 알아 둘 함정: '순수' 베르트랑 모형</h2>
+<p>베르트랑 모형의 원래 설정은 이렇습니다.</p>
+<ul>
+<li>두 기업 A, B가 <b>완전히 똑같은 상품</b>을 판다. 한 개 만드는 비용(원가)은 둘 다 2만 원.</li>
+<li>소비자는 무조건 <b>더 싼 쪽</b>에서만 산다. 가격이 같으면 반씩 나눠 산다.</li>
+<li>시장 전체 수요는 <span class="m">Q = 20 − p</span> (가격이 p일 때 Q개 팔림).</li>
+</ul>
+<p>B가 가격을 10으로 정했다고 하고, A의 이윤을 A의 가격 <span class="m">p₁</span>에 대해 그려 보면:</p>
+
+<svg id="g-homog" viewBox="0 0 640 360" role="img" aria-label="순수 베르트랑 모형에서 A의 이윤 그래프"></svg>
+<p class="legend">B의 가격이 10일 때 A의 이윤. p₁ &lt; 10이면 시장을 독차지, p₁ = 10이면 절반, p₁ &gt; 10이면 0.</p>
+
+<h3>왜 이렇게 생겼나</h3>
+<ul>
+<li><b>p₁ &lt; 10</b>: 손님이 전부 A에게 옵니다. 이윤 = (한 개당 남는 돈) × (판매량) = <span class="m">(p₁ − 2)(20 − p₁)</span>. 이것은 위로 볼록한 포물선의 일부입니다.</li>
+<li><b>p₁ = 10</b>: 손님을 반씩 나누니 이윤도 반: <span class="m">(10−2)(20−10)/2 = 40</span>. 그래서 점 하나가 뚝 떨어져 있습니다.</li>
+<li><b>p₁ &gt; 10</b>: 손님이 한 명도 안 오니 이윤 0.</li>
+</ul>
+<div class="note"><b>문제점</b>
+그래프가 p₁ = 10 바로 왼쪽에서 거의 80까지 올라가지만, 정작 80에 '도달'하는 점이 없습니다(9.9, 9.99, 9.999 … 어느 것을 골라도 더 좋은 가격이 있음). 즉 <b>최댓값이 존재하지 않습니다.</b> 이차함수의 꼭짓점을 이용할 수가 없고, 최적반응함수도 깔끔한 식으로 쓸 수 없습니다.</div>
+<p>그래서 두 기업은 서로 "상대보다 조금만 싸게"를 반복하고, 결국 <b>가격 = 원가(2만 원)</b>, 이윤 0에서 멈춥니다. 원가보다 낮추면 손해이고, 원가에서는 아무도 더 낮출 이유가 없기 때문입니다. 이것을 <b>베르트랑 역설</b>이라고 합니다(기업이 두 개뿐인데도 완전경쟁처럼 이윤이 0).</p>
+<div class="teacher">이 절은 보고서의 <b>문제 제기(도입)</b>로 쓰기 좋습니다. "원래 모형은 결과가 너무 극단적이고 함수로 분석할 거리가 없다 → 현실처럼 상품이 조금씩 다르다고 가정을 바꾸면 어떻게 될까?"라는 흐름이 탐구 동기를 자연스럽게 만들어 줍니다. 원래 모형을 그대로 고집하면 합성함수가 들어갈 자리가 사실상 없습니다.</div>
+
+<!-- ============ 3 ============ -->
+<h2 id="s3">3. 해결책: 차별화된 상품의 베르트랑 모형 세우기</h2>
+<p>현실의 두 카페를 생각해 봅시다. 옆 카페가 조금 싸다고 해서 우리 손님이 <b>전부</b> 떠나지는 않습니다(맛, 분위기, 거리 차이). 대신 <b>일부</b>가 옮겨 갑니다. 이것을 식으로 나타내면:</p>
+<div class="eq">A의 판매량 &nbsp; q₁ = 20 − 2p₁ + p₂ &nbsp;&nbsp;&nbsp;&nbsp; B의 판매량 &nbsp; q₂ = 20 − 2p₂ + p₁</div>
+<table>
+<tr><th>항</th><th>의미</th></tr>
+<tr><td>20</td><td>두 가격이 모두 0일 때의 기본 수요(가게 자체의 단골 수요)</td></tr>
+<tr><td>−2p₁</td><td><b>내 가격</b>이 1 오르면 손님이 2 줄어든다</td></tr>
+<tr><td>+p₂</td><td><b>상대 가격</b>이 1 오르면 상대 손님 중 1이 나에게 넘어온다</td></tr>
+</table>
+<p>원가는 둘 다 한 개당 2라고 합시다. 그러면 A의 이윤은</p>
+<div class="eq">π₁ = (p₁ − 2) × q₁ = (p₁ − 2)(20 − 2p₁ + p₂)</div>
+<div class="note"><b>계수를 왜 2와 1로 했나</b>
+"내 가격이 내 판매량에 주는 영향(2)"이 "상대 가격이 내 판매량에 주는 영향(1)"보다 커야 현실적입니다. 반대라면 내가 가격을 올려도 상대가 따라 올리면 손님이 늘어나는 이상한 시장이 됩니다. 이 조건(2 &gt; 1)은 뒤에서 <b>균형이 하나로 존재하고, 가격이 균형으로 수렴하는 이유</b>와 직결됩니다(8절).</div>
+<div class="teacher">숫자는 학생이 바꿔도 됩니다. 단, 수요식 <span class="m">q₁ = a − b·p₁ + d·p₂</span>에서 <b>b &gt; d</b>(내 가격의 영향이 상대 가격의 영향보다 큼)를 지키게 하세요. 그러면 수학적 필요조건인 2b &gt; d(8절)도 저절로 만족됩니다. 계산이 깔끔하려면 a + b·c가 4의 배수가 되게 잡는 게 편합니다(위 예: 20 + 2·2 = 24).</div>
+
+<!-- ============ 4 ============ -->
+<h2 id="s4">4. 이윤 그래프는 왜 포물선인가</h2>
+<p>B가 가격 <span class="m">p₂</span>를 이미 정했다고 하고(상수로 보고), A의 이윤을 <span class="m">p₁</span>에 대한 함수로 봅니다.</p>
+
+<div class="step"><div class="n">1</div><div><b>두 일차식의 곱 → 이차함수.</b> (p₁ − 2)는 p₁이 커질수록 커지고, (20 − 2p₁ + p₂)는 p₁이 커질수록 작아집니다. 하나는 증가, 하나는 감소하는 일차식을 곱하면 p₁²의 계수가 1 × (−2) = −2로 <b>음수</b> → <b>위로 볼록한(∩ 모양) 포물선</b>입니다.</div></div>
+<div class="step"><div class="n">2</div><div><b>x절편 두 개의 경제적 의미.</b>
+<br>· p₁ = 2: 원가에 팔면 한 개당 남는 돈이 0 → 이윤 0
+<br>· 20 − 2p₁ + p₂ = 0, 즉 p₁ = (20 + p₂)/2: 너무 비싸서 아무도 안 삼 → 이윤 0
+<br>그 사이 구간에서만 이윤이 양수입니다. "너무 싸면 남는 게 없고, 너무 비싸면 안 팔린다"는 상식이 포물선 모양 그 자체입니다.</div></div>
+<div class="step"><div class="n">3</div><div><b>꼭짓점 = 두 x절편의 한가운데.</b> 포물선은 축에 대해 좌우대칭이므로 꼭짓점의 x좌표는 두 근의 평균입니다.
+<div class="eq">p₁* = { 2 + (20 + p₂)/2 } ÷ 2 = 6 + p₂/4</div>
+전개해서 꼭짓점 공식으로 확인해도 같습니다:
+<div class="eq">π₁ = −2p₁² + (24 + p₂)p₁ − (40 + 2p₂) &nbsp;⇒&nbsp; p₁* = (24 + p₂) / (2·2) = 6 + p₂/4</div>
+</div></div>
+
+<p>아래 슬라이더로 B의 가격 p₂를 바꿔 보세요. <b>포물선의 오른쪽 x절편이 움직이고, 그에 따라 꼭짓점이 따라 움직이는 것</b>을 볼 수 있습니다.</p>
+<div class="ctrl">
+<label>B의 가격 p₂ <input type="range" id="p2s" min="0" max="20" step="0.5" value="8"></label>
+<span class="readout" id="p2r"></span>
+</div>
+<svg id="g-profit" viewBox="0 0 640 380" role="img" aria-label="B의 가격에 따라 달라지는 A의 이윤 포물선"></svg>
+<p class="legend"><span class="sw" style="background:var(--accent)"></span>현재 p₂에서 A의 이윤 <span class="sw" style="background:var(--muted);opacity:.5"></span>p₂ = 0, 10, 20일 때(비교용) <span class="sw" style="background:var(--accent2)"></span>꼭짓점(최적 가격)</p>
+
+<div class="note"><b>관찰 포인트: 왜 꼭짓점은 p₂의 1/4만큼만 움직일까?</b>
+p₂가 4 오르면 오른쪽 x절편 (20 + p₂)/2는 2만큼 오른쪽으로 갑니다. 왼쪽 x절편(=원가 2)은 그대로이므로, 한가운데인 꼭짓점은 그 절반인 1만큼만 움직입니다. 그래서 기울기가 1/4입니다. 즉 "상대가 4만 원 올리면 나는 1만 원만 올리는 게 최선"입니다.</div>
+
+<!-- ============ 5 ============ -->
+<h2 id="s5">5. 최적반응함수: 상대 가격 → 내 최적 가격</h2>
+<p>4절의 결과를 '함수'로 다시 쓰면, 상대 가격을 넣으면 나의 최선의 가격이 나오는 대응이 됩니다.</p>
+<div class="eq">R₁(p₂) = 6 + p₂/4 &nbsp;&nbsp;&nbsp;(B가 p₂로 정하면 A는 R₁(p₂)로 정하는 게 최선)</div>
+<p>B의 입장도 완전히 똑같은 계산이므로</p>
+<div class="eq">R₂(p₁) = 6 + p₁/4 &nbsp;&nbsp;&nbsp;(A가 p₁로 정하면 B는 R₂(p₁)로 정하는 게 최선)</div>
+<ul>
+<li><b>함수인 이유:</b> 상대 가격 하나에 최적 가격이 꼭 하나 대응합니다(포물선의 꼭짓점은 하나뿐). 2절의 순수 모형에서는 이 대응이 존재하지 않았던 것과 비교해 보세요.</li>
+<li><b>기울기가 양수인 이유:</b> 상대가 올리면 넘어오는 손님이 생기니 나도 올릴 여유가 생깁니다. 경제학에서는 이를 <b>전략적 보완</b>이라 부릅니다.</li>
+<li><b>y절편 6의 의미:</b> 상대가 공짜(0원)로 팔아도 나는 6에 파는 게 최선. 단골 수요가 있기 때문입니다.</li>
+<li><b>정의역 주의:</b> 실제로는 p₂ ≥ 0, 판매량 ≥ 0 같은 조건이 있어야 합니다. 보고서에 "p₂의 범위는 0 이상 ○○ 이하로 생각한다"고 밝혀 두면 좋습니다.</li>
+</ul>
+
+<!-- ============ 6 ============ -->
+<h2 id="s6">6. 내쉬균형 = 두 반응직선의 교점 (역함수와의 연결)</h2>
+<p><b>내쉬균형</b>이란 "두 기업 모두, 상대의 가격이 주어졌을 때 자기 가격을 바꿀 이유가 없는 상태"입니다. 식으로 쓰면 다음 두 조건을 <b>동시에</b> 만족하는 (p₁, p₂)입니다.</p>
+<div class="eq">p₁ = R₁(p₂) &nbsp;그리고&nbsp; p₂ = R₂(p₁)</div>
+
+<h3>두 함수를 한 좌표평면에 그리는 법 (여기서 학생들이 가장 많이 헷갈립니다)</h3>
+<p>가로축을 p₁, 세로축을 p₂로 잡읍시다.</p>
+<ul>
+<li><b>R₂</b>는 "p₁을 넣으면 p₂가 나오는" 함수이므로 평소처럼 <span class="m">p₂ = 6 + p₁/4</span>를 그리면 됩니다. → 완만한 직선</li>
+<li><b>R₁</b>은 "p₂를 넣으면 p₁이 나오는" 함수입니다. 입력이 세로축에 있으므로, 이 평면에서는 <span class="m">p₁ = 6 + p₂/4</span>를 p₂에 대해 풀어서 <span class="m">p₂ = 4p₁ − 24</span>로 그립니다. → 가파른 직선</li>
+</ul>
+<div class="note"><b>역함수와의 연결</b>
+<span class="m">p₂ = 4p₁ − 24</span>는 바로 <span class="m">f(x) = 6 + x/4</span>의 <b>역함수</b> <span class="m">f⁻¹(x) = 4x − 24</span>입니다. 즉 이 평면에서 R₁의 그래프는 R₂의 그래프를 <b>직선 y = x에 대해 대칭이동</b>한 것입니다(두 기업이 같은 조건이라서). 증가하는 함수와 그 역함수의 그래프는 y = x 위에서 만나므로, 균형도 y = x 위, 즉 <b>p₁ = p₂</b>인 곳에 있습니다.</div>
+
+<!-- ============ 7 ============ -->
+<h2 id="s7">7. 합성함수를 어떻게 잡을까: R₁∘R₂의 고정점</h2>
+<p>이제 핵심입니다. 6절의 두 조건 중 두 번째를 첫 번째에 <b>대입</b>해 봅시다.</p>
+<div class="eq">p₁ = R₁(p₂) = R₁( R₂(p₁) ) = (R₁∘R₂)(p₁)</div>
+<p>즉 내쉬균형 가격 p₁은 <b>합성함수 R₁∘R₂에 넣었을 때 자기 자신이 그대로 나오는 값</b>입니다. 이런 값을 <b>고정점</b>이라 부릅니다.</p>
+
+<h3>합성함수의 '이야기'로 읽기</h3>
+<div class="card">
+<p style="margin:0">A가 가격 <b>x</b>를 정했다고 하자.<br>
+→ B는 그것을 보고 최선으로 반응한다: <b>R₂(x)</b><br>
+→ A는 B의 그 가격을 보고 다시 최선으로 반응한다: <b>R₁(R₂(x))</b><br><br>
+만약 이렇게 한 바퀴 돌아 나온 A의 가격이 <b>처음 정한 x와 같다면</b>, A는 가격을 바꿀 이유가 없고, B도 이미 최선으로 반응한 상태이므로 바꿀 이유가 없습니다. → 이것이 바로 내쉬균형!</p>
+</div>
+<p>그래서 <b>합성함수 R₁∘R₂ = "상대의 반응을 거쳐 내게 돌아오는 나의 반응"</b>이고, 균형은 그 고정점입니다. 합성 순서에도 의미가 있습니다. 안쪽(먼저 계산되는) R₂가 B의 반응, 바깥쪽 R₁이 A의 재반응입니다.</p>
+
+<h3>계산</h3>
+<div class="eq multi">
+(R₁∘R₂)(x) = R₁( 6 + x/4 ) = 6 + (6 + x/4)/4 = 6 + 1.5 + x/16 = <b>7.5 + x/16</b><br><br>
+고정점: x = 7.5 + x/16 → (15/16)x = 7.5 → <b>x = 8</b><br>
+따라서 p₁* = 8, &nbsp; p₂* = R₂(8) = 6 + 2 = 8
+</div>
+<p>균형에서 각 기업의 판매량은 q = 20 − 16 + 8 = 12, 이윤은 (8 − 2) × 12 = <b>72</b>입니다.</p>
+
+<h3>그래프로 보기: y = (R₁∘R₂)(x)와 y = x의 교점</h3>
+<p>고정점 f(x) = x는 그래프로 보면 <b>y = f(x)와 직선 y = x의 교점</b>입니다. 아래 그래프에서 R₁∘R₂의 그래프(기울기 1/16, 거의 수평)가 y = x와 x = 8에서 만납니다.</p>
+<svg id="g-comp" viewBox="0 0 640 400" role="img" aria-label="합성함수 그래프와 y=x의 교점, 거미줄 반복"></svg>
+<p class="legend"><span class="sw" style="background:var(--accent)"></span>y = R₁(R₂(x)) <span class="sw" style="background:var(--muted)"></span>y = x <span class="sw" style="background:var(--accent2)"></span>반복 과정(8절)</p>
+
+<div class="teacher">"연립방정식으로 풀면 되는데 왜 합성함수냐?"는 질문이 반드시 나옵니다. 답은 두 가지입니다. ① 합성함수는 <b>게임의 논리("반응의 반응")</b>를 식 하나로 담는다. ② 합성함수를 <b>반복</b>하면 가격이 실제로 균형에 도달하는 과정과 그 이유(수렴)를 분석할 수 있는데, 연립방정식은 답만 줄 뿐 과정은 설명하지 못한다(8절). 그리고 원가가 다른 경우(9절)에는 대칭성으로 p₁ = p₂를 쓸 수 없어 합성의 필요성이 더 분명해집니다.</div>
+
+<!-- ============ 8 ============ -->
+<h2 id="s8">8. 합성을 반복하면: 가격이 균형으로 수렴하는 이유</h2>
+<p>현실에서는 기업이 처음부터 8을 알지 못합니다. A가 아무 가격으로 시작하고, B가 반응하고, A가 다시 반응하고…를 반복한다고 해 봅시다. 이것은 <b>합성함수 g = R₁∘R₂를 계속 반복 적용</b>하는 것과 같습니다.</p>
+<div class="ctrl">
+<label>A의 처음 가격 <input type="range" id="x0s" min="0" max="20" step="0.5" value="20"></label>
+<span class="readout" id="x0r"></span>
+<label>B의 원가 c₂ <input type="range" id="c2s" min="0" max="6" step="0.5" value="2"></label>
+<span class="readout" id="c2r"></span>
+</div>
+<svg id="g-react" viewBox="0 0 640 440" role="img" aria-label="두 반응직선과 가격 조정 과정"></svg>
+<p class="legend"><span class="sw" style="background:var(--accent)"></span>R₂: p₂ = R₂(p₁) (B의 반응) <span class="sw" style="background:var(--accent3)"></span>R₁: p₁ = R₁(p₂) (A의 반응) <span class="sw" style="background:var(--accent2)"></span>번갈아 반응하는 과정 · 점선: y = x</p>
+<p>세로 이동 = B가 반응(R₂), 가로 이동 = A가 반응(R₁). 계단을 따라 두 직선의 교점(균형)으로 빨려 들어갑니다. B의 원가 슬라이더는 9절에서 사용합니다.</p>
+
+<div class="tablewrap"><table id="iter"></table></div>
+
+<h3>왜 수렴하는가 (기울기의 곱)</h3>
+<div class="eq multi">
+g(x) − 8 = (7.5 + x/16) − 8 = (x − 8)/16
+</div>
+<p>즉 <b>균형과의 거리가 한 바퀴마다 정확히 1/16로 줄어듭니다.</b> 처음에 12만큼 떨어져 있었다면 0.75 → 0.047 → 0.003 …으로 빠르게 0에 가까워집니다. 이 1/16은 어디서 왔을까요?</p>
+<ul>
+<li>R₂의 기울기 1/4: A가 1 바꾸면 B는 1/4만 따라 바꿈</li>
+<li>R₁의 기울기 1/4: B가 1 바꾸면 A는 1/4만 따라 바꿈</li>
+<li><b>일차함수의 합성에서 기울기는 곱해진다</b>: 1/4 × 1/4 = 1/16</li>
+</ul>
+<div class="note"><b>일반화된 관찰(심화)</b>
+수요식을 q₁ = a − b·p₁ + d·p₂로 일반화하면 반응직선의 기울기는 d/(2b)이고, 합성함수의 기울기는 (d/2b)²입니다. 이 값이 1보다 작으면(즉 <b>2b &gt; d</b>) 거리가 매번 줄어 균형으로 수렴하고, 1보다 크면 오히려 멀어집니다. 3절에서 "내 가격의 영향 &gt; 상대 가격의 영향"이 현실적이라고 했던 조건이 바로 여기서 수학적 의미를 갖습니다. 학생이 계수를 바꿔 가며 표를 만들어 보면 좋은 탐구가 됩니다.</div>
+
+<!-- ============ 9 ============ -->
+<h2 id="s9">9. 합성함수가 꼭 필요한 경우: 원가가 다른 두 기업</h2>
+<p>B가 비효율적이어서 원가가 4라고 해 봅시다(위 그래프의 슬라이더를 4로). B의 이윤은 <span class="m">π₂ = (p₂ − 4)(20 − 2p₂ + p₁)</span>이고, x절편이 4와 (20 + p₁)/2이므로 꼭짓점은</p>
+<div class="eq">R₂(p₁) = { 4 + (20 + p₁)/2 } ÷ 2 = 7 + p₁/4</div>
+<p>이제 두 기업이 대칭이 아니므로 "균형은 y = x 위에 있다"는 지름길을 쓸 수 없습니다. 합성함수로 풉니다.</p>
+<div class="eq multi">
+(R₁∘R₂)(x) = 6 + (7 + x/4)/4 = 7.75 + x/16<br>
+x = 7.75 + x/16 → x = 7.75 × 16/15 = <b>124/15 ≈ 8.27</b><br>
+p₂* = R₂(124/15) = 7 + 31/15 = <b>136/15 ≈ 9.07</b>
+</div>
+<p><b>해석:</b> 원가가 높은 B는 가격을 더 높게(9.07) 매기고, A는 그 덕에 자기도 조금 올립니다(8에서 8.27로). 그래프에서는 B의 반응직선이 위로 평행이동하여 교점이 y = x에서 벗어납니다. 이 부분이 "합성함수로 균형을 찾는다"는 방법의 진가가 드러나는 지점입니다.</p>
+<div class="teacher">반대 순서 합성 R₂∘R₁의 고정점을 구하면 p₂* = 136/15가 나옵니다. "합성 순서를 바꾸면 무엇이 달라지는가(함수의 합성은 교환법칙이 성립하지 않는다)"를 학생이 직접 확인하게 하면 교과 개념과의 연결이 더 단단해집니다. 대칭인 경우에는 R₁ = R₂라서 두 순서의 결과가 같다는 점도 함께 짚어 주세요.</div>
+
+<!-- ============ 10 ============ -->
+<h2 id="s10">10. 해석: 담합하면 더 이득인데 왜 안 할까</h2>
+<p>두 기업이 몰래 짜고 같은 가격 p를 매긴다면(대칭 경우), 각자의 이윤은</p>
+<div class="eq">π = (p − 2)(20 − 2p + p) = (p − 2)(20 − p) &nbsp;→ x절편 2, 20 → 꼭짓점 p = 11, π = 9 × 9 = <b>81</b></div>
+<p>균형 이윤 72보다 큽니다. 그런데 둘 다 11에 있을 때 A의 최적반응은 R₁(11) = 6 + 11/4 = 8.75 ≠ 11입니다. 즉 <b>상대가 11을 지킬 때 나는 몰래 8.75로 내리는 게 이득</b>이라 담합은 깨지기 쉽고, 결국 8로 내려옵니다. (죄수의 딜레마와 같은 구조 — 개인에게 최선인 선택이 모두에게 최선은 아니다.)</p>
+<table>
+<tr><th>상황</th><th>가격</th><th>각 기업 이윤</th></tr>
+<tr><td>순수 베르트랑(같은 상품)</td><td>2 (원가)</td><td>0</td></tr>
+<tr><td>차별화 베르트랑 내쉬균형</td><td>8</td><td>72</td></tr>
+<tr><td>담합</td><td>11</td><td>81</td></tr>
+</table>
+<p>"상품이 차별화될수록 기업이 가격 경쟁의 피해를 덜 받는다(브랜드를 만드는 이유)"는 결론까지 이어 가면 사회·경제 교과와 연계된 좋은 마무리가 됩니다.</p>
+
+<!-- ============ 11 ============ -->
+<h2 id="s11">11. 유리·무리함수, 다른 합성 방식에 대한 의견</h2>
+<h3>유리함수·무리함수</h3>
+<p>위의 일차 수요 모형에서는 유리·무리함수가 자연스럽게 등장하지 않습니다. 억지로 넣기보다는 <b>쓰지 않는 것이 낫습니다.</b> 수요를 분수식(예: 시장 점유율 p₂/(p₁+p₂))으로 바꾸면 유리함수가 나오지만, 최댓값을 구하려면 미분이 필요해져 고1 범위를 벗어납니다. 보고서의 '한계 및 후속 탐구'에 "수요함수가 일차가 아닌 경우는 미분을 배운 뒤 확장할 수 있다"고 적는 정도를 권합니다.</p>
+
+<h3>학생이 생각했을 수도 있는 다른 '합성'</h3>
+<table>
+<tr><th>아이디어</th><th>합성함수인가?</th><th>의견</th></tr>
+<tr><td>이윤 = (가격 − 원가) × 판매량(가격)</td><td><b>아니요</b> — 함수의 <b>곱</b>입니다</td><td>흔한 오해입니다. "판매량이 가격의 함수이니 합성"이라고 쓰면 감점 요인. 반드시 구분시켜 주세요.</td></tr>
+<tr><td>비용 C(q)가 판매량의 함수이고, 판매량 q = D(p)가 가격의 함수 → 비용 = C(D(p))</td><td><b>예</b></td><td>정당한 합성입니다. 예: C(q) = 2q, D(p) = 20 − 2p + p₂. 다만 이윤식 세우는 단계에 잠깐 쓰이는 정도라 탐구의 중심이 되기는 어렵습니다. 보조적으로 언급하면 좋습니다.</td></tr>
+<tr><td>반응함수의 합성 R₁∘R₂ (본 자료)</td><td><b>예</b></td><td>내쉬균형의 정의 자체를 표현하므로 <b>탐구의 중심으로 가장 적합</b>합니다.</td></tr>
+</table>
+
+<!-- ============ 12 ============ -->
+<h2 id="s12">12. 탐구 보고서 구성안과 예상 질문</h2>
+<h3>구성안</h3>
+<ol>
+<li><b>동기</b>: 가격 경쟁, 내쉬균형 소개. 순수 베르트랑 모형과 역설(2절) → 한계 제기</li>
+<li><b>모형 설정</b>: 차별화된 수요함수, 각 항의 의미, 가정(원가 일정, 동시에 가격 결정)</li>
+<li><b>이윤 최대화</b>: 이차함수, x절편의 의미, 꼭짓점 = 두 근의 중점(4절)</li>
+<li><b>최적반응함수</b>: 함수로서의 의미, 기울기 해석(5절)</li>
+<li><b>내쉬균형</b>: R₁∘R₂의 고정점, 계산, 그래프(6~7절), 역함수 관계</li>
+<li><b>수렴 분석</b>: 반복 합성, 표·그래프, 기울기 곱이 1보다 작을 조건(8절)</li>
+<li><b>확장</b>: 원가가 다른 경우, 합성 순서(9절)</li>
+<li><b>해석과 결론</b>: 담합과 비교, 상품 차별화의 의미(10절)</li>
+<li><b>한계</b>: 일차 수요 가정, 미분 없이 다룰 수 있는 범위, 동시 결정 vs 순차 결정</li>
+</ol>
+
+<h3>예상 질문과 답변 방향</h3>
+<table>
+<tr><th>질문</th><th>답변 방향</th></tr>
+<tr><td>연립방정식으로 풀면 되지 않나?</td><td>값은 같다. 합성함수는 "반응의 반응" 구조와 수렴 과정을 설명한다(7·8절).</td></tr>
+<tr><td>왜 R₁을 그릴 때 식을 바꿨나?</td><td>R₁의 입력(p₂)이 세로축이기 때문. 이 평면에서는 R₁의 역함수 꼴로 그려진다(6절).</td></tr>
+<tr><td>최적 가격이 왜 꼭짓점인가?</td><td>이윤 함수가 위로 볼록한 이차함수라서 꼭짓점에서 최대.</td></tr>
+<tr><td>균형이 항상 존재하나?</td><td>반응직선 기울기 d/(2b)가 1보다 작으면 두 직선이 반드시 한 점에서 만난다(기울기 &lt;1인 직선과 기울기 &gt;1인 직선).</td></tr>
+<tr><td>내쉬균형과 '최선의 결과'는 같은가?</td><td>아니다. 담합(81)이 균형(72)보다 낫지만 유지되지 않는다(10절).</td></tr>
+</table>
+<div class="teacher">학생이 직접 숫자를 바꿔 계산해 보는 과정(예: d를 0.5, 1, 1.5로 바꿔 균형 가격 비교, 또는 원가 차이에 따른 균형 변화 표)을 넣으면 '조사 보고서'가 아니라 '탐구 보고서'가 됩니다. 일반식 균형 가격은 대칭일 때 p* = (a + b·c) / (2b − d)이며, 예시(a=20, b=2, c=2, d=1)에 넣으면 24/3 = 8로 확인됩니다.</div>
+
+</main>
+
+<script>
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent){ const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(parent) parent.appendChild(e); return e; }
+function txt(parent, x, y, s, attrs={}){ const t=el('text',Object.assign({x,y,'font-size':13,fill:css('--muted'),'font-family':'inherit'},attrs),parent); t.textContent=s; return t; }
+
+function frame(svg, o){
+  svg.innerHTML='';
+  const W=+svg.viewBox.baseVal.width, H=+svg.viewBox.baseVal.height;
+  const L=56,R=20,T=18,B=46;
+  const sx=x=>L+(x-o.x0)/(o.x1-o.x0)*(W-L-R);
+  const sy=y=>H-B-(y-o.y0)/(o.y1-o.y0)*(H-T-B);
+  for(let x=o.x0;x<=o.x1+1e-9;x+=o.dx){ el('line',{x1:sx(x),x2:sx(x),y1:sy(o.y0),y2:sy(o.y1),stroke:css('--grid')},svg); txt(svg,sx(x),sy(o.y0)+18,String(+x.toFixed(2)),{'text-anchor':'middle','font-size':12}); }
+  for(let y=o.y0;y<=o.y1+1e-9;y+=o.dy){ el('line',{x1:sx(o.x0),x2:sx(o.x1),y1:sy(y),y2:sy(y),stroke:css('--grid')},svg); txt(svg,sx(o.x0)-8,sy(y)+4,String(+y.toFixed(2)),{'text-anchor':'end','font-size':12}); }
+  el('line',{x1:sx(o.x0),x2:sx(o.x1),y1:sy(o.y0),y2:sy(o.y0),stroke:css('--ink')},svg);
+  el('line',{x1:sx(o.x0),x2:sx(o.x0),y1:sy(o.y0),y2:sy(o.y1),stroke:css('--ink')},svg);
+  txt(svg,sx(o.x1),H-6,o.xl,{'text-anchor':'end',fill:css('--ink')});
+  txt(svg,sx(o.x0)+6,T+4,o.yl,{fill:css('--ink')});
+  return {sx,sy};
+}
+function curve(svg,f,a,b,s,attrs,n=200){
+  let d=''; for(let i=0;i<=n;i++){ const x=a+(b-a)*i/n; d+=(i?'L':'M')+s.sx(x).toFixed(1)+','+s.sy(f(x)).toFixed(1); }
+  return el('path',Object.assign({d,fill:'none','stroke-width':2.5},attrs),svg);
+}
+function dot(svg,s,x,y,col,open){ return el('circle',{cx:s.sx(x),cy:s.sy(y),r:5,fill:open?css('--card'):col,stroke:col,'stroke-width':2},svg); }
+
+/* ---- 2. homogeneous Bertrand ---- */
+function drawHomog(){
+  const svg=document.getElementById('g-homog');
+  const s=frame(svg,{x0:0,x1:16,y0:0,y1:100,dx:2,dy:20,xl:'A의 가격 p₁',yl:'A의 이윤'});
+  const a=css('--accent');
+  curve(svg,p=>(p-2)*(20-p),2,10,s,{stroke:a});
+  el('line',{x1:s.sx(0),x2:s.sx(2),y1:s.sy(0),y2:s.sy(0),stroke:a,'stroke-width':2.5},svg);
+  el('line',{x1:s.sx(10),x2:s.sx(16),y1:s.sy(0),y2:s.sy(0),stroke:a,'stroke-width':2.5},svg);
+  curve(svg,p=>(p-2)*(20-p),10,14,s,{stroke:css('--muted'),'stroke-dasharray':'4 4','stroke-width':1.5});
+  dot(svg,s,10,80,a,true); dot(svg,s,10,40,a,false); dot(svg,s,10,0,a,true);
+  txt(svg,s.sx(10)+10,s.sy(80)-6,'80에 도달하지 못함(빈 점)',{fill:css('--accent2')});
+  txt(svg,s.sx(10)+10,s.sy(40)+4,'p₁ = 10이면 40',{fill:css('--ink')});
+  txt(svg,s.sx(12.4),s.sy(66),'(독점이라면 갔을 곡선)',{'font-size':12});
+}
+
+/* ---- 4. profit parabola ---- */
+function drawProfit(){
+  const p2=+document.getElementById('p2s').value;
+  const pi=(p1,q2)=>(p1-2)*(20-2*p1+q2);
+  const svg=document.getElementById('g-profit');
+  const s=frame(svg,{x0:0,x1:22,y0:0,y1:180,dx:2,dy:30,xl:'A의 가격 p₁',yl:'A의 이윤 π₁'});
+  [0,10,20].forEach(q=>curve(svg,x=>pi(x,q),2,(20+q)/2,s,{stroke:css('--muted'),'stroke-width':1.3,opacity:.45}));
+  const r=(20+p2)/2, v=6+p2/4, pv=pi(v,p2);
+  curve(svg,x=>pi(x,p2),2,r,s,{stroke:css('--accent')});
+  el('line',{x1:s.sx(v),x2:s.sx(v),y1:s.sy(0),y2:s.sy(pv),stroke:css('--accent2'),'stroke-dasharray':'5 4'},svg);
+  dot(svg,s,2,0,css('--accent')); dot(svg,s,r,0,css('--accent')); dot(svg,s,v,pv,css('--accent2'));
+  txt(svg,s.sx(2),s.sy(0)-10,'원가 2',{'text-anchor':'middle',fill:css('--ink')});
+  txt(svg,s.sx(r),s.sy(0)-10,'(20+p₂)/2 = '+r,{'text-anchor':'middle',fill:css('--ink')});
+  txt(svg,s.sx(v)+8,s.sy(pv)-8,'꼭짓점 ('+v+', '+(+pv.toFixed(2))+')',{fill:css('--accent2'),'font-weight':700});
+  document.getElementById('p2r').textContent=`최적 가격 R₁(${p2}) = 6 + ${p2}/4 = ${v},  최대 이윤 ${+pv.toFixed(2)}`;
+}
+
+/* ---- 7 & 8. composite + reaction lines ---- */
+function fmt(x){ return (+x.toFixed(4)).toString(); }
+function drawDynamics(){
+  const x0=+document.getElementById('x0s').value;
+  const c2=+document.getElementById('c2s').value;
+  const c1=2;
+  const R1=p2=>(20+2*c1+p2)/4, R2=p1=>(20+2*c2+p1)/4, g=x=>R1(R2(x));
+  const e1=(100+8*c1+2*c2)/15, e2=R2(e1);
+  document.getElementById('x0r').textContent='x₀ = '+x0;
+  document.getElementById('c2r').textContent=`R₂(p₁) = ${fmt((20+2*c2)/4)} + p₁/4`;
+
+  // reaction-line plane
+  let svg=document.getElementById('g-react');
+  let s=frame(svg,{x0:0,x1:20,y0:0,y1:20,dx:2,dy:2,xl:'A의 가격 p₁ →',yl:'↑ B의 가격 p₂'});
+  el('line',{x1:s.sx(0),y1:s.sy(0),x2:s.sx(20),y2:s.sy(20),stroke:css('--muted'),'stroke-dasharray':'3 5'},svg);
+  curve(svg,R2,0,20,s,{stroke:css('--accent')},2);
+  const b1=(20+2*c1)/4; // R1: p1=b1+p2/4 -> p2=4(p1-b1)
+  curve(svg,p1=>4*(p1-b1),b1,b1+5,s,{stroke:css('--accent3')},2);
+  txt(svg,s.sx(19.6),s.sy(R2(19.6))-8,'R₂',{fill:css('--accent'),'font-weight':700,'text-anchor':'end'});
+  txt(svg,s.sx(b1+5)+6,s.sy(19.4),'R₁ (p₂ = 4p₁ − '+fmt(4*b1)+')',{fill:css('--accent3'),'font-weight':700});
+  // staircase
+  let x=x0, d='M'+s.sx(x)+','+s.sy(0);
+  const rows=[];
+  for(let k=0;k<6;k++){
+    const y=R2(x); d+='L'+s.sx(x)+','+s.sy(y);
+    const xn=R1(y); d+='L'+s.sx(xn)+','+s.sy(y);
+    rows.push([k,x,y,xn]); x=xn;
+  }
+  el('path',{d,fill:'none',stroke:css('--accent2'),'stroke-width':1.8},svg);
+  dot(svg,s,x0,0,css('--accent2'));
+  dot(svg,s,e1,e2,css('--ink'));
+  txt(svg,s.sx(e1)+10,s.sy(e2)+18,`균형 (${fmt(e1)}, ${fmt(e2)})`,{fill:css('--ink'),'font-weight':700});
+
+  // table
+  const tb=document.getElementById('iter');
+  tb.innerHTML='<tr><th>바퀴</th><th>A의 가격 x</th><th>B의 반응 R₂(x)</th><th>A의 재반응 R₁(R₂(x))</th><th>균형까지 거리 |x − '+fmt(e1)+'|</th></tr>'+
+    rows.map(r=>`<tr><td>${r[0]}</td><td>${fmt(r[1])}</td><td>${fmt(r[2])}</td><td>${fmt(r[3])}</td><td>${fmt(Math.abs(r[1]-e1))}</td></tr>`).join('');
+
+  // composite graph
+  svg=document.getElementById('g-comp');
+  s=frame(svg,{x0:0,x1:20,y0:0,y1:20,dx:2,dy:2,xl:'x (A의 가격)',yl:'y'});
+  curve(svg,x=>x,0,20,s,{stroke:css('--muted'),'stroke-width':1.6},2);
+  curve(svg,g,0,20,s,{stroke:css('--accent')},2);
+  let z=x0, dd='M'+s.sx(z)+','+s.sy(0);
+  for(let k=0;k<6;k++){ const w=g(z); dd+='L'+s.sx(z)+','+s.sy(w)+'L'+s.sx(w)+','+s.sy(w); z=w; }
+  el('path',{d:dd,fill:'none',stroke:css('--accent2'),'stroke-width':1.6},svg);
+  dot(svg,s,e1,e1,css('--ink'));
+  txt(svg,s.sx(19.5),s.sy(g(19.5))-8,'y = R₁(R₂(x)) = '+fmt((20+2*c1)/4+(20+2*c2)/16)+' + x/16',{fill:css('--accent'),'text-anchor':'end','font-weight':700});
+  txt(svg,s.sx(18),s.sy(18)-10,'y = x',{fill:css('--muted'),'text-anchor':'end'});
+  txt(svg,s.sx(e1)+10,s.sy(e1)+20,'고정점 x = '+fmt(e1),{fill:css('--ink'),'font-weight':700});
+}
+
+function all(){ drawHomog(); drawProfit(); drawDynamics(); }
+document.getElementById('p2s').addEventListener('input',drawProfit);
+document.getElementById('x0s').addEventListener('input',drawDynamics);
+document.getElementById('c2s').addEventListener('input',drawDynamics);
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',all);
+all();
+</script>
+</body>
+</html>
