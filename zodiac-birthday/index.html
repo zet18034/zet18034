@@ -343,8 +343,6 @@ const mod = (a,n) => ((a % n) + n) % n;
 const doyOf = (m,d) => MS[m-1] + d - 1;
 const mdOf = doy => { doy = mod(Math.floor(doy), 365); let m = 11; while (MS[m] > doy) m--; return [m+1, doy - MS[m] + 1]; };
 SIGNS.forEach(g => { g.start = doyOf(g.s[0], g.s[1]); });
-SIGNS[8].alt = "사수자리";   // 생일 별자리로는 '사수자리', 천문학 공식 이름은 '궁수자리'
-const SEASON = m => (m >= 3 && m <= 5) ? "봄" : (m >= 6 && m <= 8) ? "여름" : (m >= 9 && m <= 11) ? "가을" : "겨울";
 SIGNS.forEach((g,i) => {
   const nx = SIGNS[(i+1)%12].start; g.len = mod(nx - g.start, 365);
   const [em, ed] = mdOf(nx - 1); g.range = `${g.s[0]}.${g.s[1]}~${em}.${ed}`;
@@ -462,7 +460,7 @@ const zods = SIGNS.map((s,i) => {
   el("circle", {r:15}, bg);
   const emo = el("text", {"text-anchor":"middle", y:7}, bg); emo.textContent = s.e;
   const nm = el("text", {class:"nm", "text-anchor":"middle", y:56}, g); nm.textContent = s.n;
-  const rg = el("text", {class:"rg", "text-anchor":"middle", y:72}, g); rg.textContent = (s.alt ? s.alt + " · " : "") + s.range;
+  const rg = el("text", {class:"rg", "text-anchor":"middle", y:72}, g); rg.textContent = s.range;
   g.addEventListener("click", () => { stopPlay(); setBirthday(Math.round(s.start + s.len/2), true); });
   g.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" "){ e.preventDefault(); g.dispatchEvent(new Event("click")); } });
   return g;
@@ -628,7 +626,7 @@ function render(){
   const bestChanged = !lastKey || lastKey.split("-")[3] !== String(best);
   lastKey = key;
   $("skyTitle").textContent = `${hourName[String(S.off)]}, 남쪽 하늘`;
-  $("whenTxt").textContent = `${m}월 ${d}일 · ${SEASON(m)}`;
+  $("whenTxt").textContent = `${m}월 ${d}일`;
   if (bestChanged){ drawMini(best); pulseG.setAttribute("transform", `translate(${zods[best].dataset.x},${zods[best].dataset.y})`); }
   $("southName").textContent = SIGNS[best].n;
   $("southSub").textContent = `${SIGNS[best].e} 생일이 ${SIGNS[best].range}인 친구의 별자리`;
@@ -720,7 +718,7 @@ function setBirthday(doy, fromSign){
   S.bday = {doy, sign};
   if (!fromSign){ bm.value = m; fillDays(d); }
   const seeM = mdOf(seeDoyOf(sign))[0];
-  const msg = $("bdayMsg"), nm = `<span class="rose">${s.alt ? `${s.alt}(${s.n})` : s.n}</span>`;
+  const msg = $("bdayMsg"), nm = `<span class="rose">${s.n}</span>`;
   msg.innerHTML = fromSign
     ? `${nm}의 생일은 ${s.range}예요. 이때 지구에서 보면 태양이 ${s.n} 앞을 가려서, 생일 별자리는 낮 하늘에 숨어 버려요.`
     : `${m}월 ${d}일생의 생일 별자리는 ${nm}예요. 생일날 지구에서 보면 ${s.n}${josa(s.n,"은","는")} 태양과 같은 쪽에 있어서 낮 하늘에 숨어요. 밤 12시 남쪽 하늘에서 보려면 ${seeM}월까지 기다려야 해요.`;
