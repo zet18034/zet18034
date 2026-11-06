@@ -15,8 +15,8 @@
 :root{
   --void:#03050f;                 /* page sky */
   --deep:#081032;
-  --glass:rgba(11,17,44,.56);     /* frosted panels */
-  --glass-2:rgba(24,34,78,.50);
+  --glass:rgba(10,16,42,.80);     /* panels (no backdrop blur: the sky animates behind them) */
+  --glass-2:rgba(22,32,74,.82);
   --hair:rgba(170,196,255,.13);   /* hairlines */
   --hair-2:rgba(170,196,255,.26);
   --ink:#f2f4ff;                  /* text */
@@ -46,7 +46,7 @@ h1{font-family:var(--f-display);font-weight:700;font-size:clamp(30px,4.3vw,54px)
 h1 .gold{background:linear-gradient(180deg,#fff3c9 10%,#ffc45a 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
 .lede{color:var(--muted);margin:12px 0 0;max-width:56ch}
 .tools{display:flex;gap:8px}
-.icon-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--ink);background:var(--glass);border:1px solid var(--hair);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer;transition:border-color .2s,background .2s}
+.icon-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--ink);background:var(--glass);border:1px solid var(--hair);cursor:pointer;transition:border-color .2s,background .2s}
 .icon-btn:hover{border-color:var(--hair-2);background:var(--glass-2)}
 .icon-btn svg{width:20px;height:20px}
 #soundBtn[aria-pressed="false"] .on,#soundBtn[aria-pressed="true"] .off{display:none}
@@ -58,10 +58,12 @@ h1 .gold{background:linear-gradient(180deg,#fff3c9 10%,#ffc45a 90%);-webkit-back
 .stage{display:flex;flex-direction:column;gap:14px;min-width:0}
 #orrery{width:100%;max-width:800px;height:auto;display:block;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none;overflow:visible}
 
-.glass{background:var(--glass);border:1px solid var(--hair);border-radius:22px;backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05)}
+.glass{background:linear-gradient(180deg,rgba(18,26,64,.82),var(--glass));border:1px solid var(--hair);border-radius:22px;box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05)}
 
 .bar{padding:14px 18px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px 16px;align-items:center}
 .play{width:54px;height:54px;border-radius:50%;border:0;cursor:pointer;display:grid;place-items:center;color:#2b1700;background:radial-gradient(circle at 35% 30%,#fff2c4,#ffc24f 55%,#ff9a3c);box-shadow:0 0 0 4px rgba(255,208,107,.14),0 8px 24px rgba(255,170,60,.35);transition:transform .15s}
+.play{position:relative}
+.play::before{content:"";position:absolute;inset:-7px;border-radius:50%;background:conic-gradient(var(--star) calc(var(--p,0) * 360deg),rgba(174,232,255,.12) 0);-webkit-mask:radial-gradient(circle,transparent 30px,#000 31px);mask:radial-gradient(circle,transparent 30px,#000 31px);pointer-events:none}
 .play:hover{transform:scale(1.05)}
 .play svg{width:22px;height:22px}
 .play[aria-pressed="false"] .pause,.play[aria-pressed="true"] .tri{display:none}
@@ -148,7 +150,7 @@ details.teacher .small{font-size:13.5px;color:var(--muted);margin:12px 0 0}
 .quiz-fb b{color:var(--ink)}
 
 /* orrery parts */
-.zod{cursor:pointer;transition:opacity .6s}
+.zod{cursor:pointer}
 .zod .fig line{stroke:rgba(165,180,225,.28);stroke-width:1.3;transition:stroke .5s}
 .zod .fig circle{fill:rgba(205,215,245,.38);transition:fill .5s}
 .zod .nm{font-family:var(--f-display);font-weight:700;font-size:17px;fill:var(--faint);transition:fill .4s;paint-order:stroke;stroke:#050819;stroke-width:4px}
@@ -278,15 +280,6 @@ details.teacher .small{font-size:13.5px;color:var(--muted);margin:12px 0 0}
           </div>
         </section>
 
-        <details class="glass card teacher">
-          <summary>선생님 노트</summary>
-          <ol>
-            <li>생일 별자리는 그 날짜에 <b>태양이 앞에 있는 별자리</b>예요. 태양과 같은 쪽 하늘에 있으니 낮에 떠 있고, 햇빛에 가려 보이지 않아요.</li>
-            <li>밤 12시에 남쪽 하늘 한가운데에는 <b>태양의 반대쪽</b> 별자리가 떠요. 지구에서 태양을 등진 방향이에요.</li>
-            <li>지구가 공전하면 태양의 반대쪽이 달라지므로 계절마다 보이는 별자리가 바뀌어요. 생일 별자리는 생일에서 <b>약 6개월 뒤</b> 밤 12시 남쪽 하늘에서 잘 보여요.</li>
-          </ol>
-          <p class="small">관측 시각을 오후 9시나 새벽 3시로 바꾸면 지구의 자전 때문에 남쪽 하늘의 별자리가 한 칸 반쯤 옮겨 가요. 실제 하늘에서는 세차 운동 때문에 생일에 태양이 지나는 별자리가 탄생 별자리 날짜와 한 칸쯤 어긋나기도 하지만, 이 모형은 교과서처럼 탄생 별자리 날짜를 따릅니다. 별자리는 실제로 이 그림보다 훨씬 멀리 있어요.</p>
-        </details>
       </div>
 
       <div id="paneQuiz" role="tabpanel" aria-labelledby="tabQuiz" class="glass card" hidden>
@@ -348,7 +341,7 @@ function el(name, attrs={}, parent){ const n = document.createElementNS(NS, name
 function figure(sign, scale, parent, cls){
   const fg = el("g", {class: cls || "fig"}, parent);
   sign.ln.forEach(([a,b]) => el("line", {x1:sign.st[a][0]*scale, y1:sign.st[a][1]*scale, x2:sign.st[b][0]*scale, y2:sign.st[b][1]*scale, "stroke-linecap":"round"}, fg));
-  sign.st.forEach(([x,y],k) => el("circle", {cx:x*scale, cy:y*scale, r: k===0 ? 3.4 : k%3===0 ? 2.7 : 2.1, class: k%2 ? "twinkle" : ""}, fg));
+  sign.st.forEach(([x,y],k) => el("circle", {cx:x*scale, cy:y*scale, r: k===0 ? 3.4 : k%3===0 ? 2.7 : 2.1}, fg));
   return fg;
 }
 const GLOW = `<filter id="fGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>`;
@@ -394,7 +387,7 @@ const otp = el("textPath", {href:"#pOrbitTxt", startOffset:"50%", "text-anchor":
 /* 태양 */
 el("circle", {cx:C, cy:C, r:210, fill:"url(#gGlow2)"}, svg);
 el("circle", {cx:C, cy:C, r:120, fill:"url(#gGlow1)"}, svg);
-const corona = el("g", {class:"corona", filter:"url(#fBlur)", opacity:.55}, svg);
+const corona = el("g", {filter:"url(#fBlur)", opacity:.55}, svg);   // static: a blurred group that never moves is drawn once
 for (let i=0;i<20;i++){ const a = i*18 + (i%2)*6, [x1,y1] = P(50, a-5), [x2,y2] = P(i%3 ? 104 : 132, a), [x3,y3] = P(50, a+5); el("path", {d:`M${x1},${y1} L${x2},${y2} L${x3},${y3} Z`, fill:"#ffc24f"}, corona); }
 el("circle", {cx:C, cy:C, r:52, fill:"url(#gCore)"}, svg);
 const sunTxt = el("text", {x:C, y:C+7, "text-anchor":"middle", style:"font-family:var(--f-display);font-weight:800;font-size:21px;letter-spacing:2px", fill:"#6a3a00"}, svg); sunTxt.textContent = "태양";
@@ -440,7 +433,7 @@ const zods = SIGNS.map((s,i) => {
 /* 지구 */
 const sightLine = el("line", {stroke:"rgba(255,208,107,.7)", "stroke-width":1.4, "stroke-dasharray":"2 6", "stroke-linecap":"round"}, svg);
 const earth = el("g", {style:"cursor:grab"}, svg);
-el("circle", {r:44, fill:"#aee8ff", opacity:.13, filter:"url(#fBlur)"}, earth);
+el("circle", {r:46, fill:"url(#gHalo)"}, earth);
 el("circle", {r:26.5, fill:"none", stroke:"rgba(174,232,255,.55)", "stroke-width":2}, earth);
 const globe = el("g", {"clip-path":"url(#cEarth)"}, earth);
 el("circle", {r:24, fill:"url(#gEarth)"}, globe);
@@ -485,9 +478,12 @@ const eclTxt = el("text", {x:16, y:24, style:"font-size:11.5px;font-weight:500;l
 const pItems = SIGNS.map(s => {
   const g = el("g", {opacity:0}, pano);
   el("circle", {r:30, fill:"url(#gHalo)"}, g);
-  const f = figure(s, 24, g, "pfig"); f.setAttribute("filter", "url(#pGlow)");
-  f.querySelectorAll("line").forEach(l => { l.setAttribute("stroke","rgba(190,236,255,.8)"); l.setAttribute("stroke-width","1.1"); });
-  f.querySelectorAll("circle").forEach(c => c.setAttribute("fill","#fff"));
+  const f = figure(s, 24, g, "pfig");
+  f.querySelectorAll("line").forEach(l => { l.setAttribute("stroke","rgba(190,236,255,.32)"); l.setAttribute("stroke-width","3.2"); });
+  const core = f.cloneNode(true); g.appendChild(core);   // soft wide line underneath + thin bright line on top = glow without a filter
+  core.querySelectorAll("line").forEach(l => { l.setAttribute("stroke","rgba(220,245,255,.9)"); l.setAttribute("stroke-width","1.1"); });
+  f.querySelectorAll("circle").forEach(c => { c.setAttribute("fill","rgba(174,232,255,.35)"); c.setAttribute("r", (+c.getAttribute("r")*2.2).toFixed(1)); });
+  core.querySelectorAll("circle").forEach(c => c.setAttribute("fill","#fff"));
   const t = el("text", {"text-anchor":"middle", y:44, style:"font-family:var(--f-display);font-weight:700;font-size:13.5px;paint-order:stroke;stroke:#040716;stroke-width:4px", fill:"#f2f4ff"}, g); t.textContent = s.n;
   return g;
 });
@@ -528,7 +524,8 @@ function fanPath(E, a1, a2, r){
   return `M${E[0].toFixed(1)},${E[1].toFixed(1)} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r} 0 0 0 ${x2.toFixed(1)},${y2.toFixed(1)} Z`;
 }
 function arcPath(a1, a2, r){ const [x1,y1] = P(r,a1), [x2,y2] = P(r,a2); return `M${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r} 0 0 0 ${x2.toFixed(1)},${y2.toFixed(1)}`; }
-let lastKey = "";
+let lastKey = "", lastMonth = 0;
+const cache = SIGNS.map(() => ({op:null, cls:null, po:null, center:null}));
 function render(){
   const Ls = lam(S.doy), ts = th(Ls), te = ts + 180, E = P(R_ORB, te);
   const Lm = Ls + 180 + S.off, tm = th(Lm);
@@ -554,21 +551,24 @@ function render(){
     const D = wrap180(centerL(i) - Lm), A = Math.abs(D);
     const b = A <= 70 ? 1 : A >= 100 ? 0 : (100 - A)/30;
     if (A < bestAbs){ bestAbs = A; best = i; }
-    const g = zods[i];
-    g.style.opacity = (i === sunIdx ? .85 : .42 + .58*b).toFixed(2);
-    g.classList.toggle("lit", b > .5);
-    g.classList.toggle("dark", b <= .5);
-    g.classList.toggle("sunhide", i === sunIdx);
-    g.classList.toggle("bday", S.bday !== null && i === S.bday.sign);
+    const c = cache[i];
+    const op = (i === sunIdx ? .85 : Math.round((.42 + .58*b)*20)/20).toFixed(2);   // 0.05 steps: touch the DOM only when it changes
+    if (op !== c.op){ zods[i].style.opacity = op; c.op = op; }
+    const cls = `${b > .5 ? "lit" : "dark"}${i === sunIdx ? " sunhide" : ""}${S.bday !== null && i === S.bday.sign ? " bday" : ""}`;
+    if (cls !== c.cls){ zods[i].setAttribute("class", "zod " + cls); c.cls = cls; c.center = null; }
     const it = pItems[i];
-    if (A < 96){ const [x,y] = panoXY(D); it.setAttribute("transform", `translate(${x.toFixed(1)},${(y-30).toFixed(1)}) scale(${A < 15 ? 1.12 : .92})`); it.setAttribute("opacity", Math.max(0, Math.min(1, (96 - A)/26)).toFixed(2)); }
-    else it.setAttribute("opacity", 0);
+    if (A < 96){
+      const [x,y] = panoXY(D);
+      it.setAttribute("transform", `translate(${x.toFixed(1)},${(y-30).toFixed(1)}) scale(${A < 15 ? 1.12 : .92})`);
+      const po = Math.max(0, Math.min(1, (96 - A)/26)).toFixed(2);
+      if (po !== c.po){ it.setAttribute("opacity", po); c.po = po; }
+    } else if (c.po !== "0"){ it.setAttribute("opacity", 0); c.po = "0"; }
     if (b > .5) vis.push([D,i]);
   });
-  zods.forEach((z,i) => z.classList.toggle("center", i === best));
+  zods.forEach((z,i) => { const on = i === best; if (cache[i].center !== on){ z.classList.toggle("center", on); cache[i].center = on; } });
   const [m, d] = mdOf(S.doy);
-  marks.forEach((c,k) => c.classList.toggle("on", k === m-1));
-  $("day").value = Math.floor(mod(S.doy,365));
+  if (lastMonth !== m){ marks.forEach((c,k) => c.classList.toggle("on", k === m-1)); lastMonth = m; }
+  const dv = Math.floor(mod(S.doy,365)); if (+$("day").value !== dv) $("day").value = dv;
   $("dayOut").textContent = `${m}월 ${d}일`;
 
   const key = `${m}-${d}-${S.off}-${best}-${S.bday ? S.bday.sign : ""}`;
@@ -603,17 +603,33 @@ function travelTo(target, dir = 1){
   };
   anim = requestAnimationFrame(step);
 }
+/* 1년 공전 재생: 지금 날짜에서 출발해 정확히 한 바퀴(365일) 돈 뒤 출발한 날짜에서 멈춘다 */
 let lastT = 0, playRaf = null;
+const playBtn = $("playBtn");
 function playLoop(now){
   if (!S.playing) return;
-  const dt = lastT ? Math.min(.1, (now - lastT)/1000) : 0; lastT = now;
+  const dt = lastT ? Math.min(.05, (now - lastT)/1000) : 0; lastT = now;
   const before = mdOf(S.doy)[0];
-  S.doy = mod(S.doy + S.speed*dt, 365); render();
+  S.travelled += S.speed*dt;
+  if (S.travelled >= 365){
+    S.doy = S.playFrom; render(); stopPlay();
+    chime(.08, [523.25, 659.25, 783.99, 1046.5]);
+    return;
+  }
+  S.doy = mod(S.playFrom + S.travelled, 365); render();
+  playBtn.style.setProperty("--p", (S.travelled/365).toFixed(4));
   if (mdOf(S.doy)[0] !== before) chime(.03);
   playRaf = requestAnimationFrame(playLoop);
 }
-function startPlay(){ cancelAnimationFrame(anim); S.playing = true; lastT = 0; $("playBtn").setAttribute("aria-pressed","true"); $("playBtn").setAttribute("aria-label","멈추기"); playRaf = requestAnimationFrame(playLoop); }
-function stopPlay(){ S.playing = false; cancelAnimationFrame(playRaf); $("playBtn").setAttribute("aria-pressed","false"); $("playBtn").setAttribute("aria-label","1년 공전 재생"); }
+function startPlay(){
+  cancelAnimationFrame(anim); S.playing = true; lastT = 0; S.playFrom = S.doy; S.travelled = 0;
+  playBtn.setAttribute("aria-pressed","true"); playBtn.setAttribute("aria-label","멈추기");
+  playRaf = requestAnimationFrame(playLoop);
+}
+function stopPlay(){
+  S.playing = false; cancelAnimationFrame(playRaf); playBtn.style.setProperty("--p", 0);
+  playBtn.setAttribute("aria-pressed","false"); playBtn.setAttribute("aria-label","1년 공전 재생");
+}
 $("playBtn").addEventListener("click", () => S.playing ? stopPlay() : startPlay());
 $("speed").addEventListener("input", e => S.speed = +e.target.value);
 $("day").addEventListener("input", e => { stopPlay(); cancelAnimationFrame(anim); S.doy = +e.target.value; render(); });
@@ -739,11 +755,12 @@ $("fullBtn").addEventListener("click", () => {
 });
 
 /* ---------- 배경 밤하늘(Canvas): 은하수, 별의 색과 밝기, 대기광 ---------- */
-const sky = $("sky"), sctx = sky.getContext("2d"), fx = $("fx"), fctx = fx.getContext("2d");
-const base = document.createElement("canvas"), bctx = base.getContext("2d");
+/* 은하수가 든 큰 그림은 #sky에 크기가 바뀔 때만 한 번 그리고, 반짝임·별똥별·폭죽만 #fx에 가볍게 다시 그린다 */
+const sky = $("sky"), fx = $("fx"), fctx = fx.getContext("2d");
+const bctx = sky.getContext("2d");
 let W = 0, H = 0, DPR = 1, bright = [], meteor = null;
 function buildSky(){
-  base.width = W*DPR; base.height = H*DPR; bctx.setTransform(DPR,0,0,DPR,0,0);
+  bctx.setTransform(DPR,0,0,DPR,0,0);
   const g = bctx, Smin = Math.min(W, H), Sm = Math.max(W, H);
   const lg = g.createLinearGradient(0, 0, 0, H);
   lg.addColorStop(0, "#02030a"); lg.addColorStop(.55, "#050a22"); lg.addColorStop(1, "#0a1534");
@@ -768,27 +785,25 @@ function buildSky(){
     if (m > .62) glow(x, y, r*7, hexA(col, .22));
     g.globalAlpha = .35 + m*.65; g.fillStyle = col; g.beginPath(); g.arc(x, y, r, 0, 6.283); g.fill();
     if (m > .86){ g.globalAlpha = .35; g.strokeStyle = col; g.lineWidth = .6; g.beginPath(); g.moveTo(x - r*7, y); g.lineTo(x + r*7, y); g.moveTo(x, y - r*7); g.lineTo(x, y + r*7); g.stroke(); }
-    if (m > .5 && bright.length < 90) bright.push({x, y, r, col, p:rnd()*6.28, s:.6 + rnd()*1.4});
+    if (m > .55 && bright.length < 60) bright.push({x, y, r, col, p:rnd()*6.28, s:.6 + rnd()*1.4});
   }
   g.globalAlpha = 1;
 }
 function hexA(hex, a){ const n = parseInt(hex.slice(1), 16); return `rgba(${n>>16},${(n>>8)&255},${n&255},${a})`; }
-function drawSky(t){
-  sctx.clearRect(0, 0, W, H);
-  sctx.drawImage(base, 0, 0, W, H);
+function drawSky(t, dt){
   for (const s of bright){
     const k = .5 + .5*Math.sin(s.p + t*.0012*s.s);
-    sctx.globalAlpha = .25 + .55*k; sctx.fillStyle = s.col;
-    sctx.beginPath(); sctx.arc(s.x, s.y, s.r*(1 + .5*k), 0, 6.283); sctx.fill();
+    fctx.globalAlpha = .2 + .6*k; fctx.fillStyle = s.col;
+    fctx.beginPath(); fctx.arc(s.x, s.y, s.r*(.9 + .6*k), 0, 6.283); fctx.fill();
   }
-  sctx.globalAlpha = 1;
+  fctx.globalAlpha = 1;
   if (meteor){
-    meteor.x += meteor.vx; meteor.y += meteor.vy; meteor.life -= 1;
-    const tx = meteor.x - meteor.vx*16, ty = meteor.y - meteor.vy*16, gr = sctx.createLinearGradient(meteor.x, meteor.y, tx, ty);
-    gr.addColorStop(0, `rgba(255,255,255,${Math.min(1, meteor.life/20)})`); gr.addColorStop(1, "rgba(255,255,255,0)");
-    sctx.strokeStyle = gr; sctx.lineWidth = 1.6; sctx.beginPath(); sctx.moveTo(meteor.x, meteor.y); sctx.lineTo(tx, ty); sctx.stroke();
+    const f = dt*60; meteor.x += meteor.vx*f; meteor.y += meteor.vy*f; meteor.life -= f;
+    const tx = meteor.x - meteor.vx*16, ty = meteor.y - meteor.vy*16, gr = fctx.createLinearGradient(meteor.x, meteor.y, tx, ty);
+    gr.addColorStop(0, `rgba(255,255,255,${Math.max(0, Math.min(1, meteor.life/20))})`); gr.addColorStop(1, "rgba(255,255,255,0)");
+    fctx.strokeStyle = gr; fctx.lineWidth = 1.6; fctx.beginPath(); fctx.moveTo(meteor.x, meteor.y); fctx.lineTo(tx, ty); fctx.stroke();
     if (meteor.life <= 0) meteor = null;
-  } else if (rnd() < .0018) meteor = {x:rnd()*W*.8, y:rnd()*H*.35, vx:7 + rnd()*4, vy:2.5 + rnd()*2, life:50};
+  } else if (rnd() < .002) meteor = {x:rnd()*W*.8, y:rnd()*H*.35, vx:7 + rnd()*4, vy:2.5 + rnd()*2, life:50};
 }
 let parts = [];
 function sparkle(){
@@ -797,8 +812,7 @@ function sparkle(){
   for (let i=0;i<80;i++){ const a = rnd()*6.283, v = 2 + rnd()*5.5; parts.push({x:cx, y:cy, vx:Math.cos(a)*v, vy:Math.sin(a)*v - 2, life:60 + rnd()*30, c:["#ffd06b","#aee8ff","#ffa3c8","#ffffff"][i%4], s:2.5 + rnd()*4}); }
 }
 function drawFx(){
-  if (!parts.length) { fctx.clearRect(0, 0, W, H); return; }
-  fctx.clearRect(0, 0, W, H);
+  if (!parts.length) return;
   parts = parts.filter(p => p.life > 0);
   for (const p of parts){
     p.x += p.vx; p.y += p.vy; p.vy += .12; p.vx *= .985; p.life -= 1;
@@ -807,16 +821,26 @@ function drawFx(){
   }
   fctx.globalAlpha = 1;
 }
+let lastW = 0;
 function resize(){
-  DPR = Math.min(2, window.devicePixelRatio || 1); W = innerWidth; H = innerHeight;
-  [sky, fx].forEach(c => { c.width = W*DPR; c.height = H*DPR; });
-  sctx.setTransform(DPR,0,0,DPR,0,0); fctx.setTransform(DPR,0,0,DPR,0,0);
-  buildSky(); drawSky(0);
+  // 휴대폰에서 주소창이 들어갔다 나올 때(높이만 조금 바뀜)는 다시 그리지 않는다
+  if (lastW === innerWidth && Math.abs(H - innerHeight) < 120 && H) return;
+  lastW = innerWidth;
+  DPR = Math.min(1.5, window.devicePixelRatio || 1); W = innerWidth; H = innerHeight;
+  sky.width = W*DPR; sky.height = H*DPR; fx.width = W*DPR; fx.height = H*DPR;
+  fctx.setTransform(DPR,0,0,DPR,0,0);
+  buildSky();
 }
 let rT = null;
 addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(resize, 150); });
 resize();
-function frame(t){ drawSky(t); drawFx(); requestAnimationFrame(frame); }
+/* 반짝임은 초당 30번이면 충분하고, 폭죽이 터질 때만 매 프레임 그린다 */
+let lastFx = 0;
+function frame(t){
+  const dt = lastFx ? Math.min(.1, (t - lastFx)/1000) : 0;
+  if (parts.length || t - lastFx > 33){ fctx.clearRect(0, 0, W, H); drawSky(t, dt); drawFx(); lastFx = t; }
+  requestAnimationFrame(frame);
+}
 if (!reduce) requestAnimationFrame(frame);
 
 /* ---------- 시작: 오늘 날짜 ---------- */
