@@ -5,6 +5,7 @@
 
 ## 파일
 
+- `lesson-plan/lesson-plan-3.pdf` · `.hwp` · `.hwpx` — 3차시 교수·학습 과정안 (1·2차시와 같은 양식, 교사 발화 포함)
 - `lesson-plan/lesson-plan-3-onepage.pdf` · `.hwp` · `.hwpx` — 3차시 교수·학습 과정안 (1쪽 약안)
 
 ## 수업에서 다루는 기출 문제
