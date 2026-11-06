@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>생일 별자리 관측소</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="지구의 공전과 황도 12궁으로 생일 별자리가 생일에 보이지 않는 까닭을 탐구하는 초등 과학 모형">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Gowun+Dodum&family=Orbit&display=swap">
+<style>
+/* Layout: a tabletop orrery on the left, a "tonight's southern sky" window on the right.
+   One deep-night palette on purpose (single dark look), sunlight yellow vs. starlight cyan as the two signals. */
+:root{
+  --night:#0a0f2c;      /* page sky */
+  --night-2:#111947;    /* raised surfaces */
+  --panel:#16205a;      /* panels, chips */
+  --line:#2c3784;       /* hairlines */
+  --ink:#eef0ff;        /* text */
+  --muted:#a6afdc;      /* secondary text */
+  --sun:#ffc94a;        /* sunlight: hidden, daytime */
+  --sun-2:#ff9b2f;
+  --star:#8be9ff;       /* starlight: visible at night */
+  --rose:#ff93b8;       /* the viewer's birthday */
+  --dim:#3a4382;        /* constellations you cannot see */
+  --good:#7dffb6; --bad:#ff9494;
+  --f-display:"Bagel Fat One","Jua","Malgun Gothic",system-ui,sans-serif;
+  --f-body:"Gowun Dodum","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --f-util:"Orbit","Gowun Dodum","Malgun Gothic",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--night);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;overflow-x:hidden;word-break:keep-all;overflow-wrap:anywhere}
+#sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:50;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:1320px;margin:0 auto;padding-block:22px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:18px}
+
+header{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px}
+.eyebrow{font-family:var(--f-util);font-size:13px;letter-spacing:.12em;color:var(--star);margin:0 0 4px}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,4.2vw,50px);line-height:1.15;margin:0;text-wrap:balance}
+h1 .sunword{color:var(--sun)}
+.lede{color:var(--muted);margin:6px 0 0;max-width:58ch}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+
+.app{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+@media (min-width:1000px){.app{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);align-items:start}}
+
+.stage{display:flex;flex-direction:column;gap:12px;min-width:0}
+#orrery{width:100%;max-width:780px;height:auto;display:block;margin:0 auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;justify-content:center}
+.dateline{display:flex;align-items:center;gap:10px;flex:1 1 320px;min-width:0;max-width:560px}
+.dateline input{flex:1;min-width:0;accent-color:var(--sun)}
+.dateline output{font-family:var(--f-util);font-variant-numeric:tabular-nums;min-width:5.5em;text-align:right}
+
+.btn{font-family:var(--f-util);font-size:15px;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:border-color .2s,background .2s,transform .1s}
+.btn:hover{border-color:var(--star)}
+.btn:active{transform:translateY(1px)}
+.btn[aria-pressed="true"]{background:var(--star);color:var(--night);border-color:var(--star)}
+.btn.sunny{background:var(--sun);color:#2a1a00;border-color:var(--sun)}
+.btn.sunny:hover{border-color:#fff}
+button:focus-visible,select:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--star);outline-offset:2px}
+.seg{display:inline-flex;background:var(--night-2);border:1px solid var(--line);border-radius:999px;padding:3px}
+.seg button{font-family:var(--f-util);font-size:14px;color:var(--muted);background:none;border:0;border-radius:999px;padding:6px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:inset 0 0 0 1px var(--star)}
+.speed{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-util);font-size:13px;color:var(--muted)}
+.speed input{width:90px;accent-color:var(--star)}
+
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.panel{background:linear-gradient(180deg,var(--panel),var(--night-2));border:1px solid var(--line);border-radius:22px;padding:16px 18px}
+.tabs{display:flex;gap:6px}
+.tabs button{flex:1;font-family:var(--f-display);font-size:18px;color:var(--muted);background:var(--night-2);border:1px solid var(--line);border-radius:14px;padding:8px 10px;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--night);background:var(--star);border-color:var(--star)}
+
+.skyhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.skyhead h2{font-family:var(--f-display);font-weight:400;font-size:20px;margin:0}
+.skyhead .when{font-family:var(--f-util);color:var(--muted);font-size:14px}
+#pano{width:100%;height:auto;display:block;border-radius:16px}
+
+.south{display:flex;align-items:center;gap:14px;margin-top:12px}
+.south .emo{font-size:46px;line-height:1;filter:drop-shadow(0 0 14px rgba(139,233,255,.55))}
+.south .lbl{font-family:var(--f-util);font-size:13px;color:var(--star);letter-spacing:.06em}
+.south .nm{font-family:var(--f-display);font-size:30px;line-height:1.1}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;padding:0;list-style:none}
+.chips li{font-size:14px;background:var(--night-2);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+.chips li.center{border-color:var(--star);color:var(--star)}
+.flow{font-family:var(--f-util);font-size:12px;color:var(--muted);margin-top:4px}
+
+.hidden-note{margin-top:14px;background:rgba(255,201,74,.10);border:1px solid rgba(255,201,74,.35);border-radius:16px;padding:12px 14px}
+.hidden-note b{color:var(--sun);font-family:var(--f-display);font-weight:400;font-size:18px}
+.hidden-note p{margin:4px 0 0}
+
+form.bday{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+form.bday label{font-family:var(--f-display);font-size:18px;margin-right:4px}
+select{font-family:var(--f-util);font-size:15px;color:var(--ink);background:var(--night-2);border:1px solid var(--line);border-radius:10px;padding:6px 8px}
+.bday-msg{margin:10px 0 0;color:var(--ink)}
+.bday-msg .rose{color:var(--rose);font-family:var(--f-display);font-weight:400}
+.bday-msg[hidden]{display:none}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+details.teacher summary{cursor:pointer;font-family:var(--f-display);font-size:18px;list-style:none}
+details.teacher summary::-webkit-details-marker{display:none}
+details.teacher summary::after{content:"＋";float:right;color:var(--muted)}
+details.teacher[open] summary::after{content:"－"}
+details.teacher ol{margin:10px 0 0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+details.teacher .small{font-size:14px;color:var(--muted);margin:10px 0 0}
+
+.quiz-q{font-family:var(--f-display);font-size:22px;line-height:1.35;margin:4px 0 12px;text-wrap:balance}
+.quiz-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.quiz-opts button{font-family:var(--f-body);font-size:17px;color:var(--ink);background:var(--night-2);border:1px solid var(--line);border-radius:14px;padding:12px 10px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px;min-width:0}
+.quiz-opts button:hover:not(:disabled){border-color:var(--star)}
+.quiz-opts button.ok{border-color:var(--good);background:rgba(125,255,182,.12)}
+.quiz-opts button.no{border-color:var(--bad);background:rgba(255,148,148,.12)}
+.quiz-opts button:disabled{cursor:default}
+.quiz-fb{min-height:3.2em;margin:12px 0 0}
+.score{font-family:var(--f-util);font-size:14px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.score .stars{color:var(--sun);letter-spacing:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* orrery parts */
+.zod{cursor:pointer;transition:opacity .55s}
+.zod .medal{fill:var(--night-2);stroke:var(--dim);stroke-width:2;transition:stroke .4s,fill .4s}
+.zod .emo{font-size:36px;transition:filter .5s}
+.zod .fig line{stroke:var(--dim);stroke-width:1.6;transition:stroke .5s}
+.zod .fig circle{fill:var(--muted);transition:fill .5s}
+.zod .nm{font-family:var(--f-display);font-size:20px;fill:var(--muted);transition:fill .4s}
+.zod .rg{font-family:var(--f-util);font-size:13px;fill:var(--muted);opacity:.75}
+.zod .halo{opacity:0;transition:opacity .5s}
+.zod.dark .emo{filter:grayscale(1) brightness(.45)}
+.zod.lit .medal{stroke:var(--star);fill:#132a66}
+.zod.lit .fig line{stroke:var(--star)}
+.zod.lit .fig circle{fill:#fff}
+.zod.lit .nm{fill:var(--ink)}
+.zod.lit .halo{opacity:1}
+.zod.center .ring{opacity:1}
+.zod .ring{opacity:0;fill:none;stroke:var(--star);stroke-width:3;transition:opacity .4s}
+.zod.sunhide .medal{stroke:var(--sun);fill:#3a2b12}
+.zod.sunhide .nm{fill:var(--sun)}
+.zod .bmark{opacity:0;transition:opacity .4s}
+.zod.bday .bmark{opacity:1}
+.zod:hover .medal{stroke-width:3.5}
+.chip{cursor:pointer}
+.chip circle{fill:var(--night);stroke:var(--line);stroke-width:2;transition:fill .3s,stroke .3s}
+.chip text{font-family:var(--f-util);font-size:17px;fill:var(--muted)}
+.chip:hover circle{stroke:var(--sun)}
+.chip.on circle{fill:var(--sun);stroke:var(--sun)}
+.chip.on text{fill:#2a1a00}
+.tag{font-family:var(--f-util);font-size:15px}
+.rays{transform-origin:500px 500px;animation:spin 40s linear infinite}
+.twinkle{animation:tw 2.4s ease-in-out infinite}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.8s ease-in-out infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes tw{0%,100%{opacity:1}50%{opacity:.45}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.9}50%{transform:scale(1.12);opacity:.35}}
+@media (prefers-reduced-motion: reduce){.rays,.twinkle,.pulse{animation:none}.zod,.zod *{transition:none}}
+</style>
+
+<canvas id="sky" aria-hidden="true"></canvas>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<div class="wrap">
+  <header>
+    <div>
+      <p class="eyebrow">초등 과학 · 계절에 따라 달라지는 별자리</p>
+      <h1>내 생일 별자리는 왜 <span class="sunword">생일 밤</span>에 안 보일까?</h1>
+      <p class="lede">궤도 위의 달(月)을 누르면 지구가 그 자리로 공전해요. 밤 12시에 남쪽 하늘에 떠 있는 별자리는 빛나고, 태양 쪽에 있어 보이지 않는 별자리는 어두워져요. 지구를 손가락으로 끌어 옮겨도 됩니다.</p>
+    </div>
+    <div class="tools">
+      <button class="btn" id="soundBtn" type="button" aria-pressed="true">소리 켜짐</button>
+      <button class="btn" id="fullBtn" type="button">전체 화면</button>
+    </div>
+  </header>
+
+  <main class="app">
+    <section class="stage" aria-label="지구 공전 모형">
+      <svg id="orrery" viewBox="0 0 1000 1000" role="group" aria-labelledby="orreryTitle">
+        <title id="orreryTitle">태양을 도는 지구와 황도 12궁 모형</title>
+      </svg>
+      <div class="controls">
+        <button class="btn sunny" id="playBtn" type="button" aria-pressed="false">▶ 1년 공전 재생</button>
+        <label class="speed" for="speed">빠르기 <input id="speed" type="range" min="10" max="120" step="5" value="45"></label>
+        <div class="seg" role="group" aria-label="관측 시각">
+          <button type="button" data-off="-45" aria-pressed="false">오후 9시</button>
+          <button type="button" data-off="0" aria-pressed="true">밤 12시</button>
+          <button type="button" data-off="45" aria-pressed="false">새벽 3시</button>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="dateline">
+          <label for="day" class="speed">날짜</label>
+          <input id="day" type="range" min="0" max="364" step="1" value="0">
+          <output id="dayOut" for="day">1월 1일</output>
+        </div>
+      </div>
+    </section>
+
+    <aside class="side">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tabExplore" aria-selected="true" aria-controls="paneExplore" type="button">탐구하기</button>
+        <button role="tab" id="tabQuiz" aria-selected="false" aria-controls="paneQuiz" type="button">별자리 퀴즈</button>
+      </div>
+
+      <div id="paneExplore" role="tabpanel" aria-labelledby="tabExplore" class="side">
+        <section class="panel" aria-live="polite">
+          <div class="skyhead">
+            <h2 id="skyTitle">밤 12시, 남쪽 하늘</h2>
+            <span class="when" id="whenTxt"></span>
+          </div>
+          <svg id="pano" viewBox="0 0 600 300" role="img" aria-label="남쪽을 바라본 밤하늘 풍경"></svg>
+          <div class="south">
+            <div class="emo" id="southEmo">🦂</div>
+            <div>
+              <div class="lbl">남쪽 하늘 한가운데</div>
+              <div class="nm" id="southName">전갈자리</div>
+            </div>
+          </div>
+          <ul class="chips" id="visList" aria-label="지금 보이는 별자리"></ul>
+          <div class="flow">동쪽 하늘 ← → 서쪽 하늘</div>
+          <div class="hidden-note">
+            <b id="hideName">황소자리</b>
+            <p id="hideTxt"></p>
+          </div>
+        </section>
+
+        <section class="panel">
+          <form class="bday" id="bdayForm">
+            <label for="bm">내 생일</label>
+            <select id="bm" aria-label="월"></select>
+            <select id="bd" aria-label="일"></select>
+            <button class="btn sunny" type="submit">지구 보내기</button>
+          </form>
+          <p class="bday-msg" id="bdayMsg" hidden></p>
+          <div class="row" id="bdayRow" hidden>
+            <button class="btn" type="button" id="goSix">6개월 뒤 밤하늘 보기</button>
+            <button class="btn" type="button" id="goBack">생일로 돌아가기</button>
+          </div>
+        </section>
+
+        <details class="panel teacher">
+          <summary>선생님 노트</summary>
+          <ol>
+            <li>생일 별자리는 그 날짜에 <b>태양이 앞에 있는 별자리</b>예요. 태양과 같은 쪽 하늘에 있으니 낮에 떠 있고, 햇빛에 가려 보이지 않아요.</li>
+            <li>밤 12시에 남쪽 하늘 한가운데에는 <b>태양의 반대쪽</b> 별자리가 떠요. 지구에서 태양을 등진 방향이에요.</li>
+            <li>지구가 공전하면 태양의 반대쪽이 달라지므로 계절마다 보이는 별자리가 바뀌어요. 생일 별자리는 생일에서 <b>약 6개월 뒤</b> 밤 12시 남쪽 하늘에서 잘 보여요.</li>
+          </ol>
+          <p class="small">관측 시각을 오후 9시나 새벽 3시로 바꾸면 지구의 자전 때문에 남쪽 하늘의 별자리가 한 칸 반쯤 옮겨 가요. 실제 하늘에서는 세차 운동 때문에 생일에 태양이 지나는 별자리가 탄생 별자리 날짜와 한 칸쯤 어긋나기도 하지만, 이 모형은 교과서처럼 탄생 별자리 날짜를 따릅니다. 별자리는 실제로 이 그림보다 훨씬 멀리 있어요.</p>
+        </details>
+      </div>
+
+      <div id="paneQuiz" role="tabpanel" aria-labelledby="tabQuiz" class="panel" hidden>
+        <div class="score"><span id="scoreTxt">맞힌 문제 0 / 0</span><span class="stars" id="streak"></span></div>
+        <p class="quiz-q" id="qText"></p>
+        <div class="quiz-opts" id="qOpts"></div>
+        <p class="quiz-fb" id="qFb" aria-live="polite"></p>
+        <div class="row"><button class="btn sunny" type="button" id="qNext">다음 문제</button></div>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<script>
+(() => {
+"use strict";
+const NS = "http://www.w3.org/2000/svg";
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const C = 500, R_ORB = 228, R_ZOD = 388;
+
+/* 황도 12궁: 탄생 별자리 시작 날짜, 캐릭터, 별 모양(정규화 좌표)과 선 */
+const SIGNS = [
+  {n:"양자리",    e:"🐏", s:[3,21],  st:[[-.8,.25],[-.15,-.2],[.4,-.28],[.78,-.05]], ln:[[0,1],[1,2],[2,3]]},
+  {n:"황소자리",  e:"🐂", s:[4,20],  st:[[-.8,-.7],[-.25,-.1],[0,.15],[.25,0],[.8,-.55],[-.1,.45]], ln:[[0,1],[1,2],[2,3],[3,4],[2,5]]},
+  {n:"쌍둥이자리",e:"👬", s:[5,21],  st:[[-.45,-.8],[-.5,-.1],[-.55,.65],[.35,-.75],[.3,-.05],[.25,.7]], ln:[[0,1],[1,2],[3,4],[4,5],[0,3]]},
+  {n:"게자리",    e:"🦀", s:[6,22],  st:[[0,0],[0,-.75],[-.65,.55],[.6,.6],[.05,.25]], ln:[[0,1],[0,2],[0,3]]},
+  {n:"사자자리",  e:"🦁", s:[7,23],  st:[[-.75,-.45],[-.55,-.72],[-.2,-.62],[-.3,-.25],[-.45,.08],[.5,-.12],[.82,.32],[.3,.38]], ln:[[0,1],[1,2],[2,3],[3,4],[3,5],[5,6],[6,7],[7,4]]},
+  {n:"처녀자리",  e:"👧", s:[8,23],  st:[[-.82,-.42],[-.32,-.2],[.08,0],[.5,-.45],[.22,.5],[.82,.62]], ln:[[0,1],[1,2],[2,3],[2,4],[4,5]]},
+  {n:"천칭자리",  e:"⚖️", s:[9,23],  st:[[0,-.72],[-.62,0],[.58,-.1],[-.42,.62],[.32,.58]], ln:[[0,1],[0,2],[1,2],[1,3],[2,4]]},
+  {n:"전갈자리",  e:"🦂", s:[10,23], st:[[-.85,-.62],[-.62,-.4],[-.4,-.18],[-.2,.12],[0,.42],[.32,.62],[.62,.52],[.78,.26],[.6,.06]], ln:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8]]},
+  {n:"궁수자리",  e:"🏹", s:[11,23], st:[[-.62,.32],[-.3,.32],[-.3,-.22],[.1,-.52],[.32,-.15],[.62,.22],[.2,.38]], ln:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,1],[2,4]]},
+  {n:"염소자리",  e:"🐐", s:[12,22], st:[[-.82,-.42],[-.3,.52],[.3,.42],[.82,-.32],[.2,0]], ln:[[0,1],[1,2],[2,3],[3,4],[4,0]]},
+  {n:"물병자리",  e:"🏺", s:[1,20],  st:[[-.82,-.3],[-.42,-.52],[0,-.22],[.3,.2],[.62,.62],[.1,.52]], ln:[[0,1],[1,2],[2,3],[3,4],[3,5]]},
+  {n:"물고기자리",e:"🐟", s:[2,19],  st:[[-.82,-.62],[-.42,-.2],[0,.42],[.42,.06],[.82,-.2],[.62,-.45]], ln:[[0,1],[1,2],[2,3],[3,4],[4,5]]}
+];
+const MS = [0,31,59,90,120,151,181,212,243,273,304,334];
+const mod = (a,n) => ((a % n) + n) % n;
+const doyOf = (m,d) => MS[m-1] + d - 1;
+const mdOf = doy => { doy = mod(Math.floor(doy), 365); let m = 11; while (MS[m] > doy) m--; return [m+1, doy - MS[m] + 1]; };
+SIGNS.forEach(g => { g.start = doyOf(g.s[0], g.s[1]); });
+SIGNS.forEach((g,i) => {
+  const nx = SIGNS[(i+1)%12].start; g.len = mod(nx - g.start, 365);
+  const [em, ed] = mdOf(nx - 1); g.range = `${g.s[0]}.${g.s[1]}~${em}.${ed}`;
+});
+/* 날짜 → 태양의 황경(0°=양자리 시작). 탄생 별자리 날짜와 어긋나지 않도록 구간별로 고르게 나눈다. */
+function lam(doy){ doy = mod(doy,365); for (let i=0;i<12;i++){ const off = mod(doy - SIGNS[i].start, 365); if (off < SIGNS[i].len) return 30*i + 30*off/SIGNS[i].len; } return 0; }
+function doyFromLam(L){ L = mod(L,360); const i = Math.floor(L/30) % 12; const f = (L - 30*i)/30; return mod(SIGNS[i].start + f*SIGNS[i].len, 365); }
+const wrap180 = a => mod(a + 180, 360) - 180;
+const rad = d => d*Math.PI/180;
+const P = (r,th) => [C + r*Math.cos(rad(th)), C - r*Math.sin(rad(th))];
+const th = L => 90 + L;                 // 황경 → 그림 속 각도
+const centerL = i => 30*i + 15;
+
+function el(name, attrs={}, parent){ const n = document.createElementNS(NS, name); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; }
+function figure(g, sign, scale, parent, cls){
+  const fg = el("g", {class: cls || "fig"}, parent);
+  sign.ln.forEach(([a,b]) => el("line", {x1:sign.st[a][0]*scale, y1:sign.st[a][1]*scale, x2:sign.st[b][0]*scale, y2:sign.st[b][1]*scale, "stroke-linecap":"round"}, fg));
+  sign.st.forEach(([x,y],k) => el("circle", {cx:x*scale, cy:y*scale, r: k===0 ? 3.2 : 2.4, class: k%2 ? "twinkle" : ""}, fg));
+  return fg;
+}
+
+/* ---------- 공전 모형(SVG) ---------- */
+const svg = document.getElementById("orrery");
+const defs = el("defs", {}, svg);
+defs.innerHTML = `
+  <radialGradient id="gSunGlow"><stop offset="0" stop-color="#ffd76a" stop-opacity=".75"/><stop offset=".45" stop-color="#ff9b2f" stop-opacity=".22"/><stop offset="1" stop-color="#ff9b2f" stop-opacity="0"/></radialGradient>
+  <radialGradient id="gSun" cx=".4" cy=".38"><stop offset="0" stop-color="#fff6c8"/><stop offset=".55" stop-color="#ffc94a"/><stop offset="1" stop-color="#ff8a1f"/></radialGradient>
+  <radialGradient id="gNight" gradientUnits="userSpaceOnUse" cx="500" cy="500" r="430"><stop offset="0" stop-color="#8be9ff" stop-opacity=".30"/><stop offset="1" stop-color="#8be9ff" stop-opacity=".03"/></radialGradient>
+  <radialGradient id="gGlare" gradientUnits="userSpaceOnUse" cx="500" cy="500" r="560"><stop offset="0" stop-color="#ffd76a" stop-opacity=".45"/><stop offset="1" stop-color="#ffc94a" stop-opacity=".10"/></radialGradient>
+  <radialGradient id="gEarth" cx=".35" cy=".35"><stop offset="0" stop-color="#7fd0ff"/><stop offset=".7" stop-color="#2a74d6"/><stop offset="1" stop-color="#173f8f"/></radialGradient>
+  <radialGradient id="gHalo"><stop offset="0" stop-color="#8be9ff" stop-opacity=".45"/><stop offset="1" stop-color="#8be9ff" stop-opacity="0"/></radialGradient>
+  <filter id="fSoft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>`;
+
+el("circle", {cx:C, cy:C, r:R_ZOD, fill:"none", stroke:"#1d2766", "stroke-width":118}, svg);
+for (let i=0;i<12;i++){ const [x1,y1] = P(R_ZOD-59, th(30*i)), [x2,y2] = P(R_ZOD+59, th(30*i)); el("line", {x1,y1,x2,y2, stroke:"#2c3784", "stroke-width":1.5}, svg); }
+
+const nightFan = el("path", {fill:"url(#gNight)", stroke:"#8be9ff", "stroke-opacity":.5, "stroke-dasharray":"6 7", "stroke-width":1.5}, svg);
+const glareFan = el("path", {fill:"url(#gGlare)", stroke:"#ffc94a", "stroke-opacity":.6, "stroke-width":1.5}, svg);
+
+el("circle", {cx:C, cy:C, r:R_ORB, fill:"none", stroke:"#4a56a8", "stroke-width":2, "stroke-dasharray":"2 9", "stroke-linecap":"round"}, svg);
+const orbitHit = el("circle", {cx:C, cy:C, r:R_ORB, fill:"none", stroke:"transparent", "stroke-width":70, style:"cursor:grab", "pointer-events":"stroke"}, svg);
+[20, 110, 200, 290].forEach(a => { const [x,y] = P(R_ORB, a); el("path", {d:"M-7,-7 L7,0 L-7,7 Z", fill:"#6f7bd0", transform:`translate(${x},${y}) rotate(${-(a+90)})`}, svg); });
+const orbitLbl = el("text", {x:C, y:C+138, "text-anchor":"middle", class:"tag", fill:"#8a94d6"}, svg); orbitLbl.textContent = "지구 공전 궤도 ↺";
+
+el("circle", {cx:C, cy:C, r:150, fill:"url(#gSunGlow)"}, svg);
+const rays = el("g", {class:"rays"}, svg);
+for (let i=0;i<16;i++){ const a=i*22.5, [x1,y1]=P(64,a), [x2,y2]=P(i%2?84:96,a), [x3,y3]=P(64,a+9); el("path", {d:`M${x1},${y1} L${x2},${y2} L${x3},${y3} Z`, fill:"#ffb83a"}, rays); }
+el("circle", {cx:C, cy:C, r:58, fill:"url(#gSun)"}, svg);
+const sunTxt = el("text", {x:C, y:C+8, "text-anchor":"middle", style:"font-family:var(--f-display);font-size:24px", fill:"#5a3300"}, svg); sunTxt.textContent = "태양";
+
+/* 월 칩: 그 달 15일에 지구가 있는 자리 */
+const chips = [];
+for (let m=1;m<=12;m++){
+  const a = th(lam(doyOf(m,15))) + 180, [x,y] = P(R_ORB, a);
+  const g = el("g", {class:"chip", transform:`translate(${x},${y})`, tabindex:0, role:"button", "aria-label":`${m}월로 지구 옮기기`}, svg);
+  el("circle", {r:25}, g);
+  const t = el("text", {"text-anchor":"middle", y:6}, g); t.textContent = `${m}월`;
+  g.addEventListener("click", () => { stopPlay(); travelTo(doyOf(m,15)); chime(); });
+  g.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" "){ e.preventDefault(); g.dispatchEvent(new Event("click")); } });
+  chips.push(g);
+}
+
+/* 별자리 메달 */
+const zods = SIGNS.map((s,i) => {
+  const [x,y] = P(R_ZOD, th(centerL(i)));
+  const g = el("g", {class:"zod dark", transform:`translate(${x},${y})`, tabindex:0, role:"button", "aria-label":`${s.n}, 생일 ${s.range}`}, svg);
+  el("circle", {r:62, fill:"url(#gHalo)", class:"halo"}, g);
+  const ring = el("circle", {r:52, class:"ring pulse"}, g);
+  el("circle", {r:44, class:"medal"}, g);
+  figure(g, s, 32, g, "fig");
+  const emo = el("text", {class:"emo", "text-anchor":"middle", y:13}, g); emo.textContent = s.e;
+  const nm = el("text", {class:"nm", "text-anchor":"middle", y:70}, g); nm.textContent = s.n;
+  const rg = el("text", {class:"rg", "text-anchor":"middle", y:88}, g); rg.textContent = s.range;
+  const bm = el("g", {class:"bmark"}, g);
+  el("rect", {x:-34, y:-70, width:68, height:24, rx:12, fill:"#ff93b8"}, bm);
+  const bt = el("text", {"text-anchor":"middle", y:-53, class:"tag", fill:"#3a0d20"}, bm); bt.textContent = "내 생일";
+  g.addEventListener("click", () => { stopPlay(); setBirthday(Math.round(s.start + s.len/2), true); });
+  g.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" "){ e.preventDefault(); g.dispatchEvent(new Event("click")); } });
+  return {g};
+});
+
+/* 지구 */
+const earth = el("g", {style:"cursor:grab"}, svg);
+const sightLine = el("line", {stroke:"#ffc94a", "stroke-width":2, "stroke-dasharray":"3 6", "stroke-opacity":.8}, svg);
+svg.insertBefore(sightLine, earth);
+el("circle", {r:46, fill:"#8be9ff", opacity:.12, filter:"url(#fSoft)"}, earth);
+el("circle", {r:31, fill:"url(#gEarth)"}, earth);
+const land = el("g", {fill:"#5fc46b", opacity:.95}, earth);
+land.innerHTML = `<path d="M-14,-18 q8,-6 14,0 q4,6 -3,10 q-6,4 -10,-1 z"/><path d="M4,4 q9,-3 13,4 q2,8 -6,10 q-8,1 -9,-6 z"/><path d="M-22,6 q5,-2 7,3 q-1,5 -6,4 z"/>`;
+const nightHalf = el("path", {d:"M0,-31 A31,31 0 0,0 0,31 Z", fill:"#050817", opacity:.72}, earth);
+const obs = el("g", {}, earth);
+const horizon = el("line", {stroke:"#cfe9ff", "stroke-width":2.5, "stroke-linecap":"round"}, obs);
+const arrow = el("line", {stroke:"#8be9ff", "stroke-width":3, "stroke-linecap":"round"}, obs);
+const arrowHead = el("path", {fill:"#8be9ff"}, obs);
+const kid = el("circle", {r:5.5, fill:"#ff93b8", stroke:"#fff", "stroke-width":1.5}, obs);
+const southTag = el("text", {"text-anchor":"middle", class:"tag", fill:"#8be9ff"}, svg); southTag.textContent = "남쪽 하늘";
+const sunTag = el("text", {"text-anchor":"middle", class:"tag", fill:"#ffc94a"}, svg); sunTag.textContent = "햇빛에 가려요";
+
+/* ---------- 남쪽 하늘 풍경(SVG) ---------- */
+const pano = document.getElementById("pano");
+pano.innerHTML = `
+  <defs>
+    <linearGradient id="pSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#060a24"/><stop offset=".75" stop-color="#16216a"/><stop offset="1" stop-color="#2c3a8f"/></linearGradient>
+    <linearGradient id="pGround" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0d1236"/><stop offset="1" stop-color="#05081c"/></linearGradient>
+  </defs>
+  <rect width="600" height="300" fill="url(#pSky)"/>`;
+const pStars = el("g", {}, pano);
+for (let i=0;i<90;i++){ const x=Math.random()*600, y=Math.random()*235; el("circle", {cx:x, cy:y, r:Math.random()*1.2+.3, fill:"#fff", opacity:(Math.random()*.6+.2).toFixed(2), class: i%5? "" : "twinkle"}, pStars); }
+const ecl = el("path", {fill:"none", stroke:"#8be9ff", "stroke-opacity":.35, "stroke-dasharray":"4 6", "stroke-width":1.5}, pano);
+let d = ""; for (let a=-90;a<=90;a+=5){ const [x,y]=panoXY(a); d += (a===-90?"M":"L") + x.toFixed(1) + "," + y.toFixed(1); } ecl.setAttribute("d", d);
+const eclTxt = el("text", {x:14, y:22, class:"tag", fill:"#8be9ff", "fill-opacity":.7, style:"font-size:12px"}, pano); eclTxt.textContent = "점선: 황도(태양이 지나는 길)";
+const pItems = SIGNS.map(s => {
+  const g = el("g", {opacity:0}, pano);
+  el("circle", {r:30, fill:"url(#gHalo)"}, g);
+  figure(g, s, 26, g, "pfig");
+  const e = el("text", {"text-anchor":"middle", y:44, style:"font-size:20px"}, g); e.textContent = s.e;
+  const t = el("text", {"text-anchor":"middle", y:64, style:"font-family:var(--f-display);font-size:14px", fill:"#eef0ff"}, g); t.textContent = s.n;
+  g.querySelectorAll("line").forEach(l => { l.setAttribute("stroke","#8be9ff"); l.setAttribute("stroke-width","1.4"); });
+  g.querySelectorAll("circle:not([r='30'])").forEach(c => c.setAttribute("fill","#fff"));
+  return g;
+});
+const ground = el("path", {fill:"url(#pGround)", d:"M0,252 C60,240 110,250 160,246 C210,242 240,252 300,250 C350,248 400,238 450,244 C500,250 550,240 600,246 L600,300 L0,300 Z"}, pano);
+el("path", {fill:"#05081c", d:"M405,246 l0,-22 l18,-10 l18,10 l0,22 z M430,236 h6 v8 h-6z"}, pano);
+el("path", {fill:"#05081c", d:"M120,248 l14,-34 l14,34 z M128,248 l6,-18 l6,18z"}, pano);
+el("circle", {cx:300, cy:236, r:5, fill:"#ff93b8"}, pano);
+el("path", {d:"M296,252 l4,-12 l4,12 z", fill:"#ff93b8"}, pano);
+[["동",40],["남",300],["서",560]].forEach(([t,x]) => { const n = el("text", {x, y:282, "text-anchor":"middle", style:"font-family:var(--f-util);font-size:15px", fill:"#a6afdc"}, pano); n.textContent = t; });
+function panoXY(D){ return [300 - D/90*258, 250 - Math.cos(rad(D))*180]; }
+
+/* ---------- 상태와 그리기 ---------- */
+const S = {doy:0, off:0, playing:false, speed:45, bday:null};
+const $ = id => document.getElementById(id);
+const hourName = {"-45":"오후 9시", "0":"밤 12시", "45":"새벽 3시"};
+
+function fanPath(E, a1, a2, r){
+  const [x1,y1] = P(r,a1), [x2,y2] = P(r,a2);
+  const large = mod(a2-a1,360) > 180 ? 1 : 0;
+  return `M${E[0]},${E[1]} L${x1},${y1} A${r},${r} 0 ${large} 0 ${x2},${y2} Z`;
+}
+let lastKey = "";
+function render(){
+  const Ls = lam(S.doy), ts = th(Ls), te = ts + 180, E = P(R_ORB, te);
+  const Lm = Ls + 180 + S.off, tm = th(Lm);
+  earth.setAttribute("transform", `translate(${E[0].toFixed(1)},${E[1].toFixed(1)})`);
+  nightHalf.setAttribute("transform", `rotate(${-ts})`);
+  land.setAttribute("transform", `rotate(${(-S.doy*3) % 360})`);
+  const ux = Math.cos(rad(tm)), uy = -Math.sin(rad(tm));
+  const ox = ux*31, oy = uy*31;
+  kid.setAttribute("cx", ox); kid.setAttribute("cy", oy);
+  horizon.setAttribute("x1", ox - uy*30); horizon.setAttribute("y1", oy + ux*30);
+  horizon.setAttribute("x2", ox + uy*30); horizon.setAttribute("y2", oy - ux*30);
+  arrow.setAttribute("x1", ox + ux*8); arrow.setAttribute("y1", oy + uy*8);
+  arrow.setAttribute("x2", ox + ux*44); arrow.setAttribute("y2", oy + uy*44);
+  const hx = ox + ux*56, hy = oy + uy*56;
+  arrowHead.setAttribute("d", `M${hx},${hy} L${hx - ux*14 - uy*8},${hy - uy*14 + ux*8} L${hx - ux*14 + uy*8},${hy - uy*14 - ux*8} Z`);
+  southTag.setAttribute("x", E[0] + ux*58 - uy*34); southTag.setAttribute("y", E[1] + uy*58 + ux*34 + 5);
+  nightFan.setAttribute("d", fanPath(E, tm-70, tm+70, R_ZOD+58));
+  glareFan.setAttribute("d", fanPath(E, ts-15, ts+15, R_ZOD+58));
+  const gN = svg.querySelector("#gNight"), gG = svg.querySelector("#gGlare");
+  gN.setAttribute("cx", E[0]); gN.setAttribute("cy", E[1]); gG.setAttribute("cx", E[0]); gG.setAttribute("cy", E[1]);
+  const [sx, sy] = P(R_ZOD-60, ts);
+  sightLine.setAttribute("x1", E[0]); sightLine.setAttribute("y1", E[1]); sightLine.setAttribute("x2", sx); sightLine.setAttribute("y2", sy);
+  const [tx, ty] = P(150, ts); sunTag.setAttribute("x", tx); sunTag.setAttribute("y", ty + 5);
+
+  const sunIdx = Math.floor(mod(Ls,360)/30);
+  let best = 0, bestAbs = 999; const vis = [];
+  SIGNS.forEach((s,i) => {
+    const D = wrap180(centerL(i) - Lm), A = Math.abs(D);
+    const b = A <= 70 ? 1 : A >= 100 ? 0 : (100 - A)/30;
+    if (A < bestAbs){ bestAbs = A; best = i; }
+    const g = zods[i].g;
+    g.style.opacity = (i === sunIdx ? 0.7 : 0.28 + 0.72*b).toFixed(2);
+    g.classList.toggle("lit", b > 0.5);
+    g.classList.toggle("dark", b <= 0.5);
+    g.classList.toggle("sunhide", i === sunIdx);
+    g.classList.toggle("bday", S.bday !== null && i === S.bday.sign);
+    const it = pItems[i];
+    if (A < 96){ const [x,y] = panoXY(D); it.setAttribute("transform", `translate(${x.toFixed(1)},${(y-30).toFixed(1)}) scale(${A < 15 ? 1.15 : .92})`); it.setAttribute("opacity", Math.max(0, Math.min(1, (96 - A)/26)).toFixed(2)); }
+    else it.setAttribute("opacity", 0);
+    if (b > 0.5) vis.push([D,i]);
+  });
+  zods.forEach((z,i) => z.g.classList.toggle("center", i === best));
+  const [m, dd] = mdOf(S.doy);
+  chips.forEach((c,k) => c.classList.toggle("on", k === m-1));
+  $("day").value = Math.floor(mod(S.doy,365));
+  $("dayOut").textContent = `${m}월 ${dd}일`;
+
+  const key = `${m}-${dd}-${S.off}-${best}-${S.bday ? S.bday.sign : ""}`;
+  if (key === lastKey) return; lastKey = key;
+  const hn = hourName[String(S.off)];
+  $("skyTitle").textContent = `${hn}, 남쪽 하늘`;
+  $("whenTxt").textContent = `${m}월 ${dd}일`;
+  $("southEmo").textContent = SIGNS[best].e;
+  $("southName").textContent = SIGNS[best].n;
+  vis.sort((a,b) => b[0]-a[0]);
+  $("visList").innerHTML = vis.map(([,i]) => `<li class="${i===best?"center":""}">${SIGNS[i].e} ${SIGNS[i].n}</li>`).join("");
+  const sun = SIGNS[sunIdx];
+  const seeM = mdOf(doyFromLam(centerL(sunIdx) - 180))[0];
+  $("hideName").textContent = `${sun.e} ${sun.n}는 지금 보이지 않아요`;
+  $("hideTxt").textContent = `${sun.range}에 태어난 친구의 생일 별자리예요. 지금은 태양과 같은 방향에 있어서 낮 하늘에 떠 있고, 햇빛이 너무 밝아 볼 수 없어요. 밤 12시 남쪽 하늘에서 보려면 약 6개월 뒤인 ${seeM}월쯤을 기다려요.`;
+}
+
+/* ---------- 움직임 ---------- */
+let anim = null;
+function travelTo(target, dir = 1){
+  target = mod(target, 365);
+  let diff = dir > 0 ? mod(target - S.doy, 365) : -mod(S.doy - target, 365);
+  if (Math.abs(diff) < .5 || reduce){ S.doy = target; render(); return; }
+  const from = S.doy, dur = 500 + Math.abs(diff)/365*1700, t0 = performance.now();
+  cancelAnimationFrame(anim);
+  const step = now => {
+    const k = Math.min(1, (now - t0)/dur), e = k < .5 ? 2*k*k : 1 - Math.pow(-2*k+2, 2)/2;
+    S.doy = mod(from + diff*e, 365); render();
+    if (k < 1) anim = requestAnimationFrame(step);
+  };
+  anim = requestAnimationFrame(step);
+}
+let lastT = 0, playRaf = null;
+function playLoop(now){
+  if (!S.playing) return;
+  const dt = lastT ? Math.min(.1, (now - lastT)/1000) : 0; lastT = now;
+  const before = mdOf(S.doy)[0];
+  S.doy = mod(S.doy + S.speed*dt, 365); render();
+  if (mdOf(S.doy)[0] !== before) chime(.035);
+  playRaf = requestAnimationFrame(playLoop);
+}
+function startPlay(){ cancelAnimationFrame(anim); S.playing = true; lastT = 0; $("playBtn").setAttribute("aria-pressed","true"); $("playBtn").textContent = "❚❚ 멈추기"; playRaf = requestAnimationFrame(playLoop); }
+function stopPlay(){ S.playing = false; cancelAnimationFrame(playRaf); $("playBtn").setAttribute("aria-pressed","false"); $("playBtn").textContent = "▶ 1년 공전 재생"; }
+$("playBtn").addEventListener("click", () => S.playing ? stopPlay() : startPlay());
+$("speed").addEventListener("input", e => S.speed = +e.target.value);
+$("day").addEventListener("input", e => { stopPlay(); cancelAnimationFrame(anim); S.doy = +e.target.value; render(); });
+document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", x === b ? "true" : "false"));
+  S.off = +b.dataset.off; render(); chime(.05);
+}));
+
+/* 지구 끌기 */
+let dragging = false;
+function toSvg(e){ const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse()); }
+function dragTo(e){ const p = toSvg(e); const a = Math.atan2(C - p.y, p.x - C)*180/Math.PI; S.doy = doyFromLam(a - 180 - 90); render(); }
+[earth, orbitHit].forEach(n => n.addEventListener("pointerdown", e => { stopPlay(); cancelAnimationFrame(anim); dragging = true; svg.setPointerCapture(e.pointerId); dragTo(e); }));
+svg.addEventListener("pointermove", e => { if (dragging) dragTo(e); });
+svg.addEventListener("pointerup", () => { if (dragging){ dragging = false; chime(.05); } });
+svg.addEventListener("pointercancel", () => dragging = false);
+
+document.addEventListener("keydown", e => {
+  if (/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
+  if (e.key === "ArrowRight" || e.key === "ArrowLeft"){
+    e.preventDefault(); stopPlay();
+    const [m] = mdOf(S.doy), nm = e.key === "ArrowRight" ? m % 12 + 1 : (m + 10) % 12 + 1;
+    travelTo(doyOf(nm,15), e.key === "ArrowRight" ? 1 : -1); chime();
+  }
+});
+
+/* ---------- 생일 ---------- */
+const bm = $("bm"), bd = $("bd");
+for (let m=1;m<=12;m++) bm.add(new Option(`${m}월`, m));
+const DIM = [31,28,31,30,31,30,31,31,30,31,30,31];
+function fillDays(keep){ const n = DIM[bm.value-1]; bd.innerHTML = ""; for (let d=1; d<=n; d++) bd.add(new Option(`${d}일`, d)); bd.value = Math.min(keep||1, n); }
+bm.addEventListener("change", () => fillDays(+bd.value));
+function setBirthday(doy, fromSign){
+  const Ls = lam(doy), sign = Math.floor(Ls/30) % 12, s = SIGNS[sign];
+  const [m, d] = mdOf(doy);
+  S.bday = {doy, sign};
+  if (!fromSign){ bm.value = m; fillDays(d); }
+  const seeM = mdOf(doyFromLam(centerL(sign) - 180))[0];
+  const msg = $("bdayMsg");
+  msg.innerHTML = fromSign
+    ? `<span class="rose">${s.e} ${s.n}</span>의 생일은 ${s.range}예요. 이때 지구에서 보면 태양이 ${s.n} 앞을 가려서, 생일 별자리는 낮 하늘에 숨어 버려요.`
+    : `${m}월 ${d}일생의 생일 별자리는 <span class="rose">${s.e} ${s.n}</span>예요. 생일날 지구에서 보면 ${s.n}는 태양과 같은 쪽에 있어서 낮 하늘에 숨어요. 밤 12시 남쪽 하늘에서 보려면 ${seeM}월까지 기다려야 해요.`;
+  msg.hidden = false; $("bdayRow").hidden = false;
+  travelTo(doy); chime(.08, [523.25, 659.25, 783.99]);
+}
+$("bdayForm").addEventListener("submit", e => { e.preventDefault(); stopPlay(); setBirthday(doyOf(+bm.value, +bd.value), false); });
+$("goSix").addEventListener("click", () => { if (!S.bday) return; stopPlay(); travelTo(doyFromLam(centerL(S.bday.sign) - 180)); setTimeout(() => sparkle(), reduce ? 0 : 1500); chime(); });
+$("goBack").addEventListener("click", () => { if (!S.bday) return; stopPlay(); travelTo(S.bday.doy, -1); chime(); });
+
+/* ---------- 퀴즈 ---------- */
+const Q = {n:0, ok:0, streak:0, cur:null};
+const shuffle = a => { for (let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; };
+const southAt = doy => { const Lm = lam(doy) + 180; let b=0, ba=999; for (let i=0;i<12;i++){ const A = Math.abs(wrap180(centerL(i)-Lm)); if (A<ba){ba=A;b=i;} } return b; };
+function makeQ(){
+  const type = Math.floor(Math.random()*3);
+  if (type === 0){
+    const m = 1 + Math.floor(Math.random()*12), ans = southAt(doyOf(m,15));
+    const opts = shuffle([ans, ...shuffle([...Array(12).keys()].filter(i => i!==ans)).slice(0,3)]);
+    return {text:`${m}월 밤 12시, 남쪽 하늘 한가운데에 보이는 별자리는?`, opts:opts.map(i => ({k:i, t:`${SIGNS[i].e} ${SIGNS[i].n}`})), ans, show:doyOf(m,15),
+      why:`${m}월에 지구에서 태양을 등지면 ${SIGNS[ans].n} 쪽을 바라보게 돼요.`};
+  }
+  if (type === 1){
+    const doy = Math.floor(Math.random()*365), [m,d] = mdOf(doy), sign = Math.floor(lam(doy)/30)%12;
+    const seeDoy = doyFromLam(centerL(sign) - 180), ans = mdOf(seeDoy)[0];
+    const pool = shuffle([...Array(12).keys()].map(x => x+1).filter(x => x!==ans && x!==m)).slice(0,3);
+    return {text:`생일이 ${m}월 ${d}일인 친구의 생일 별자리(${SIGNS[sign].n})가 밤 12시 남쪽 하늘에 잘 보이는 때는?`, opts:shuffle([ans,...pool]).map(x => ({k:x, t:`${x}월`})), ans, show:seeDoy,
+      why:`생일에는 태양이 ${SIGNS[sign].n} 앞에 있어요. 약 6개월이 지나 지구가 반대편으로 가면 밤하늘에서 볼 수 있어요.`};
+  }
+  const m = 1 + Math.floor(Math.random()*12), doy = doyOf(m,15), Ls = lam(doy), ans = Math.floor(Ls/30)%12;
+  const visible = [...Array(12).keys()].filter(i => Math.abs(wrap180(centerL(i) - Ls - 180)) <= 60);
+  const opts = shuffle([ans, ...shuffle(visible).slice(0,3)]);
+  return {text:`${m}월 밤에 볼 수 없는 별자리는?`, opts:opts.map(i => ({k:i, t:`${SIGNS[i].e} ${SIGNS[i].n}`})), ans, show:doy,
+    why:`${m}월에는 태양이 ${SIGNS[ans].n} 앞에 있어서, ${SIGNS[ans].n}는 낮 하늘에 숨어 있어요.`};
+}
+function askQ(){
+  Q.cur = makeQ();
+  $("qText").textContent = Q.cur.text; $("qFb").textContent = "";
+  const box = $("qOpts"); box.innerHTML = "";
+  Q.cur.opts.forEach(o => {
+    const b = document.createElement("button"); b.type = "button"; b.textContent = o.t;
+    b.addEventListener("click", () => answer(o.k, b)); box.appendChild(b);
+  });
+}
+function answer(k, btn){
+  const q = Q.cur, right = k === q.ans; Q.n++;
+  [...$("qOpts").children].forEach((b,i) => { b.disabled = true; if (q.opts[i].k === q.ans) b.classList.add("ok"); });
+  if (right){ Q.ok++; Q.streak++; sparkle(); chime(.09, [659.25, 783.99, 1046.5]); $("qFb").textContent = `정답! ${q.why}`; }
+  else { Q.streak = 0; btn.classList.add("no"); chime(.06, [220, 196], "triangle"); $("qFb").textContent = `아쉬워요. ${q.why} 모형에서 확인해 보세요.`; }
+  $("scoreTxt").textContent = `맞힌 문제 ${Q.ok} / ${Q.n}`;
+  $("streak").textContent = "★".repeat(Math.min(Q.streak, 5));
+  stopPlay(); S.off = 0;
+  document.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", x.dataset.off === "0" ? "true" : "false"));
+  travelTo(q.show);
+}
+$("qNext").addEventListener("click", askQ);
+function showTab(quiz){
+  $("tabExplore").setAttribute("aria-selected", String(!quiz)); $("tabQuiz").setAttribute("aria-selected", String(quiz));
+  $("paneExplore").hidden = quiz; $("paneQuiz").hidden = !quiz;
+  if (quiz && !Q.cur) askQ();
+}
+$("tabExplore").addEventListener("click", () => showTab(false));
+$("tabQuiz").addEventListener("click", () => showTab(true));
+
+/* ---------- 소리 ---------- */
+let actx = null, soundOn = true;
+try { soundOn = localStorage.getItem("zb-sound") !== "off"; } catch(e) {}
+function setSoundBtn(){ $("soundBtn").setAttribute("aria-pressed", String(soundOn)); $("soundBtn").textContent = soundOn ? "소리 켜짐" : "소리 꺼짐"; }
+setSoundBtn();
+$("soundBtn").addEventListener("click", () => { soundOn = !soundOn; setSoundBtn(); try { localStorage.setItem("zb-sound", soundOn ? "on" : "off"); } catch(e) {} if (soundOn) chime(); });
+function chime(gain = .07, freqs = [880, 1318.5], type = "sine"){
+  if (!soundOn) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const t = actx.currentTime;
+    freqs.forEach((f,k) => {
+      const o = actx.createOscillator(), g = actx.createGain(), t1 = t + k*.07;
+      o.type = type; o.frequency.value = f;
+      g.gain.setValueAtTime(0, t1); g.gain.linearRampToValueAtTime(gain, t1 + .02); g.gain.exponentialRampToValueAtTime(.0001, t1 + .6);
+      o.connect(g); g.connect(actx.destination); o.start(t1); o.stop(t1 + .65);
+    });
+  } catch(e) {}
+}
+
+/* ---------- 전체 화면 ---------- */
+$("fullBtn").addEventListener("click", () => {
+  const d = document;
+  if (d.fullscreenElement) { d.exitFullscreen && d.exitFullscreen().catch(() => {}); }
+  else if (d.documentElement.requestFullscreen) d.documentElement.requestFullscreen().catch(() => {});
+});
+
+/* ---------- 배경 별빛과 반짝임 효과(Canvas) ---------- */
+const sky = $("sky"), sctx = sky.getContext("2d"), fx = $("fx"), fctx = fx.getContext("2d");
+let stars = [], meteor = null, W = 0, H = 0, DPR = 1;
+function resize(){
+  DPR = Math.min(2, window.devicePixelRatio || 1); W = innerWidth; H = innerHeight;
+  [sky, fx].forEach(c => { c.width = W*DPR; c.height = H*DPR; });
+  sctx.setTransform(DPR,0,0,DPR,0,0); fctx.setTransform(DPR,0,0,DPR,0,0);
+  const n = Math.round(W*H/5200);
+  stars = Array.from({length:n}, () => ({x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.3+.2, p:Math.random()*6.28, s:Math.random()*1.5+.5, c:Math.random()<.12 ? "#ffe8a8" : Math.random()<.2 ? "#bfefff" : "#ffffff"}));
+  if (reduce) drawSky(0);
+}
+function drawSky(t){
+  sctx.clearRect(0,0,W,H);
+  const g = sctx.createRadialGradient(W*.75, H*.1, 0, W*.75, H*.1, Math.max(W,H));
+  g.addColorStop(0, "#1a2470"); g.addColorStop(.55, "#0d1440"); g.addColorStop(1, "#0a0f2c");
+  sctx.fillStyle = g; sctx.fillRect(0,0,W,H);
+  for (const s of stars){ sctx.globalAlpha = reduce ? .7 : .35 + .65*Math.abs(Math.sin(s.p + t*.001*s.s)); sctx.fillStyle = s.c; sctx.beginPath(); sctx.arc(s.x, s.y, s.r, 0, 6.283); sctx.fill(); }
+  sctx.globalAlpha = 1;
+  if (meteor){
+    meteor.x += meteor.vx; meteor.y += meteor.vy; meteor.life -= 1;
+    const gr = sctx.createLinearGradient(meteor.x, meteor.y, meteor.x - meteor.vx*14, meteor.y - meteor.vy*14);
+    gr.addColorStop(0, "rgba(255,255,255,.9)"); gr.addColorStop(1, "rgba(255,255,255,0)");
+    sctx.strokeStyle = gr; sctx.lineWidth = 2; sctx.beginPath(); sctx.moveTo(meteor.x, meteor.y); sctx.lineTo(meteor.x - meteor.vx*14, meteor.y - meteor.vy*14); sctx.stroke();
+    if (meteor.life <= 0) meteor = null;
+  } else if (Math.random() < .002) meteor = {x:Math.random()*W*.8, y:Math.random()*H*.3, vx:7+Math.random()*4, vy:3+Math.random()*2, life:55};
+}
+let parts = [];
+function sparkle(){
+  if (reduce) return;
+  const r = $("pano").getBoundingClientRect(), cx = r.left + r.width/2, cy = r.top + r.height*.35;
+  for (let i=0;i<70;i++){ const a = Math.random()*6.283, v = 2 + Math.random()*5; parts.push({x:cx, y:cy, vx:Math.cos(a)*v, vy:Math.sin(a)*v - 2, life:60 + Math.random()*30, c:["#ffc94a","#8be9ff","#ff93b8","#ffffff"][i%4], s:3 + Math.random()*4}); }
+}
+function drawFx(){
+  fctx.clearRect(0,0,W,H);
+  parts = parts.filter(p => p.life > 0);
+  for (const p of parts){
+    p.x += p.vx; p.y += p.vy; p.vy += .12; p.vx *= .985; p.life -= 1;
+    fctx.globalAlpha = Math.min(1, p.life/40); fctx.fillStyle = p.c;
+    fctx.beginPath(); for (let k=0;k<10;k++){ const rr = k%2 ? p.s*.45 : p.s, a = k*Math.PI/5 - Math.PI/2; fctx.lineTo(p.x + Math.cos(a)*rr, p.y + Math.sin(a)*rr); } fctx.fill();
+  }
+  fctx.globalAlpha = 1;
+}
+function frame(t){ drawSky(t); drawFx(); requestAnimationFrame(frame); }
+addEventListener("resize", resize);
+resize();
+if (!reduce) requestAnimationFrame(frame);
+
+/* ---------- 시작: 오늘 날짜 ---------- */
+const now = new Date();
+S.doy = doyOf(now.getMonth()+1, Math.min(now.getDate(), DIM[now.getMonth()]));
+bm.value = now.getMonth()+1; fillDays(now.getDate());
+render();
+})();
+</script>
+
+</html>
