@@ -62,6 +62,7 @@ h1 .gold{background:linear-gradient(180deg,#fff3c9 10%,#ffc45a 90%);-webkit-back
 .orr > svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;will-change:transform}
 .orr .hit,.orr .zod{pointer-events:auto}
 .spin{animation:spin 150s linear infinite}
+.fine{margin:-4px auto 0;max-width:68ch;font-size:12px;line-height:1.55;color:var(--faint);text-align:center}
 
 /* 유리 패널: 매 순간 흐림을 계산하는 대신, 미리 흐리게 만든 밤하늘을 화면에 고정해 깐다 */
 .glass,.icon-btn{background-image:linear-gradient(180deg,rgba(26,36,86,.50),rgba(8,13,38,.62)),var(--frost);background-attachment:scroll,fixed;background-size:auto,100vw 100vh;background-position:0 0,0 0;background-color:#0a1030}
@@ -205,7 +206,7 @@ details.teacher .small{font-size:13.5px;color:var(--muted);margin:12px 0 0}
     <div>
       <p class="eyebrow"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.5l2.6 7.9 7.9 2.6-7.9 2.6L12 22.5l-2.6-7.9L1.5 12l7.9-2.6z"/></svg>초등 과학 · 계절에 따라 달라지는 별자리</p>
       <h1>내 생일 별자리는 왜<br><span class="gold">생일 밤</span>에 안 보일까?</h1>
-      <p class="lede">궤도 위의 달을 누르면 지구가 그 자리로 공전해요. 밤 12시에 하늘에 떠 있는 별자리는 빛나고, 태양 쪽에 있는 별자리는 햇빛에 가려 어두워져요. 지구를 손가락으로 끌어 옮겨도 됩니다.</p>
+      <p class="lede">궤도 위에 쓰인 달(1월, 2월 …)을 누르면 지구가 그달의 자리로 공전해요. 밤 12시에 하늘에 떠 있는 별자리는 빛나고, 태양 쪽에 있는 별자리는 햇빛에 가려 어두워져요. 지구를 손가락으로 끌어 옮겨도 됩니다.</p>
     </div>
     <div class="tools">
       <button class="icon-btn" id="soundBtn" type="button" aria-pressed="true" aria-label="소리 켜기/끄기" title="소리">
@@ -227,6 +228,7 @@ details.teacher .small{font-size:13.5px;color:var(--muted);margin:12px 0 0}
         <svg id="oMain" viewBox="0 0 1000 1000"></svg>
         <svg id="oTop" viewBox="0 0 1000 1000"></svg>
       </div>
+      <p class="fine">※ 태양과 지구의 크기와 거리는 실제와 달라요(실제 태양은 지구보다 약 109배 커요).<br>※ 탄생 별자리 날짜는 약 2천 년 전 하늘을 기준으로 정해져서, 세차 운동 때문에 지금 실제 하늘(스텔라리움 등)과는 한 달쯤 차이가 날 수 있어요.</p>
       <div class="glass bar">
         <button class="play" id="playBtn" type="button" aria-pressed="false" aria-label="1년 공전 재생">
           <svg class="tri" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
@@ -347,13 +349,20 @@ SIGNS.forEach((g,i) => {
   const [em, ed] = mdOf(nx - 1); g.range = `${g.s[0]}.${g.s[1]}~${em}.${ed}`;
 });
 /* 날짜 → 태양의 황경(0°=양자리 시작). 탄생 별자리 날짜와 어긋나지 않도록 구간별로 고르게 나눈다. */
+/* 날짜 → 태양의 황경(0°=양자리 시작). 교과서처럼 탄생 별자리 날짜를 따르고, 구간마다 고르게 나눈다 */
 function lam(doy){ doy = mod(doy,365); for (let i=0;i<12;i++){ const off = mod(doy - SIGNS[i].start, 365); if (off < SIGNS[i].len) return 30*i + 30*off/SIGNS[i].len; } return 0; }
 function doyFromLam(L){ L = mod(L,360); const i = Math.floor(L/30) % 12; const f = (L - 30*i)/30; return mod(SIGNS[i].start + f*SIGNS[i].len, 365); }
-const wrap180 = a => mod(a + 180, 360) - 180;
+function birthSign(doy){ return Math.floor(lam(doy)/30) % 12; }
+SIGNS.forEach((g,i) => g.c = 30*i + 15);
+const BOUNDS = [...Array(12).keys()].map(i => 30*i);
+const LON_OFF = 0;
+const nearestTo = L => { let b = 0, ba = 999; for (let i=0;i<12;i++){ const A = Math.abs(wrap180(SIGNS[i].c - L)); if (A < ba){ ba = A; b = i; } } return b; };
+const seeDoyOf = i => doyFromLam(SIGNS[i].c - 180 - LON_OFF);   // 그 별자리가 밤 12시 남쪽 하늘 한가운데 오는 날
+function wrap180(a){ return mod(a + 180, 360) - 180; }
 const rad = d => d*Math.PI/180;
 const P = (r,t) => [C + r*Math.cos(rad(t)), C - r*Math.sin(rad(t))];
 const th = L => 90 + L;                 // 황경 → 그림 속 각도(수학 방향)
-const centerL = i => 30*i + 15;
+const centerL = i => SIGNS[i].c;
 const josa = (w, a, b) => { const c = w.charCodeAt(w.length-1) - 0xAC00; return (c >= 0 && c % 28) ? a : b; };
 
 function el(name, attrs={}, parent){ const n = document.createElementNS(NS, name); for (const k in attrs) n.setAttribute(k, attrs[k]); if (parent) parent.appendChild(n); return n; }
@@ -375,7 +384,8 @@ el("defs", {}, svg).innerHTML = GLOW + `
   <radialGradient id="gGlow1"><stop offset="0" stop-color="#ffd27a" stop-opacity=".6"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient>
   <radialGradient id="gGlow2"><stop offset="0" stop-color="#ff9a3c" stop-opacity=".2"/><stop offset="1" stop-color="#ff9a3c" stop-opacity="0"/></radialGradient>
   <radialGradient id="gNight" gradientUnits="userSpaceOnUse" cx="500" cy="500" r="440"><stop offset="0" stop-color="#aee8ff" stop-opacity=".22"/><stop offset=".7" stop-color="#aee8ff" stop-opacity=".06"/><stop offset="1" stop-color="#aee8ff" stop-opacity="0"/></radialGradient>
-  <radialGradient id="gGlare" gradientUnits="userSpaceOnUse" cx="500" cy="500" r="540"><stop offset="0" stop-color="#ffd06b" stop-opacity=".40"/><stop offset=".6" stop-color="#ffc24f" stop-opacity=".16"/><stop offset="1" stop-color="#ffc24f" stop-opacity=".02"/></radialGradient>
+  <linearGradient id="gBeam" gradientUnits="userSpaceOnUse" x1="500" y1="500" x2="700" y2="500"><stop offset="0" stop-color="#ffe08a" stop-opacity=".55"/><stop offset=".75" stop-color="#ffc24f" stop-opacity=".22"/><stop offset="1" stop-color="#ffc24f" stop-opacity=".10"/></linearGradient>
+  <linearGradient id="gDay" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#ffd98a" stop-opacity=".45"/><stop offset=".6" stop-color="#ffd98a" stop-opacity=".08"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></linearGradient>
   <radialGradient id="gEarth" cx=".36" cy=".34"><stop offset="0" stop-color="#a6e3ff"/><stop offset=".55" stop-color="#3b8de6"/><stop offset="1" stop-color="#16388a"/></radialGradient>
   <linearGradient id="gTerm" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#02040c" stop-opacity=".1"/><stop offset=".3" stop-color="#02040c" stop-opacity=".72"/><stop offset="1" stop-color="#02040c" stop-opacity=".88"/></linearGradient>
   <radialGradient id="gHalo"><stop offset="0" stop-color="#aee8ff" stop-opacity=".22"/><stop offset="1" stop-color="#aee8ff" stop-opacity="0"/></radialGradient>
@@ -388,21 +398,25 @@ el("circle", {cx:C, cy:C, r:381, fill:"none", stroke:"rgba(120,150,255,.045)", "
 el("circle", {cx:C, cy:C, r:301, fill:"none", stroke:"rgba(190,205,255,.12)", "stroke-width":1}, svg);
 el("circle", {cx:C, cy:C, r:461, fill:"none", stroke:"rgba(190,205,255,.22)", "stroke-width":1}, svg);
 el("circle", {cx:C, cy:C, r:478, fill:"none", stroke:"rgba(190,205,255,.30)", "stroke-width":1}, svg);
-for (let a=0; a<360; a+=5){
-  const long = a % 30 === 0, [x1,y1] = P(long ? 455 : 470, a), [x2,y2] = P(478, a);
-  el("line", {x1, y1, x2, y2, stroke: long ? "rgba(200,215,255,.5)" : "rgba(200,215,255,.2)", "stroke-width": long ? 1.4 : 1}, svg);
-  if (long){ const [a1,b1] = P(303, a), [a2,b2] = P(455, a); el("line", {x1:a1, y1:b1, x2:a2, y2:b2, stroke:"rgba(190,205,255,.08)", "stroke-dasharray":"2 6"}, svg); }
-}
+for (let a=0; a<360; a+=5){ const [x1,y1] = P(470, a), [x2,y2] = P(478, a); el("line", {x1, y1, x2, y2, stroke:"rgba(200,215,255,.2)", "stroke-width":1}, svg); }
+/* 실제 별자리 경계(IAU)를 따라 긴 눈금과 점선 */
+BOUNDS.forEach(L => {
+  const a = th(L), [x1,y1] = P(455, a), [x2,y2] = P(478, a), [a1,b1] = P(303, a), [a2,b2] = P(455, a);
+  el("line", {x1, y1, x2, y2, stroke:"rgba(200,215,255,.5)", "stroke-width":1.4}, svg);
+  el("line", {x1:a1, y1:b1, x2:a2, y2:b2, stroke:"rgba(190,205,255,.08)", "stroke-dasharray":"2 6"}, svg);
+});
 
 const nightFan = el("path", {fill:"url(#gNight)"}, fanL);
 const nightEdge = el("path", {fill:"none", stroke:"rgba(174,232,255,.35)", "stroke-width":1, "stroke-dasharray":"1 6", "stroke-linecap":"round"}, fanL);
-const glareFan = el("path", {fill:"url(#gGlare)"}, fanL);
+/* 햇빛: 태양에서 나와 지구의 낮 쪽을 덮는 빛줄기 */
+const beam = el("path", {fill:"url(#gBeam)"}, fanL);
+const beamRays = [-22, 0, 22].map(o => el("line", {stroke:"url(#gBeam)", "stroke-width":1.4, "stroke-opacity":.9, "data-o":o}, fanL));
 
 /* 태양 빛과 코로나: 흐림이 든 이 겹은 한 번만 그리고, 화면에서 통째로 천천히 돌린다 */
-el("circle", {cx:C, cy:C, r:210, fill:"url(#gGlow2)"}, corL);
-el("circle", {cx:C, cy:C, r:120, fill:"url(#gGlow1)"}, corL);
+el("circle", {cx:C, cy:C, r:150, fill:"url(#gGlow2)"}, corL);
+el("circle", {cx:C, cy:C, r:84, fill:"url(#gGlow1)"}, corL);
 const corona = el("g", {filter:"url(#fBlur)", opacity:.6}, corL);
-for (let i=0;i<20;i++){ const a = i*18 + (i%2)*6, [x1,y1] = P(50, a-5), [x2,y2] = P(i%3 ? 104 : 132, a), [x3,y3] = P(50, a+5); el("path", {d:`M${x1},${y1} L${x2},${y2} L${x3},${y3} Z`, fill:"#ffc24f"}, corona); }
+for (let i=0;i<20;i++){ const a = i*18 + (i%2)*6, [x1,y1] = P(32, a-6), [x2,y2] = P(i%3 ? 66 : 84, a), [x3,y3] = P(32, a+6); el("path", {d:`M${x1},${y1} L${x2},${y2} L${x3},${y3} Z`, fill:"#ffc24f"}, corona); }
 
 /* 공전 궤도 */
 el("circle", {cx:C, cy:C, r:R_ORB, fill:"none", stroke:"rgba(205,215,255,.26)", "stroke-width":1.4}, mainL);
@@ -410,13 +424,13 @@ const orbitHit = el("circle", {cx:C, cy:C, r:R_ORB, fill:"none", stroke:"transpa
 for (let m=1;m<=12;m++){ const a = th(lam(doyOf(m,1))) + 180, [x,y] = P(R_ORB, a); el("path", {d:"M-4,-4 L3,0 L-4,4", fill:"none", stroke:"rgba(205,215,255,.45)", "stroke-width":1.4, "stroke-linecap":"round", transform:`translate(${x},${y}) rotate(${-(a+90)})`}, mainL); }
 const ot = el("text", {class:"tag", fill:"rgba(205,215,255,.55)", "letter-spacing":"4"}, mainL);
 const otp = el("textPath", {href:"#pOrbitTxt", startOffset:"50%", "text-anchor":"middle"}, ot); otp.textContent = "지구 공전 궤도 · 1년에 한 바퀴";
-el("circle", {cx:C, cy:C, r:52, fill:"url(#gCore)"}, mainL);
-const sunTxt = el("text", {x:C, y:C+7, "text-anchor":"middle", style:"font-family:var(--f-display);font-weight:800;font-size:21px;letter-spacing:2px", fill:"#6a3a00"}, mainL); sunTxt.textContent = "태양";
+el("circle", {cx:C, cy:C, r:34, fill:"url(#gCore)"}, mainL);
+const sunTxt = el("text", {x:C, y:C+5.5, "text-anchor":"middle", style:"font-family:var(--f-display);font-weight:800;font-size:15px;letter-spacing:1px", fill:"#6a3a00"}, mainL); sunTxt.textContent = "태양";
 
 /* 월 표시 */
 const marks = [];
 for (let m=1;m<=12;m++){
-  const a = th(lam(doyOf(m,15))) + 180, [x,y] = P(R_ORB, a), [lx,ly] = P(R_ORB - 30, a);
+  const a = th(lam(doyOf(m,15))) + 180, [x,y] = P(R_ORB, a), [lx,ly] = P(R_ORB - 52, a);
   const g = el("g", {class:"mk hit", tabindex:0, role:"button", "aria-label":`${m}월로 지구 옮기기`}, mainL);
   el("circle", {cx:x, cy:y, r:24, fill:"transparent"}, g);
   el("circle", {cx:lx, cy:ly, r:18, fill:"transparent"}, g);
@@ -458,12 +472,15 @@ el("circle", {r:50, fill:"none", stroke:"rgba(174,232,255,.6)", "stroke-width":1
 const sightLine = el("line", {stroke:"rgba(255,208,107,.7)", "stroke-width":1.4, "stroke-dasharray":"2 6", "stroke-linecap":"round"}, topL);
 const earth = el("g", {style:"cursor:grab", class:"hit"}, topL);
 el("circle", {r:46, fill:"url(#gHalo)"}, earth);
-el("circle", {r:26.5, fill:"none", stroke:"rgba(174,232,255,.55)", "stroke-width":2}, earth);
+el("circle", {r:26.5, fill:"none", stroke:"rgba(174,232,255,.4)", "stroke-width":1.6}, earth);
 const globe = el("g", {"clip-path":"url(#cEarth)"}, earth);
 el("circle", {r:24, fill:"url(#gEarth)"}, globe);
 const land = el("g", {fill:"#64c779", opacity:.92}, globe);
 land.innerHTML = `<path d="M-13,-17 q8,-6 14,0 q4,6 -3,10 q-6,4 -10,-1 z"/><path d="M3,3 q9,-3 13,4 q2,8 -6,10 q-8,1 -9,-6 z"/><path d="M-21,5 q5,-2 7,3 q-1,5 -6,4 z"/><path d="M14,-14 q5,-1 6,3 q-3,3 -6,0 z"/>`;
-const term = el("rect", {x:-25, y:-25, width:25, height:50, fill:"url(#gTerm)"}, globe);
+const term = el("g", {}, globe);                        // 태양 쪽을 향해 돌린다: 오른쪽 = 낮, 왼쪽 = 밤
+el("rect", {x:-25, y:-25, width:25, height:50, fill:"url(#gTerm)"}, term);
+el("rect", {x:0, y:-25, width:25, height:50, fill:"url(#gDay)"}, term);
+const rim = el("path", {d:"M0,-25.5 A25.5,25.5 0 0,1 0,25.5", fill:"none", stroke:"#ffd98a", "stroke-width":2.6, "stroke-linecap":"round", opacity:.9}, earth);
 const obs = el("g", {}, earth);
 el("line", {x1:-17, y1:0, x2:17, y2:0, stroke:"rgba(225,240,255,.9)", "stroke-width":2, "stroke-linecap":"round"}, obs);
 el("line", {x1:0, y1:-12, x2:0, y2:-46, stroke:"#aee8ff", "stroke-width":2.4, "stroke-linecap":"round"}, obs);
@@ -555,25 +572,29 @@ let lastKey = "", lastMonth = 0;
 const cache = SIGNS.map(() => ({op:null, cls:null, po:null, center:null}));
 function render(){
   const Ls = lam(S.doy), ts = th(Ls), te = ts + 180, E = P(R_ORB, te);
-  const Lm = Ls + 180 + S.off, tm = th(Lm);
+  const Lm = Ls + 180 + LON_OFF + S.off, tm = th(Lm);
   settleGlow();
-  earth.setAttribute("transform", `translate(${E[0].toFixed(1)},${E[1].toFixed(1)})`);
+  earth.setAttribute("transform", `translate(${E[0].toFixed(1)},${E[1].toFixed(1)}) scale(1.5)`);
   term.setAttribute("transform", `rotate(${(-ts).toFixed(1)})`);
+  rim.setAttribute("transform", `rotate(${(-ts).toFixed(1)})`);
   land.setAttribute("transform", `rotate(${((-S.doy*3) % 360).toFixed(1)})`);
   obs.setAttribute("transform", `rotate(${(-(tm-90)).toFixed(1)}) translate(0,-24)`);
   const ux = Math.cos(rad(tm)), uy = -Math.sin(rad(tm));
-  southTag.setAttribute("x", (E[0] + ux*72 - uy*30).toFixed(1)); southTag.setAttribute("y", (E[1] + uy*72 + ux*30 + 5).toFixed(1));
+  southTag.setAttribute("x", (E[0] + ux*96 - uy*34).toFixed(1)); southTag.setAttribute("y", (E[1] + uy*96 + ux*34 + 5).toFixed(1));
   nightFan.setAttribute("d", fanPath(E, tm-70, tm+70, 466));
   nightEdge.setAttribute("d", `M${E[0].toFixed(1)},${E[1].toFixed(1)} L${P(466,tm-70).map(v=>v.toFixed(1))} M${E[0].toFixed(1)},${E[1].toFixed(1)} L${P(466,tm+70).map(v=>v.toFixed(1))} ` + arcPath(tm-70, tm+70, 466));
-  glareFan.setAttribute("d", fanPath(E, ts-14, ts+14, 466));
-  const gN = svg.querySelector("#gNight"), gG = svg.querySelector("#gGlare");
-  gN.setAttribute("cx", E[0]); gN.setAttribute("cy", E[1]); gG.setAttribute("cx", E[0]); gG.setAttribute("cy", E[1]);
+  const gN = svg.querySelector("#gNight"); gN.setAttribute("cx", E[0]); gN.setAttribute("cy", E[1]);
+  /* 햇빛: 태양에서 지구 쪽으로 퍼져 나와 지구의 낮 쪽을 덮는다 */
+  const bx = (E[0]-C)/R_ORB, by = (E[1]-C)/R_ORB, nx = -by, ny = bx;
+  beam.setAttribute("d", `M${(C+nx*24).toFixed(1)},${(C+ny*24).toFixed(1)} L${(E[0]+nx*44).toFixed(1)},${(E[1]+ny*44).toFixed(1)} L${(E[0]-nx*44).toFixed(1)},${(E[1]-ny*44).toFixed(1)} L${(C-nx*24).toFixed(1)},${(C-ny*24).toFixed(1)} Z`);
+  const gB = svg.querySelector("#gBeam"); gB.setAttribute("x1", C); gB.setAttribute("y1", C); gB.setAttribute("x2", E[0]); gB.setAttribute("y2", E[1]);
+  beamRays.forEach(l => { const o = +l.dataset.o; l.setAttribute("x1", (C+nx*o*.55).toFixed(1)); l.setAttribute("y1", (C+ny*o*.55).toFixed(1)); l.setAttribute("x2", (E[0]+nx*o*1.3 - bx*40).toFixed(1)); l.setAttribute("y2", (E[1]+ny*o*1.3 - by*40).toFixed(1)); });
   const [sx, sy] = P(R_ZOD-52, ts);
   sightLine.setAttribute("x1", E[0]); sightLine.setAttribute("y1", E[1]); sightLine.setAttribute("x2", sx); sightLine.setAttribute("y2", sy);
-  const [tx, ty] = P(165, ts), vx = Math.cos(rad(ts)), vy = -Math.sin(rad(ts));
-  sunTag.setAttribute("x", (tx - vy*34).toFixed(1)); sunTag.setAttribute("y", (ty + vx*34 + 5).toFixed(1));
+  const [tx, ty] = P(R_ZOD-82, ts);
+  sunTag.setAttribute("x", tx.toFixed(1)); sunTag.setAttribute("y", (ty + 5).toFixed(1));
 
-  const sunIdx = Math.floor(mod(Ls,360)/30);
+  const sunIdx = nearestTo(Ls);
   let best = 0, bestAbs = 999; const vis = [];
   SIGNS.forEach((s,i) => {
     const D = wrap180(centerL(i) - Lm), A = Math.abs(D);
@@ -611,7 +632,7 @@ function render(){
   vis.sort((a,b) => b[0]-a[0]);
   $("visList").innerHTML = vis.map(([,i]) => `<li class="${i===best ? "center" : ""}">${SIGNS[i].n}</li>`).join("");
   const sun = SIGNS[sunIdx];
-  const seeM = mdOf(doyFromLam(centerL(sunIdx) - 180))[0];
+  const seeM = mdOf(seeDoyOf(sunIdx))[0];
   $("hideName").textContent = `${sun.n}${josa(sun.n,"은","는")} 지금 보이지 않아요`;
   $("hideTxt").textContent = `${sun.range}에 태어난 친구의 생일 별자리예요. 지금은 태양과 같은 방향에 있어서 낮 하늘에 떠 있고, 햇빛이 너무 밝아 볼 수 없어요. 밤 12시 남쪽 하늘에서는 약 6개월 뒤인 ${seeM}월쯤 볼 수 있어요.`;
 }
@@ -691,11 +712,11 @@ const DIM = [31,28,31,30,31,30,31,31,30,31,30,31];
 function fillDays(keep){ const n = DIM[bm.value-1]; bd.innerHTML = ""; for (let k=1; k<=n; k++) bd.add(new Option(`${k}일`, k)); bd.value = Math.min(keep||1, n); }
 bm.addEventListener("change", () => fillDays(+bd.value));
 function setBirthday(doy, fromSign){
-  const sign = Math.floor(lam(doy)/30) % 12, s = SIGNS[sign];
+  const sign = birthSign(doy), s = SIGNS[sign];
   const [m, d] = mdOf(doy);
   S.bday = {doy, sign};
   if (!fromSign){ bm.value = m; fillDays(d); }
-  const seeM = mdOf(doyFromLam(centerL(sign) - 180))[0];
+  const seeM = mdOf(seeDoyOf(sign))[0];
   const msg = $("bdayMsg"), nm = `<span class="rose">${s.n}</span>`;
   msg.innerHTML = fromSign
     ? `${nm}의 생일은 ${s.range}예요. 이때 지구에서 보면 태양이 ${s.n} 앞을 가려서, 생일 별자리는 낮 하늘에 숨어 버려요.`
@@ -704,13 +725,13 @@ function setBirthday(doy, fromSign){
   travelTo(doy); chime(.08, [523.25, 659.25, 783.99]);
 }
 $("bdayForm").addEventListener("submit", e => { e.preventDefault(); stopPlay(); setBirthday(doyOf(+bm.value, +bd.value), false); });
-$("goSix").addEventListener("click", () => { if (!S.bday) return; stopPlay(); travelTo(doyFromLam(centerL(S.bday.sign) - 180)); setTimeout(sparkle, reduce ? 0 : 1500); chime(); });
+$("goSix").addEventListener("click", () => { if (!S.bday) return; stopPlay(); travelTo(seeDoyOf(S.bday.sign)); setTimeout(sparkle, reduce ? 0 : 1500); chime(); });
 $("goBack").addEventListener("click", () => { if (!S.bday) return; stopPlay(); travelTo(S.bday.doy, -1); chime(); });
 
 /* ---------- 퀴즈 ---------- */
 const Q = {n:0, ok:0, streak:0, cur:null};
 const shuffle = a => { for (let i=a.length-1;i>0;i--){ const j = Math.floor(rnd()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; };
-const southAt = doy => { const Lm = lam(doy) + 180; let b = 0, ba = 999; for (let i=0;i<12;i++){ const A = Math.abs(wrap180(centerL(i)-Lm)); if (A < ba){ ba = A; b = i; } } return b; };
+const southAt = doy => nearestTo(lam(doy) + 180 + LON_OFF);
 function makeQ(){
   const type = Math.floor(rnd()*3);
   if (type === 0){
@@ -720,14 +741,14 @@ function makeQ(){
       why:`${m}월에 지구에서 태양을 등지면 ${SIGNS[ans].n} 쪽을 바라보게 돼요.`};
   }
   if (type === 1){
-    const doy = Math.floor(rnd()*365), [m,d] = mdOf(doy), sign = Math.floor(lam(doy)/30) % 12;
-    const seeDoy = doyFromLam(centerL(sign) - 180), ans = mdOf(seeDoy)[0];
+    const doy = Math.floor(rnd()*365), [m,d] = mdOf(doy), sign = birthSign(doy);
+    const seeDoy = seeDoyOf(sign), ans = mdOf(seeDoy)[0];
     const pool = shuffle([...Array(12).keys()].map(x => x+1).filter(x => x !== ans && x !== m)).slice(0,3);
     return {text:`생일이 ${m}월 ${d}일인 친구의 생일 별자리(${SIGNS[sign].n})가 밤 12시 남쪽 하늘에 잘 보이는 때는?`, opts:shuffle([ans, ...pool]).map(x => ({k:x, t:`${x}월`})), ans, show:seeDoy,
       why:`생일에는 태양이 ${SIGNS[sign].n} 앞에 있어요. 약 6개월이 지나 지구가 반대편으로 가면 밤하늘에서 볼 수 있어요.`};
   }
-  const m = 1 + Math.floor(rnd()*12), doy = doyOf(m,15), Ls = lam(doy), ans = Math.floor(Ls/30) % 12;
-  const visible = [...Array(12).keys()].filter(i => Math.abs(wrap180(centerL(i) - Ls - 180)) <= 60);
+  const m = 1 + Math.floor(rnd()*12), doy = doyOf(m,15), Ls = lam(doy), ans = nearestTo(Ls);
+  const visible = [...Array(12).keys()].filter(i => Math.abs(wrap180(centerL(i) - Ls - 180 - LON_OFF)) <= 60);
   const opts = shuffle([ans, ...shuffle(visible).slice(0,3)]);
   return {text:`${m}월 밤에 볼 수 없는 별자리는?`, opts:opts.map(i => ({k:i, t:`${SIGNS[i].e}  ${SIGNS[i].n}`})), ans, show:doy,
     why:`${m}월에는 태양이 ${SIGNS[ans].n} 앞에 있어서, ${SIGNS[ans].n}${josa(SIGNS[ans].n,"은","는")} 낮 하늘에 숨어 있어요.`};
