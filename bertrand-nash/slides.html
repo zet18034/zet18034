@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>가격 전쟁의 수학</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+:root{
+  --bg:#FBF6EE; --ink:#2B2D42; --muted:#6B6F80; --line:#E4DCCD;
+  --A:#E76F51; --B:#2A9D8F; --gold:#E9A23B; --navy:#264653; --cream:#F4F1DE; --card:#FFFFFF;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#1d2230;overflow:hidden}
+body{font-family:'Noto Sans KR',sans-serif}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0}
+#deck>section{position:absolute;inset:0;width:1920px;height:1080px;overflow:hidden;background:var(--bg);color:var(--ink);
+  padding:80px 120px 70px;display:flex;flex-direction:column;gap:34px;word-break:keep-all}
+#deck>section.off{display:none!important}
+h1,h2,h3,p{margin:0}
+.kicker{font-size:26px;font-weight:700;color:var(--A);letter-spacing:2px}
+h2{font-family:'Do Hyeon',sans-serif;font-weight:400;font-size:76px;line-height:1.12}
+h3{font-size:40px;font-weight:700;line-height:1.3}
+p{font-size:34px;line-height:1.5}
+.row{display:flex;gap:56px;align-items:center}
+.row.top{align-items:flex-start}
+.col{display:flex;flex-direction:column;gap:26px}
+.grow{flex:1}
+.card{background:var(--card);border-radius:28px;padding:34px 42px;box-shadow:0 8px 24px rgba(43,45,66,.08);display:flex;flex-direction:column;gap:16px}
+.bubble{background:#fff;border:3px solid var(--line);border-radius:30px;padding:26px 36px;font-size:36px;line-height:1.5}
+.say{font-size:40px;line-height:1.5}
+.hl{background:linear-gradient(transparent 58%,#F9D9A5 58%);font-weight:700}
+.a{color:var(--A);font-weight:700}.b{color:var(--B);font-weight:700}.g{color:var(--gold);font-weight:700}
+.formula{background:var(--navy);color:var(--cream);border-radius:28px;padding:30px 44px 32px;display:flex;flex-direction:column;gap:14px;position:relative}
+.formula::before{content:"공식으로 보면";align-self:flex-start;font-size:22px;font-weight:700;color:var(--navy);background:var(--gold);border-radius:999px;padding:4px 18px;letter-spacing:1px}
+.formula .eq{font-family:'Cambria Math','Times New Roman',serif;font-size:48px;line-height:1.35}
+.formula .eq.sm{font-size:38px}
+.formula p{font-size:28px;color:#C9D6D3}
+.eq i{font-style:italic}
+.tag{display:inline-block;font-size:24px;font-weight:700;padding:4px 16px;border-radius:999px;background:#F1E7D6;color:var(--ink)}
+table.t{border-collapse:collapse;font-size:32px}
+table.t th,table.t td{padding:12px 26px;text-align:center;border-bottom:2px solid var(--line)}
+table.t th{color:var(--muted);font-weight:700;font-size:26px}
+table.t tr.best td{background:#FCE7C8;font-weight:900}
+.chip{display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:50%;color:#fff;font-family:'Do Hyeon';font-size:38px}
+.chip.A{background:var(--A)}.chip.B{background:var(--B)}
+.machine{display:flex;align-items:center;gap:22px;font-size:36px}
+.machine .box{border-radius:24px;padding:22px 34px;color:#fff;font-weight:700;font-size:36px;text-align:center;line-height:1.3}
+.machine .arrow{font-size:46px;color:var(--muted)}
+.machine .val{font-family:'Cambria Math','Times New Roman',serif;font-size:44px;background:#fff;border:3px solid var(--line);border-radius:18px;padding:10px 24px;min-width:110px;text-align:center}
+svg{display:block}
+.ctrl{display:flex;align-items:center;gap:24px;font-size:30px}
+.ctrl input[type=range]{width:420px;accent-color:var(--A);height:30px}
+.foot{position:absolute;left:120px;bottom:34px;font-size:22px;color:var(--muted)}
+.num{font-family:'Do Hyeon';font-size:40px;color:#fff;background:var(--A);border-radius:50%;width:62px;height:62px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.step{display:flex;gap:26px;align-items:center}
+aside{display:none}
+.bi{transition:opacity .45s ease, translate .45s ease}
+.bi.hid{opacity:0;translate:0 30px}
+#counter{position:fixed;right:16px;bottom:12px;font:14px 'Noto Sans KR';color:rgba(255,255,255,.55)}
+#help{position:fixed;left:16px;bottom:12px;font:13px 'Noto Sans KR';color:rgba(255,255,255,.4)}
+#notes{position:fixed;left:16px;right:16px;bottom:40px;max-height:40vh;overflow:auto;padding:16px 20px;border-radius:12px;background:rgba(20,22,30,.93);color:#F4F1DE;font:16px/1.65 'Noto Sans KR';display:none;white-space:pre-line}
+#notes.on{display:block}
+body.print{overflow:visible;height:auto;background:none}
+body.print #stage{position:static;transform:none!important;height:auto}
+body.print #deck>section{position:relative;break-after:page}
+body.print .bi{transition:none}
+body.print #help,body.print #counter,body.print #notes{display:none}
+body.print,body.print *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@page{size:1920px 1080px;margin:0}
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- 1 표지 -->
+<section style="background:var(--navy);color:var(--cream);justify-content:center;gap:30px;padding-left:140px">
+  <div style="position:absolute;right:150px;top:190px;width:560px;height:560px;border-radius:50%;background:#2F5A68"></div>
+  <div style="position:absolute;right:420px;top:330px;display:flex;flex-direction:column;align-items:center;gap:14px">
+    <span class="chip A" style="width:170px;height:170px;font-size:96px">A</span>
+    <span style="font-family:'Do Hyeon';font-size:56px;color:#F9D9A5">8천 원?</span>
+  </div>
+  <div style="position:absolute;right:190px;top:430px;display:flex;flex-direction:column;align-items:center;gap:14px">
+    <span class="chip B" style="width:170px;height:170px;font-size:96px">B</span>
+    <span style="font-family:'Do Hyeon';font-size:56px;color:#F9D9A5">7천 원?</span>
+  </div>
+  <p style="font-size:30px;font-weight:700;color:var(--gold);letter-spacing:2px">수학 탐구 · 함수로 읽는 경제</p>
+  <h1 style="font-family:'Do Hyeon';font-weight:400;font-size:136px;line-height:1.05">가격 전쟁의<br>수학</h1>
+  <div style="width:130px;height:7px;border-radius:4px;background:var(--gold)"></div>
+  <p style="font-size:38px;color:#C9D6D3">베르트랑 모형의 내쉬균형을 <b style="color:#fff">이차함수 · 합성함수</b>로 찾기</p>
+  <aside>오늘은 두 가게가 서로 가격을 어떻게 정하는지를 수학으로 풀어 보려고 해요. 어려운 공식부터 보지 않고, 먼저 이야기로 이해한 다음에 그걸 공식으로 옮겨 보겠습니다.</aside>
+</section>
+
+<!-- 2 로드맵 -->
+<section>
+  <p class="kicker">오늘의 길</p>
+  <h2>이야기 → 그림 → 공식</h2>
+  <div class="row top" style="gap:40px;margin-top:20px">
+    <div class="card grow" data-b><span class="tag">1. 이야기</span><h3>두 케이크 가게가<br>가격 싸움을 한다</h3><p style="font-size:28px;color:var(--muted)">내쉬균형이 뭔지, 베르트랑이 뭘 말했는지</p></div>
+    <div class="card grow" data-b><span class="tag">2. 그림</span><h3>이윤은 왜<br>'산 모양'일까</h3><p style="font-size:28px;color:var(--muted)">이차함수의 꼭대기 = 가장 좋은 가격</p></div>
+    <div class="card grow" data-b><span class="tag">3. 반응 규칙</span><h3>상대 가격에 따라<br>내 가격이 정해진다</h3><p style="font-size:28px;color:var(--muted)">함수 = 반응 규칙 기계</p></div>
+    <div class="card grow" data-b><span class="tag">4. 합성</span><h3>기계 두 개를<br>이어 붙이면 균형</h3><p style="font-size:28px;color:var(--muted)">합성함수 R₁(R₂(x)) = x</p></div>
+  </div>
+  <p class="say" data-b style="margin-top:20px">규칙: <span class="hl">먼저 말로 이해하고, 공식은 그다음에 "번역"만 한다.</span></p>
+  <aside>오늘은 네 단계로 갑니다. 이야기, 그림, 반응 규칙, 그리고 합성이에요. 공식은 매번 마지막에 나오는데, 새로운 내용이 아니라 방금 말로 한 걸 수학 기호로 번역한 것뿐입니다.</aside>
+</section>
+
+<!-- 3 내쉬균형 -->
+<section>
+  <p class="kicker">먼저, 단어 하나</p>
+  <h2>내쉬균형이란?</h2>
+  <div class="bubble" style="max-width:1500px">모두가 <span class="hl">"지금 나 혼자 바꿔 봤자 손해야"</span>라고 생각해서<br>아무도 움직이지 않는 상태</div>
+  <div class="row" style="gap:40px" data-b>
+    <div class="card grow"><h3>🚶 예: 복도 좌측 통행</h3><p>모두 왼쪽으로 걸으면, 나 혼자 오른쪽으로 가 봤자 부딪히기만 해요. → 아무도 안 바꿈 = <b>균형</b></p></div>
+    <div class="card grow"><h3>🍰 오늘의 질문</h3><p>두 가게가 가격을 정할 때, <b>둘 다 더는 가격을 바꾸고 싶지 않은</b> 가격은 얼마일까?</p></div>
+  </div>
+  <div class="formula" data-b style="max-width:1500px">
+    <div class="eq sm">A의 가격 = (B의 가격에 대한 A의 최선) &nbsp;그리고&nbsp; B의 가격 = (A의 가격에 대한 B의 최선)</div>
+    <p>"둘 다 동시에 최선"인 가격 쌍을 찾는 것이 오늘의 목표입니다.</p>
+  </div>
+  <aside>내쉬균형은 이름만 어렵지 뜻은 간단해요. 모두가 지금 나 혼자 바꿔 봤자 손해라고 생각해서 아무도 안 움직이는 상태입니다. 복도 좌측 통행을 떠올려 보면 쉬워요. 오늘은 이걸 가게 가격에 적용해 보겠습니다.</aside>
+</section>
+
+<!-- 4 원래 베르트랑 -->
+<section>
+  <p class="kicker">베르트랑의 원래 이야기</p>
+  <h2>똑같은 케이크라면? → 끝없는 깎기</h2>
+  <div class="row top">
+    <div class="col" style="width:760px">
+      <div class="card"><p>• 두 가게가 <b>완전히 똑같은</b> 케이크를 판다</p><p>• 손님은 <b>무조건 더 싼 곳</b>에서만 산다</p><p>• 한 조각 원가는 둘 다 <b>2천 원</b></p></div>
+      <p class="say" data-b>그럼 상대보다 <span class="hl">딱 조금만 싸게</span> 하면<br>손님을 전부 가져간다!</p>
+    </div>
+    <div class="col grow" style="gap:16px">
+      <div class="row" style="gap:20px" data-b><span class="chip B">B</span><p>1만 원</p><span style="font-size:34px">→</span><span class="chip A">A</span><p>9천 원</p></div>
+      <div class="row" style="gap:20px" data-b><span class="chip B">B</span><p>8천 원</p><span style="font-size:34px">→</span><span class="chip A">A</span><p>7천 원</p></div>
+      <div class="row" style="gap:20px" data-b><span class="chip B">B</span><p>…</p><span style="font-size:34px">→</span><span class="chip A">A</span><p>…</p></div>
+      <div class="card" data-b style="background:#FCE7C8"><h3>결국 둘 다 2천 원(원가)에서 멈춤</h3><p>더 깎으면 팔수록 손해니까요. 이윤 = 0</p></div>
+    </div>
+  </div>
+  <p class="say" data-b>가게가 두 개뿐인데도 이윤이 0! 이것을 <b>베르트랑 역설</b>이라고 해요.</p>
+  <aside>베르트랑이라는 수학자가 처음 생각한 모형은 이래요. 똑같은 케이크라면 손님은 무조건 싼 데로 가니까, 서로 조금씩 깎다가 결국 원가까지 내려갑니다. 가게가 둘뿐인데 이윤이 0이 되니까 역설이라고 부릅니다.</aside>
+</section>
+
+<!-- 5 왜 곤란한가 -->
+<section>
+  <p class="kicker">그런데 수학적으로는…</p>
+  <h2>그래프가 뚝 끊긴다</h2>
+  <div class="row top">
+    <svg id="g-homog" viewBox="0 0 900 600" width="900" height="600"></svg>
+    <div class="col grow">
+      <p>B가 <b class="b">1만 원</b>일 때 A의 이윤</p>
+      <div class="card" data-b><p><b>10보다 싸면</b> 손님 독차지<br>→ 이윤이 계속 올라감</p></div>
+      <div class="card" data-b><p><b>10보다 비싸면</b> 손님 0명<br>→ 이윤 0으로 <b>뚝!</b></p></div>
+      <div class="card" data-b style="background:#FCE7C8"><p>9.9, 9.99, 9.999… 어디서 멈춰도<br>더 좋은 가격이 있어요.<br><b>"가장 좋은 가격"이 없다!</b></p></div>
+    </div>
+  </div>
+  <p class="say" data-b>그래서 <span class="hl">현실처럼 "손님이 일부만 옮겨 가는"</span> 모형으로 바꿔 봅니다.</p>
+  <aside>그래프로 그려 보면 문제가 보입니다. 10 바로 앞까지 올라가다가 10을 넘는 순간 뚝 떨어져요. 그래서 꼭대기가 없어요. 이차함수의 꼭짓점을 쓸 수가 없는 거죠. 그래서 조금 더 현실적인 모형으로 바꿔 보겠습니다.</aside>
+</section>
+
+<!-- 6 차별화 수요 -->
+<section>
+  <p class="kicker">현실적인 모형</p>
+  <h2>손님은 '일부만' 옮겨 간다</h2>
+  <p class="say">A 가게의 하루 판매량은 이렇게 정해진다고 해 봐요.</p>
+  <div class="row" style="gap:36px">
+    <div class="card grow" data-b><span class="tag">규칙 ①</span><h3>단골 손님 20명</h3><p>가격과 상관없이 오는 기본 손님</p></div>
+    <div class="card grow" data-b><span class="tag">규칙 ②</span><h3><span class="a">내 가격</span> 1 ↑ → <br>손님 2명 ↓</h3><p>비싸지면 떠나요</p></div>
+    <div class="card grow" data-b><span class="tag">규칙 ③</span><h3><span class="b">상대 가격</span> 1 ↑ → <br>손님 1명 ↑</h3><p>상대가 비싸지면 넘어와요</p></div>
+  </div>
+  <div class="formula" data-b>
+    <div class="eq">A의 판매량 &nbsp; q₁ = 20 − 2<i>p</i>₁ + <i>p</i>₂</div>
+    <p>p₁ = A의 가격, p₂ = B의 가격 (단위: 천 원). B도 똑같이 q₂ = 20 − 2p₂ + p₁</p>
+  </div>
+  <p class="say" data-b style="font-size:32px;color:var(--muted)">💡 '내 가격의 영향(2)'이 '상대 가격의 영향(1)'보다 커야 현실적이에요. 이게 나중에 중요해집니다.</p>
+  <aside>이번에는 손님이 전부 떠나지 않고 일부만 옮겨 간다고 해 볼게요. 규칙은 세 개예요. 단골 20명, 내 가격이 천 원 오르면 2명이 떠나고, 상대 가격이 천 원 오르면 1명이 넘어옵니다. 이 세 문장을 기호로 쓰면 아래 식이 됩니다.</aside>
+</section>
+
+<!-- 7 이윤 표 -->
+<section>
+  <p class="kicker">얼마에 팔아야 제일 남을까?</p>
+  <h2>B가 8천 원일 때, A가 가격을 바꿔 보자</h2>
+  <div class="row top">
+    <table class="t" data-b>
+      <tr><th>A의 가격</th><th>한 조각당 남는 돈</th><th>판매량</th><th>이윤</th></tr>
+      <tr><td>2</td><td>0</td><td>24</td><td>0</td></tr>
+      <tr><td>4</td><td>2</td><td>20</td><td>40</td></tr>
+      <tr><td>6</td><td>4</td><td>16</td><td>64</td></tr>
+      <tr class="best"><td>8</td><td>6</td><td>12</td><td>72</td></tr>
+      <tr><td>10</td><td>8</td><td>8</td><td>64</td></tr>
+      <tr><td>12</td><td>10</td><td>4</td><td>40</td></tr>
+      <tr><td>14</td><td>12</td><td>0</td><td>0</td></tr>
+    </table>
+    <div class="col grow">
+      <div class="card" data-b><p><b>이윤 = 남는 돈 × 판매량</b></p><p style="font-size:30px;color:var(--muted)">남는 돈 = 가격 − 원가 2<br>판매량 = 20 − 2×(A 가격) + 8</p></div>
+      <div class="card" data-b style="background:#FCE7C8"><p>0 → 40 → 64 → <b>72</b> → 64 → 40 → 0</p><p>올라갔다가 내려와요.<br>그리고 <b>좌우가 똑같아요!</b></p></div>
+    </div>
+  </div>
+  <div class="formula" data-b>
+    <div class="eq">이윤 &nbsp; π₁ = (<i>p</i>₁ − 2) × (20 − 2<i>p</i>₁ + <i>p</i>₂)</div>
+  </div>
+  <aside>직접 계산해 봅시다. B가 8천 원이라고 하고 A가 가격을 2부터 14까지 바꿔 봐요. 이윤은 남는 돈 곱하기 판매량이에요. 결과를 보면 72에서 제일 크고, 양쪽이 대칭이라는 게 눈에 띕니다.</aside>
+</section>
+
+<!-- 8 포물선 -->
+<section>
+  <p class="kicker">그림으로 보면</p>
+  <h2>이윤은 '산 모양' — 꼭대기는 한가운데</h2>
+  <div class="row top">
+    <svg id="g-mount" viewBox="0 0 900 430" width="900" height="430"></svg>
+    <div class="col grow">
+      <div class="card" data-b><p>🙁 <b>너무 싸면</b> (2천 원): 남는 돈 0 → 이윤 0</p><p>🙁 <b>너무 비싸면</b> (1만 4천 원): 사는 사람 0 → 이윤 0</p></div>
+      <div class="card" data-b style="background:#FCE7C8"><p>😀 산은 좌우 대칭이니까<br>꼭대기는 <b>2와 14의 한가운데 = 8</b></p></div>
+    </div>
+  </div>
+  <div class="formula" data-b>
+    <div class="eq sm">(일차식) × (일차식) = 이차함수, &nbsp;<i>p</i>₁² 앞의 수가 음수 → 위로 볼록</div>
+    <div class="eq sm">꼭짓점 = 두 근의 평균 = (2 + 14) ÷ 2 = 8</div>
+  </div>
+  <aside>표를 그래프로 그리면 산 모양, 즉 위로 볼록한 포물선이 됩니다. 너무 싸도 0, 너무 비싸도 0이니까 양 끝이 바닥이에요. 포물선은 좌우 대칭이라서 꼭대기는 두 바닥의 딱 한가운데에 있습니다. 꼭짓점 공식을 외우지 않아도 되는 거예요.</aside>
+</section>
+
+<!-- 9 산이 움직인다 -->
+<section>
+  <p class="kicker">상대가 가격을 바꾸면?</p>
+  <h2>산이 옆으로 늘어난다</h2>
+  <div class="ctrl" onclick="event.stopPropagation()"><span>B의 가격 <b class="b">p₂</b></span><input type="range" id="p2s" min="0" max="20" step="1" value="8"><span id="p2r" style="font-weight:700"></span></div>
+  <div class="row top">
+    <svg id="g-move" viewBox="0 0 900 560" width="900" height="560"></svg>
+    <div class="col grow">
+      <div class="card" data-b><p>왼쪽 끝(원가 2)은 <b>그대로</b></p><p>오른쪽 끝은 B가 <b>4 올리면 2</b>만큼 이동</p></div>
+      <div class="card" data-b style="background:#FCE7C8"><p>꼭대기는 한가운데니까<br>그 절반, <b>1만큼만</b> 이동</p><p style="font-size:30px">"상대가 4천 원 올리면<br>나는 1천 원만 올리는 게 최선"</p></div>
+    </div>
+  </div>
+  <aside>슬라이더로 B의 가격을 바꿔 볼게요. 왼쪽 끝은 원가라서 안 움직이고, 오른쪽 끝만 움직여요. B가 4 올리면 오른쪽 끝은 2 움직이고, 꼭대기는 한가운데라서 1만 움직입니다. 이게 다음 장의 반응 규칙이 됩니다.</aside>
+</section>
+
+<!-- 10 반응 규칙 -->
+<section>
+  <p class="kicker">반응 규칙 만들기</p>
+  <h2>상대 가격을 넣으면, 내 최선의 가격이 나온다</h2>
+  <div class="row top">
+    <table class="t" data-b>
+      <tr><th>B의 가격</th><th>A의 최선 가격</th></tr>
+      <tr><td>0</td><td>6</td></tr>
+      <tr><td>4</td><td>7</td></tr>
+      <tr><td>8</td><td>8</td></tr>
+      <tr><td>12</td><td>9</td></tr>
+      <tr><td>16</td><td>10</td></tr>
+    </table>
+    <div class="col grow">
+      <div class="card" data-b><p>📌 B가 0원이어도 A는 <b>6</b> (단골이 있으니까)</p></div>
+      <div class="card" data-b><p>📌 B가 <b>4</b> 올릴 때마다 A는 <b>1</b>씩 올림</p></div>
+      <div class="card" data-b style="background:#FCE7C8"><p>👉 <b>"6에서 시작해서, 상대 가격의 4분의 1을 더한다"</b></p></div>
+    </div>
+  </div>
+  <div class="formula" data-b>
+    <div class="eq">A의 반응 규칙 &nbsp; R₁(<i>p</i>₂) = 6 + <i>p</i>₂ ÷ 4 &nbsp;&nbsp;&nbsp;&nbsp;B도 똑같이 &nbsp; R₂(<i>p</i>₁) = 6 + <i>p</i>₁ ÷ 4</div>
+    <p>상대 가격 하나 → 내 최선 가격 하나. 그래서 '함수'입니다. (R = Reaction, 반응)</p>
+  </div>
+  <aside>앞에서 본 걸 표로 정리하면 이렇습니다. 상대가 0이어도 나는 6, 상대가 4 올릴 때마다 나는 1씩 올려요. 말로 하면 6에서 시작해서 상대 가격의 4분의 1을 더한다, 이게 반응 규칙이에요. 기호로 쓰면 R₁(p₂) = 6 + p₂/4입니다.</aside>
+</section>
+
+<!-- 11 함수 기계 -->
+<section>
+  <p class="kicker">함수 = 기계</p>
+  <h2>반응 규칙은 '가격을 넣으면 가격이 나오는 기계'</h2>
+  <div class="col" style="gap:50px;margin-top:30px">
+    <div class="machine" data-b><span style="width:260px">B 가격을 넣으면</span><span class="val">12</span><span class="arrow">→</span><span class="box" style="background:var(--A)">A의 기계<br>R₁</span><span class="arrow">→</span><span class="val">9</span><span>A의 최선</span></div>
+    <div class="machine" data-b><span style="width:260px">A 가격을 넣으면</span><span class="val">8</span><span class="arrow">→</span><span class="box" style="background:var(--B)">B의 기계<br>R₂</span><span class="arrow">→</span><span class="val">8</span><span>B의 최선</span></div>
+  </div>
+  <div class="card" data-b style="margin-top:20px"><p>두 기계의 규칙은 같아요: <b>"6 + 넣은 값 ÷ 4"</b><br>(두 가게의 조건이 똑같으니까요)</p></div>
+  <aside>반응 규칙을 기계라고 생각해 볼게요. 상대 가격을 넣으면 내 최선의 가격이 나오는 기계입니다. A의 기계에 12를 넣으면 9가 나오고, B의 기계에 8을 넣으면 8이 나와요. 이제 이 두 기계를 이어 붙여 보겠습니다.</aside>
+</section>
+
+<!-- 12 합성 아이디어 -->
+<section>
+  <p class="kicker">핵심 아이디어</p>
+  <h2>기계 두 개를 이어 붙이면 = 합성함수</h2>
+  <div class="machine" style="margin-top:20px" data-b>
+    <span class="val">x</span><span style="font-size:28px;color:var(--muted)">A가 정한 가격</span><span class="arrow">→</span>
+    <span class="box" style="background:var(--B)">B가 반응<br>R₂</span><span class="arrow">→</span>
+    <span class="box" style="background:var(--A)">A가 다시 반응<br>R₁</span><span class="arrow">→</span><span class="val">?</span>
+  </div>
+  <div class="bubble" data-b>"내가 가격을 정하면 → 상대가 반응하고 → 나는 그 반응을 보고 다시 반응한다"</div>
+  <div class="card" data-b style="background:#FCE7C8"><h3>한 바퀴 돌고 왔는데 <u>처음 가격과 똑같다면?</u></h3><p>A도 바꿀 이유가 없고, B도 이미 최선이에요. → <b>이것이 내쉬균형!</b></p></div>
+  <div class="formula" data-b>
+    <div class="eq">R₁( R₂(<i>x</i>) ) = <i>x</i> &nbsp;&nbsp;⇔&nbsp;&nbsp; (R₁∘R₂)(<i>x</i>) = <i>x</i></div>
+    <p>안쪽 R₂ = B의 반응(먼저), 바깥쪽 R₁ = A의 재반응(나중). 넣은 값이 그대로 나오는 x를 '고정점'이라 해요.</p>
+  </div>
+  <aside>여기가 오늘의 핵심이에요. A가 가격을 정하면 B가 반응하고, A는 그걸 보고 다시 반응합니다. 기계 두 개를 이어 붙인 거죠. 이게 합성함수예요. 한 바퀴 돌았는데 처음 가격이 그대로 나오면 아무도 바꿀 이유가 없으니까 그게 바로 내쉬균형입니다.</aside>
+</section>
+
+<!-- 13 넣어 보기 -->
+<section>
+  <p class="kicker">직접 넣어 보기</p>
+  <h2>어떤 가격이 '그대로' 나올까?</h2>
+  <div class="col" style="gap:34px;margin-top:10px">
+    <div class="machine" data-b><span class="val">20</span><span class="arrow">→</span><span class="box" style="background:var(--B)">R₂</span><span class="arrow">→</span><span class="val">11</span><span class="arrow">→</span><span class="box" style="background:var(--A)">R₁</span><span class="arrow">→</span><span class="val">8.75</span><span style="font-size:32px">❌ 20과 다름 → 균형 아님</span></div>
+    <div class="machine" data-b><span class="val">4</span><span class="arrow">→</span><span class="box" style="background:var(--B)">R₂</span><span class="arrow">→</span><span class="val">7</span><span class="arrow">→</span><span class="box" style="background:var(--A)">R₁</span><span class="arrow">→</span><span class="val">7.75</span><span style="font-size:32px">❌ 4와 다름 → 균형 아님</span></div>
+    <div class="machine" data-b><span class="val" style="border-color:var(--gold)">8</span><span class="arrow">→</span><span class="box" style="background:var(--B)">R₂</span><span class="arrow">→</span><span class="val">8</span><span class="arrow">→</span><span class="box" style="background:var(--A)">R₁</span><span class="arrow">→</span><span class="val" style="border-color:var(--gold)">8</span><span style="font-size:32px">⭕ 그대로! → <b>균형</b></span></div>
+  </div>
+  <div class="card" data-b style="background:#FCE7C8"><p>잠깐! 20을 넣었더니 8.75, 4를 넣었더니 7.75… <b>둘 다 8 쪽으로 다가왔어요.</b> (뒤에서 다시!)</p></div>
+  <aside>몇 개 넣어 봅시다. 20을 넣으면 B는 11, A는 다시 8.75로 반응해서 처음과 달라요. 4를 넣어도 달라요. 8을 넣으면 8, 8로 그대로 나옵니다. 그러니까 8이 균형이에요. 그런데 20이나 4를 넣었을 때도 결과가 8 쪽으로 가까워졌죠? 이건 뒤에서 다시 볼게요.</aside>
+</section>
+
+<!-- 14 공식 계산 -->
+<section>
+  <p class="kicker">이제 공식으로 번역</p>
+  <h2>짐작하지 않고 계산으로 구하기</h2>
+  <div class="col" style="gap:26px">
+    <div class="step" data-b><span class="num">1</span><p>B의 기계 먼저: &nbsp;<b>R₂(x) = 6 + x ÷ 4</b></p></div>
+    <div class="step" data-b><span class="num">2</span><p>그 결과를 A의 기계에 넣기: &nbsp;<b>6 + (6 + x÷4) ÷ 4</b> &nbsp;= 6 + 1.5 + x÷16 = <b>7.5 + x÷16</b></p></div>
+    <div class="step" data-b><span class="num">3</span><p>"넣은 값이 그대로 나온다": &nbsp;<b>7.5 + x÷16 = x</b></p></div>
+    <div class="step" data-b><span class="num">4</span><p>x에서 x÷16을 빼면 남는 건 x의 15/16 → &nbsp;<b>(15/16)·x = 7.5 → x = 8</b></p></div>
+  </div>
+  <div class="formula" data-b>
+    <div class="eq">(R₁∘R₂)(<i>x</i>) = 7.5 + <i>x</i>/16 = <i>x</i> &nbsp;⇒&nbsp; <i>x</i> = 8</div>
+    <p>균형: A = 8천 원, B = R₂(8) = 8천 원. 판매량 12, 이윤은 각각 (8−2)×12 = 72</p>
+  </div>
+  <aside>이번엔 짐작 말고 계산으로 구해 볼게요. B 기계를 먼저 쓰고, 그 결과를 A 기계에 넣으면 7.5 + x/16이 됩니다. 이게 x랑 같아야 하니까 방정식을 풀면 x는 8이에요. 앞에서 넣어 보며 찾은 값과 똑같습니다.</aside>
+</section>
+
+<!-- 15 그래프 교점 -->
+<section>
+  <p class="kicker">그래프로 보면</p>
+  <h2>두 반응 규칙의 '만나는 점' = 균형</h2>
+  <div class="ctrl" onclick="event.stopPropagation()"><span>A의 처음 가격</span><input type="range" id="x0s" min="0" max="20" step="1" value="20"><span id="x0r" style="font-weight:700"></span></div>
+  <div class="row top">
+    <svg id="g-react" viewBox="0 0 760 640" width="760" height="640"></svg>
+    <div class="col grow">
+      <div class="card" data-b><p><b class="b">B의 선</b>: A 가격 → B의 최선</p><p><b style="color:var(--A)">A의 선</b>: B 가격 → A의 최선</p></div>
+      <div class="card" data-b><p>⬆ 세로로 이동 = B가 반응<br>⬅ 가로로 이동 = A가 반응</p></div>
+      <div class="card" data-b style="background:#FCE7C8"><p>어디서 시작하든 <b>계단을 타고</b><br>두 선이 만나는 <b>(8, 8)</b>로!</p></div>
+      <p data-b style="font-size:28px;color:var(--muted)">※ A의 선은 '세로축을 넣으면 가로축이 나오는' 규칙이라 가파르게 그려져요. B의 선과 y = x에 대해 대칭(역함수 관계)입니다.</p>
+    </div>
+  </div>
+  <aside>두 반응 규칙을 한 그래프에 그리면 두 직선이 생기고, 만나는 점이 균형이에요. 슬라이더로 처음 가격을 바꿔 보세요. 세로로 움직이는 건 B의 반응, 가로로 움직이는 건 A의 반응입니다. 어디서 출발하든 계단을 따라 8, 8로 모입니다.</aside>
+</section>
+
+<!-- 16 수렴 -->
+<section>
+  <p class="kicker">왜 꼭 8로 모일까?</p>
+  <h2>한 바퀴마다 거리가 16분의 1로 줄어든다</h2>
+  <div class="row top">
+    <svg id="g-bars" viewBox="0 0 860 520" width="860" height="520"></svg>
+    <div class="col grow">
+      <div class="card" data-b><p>B는 A가 바꾼 만큼의 <b>¼</b>만 따라옴</p><p>A도 B가 바꾼 만큼의 <b>¼</b>만 따라옴</p></div>
+      <div class="card" data-b style="background:#FCE7C8"><p>한 바퀴 돌면 ¼ × ¼ = <b>1/16</b><br>균형과의 거리가 계속 줄어요</p></div>
+    </div>
+  </div>
+  <div class="formula" data-b>
+    <div class="eq sm">(R₁∘R₂)(<i>x</i>) − 8 = (<i>x</i> − 8) ÷ 16 &nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp; 일차함수를 합성하면 기울기는 곱해진다: ¼ × ¼ = 1/16</div>
+    <p>'내 가격의 영향 2 > 상대 가격의 영향 1'이라서 기울기가 1보다 작아요. 반대면 가격이 오히려 멀어집니다.</p>
+  </div>
+  <aside>왜 항상 8로 모일까요? B는 A가 바꾼 만큼의 4분의 1만 따라오고, A도 마찬가지예요. 한 바퀴 돌면 16분의 1이 됩니다. 그래서 12만큼 떨어져 있었다면 0.75, 0.05로 금방 줄어들어요. 앞에서 내 가격의 영향이 더 커야 한다고 했던 게 바로 이 이유입니다.</aside>
+</section>
+
+<!-- 17 원가가 다르면 -->
+<section>
+  <p class="kicker">합성함수가 꼭 필요한 순간</p>
+  <h2>B의 원가가 4천 원이라면?</h2>
+  <div class="row top">
+    <svg id="g-asym" viewBox="0 0 700 600" width="700" height="600"></svg>
+    <div class="col grow">
+      <div class="card" data-b><p>B의 산: 바닥이 <b>4</b>와 (20 + A가격)÷2<br>→ B의 규칙: <b>7 + A가격 ÷ 4</b></p></div>
+      <div class="card" data-b><p>두 가게가 달라서 "둘 다 같은 가격"이라는 <b>지름길을 못 써요</b> → 기계를 이어 붙여야 해요</p></div>
+      <div class="formula" data-b>
+        <div class="eq sm">R₁(R₂(<i>x</i>)) = 6 + (7 + <i>x</i>/4)/4 = 7.75 + <i>x</i>/16 = <i>x</i></div>
+        <div class="eq sm">A ≈ 8,270원, &nbsp;B ≈ 9,070원</div>
+      </div>
+      <p data-b style="font-size:30px">원가가 비싼 B는 더 비싸게, A도 덩달아 조금 올려요.</p>
+    </div>
+  </div>
+  <aside>두 가게가 똑같으면 사실 같은 가격이라는 지름길로도 풀 수 있어요. 그런데 B의 원가가 4천 원으로 다르면 그 지름길이 안 통합니다. 이때 기계 두 개를 이어 붙이는 합성함수가 진짜 힘을 발휘해요. 계산하면 A는 약 8.27, B는 약 9.07입니다.</aside>
+</section>
+
+<!-- 18 담합 -->
+<section>
+  <p class="kicker">생각해 볼 거리</p>
+  <h2>둘이 짜고 1만 1천 원으로 올리면?</h2>
+  <div class="row top" style="gap:44px">
+    <div class="card grow" data-b><span class="tag">약속</span><h3>둘 다 1만 1천 원</h3><p>각자 이윤 <b>81</b><br>(균형 72보다 많아요!)</p></div>
+    <div class="card grow" data-b><span class="tag">배신</span><h3>A만 몰래 8,750원</h3><p>A 이윤 <b class="a">91</b>, B 이윤 <b class="b">61</b><br>배신하면 더 벌어요</p></div>
+    <div class="card grow" data-b style="background:#FCE7C8"><span class="tag">결국</span><h3>둘 다 8,000원</h3><p>각자 이윤 <b>72</b><br>아무도 못 벗어나는 자리</p></div>
+  </div>
+  <p class="say" data-b>약속을 지키면 둘 다 더 좋은데, <span class="hl">혼자 깨는 게 더 이득</span>이라 결국 균형으로 돌아와요.<br>→ '죄수의 딜레마'와 같은 구조</p>
+  <p class="say" data-b style="font-size:32px;color:var(--muted)">그리고 똑같은 케이크(0원 이윤)보다 '조금 다른' 케이크(72)가 더 벌어요. 가게들이 개성과 브랜드를 만드는 이유!</p>
+  <aside>둘이 짜고 1만 1천 원으로 올리면 각자 81을 벌어서 더 좋아요. 그런데 상대가 11을 지킬 때 나만 몰래 8.75로 내리면 91을 법니다. 그래서 약속이 깨지고 결국 8로 돌아와요. 죄수의 딜레마랑 같은 구조입니다.</aside>
+</section>
+
+<!-- 19 정리 -->
+<section>
+  <p class="kicker">정리</p>
+  <h2>이야기와 수학의 번역표</h2>
+  <table class="t" style="font-size:34px;width:100%">
+    <tr><th style="text-align:left">이야기</th><th style="text-align:left">수학</th><th style="text-align:left">공식</th></tr>
+    <tr data-b><td style="text-align:left">너무 싸도, 비싸도 손해 → 산 모양</td><td style="text-align:left">이차함수 (위로 볼록)</td><td style="text-align:left">π₁ = (p₁−2)(20−2p₁+p₂)</td></tr>
+    <tr data-b><td style="text-align:left">가장 좋은 가격 = 산꼭대기</td><td style="text-align:left">꼭짓점 = 두 근의 평균</td><td style="text-align:left">p₁ = 6 + p₂/4</td></tr>
+    <tr data-b><td style="text-align:left">상대 가격 → 내 최선 가격</td><td style="text-align:left">함수 (반응 규칙)</td><td style="text-align:left">R₁(p₂), R₂(p₁)</td></tr>
+    <tr data-b><td style="text-align:left">반응의 반응</td><td style="text-align:left">합성함수</td><td style="text-align:left">R₁∘R₂</td></tr>
+    <tr data-b><td style="text-align:left">한 바퀴 돌아도 그대로 = 균형</td><td style="text-align:left">고정점</td><td style="text-align:left">R₁(R₂(x)) = x → x = 8</td></tr>
+    <tr data-b><td style="text-align:left">조금씩만 따라와서 결국 모임</td><td style="text-align:left">기울기의 곱 &lt; 1</td><td style="text-align:left">¼ × ¼ = 1/16</td></tr>
+  </table>
+  <aside>오늘 한 걸 번역표로 정리하면 이렇습니다. 왼쪽 이야기를 이해했다면, 오른쪽 공식은 그걸 기호로 쓴 것뿐이에요. 보고서를 쓸 때도 이 순서대로, 말로 먼저 설명하고 공식을 붙이면 좋습니다.</aside>
+</section>
+
+<!-- 20 보고서 팁 -->
+<section>
+  <p class="kicker">탐구 보고서로 옮길 때</p>
+  <h2>이렇게 써 보자</h2>
+  <div class="row top" style="gap:44px">
+    <div class="col grow">
+      <div class="card" data-b><h3>✍ 보고서 흐름</h3><p style="font-size:30px">① 원래 베르트랑 모형과 역설 (문제 제기)<br>② 손님이 일부만 옮겨 가는 모형 세우기<br>③ 이윤 = 이차함수 → 꼭대기<br>④ 반응 규칙(함수) 만들기<br>⑤ 합성함수의 고정점 = 균형<br>⑥ 원가가 다를 때, 숫자 바꿔 보기<br>⑦ 담합과 비교, 한계</p></div>
+    </div>
+    <div class="col grow">
+      <div class="card" data-b style="background:#FCE7C8"><h3>⚠ 자주 하는 실수</h3><p style="font-size:30px">"이윤 = 남는 돈 × 판매량(가격)이니까 합성함수"<br>→ ❌ 이건 <b>곱</b>이에요. 합성은 <b>기계를 이어 붙인 것</b>!</p></div>
+      <div class="card" data-b><h3>💬 받을 수 있는 질문</h3><p style="font-size:30px">Q. 연립방정식으로 풀면 되지 않나요?<br>A. 값은 같지만, 합성함수는 <b>"반응의 반응"</b>이라는 구조와 <b>왜 균형으로 모이는지</b>까지 설명해 줘요.</p></div>
+    </div>
+  </div>
+  <aside>보고서로 옮길 때는 이 순서를 따라가면 됩니다. 그리고 자주 하는 실수 하나만 기억해 주세요. 이윤 식은 두 식의 곱이지 합성이 아니에요. 합성은 기계를 이어 붙인 것, 반응의 반응입니다. 수고했어요.</aside>
+</section>
+
+</div></div>
+<div id="counter"></div>
+<div id="help">← → 이동 · N 노트 · F 전체화면</div>
+<div id="notes"></div>
+
+<script>
+(function(){
+const C={ink:'#2B2D42',muted:'#6B6F80',grid:'#EDE5D7',A:'#E76F51',B:'#2A9D8F',gold:'#E9A23B',navy:'#264653'};
+const NS='http://www.w3.org/2000/svg';
+function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+function tx(p,x,y,s,a={}){const t=el('text',Object.assign({x,y,'font-size':24,fill:C.muted,'font-family':'Noto Sans KR'},a),p);t.textContent=s;return t;}
+function frame(svg,o){
+  svg.innerHTML='';
+  const W=svg.viewBox.baseVal.width,H=svg.viewBox.baseVal.height,L=70,R=24,T=30,B=64;
+  const sx=x=>L+(x-o.x0)/(o.x1-o.x0)*(W-L-R), sy=y=>H-B-(y-o.y0)/(o.y1-o.y0)*(H-T-B);
+  el('rect',{x:0,y:0,width:W,height:H,rx:24,fill:'#fff'},svg);
+  for(let x=o.x0;x<=o.x1+1e-9;x+=o.dx){el('line',{x1:sx(x),x2:sx(x),y1:sy(o.y0),y2:sy(o.y1),stroke:C.grid,'stroke-width':1.5},svg);tx(svg,sx(x),sy(o.y0)+30,String(x),{'text-anchor':'middle','font-size':21});}
+  for(let y=o.y0;y<=o.y1+1e-9;y+=o.dy){el('line',{x1:sx(o.x0),x2:sx(o.x1),y1:sy(y),y2:sy(y),stroke:C.grid,'stroke-width':1.5},svg);tx(svg,sx(o.x0)-10,sy(y)+7,String(y),{'text-anchor':'end','font-size':21});}
+  el('line',{x1:sx(o.x0),x2:sx(o.x1),y1:sy(o.y0),y2:sy(o.y0),stroke:C.ink,'stroke-width':2.5},svg);
+  el('line',{x1:sx(o.x0),x2:sx(o.x0),y1:sy(o.y0),y2:sy(o.y1),stroke:C.ink,'stroke-width':2.5},svg);
+  tx(svg,W-R,H-14,o.xl,{'text-anchor':'end',fill:C.ink,'font-weight':700});
+  tx(svg,L+12,T+14,o.yl,{fill:C.ink,'font-weight':700});
+  return {sx,sy};
+}
+function curve(svg,f,a,b,s,attrs,n=160){let d='';for(let i=0;i<=n;i++){const x=a+(b-a)*i/n;d+=(i?'L':'M')+s.sx(x).toFixed(1)+','+s.sy(f(x)).toFixed(1);}return el('path',Object.assign({d,fill:'none','stroke-width':5,'stroke-linecap':'round'},attrs),svg);}
+function dot(svg,s,x,y,c,open,r=9){return el('circle',{cx:s.sx(x),cy:s.sy(y),r,fill:open?'#fff':c,stroke:c,'stroke-width':4},svg);}
+const fmt=x=>(+x.toFixed(2)).toString();
+const won=x=>Math.round(x*1000).toLocaleString('ko-KR')+'원';
+
+/* slide 5 */
+(function(){const svg=document.getElementById('g-homog');const s=frame(svg,{x0:0,x1:16,y0:0,y1:100,dx:2,dy:20,xl:'A의 가격',yl:'A의 이윤'});
+  curve(svg,p=>(p-2)*(20-p),10,14,s,{stroke:C.muted,'stroke-width':2.5,'stroke-dasharray':'8 8'});
+  el('line',{x1:s.sx(0),x2:s.sx(2),y1:s.sy(0),y2:s.sy(0),stroke:C.A,'stroke-width':5},svg);
+  curve(svg,p=>(p-2)*(20-p),2,10,s,{stroke:C.A});
+  el('line',{x1:s.sx(10),x2:s.sx(16),y1:s.sy(0),y2:s.sy(0),stroke:C.A,'stroke-width':5},svg);
+  dot(svg,s,10,80,C.A,true);dot(svg,s,10,40,C.A);dot(svg,s,10,0,C.A,true);
+  tx(svg,s.sx(10)-14,s.sy(80)-20,'여기에 닿지 못함!',{fill:C.A,'font-weight':700,'text-anchor':'end'});
+  tx(svg,s.sx(10)+18,s.sy(40)+8,'같은 가격이면 반반',{fill:C.ink});
+  tx(svg,s.sx(10)+18,s.sy(0)-16,'뚝!',{fill:C.A,'font-weight':900,'font-size':30});
+})();
+
+/* slide 8 */
+(function(){const svg=document.getElementById('g-mount');const s=frame(svg,{x0:0,x1:16,y0:0,y1:80,dx:2,dy:20,xl:'A의 가격',yl:'A의 이윤'});
+  const f=p=>(p-2)*(28-2*p);
+  curve(svg,f,2,14,s,{stroke:C.A});
+  [2,4,6,10,12,14].forEach(p=>dot(svg,s,p,f(p),C.A,false,7));
+  el('line',{x1:s.sx(8),x2:s.sx(8),y1:s.sy(0),y2:s.sy(72),stroke:C.gold,'stroke-width':3,'stroke-dasharray':'8 6'},svg);
+  dot(svg,s,8,72,C.gold,false,12);
+  tx(svg,s.sx(8),s.sy(72)-24,'꼭대기 (8, 72)',{'text-anchor':'middle',fill:C.ink,'font-weight':900,'font-size':28});
+  tx(svg,s.sx(2),s.sy(0)-18,'2',{'text-anchor':'middle',fill:C.A,'font-weight':900,'font-size':28});
+  tx(svg,s.sx(14),s.sy(0)-18,'14',{'text-anchor':'middle',fill:C.A,'font-weight':900,'font-size':28});
+  el('path',{d:`M${s.sx(2)},${s.sy(-0.1)+0} `,fill:'none'},svg);
+})();
+
+/* slide 9 */
+function drawMove(){const p2=+document.getElementById('p2s').value;const svg=document.getElementById('g-move');
+  const s=frame(svg,{x0:0,x1:22,y0:0,y1:180,dx:2,dy:30,xl:'A의 가격',yl:'A의 이윤'});
+  const pi=(p,q)=>(p-2)*(20-2*p+q);
+  [0,20].forEach(q=>curve(svg,x=>pi(x,q),2,(20+q)/2,s,{stroke:C.muted,'stroke-width':2,opacity:.35}));
+  const r=(20+p2)/2,v=6+p2/4,pv=pi(v,p2);
+  curve(svg,x=>pi(x,p2),2,r,s,{stroke:C.A});
+  el('line',{x1:s.sx(v),x2:s.sx(v),y1:s.sy(0),y2:s.sy(pv),stroke:C.gold,'stroke-width':3,'stroke-dasharray':'8 6'},svg);
+  dot(svg,s,2,0,C.A);dot(svg,s,r,0,C.A);dot(svg,s,v,pv,C.gold,false,12);
+  tx(svg,s.sx(v),s.sy(pv)-22,'꼭대기 '+fmt(v),{'text-anchor':'middle',fill:C.ink,'font-weight':900,'font-size':28});
+  tx(svg,s.sx(r),s.sy(0)-18,fmt(r),{'text-anchor':'middle',fill:C.A,'font-weight':900,'font-size':26});
+  document.getElementById('p2r').textContent=`= ${won(p2)}  →  A의 최선 가격 ${won(v)}`;
+}
+
+/* reaction lines */
+function drawReact(svg,c2,x0,label){
+  const R1=p=>6+p/4,R2=p=>(20+2*c2)/4+p/4;
+  const e1=(100+16+2*c2)/15,e2=R2(e1);
+  const s=frame(svg,{x0:0,x1:20,y0:0,y1:20,dx:2,dy:2,xl:'A의 가격 →',yl:'↑ B의 가격'});
+  el('line',{x1:s.sx(0),y1:s.sy(0),x2:s.sx(20),y2:s.sy(20),stroke:C.muted,'stroke-width':2,'stroke-dasharray':'4 8'},svg);
+  tx(svg,s.sx(19.3),s.sy(19.3)+30,'y = x',{'text-anchor':'end'});
+  curve(svg,R2,0,20,s,{stroke:C.B},2);
+  curve(svg,p=>4*(p-6),6,11,s,{stroke:C.A},2);
+  tx(svg,s.sx(19.6),s.sy(R2(19.6))-14,'B의 선',{'text-anchor':'end',fill:C.B,'font-weight':900,'font-size':26});
+  tx(svg,s.sx(11)+10,s.sy(19.2),'A의 선',{fill:C.A,'font-weight':900,'font-size':26});
+  if(x0!=null){let x=x0,d='M'+s.sx(x)+','+s.sy(0);
+    for(let k=0;k<6;k++){const y=R2(x);d+='L'+s.sx(x)+','+s.sy(y);const xn=R1(y);d+='L'+s.sx(xn)+','+s.sy(y);x=xn;}
+    el('path',{d,fill:'none',stroke:C.gold,'stroke-width':4,'stroke-linejoin':'round'},svg);dot(svg,s,x0,0,C.gold);}
+  dot(svg,s,e1,e2,C.ink,false,11);
+  tx(svg,s.sx(e1)+18,s.sy(e2)+34,label||`균형 (${fmt(e1)}, ${fmt(e2)})`,{fill:C.ink,'font-weight':900,'font-size':26});
+}
+function drawDyn(){const x0=+document.getElementById('x0s').value;document.getElementById('x0r').textContent=won(x0);drawReact(document.getElementById('g-react'),2,x0);}
+
+/* slide 16 bars */
+(function(){const svg=document.getElementById('g-bars');svg.innerHTML='';
+  el('rect',{x:0,y:0,width:860,height:520,rx:24,fill:'#fff'},svg);
+  const g=x=>7.5+x/16;let x=20;const ds=[];for(let k=0;k<4;k++){ds.push(Math.abs(x-8));x=g(x);}
+  tx(svg,40,52,'균형(8)까지의 거리 · 처음 가격 20에서 출발',{fill:C.ink,'font-weight':700,'font-size':26});
+  ds.forEach((d,k)=>{const y=100+k*100,w=Math.max(4,d/12*600);
+    tx(svg,40,y+44,k===0?'처음':k+'바퀴 후',{fill:C.ink,'font-size':24});
+    el('rect',{x:170,y:y+10,width:w,height:52,rx:10,fill:k===0?C.A:C.gold},svg);
+    tx(svg,170+w+16,y+46,d<0.01?d.toFixed(4):fmt(d),{fill:C.ink,'font-weight':900,'font-size':28});});
+})();
+
+/* slide 17 */
+drawReact(document.getElementById('g-asym'),4,null,'균형 (8.27, 9.07)');
+
+document.getElementById('p2s').addEventListener('input',drawMove);
+document.getElementById('x0s').addEventListener('input',drawDyn);
+drawMove();drawDyn();
+
+/* deck engine */
+const stage=document.getElementById('stage');
+const slides=[...document.querySelectorAll('#deck>section')];
+const builds=slides.map(s=>[...s.querySelectorAll('[data-b]')]);
+builds.flat().forEach(e=>e.classList.add('bi'));
+let cur=0,step=0;const counter=document.getElementById('counter'),notes=document.getElementById('notes');
+function show(i,built){cur=Math.max(0,Math.min(slides.length-1,i));step=built?builds[cur].length:0;
+  slides.forEach((s,j)=>s.classList.toggle('off',j!==cur));
+  builds[cur].forEach((e,k)=>e.classList.toggle('hid',k>=step));
+  const a=slides[cur].querySelector('aside');notes.textContent=a?a.textContent:'(노트 없음)';
+  counter.textContent=(cur+1)+' / '+slides.length;history.replaceState(null,'','#slide-'+(cur+1));}
+function next(){if(step<builds[cur].length){builds[cur][step].classList.remove('hid');step++;}else if(cur<slides.length-1)show(cur+1,false);}
+function prev(){if(cur>0)show(cur-1,true);}
+function fit(){const k=Math.min(innerWidth/1920,innerHeight/1080);stage.style.transform='scale('+k+') translate(-50%,-50%)';}
+addEventListener('resize',fit);fit();
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;
+  if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();next();}
+  else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev();}
+  else if(e.key==='Home')show(0,false);else if(e.key==='End')show(slides.length-1,true);
+  else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}
+  else if(e.key==='n'||e.key==='N')notes.classList.toggle('on');});
+document.addEventListener('click',e=>{if(e.target.closest('input,.ctrl,#notes,a'))return;next();});
+document.addEventListener('contextmenu',e=>{e.preventDefault();prev();});
+const q=location.search.slice(1);
+if(/(^|&)print/.test(q)){document.body.classList.add('print');slides.forEach(s=>s.classList.remove('off'));builds.flat().forEach(e=>e.classList.remove('hid'));return;}
+const m=/^#slide-(\d+)$/.exec(location.hash);show(m?+m[1]-1:0,/(^|&)all/.test(q));
+})();
+</script>
+</body>
+</html>
