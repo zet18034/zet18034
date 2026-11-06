@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>높임 표현, 직접 써 보기 (3차시)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #1E1B27; overflow: hidden; }
+  body { font-family: 'Noto Sans KR', sans-serif; }
+  #stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 0 0; }
+  #deck > section { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; }
+  #deck > section.off { display: none !important; }
+  #deck > section > :not([style*="position:absolute"]) { position: relative; }
+  #deck { word-break: keep-all; }
+  #deck div { display: flex; flex-direction: column; }
+  #deck h1, #deck h2, #deck h3, #deck p, #deck ul, #deck ol { margin: 0; }
+  #deck h1 { font-size: 96px; font-weight: 600; line-height: 1.1; }
+  #deck h2 { font-size: 64px; font-weight: 600; line-height: 1.15; }
+  #deck h3 { font-size: 44px; font-weight: 600; line-height: 1.2; }
+  #deck p { font-size: 32px; line-height: 1.4; }
+  #deck img { display: block; }
+  #deck table { width: 100%; border-collapse: collapse; }
+  #deck th, #deck td { padding: 0.35em 0.6em; text-align: left; border-bottom: 1px solid rgba(46,42,59,0.12); }
+  #deck aside { display: none; }
+  #deck a { color: inherit; }
+  .bi { transition: opacity .45s ease, translate .45s ease, scale .45s ease; }
+  .bi.hid { opacity: 0; }
+  .bi.hid.rise { translate: 0 40px; }
+  .bi.hid.pop { scale: .8; }
+  #counter { position: fixed; right: 16px; bottom: 12px; font: 14px 'Noto Sans KR', sans-serif; color: rgba(255,255,255,.55); user-select: none; }
+  #notes { position: fixed; left: 16px; right: 16px; bottom: 40px; max-height: 40vh; overflow: auto; padding: 16px 20px; border-radius: 12px; background: rgba(20,18,28,.92); color: #F7F3EC; font: 16px/1.6 'Noto Sans KR', sans-serif; display: none; }
+  #notes.on { display: block; }
+  #help { position: fixed; left: 16px; bottom: 12px; font: 13px 'Noto Sans KR', sans-serif; color: rgba(255,255,255,.4); user-select: none; }
+  body.export #help, body.export #counter, body.export #notes { display: none !important; }
+  body.print { overflow: visible; height: auto; background: none; }
+  body.print #stage { position: static; transform: none !important; width: 1920px; height: auto; }
+  body.print #deck > section { position: relative; break-after: page; page-break-after: always; }
+  body.print .bi { transition: none; }
+  body.print, body.print * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  @page { size: 1920px 1080px; margin: 0; }
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+<section id="cover" data-transition="fade" style="background:#2E2A3B;color:#F7F3EC;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:32px">
+<x-shape kind="ellipse" style="position:absolute;left:1140px;top:150px;width:640px;height:640px;background:#3B3552"></x-shape>
+<x-shape kind="ellipse" style="position:absolute;left:1560px;top:660px;width:220px;height:220px;background:#C9A85C;opacity:0.85"></x-shape>
+<x-shape kind="ellipse" style="position:absolute;left:1150px;top:170px;width:90px;height:90px;background:#B04568;opacity:0.9"></x-shape>
+<p style="position:absolute;left:1250px;top:290px;width:380px;font-family:'Do Hyeon', sans-serif;font-size:56px;text-align:center;color:#2E2A3B;background:#F8E4EA;border-radius:20px;padding:12px 0;transform:rotate(-6deg)">탐구 활동</p>
+<p style="position:absolute;left:1400px;top:430px;width:360px;font-family:'Do Hyeon', sans-serif;font-size:56px;text-align:center;color:#2E2A3B;background:#F6EBCB;border-radius:20px;padding:12px 0;transform:rotate(4deg)">높임의 대상</p>
+<p style="position:absolute;left:1240px;top:570px;width:330px;font-family:'Do Hyeon', sans-serif;font-size:56px;text-align:center;color:#2E2A3B;background:#ECE6F6;border-radius:20px;padding:12px 0;transform:rotate(-3deg)">수능 기출</p>
+<p style="font-size:28px;font-weight:700;color:#E6C77E;letter-spacing:1px">화법과 언어 · 3. 문장과 담화, 국어의 변화</p>
+<h1 style="font-family:'Do Hyeon', sans-serif;font-size:128px;font-weight:400;line-height:1.1;color:#F7F3EC">높임 표현,<br>직접 써 보기</h1>
+<div style="width:120px;height:6px;background:#C9A85C;border-radius:3px"></div>
+<p style="font-size:34px;color:#CFC8DC">(1) 문장의 짜임과 문법 요소 · 3차시</p>
+<aside>[도입 · 인사] 안녕하세요, 여러분. 오늘은 문장 종결 표현과 높임 표현 마지막 시간입니다. 지난 두 시간 동안 배운 걸 오늘은 직접 써 보고 풀어 볼 거예요.</aside>
+</section>
+
+<section id="teams" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">도입 · 모둠 편성 (2분)</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">4~5명씩 여섯 모둠으로 앉아요</h2>
+<div style="position:absolute;left:128px;top:330px;width:1664px;display:flex;flex-direction:row;gap:32px">
+<div data-build-in="rise 1" style="flex:1;height:330px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #B04568;border-radius:24px;padding:40px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:52px;color:#B04568">기록자</p>
+<p style="font-size:34px;line-height:1.5">모둠의 답을 활동지와<br>미니 보드에 적어요.</p>
+</div>
+<div data-build-in="rise 2" style="flex:1;height:330px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #6A58A6;border-radius:24px;padding:40px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:52px;color:#6A58A6">발표자</p>
+<p style="font-size:34px;line-height:1.5">답과 <b>근거</b>를 말해요.<br>활동마다 돌아가며 맡아요.</p>
+</div>
+<div data-build-in="rise 3" style="flex:1;height:330px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #C9A85C;border-radius:24px;padding:40px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:52px;color:#7A5F1E">시간 지킴이</p>
+<p style="font-size:34px;line-height:1.5">남은 시간을 알려 주고<br>모둠을 이끌어요.</p>
+</div>
+</div>
+<p data-build-in="pop 4" style="position:absolute;left:128px;top:720px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:56px;color:#B04568">모둠 친구 모두가 한 번씩은 말하기!</p>
+<aside>[모둠 편성 2분] 오늘은 모둠 수업이라 화면에 있는 자리표대로 4~5명씩 여섯 모둠으로 앉아 주세요. 모둠마다 답을 적을 기록자, 발표할 발표자, 시간을 챙길 시간 지킴이를 한 명씩 정해 주세요. 발표자는 활동마다 돌아가면서 맡아도 좋습니다. (※ 자리표 슬라이드나 칠판 판서를 따로 준비)</aside>
+</section>
+
+<section id="recap" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">도입 · 전시 학습 확인 (2분)</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">몸풀기: 높임법 세 가지</h2>
+<div style="position:absolute;left:128px;top:320px;width:1664px;display:flex;flex-direction:row;gap:28px">
+<div style="flex:1;height:560px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:50px;color:#6A58A6">주체 높임</p>
+<p style="font-size:28px;color:#5E5870">누구를? 어떻게?</p>
+<p data-build-in="fade 1" style="font-size:30px;line-height:1.5">주어가 가리키는 대상<br><b>-(으)시-, 께서, 특수 어휘</b></p>
+<p data-build-in="pop 2" style="font-size:28px;line-height:1.45;color:#FFFDF9;background:#B04568;border-radius:16px;padding:12px 18px">간접 높임엔<br>‘-(으)시-’만!</p>
+</div>
+<div style="flex:1;height:560px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:50px;color:#B04568">객체 높임</p>
+<p style="font-size:28px;color:#5E5870">누구를? 어떻게?</p>
+<p data-build-in="fade 3" style="font-size:30px;line-height:1.5">목적어·부사어가 가리키는 대상<br><b>께, 모시다, 드리다,<br>뵙다, 여쭙다</b></p>
+</div>
+<div style="flex:1;height:560px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:24px;padding:36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:50px;color:#7A5F1E">상대 높임</p>
+<p style="font-size:28px;color:#5E5870">누구를? 어떻게?</p>
+<p data-build-in="fade 4" style="font-size:30px;line-height:1.5">듣는 사람(청자)<br><b>주로 종결 어미</b></p>
+<p data-build-in="fade 5" style="font-size:26px;line-height:1.5;color:#5E5870">격식체 4: 하십시오체·하오체·<br>하게체·해라체<br>비격식체 2: 해요체·해체</p>
+</div>
+</div>
+<aside>[전시 학습 확인 2분] 몸풀기로 지난 시간 내용 몇 가지만 물어볼게요. 주체 높임은 누구를 높이죠? (클릭) 네, 주어가 가리키는 대상이요. 무엇으로 높였어요? ‘-(으)시-’, ‘께서’, 특수 어휘. 그런데 간접 높임에는 이 중에서 뭐만 쓸 수 있었죠? (클릭) 맞아요, ‘-(으)시-’만입니다. 객체 높임은 (클릭) 목적어나 부사어가 가리키는 대상을 높이고, ‘께’나 ‘모시다, 드리다, 뵙다, 여쭙다’ 같은 특수 어휘로 실현됐어요. 상대 높임은 (클릭) 듣는 사람을 높이거나 낮추는 거고, 주로 종결 어미로 실현됐습니다. (클릭) 격식체 네 개, 비격식체 두 개, 기억나죠?</aside>
+</section>
+
+<section id="rules" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">도입 · 활동 안내 (1분)</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">오늘의 순서와 모둠 점수</h2>
+<div style="position:absolute;left:128px;top:320px;width:980px;display:flex;flex-direction:column;gap:20px">
+<div data-build-in="rise 1" style="height:150px;display:flex;flex-direction:row;align-items:center;gap:28px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:0 36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:64px;color:#B04568">1</p>
+<div><p style="font-size:34px;font-weight:700">교과서 107쪽 탐구 활동</p><p style="font-size:26px;color:#5E5870">높임, 문장 종결 표현과 화자의 태도 · 12분</p></div>
+</div>
+<div data-build-in="rise 2" style="height:150px;display:flex;flex-direction:row;align-items:center;gap:28px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:0 36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:64px;color:#6A58A6">2</p>
+<div><p style="font-size:34px;font-weight:700">활동지 ‘높임의 대상 찾기’</p><p style="font-size:26px;color:#5E5870">주체·객체·청자 찾기 · 15분</p></div>
+</div>
+<div data-build-in="rise 3" style="height:150px;display:flex;flex-direction:row;align-items:center;gap:28px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:0 36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:64px;color:#7A5F1E">3</p>
+<div><p style="font-size:34px;font-weight:700">수능 기출 문제</p><p style="font-size:26px;color:#5E5870">언어와 매체 · 8분</p></div>
+</div>
+</div>
+<div data-build-in="pop 4" style="position:absolute;left:1150px;top:320px;width:642px;height:490px;display:flex;flex-direction:column;gap:18px;background:#2E2A3B;border-radius:24px;padding:40px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:48px;color:#F6D98A">모둠 점수</p>
+<p style="font-size:30px;line-height:1.6;color:#F7F3EC">정답 <b style="color:#F6D98A">+1점</b><br>근거까지 설명 <b style="color:#F6D98A">+1점</b><br>모두 참여 <b style="color:#F6D98A">협동 점수</b></p>
+<div style="flex:1"></div>
+<p style="font-family:'Nanum Pen Script', cursive;font-size:48px;color:#F8E4EA">1등 모둠엔 작은 선물!</p>
+</div>
+<aside>[활동 안내 1분] 오늘은 교과서 107쪽 탐구 활동, 활동지 ‘높임의 대상 찾기’, 그리고 수능 기출 문제 순서로 갑니다. (클릭) 문제를 맞히면 1점, 왜 그런지 근거까지 설명하면 1점을 더 줄게요. 모둠 친구가 모두 참여하면 협동 점수도 있습니다. 점수가 가장 높은 모둠에게는 마지막에 작은 상품이 있어요.</aside>
+</section>
+
+<section id="tb-1" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">교과서 107쪽 · 탐구 활동 (1)</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:60px;font-weight:400;line-height:1.2;color:#2E2A3B">어떤 방법으로, 어느 등급의 상대 높임?</h2>
+<img src="assets/textbook-107.png" alt="교과서 107쪽 그림. 가: 친구 사이에 ‘너 그 영화 봤어?’, ‘주말에 봤지.’ 나: 학생회 회의에서 ‘총무부장님, 올해 학생회 예산을 ㉠말씀해 주시기 바랍니다.’, ‘학생회 예산은 다음과 같습니다.’" style="position:absolute;left:128px;top:300px;width:900px;height:338px;object-fit:contain;background:#FFFFFF;border-radius:24px;box-shadow:0 14px 30px rgba(46,42,59,0.12)">
+<div style="position:absolute;left:1060px;top:300px;width:732px;display:flex;flex-direction:column;gap:0;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:22px 28px">
+<div style="display:flex;flex-direction:row;font-size:24px;font-weight:700;color:#5E5870;padding:8px 0;border-bottom:2px solid #E6DDCB"><p style="width:150px;font-size:24px">언어 표현</p><p style="width:290px;font-size:24px">실현 방법</p><p style="font-size:24px">단계</p></div>
+<div style="display:flex;flex-direction:row;align-items:center;padding:14px 0;border-bottom:1px solid #EFE8DA"><p style="width:150px;font-size:30px;font-weight:700">가 봤어</p><p style="width:290px;font-size:28px">종결 어미 ‘-어’</p><p data-build-in="pop 1" style="font-size:30px;font-weight:700;color:#7A5F1E">해체</p></div>
+<div style="display:flex;flex-direction:row;align-items:center;padding:14px 0;border-bottom:1px solid #EFE8DA"><p style="width:150px;font-size:30px;font-weight:700">가 봤지</p><p data-build-in="fade 1" style="width:290px;font-size:28px">종결 어미 ‘-지’</p><p data-build-in="pop 1" style="font-size:30px;font-weight:700;color:#7A5F1E">해체</p></div>
+<div style="display:flex;flex-direction:row;align-items:center;padding:14px 0;border-bottom:1px solid #EFE8DA"><p style="width:150px;font-size:30px;font-weight:700">나 바랍니다</p><p data-build-in="fade 2" style="width:290px;font-size:28px">종결 어미 ‘-ㅂ니다’</p><p data-build-in="pop 2" style="font-size:30px;font-weight:700;color:#6A58A6">하십시오체</p></div>
+<div style="display:flex;flex-direction:row;align-items:center;padding:14px 0"><p style="width:150px;font-size:30px;font-weight:700">나 같습니다</p><p data-build-in="fade 2" style="width:290px;font-size:28px">종결 어미 ‘-습니다’</p><p data-build-in="pop 2" style="font-size:30px;font-weight:700;color:#6A58A6">하십시오체</p></div>
+</div>
+<div data-build-in="rise 3" style="position:absolute;left:128px;top:810px;width:1664px;background:#2E2A3B;border-radius:20px;padding:22px 36px"><p style="font-size:32px;color:#F7F3EC">상대 높임은 <b style="color:#F6D98A">주로 종결 어미</b>로 실현된다 → 문장 끝을 보면 등급이 보여요!</p></div>
+<p style="position:absolute;left:128px;top:680px;width:900px;font-size:26px;color:#5E5870">개인으로 표 채우기(1분) → 모둠에서 맞춰 보기(1분) → 확인</p>
+<aside>[탐구 활동 (1) 3분] 교과서 107쪽 펴 주세요. 가는 친구 둘이 영화 이야기를 하고 있고, 나는 학생회 회의 장면이에요. 먼저 (1)번 표를 각자 채워 보고, 모둠에서 서로 맞춰 보세요. (클릭) ‘봤어’는 종결 어미 ‘-어’, ‘봤지’는 ‘-지’죠. 둘 다 어느 등급이에요? 네, 해체입니다. (클릭) ‘바랍니다’는 ‘-ㅂ니다’, ‘같습니다’는 ‘-습니다’, 둘 다 하십시오체예요. (클릭) 상대 높임이 주로 종결 어미로 실현된다는 게 여기서 그대로 보이죠? (※ 모둠별 미니 보드로 등급을 동시에 들게 하면 점수 매기기가 쉬움)</aside>
+</section>
+
+<section id="tb-2" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">교과서 107쪽 · 탐구 활동 (2)</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:64px;font-weight:400;line-height:1.2;color:#2E2A3B">같은 학생들인데 왜 말투가 달라졌을까?</h2>
+<div style="position:absolute;left:128px;top:330px;width:1664px;display:flex;flex-direction:row;gap:32px">
+<div style="flex:1;height:420px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E2D9EE;border-left:12px solid #C9A85C;border-radius:24px;padding:40px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:50px;color:#7A5F1E">가 · 쉬는 시간, 친구와</p>
+<p data-build-in="fade 1" style="font-size:32px;line-height:1.55">친한 친구끼리 격식을 차리지 않아도 되는 <b>사적인 대화</b><br>→ 비격식체 <b>해체</b></p>
+</div>
+<div style="flex:1;height:420px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E2D9EE;border-left:12px solid #6A58A6;border-radius:24px;padding:40px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:50px;color:#6A58A6">나 · 학생회 회의</p>
+<p data-build-in="fade 2" style="font-size:32px;line-height:1.55">예의를 갖추어야 하는 <b>공적인 회의</b><br>→ 격식체 <b>하십시오체</b></p>
+</div>
+</div>
+<div data-build-in="rise 3" style="position:absolute;left:128px;top:800px;width:1664px;background:#2E2A3B;border-radius:20px;padding:22px 36px"><p style="font-size:32px;color:#F7F3EC">높임 등급을 고르는 기준 = <b style="color:#F6D98A">상대와의 관계</b> + <b style="color:#F6D98A">자리가 공적인지 사적인지</b></p></div>
+<aside>[탐구 활동 (2) 3분] (2)번은 모둠에서 이야기해 보고 발표자가 한 문장으로 말해 볼게요. 같은 학생들인데 왜 말투가 달라졌을까요? (발표 듣고 클릭) 그렇습니다. 가는 친한 친구끼리 격식을 차리지 않아도 되는 사적인 대화라서 비격식체인 해체를 썼고, (클릭) 나는 예의를 갖추어야 하는 공적인 학생회 회의라서 격식체인 하십시오체를 썼어요. (클릭) 상대와의 관계, 그리고 자리가 공적인지 사적인지가 높임 등급을 고르는 기준이 되는 거예요.</aside>
+</section>
+
+<section id="tb-3" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">교과서 107쪽 · 탐구 활동 (3) · 짝 활동</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:64px;font-weight:400;line-height:1.2;color:#2E2A3B">㉠ ‘말씀해 주시기 바랍니다’를 바꾸어 보면?</h2>
+<div style="position:absolute;left:128px;top:330px;width:1664px;display:flex;flex-direction:column;gap:24px">
+<div style="height:170px;display:flex;flex-direction:row;align-items:center;gap:30px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:0 36px">
+<p style="width:170px;font-family:'Do Hyeon', sans-serif;font-size:48px;color:#6A58A6">의문문</p>
+<p data-build-in="fade 1" style="width:640px;font-size:40px;font-weight:700">말씀해 주시겠습니까?</p>
+<p data-build-in="pop 2" style="flex:1;font-size:30px;line-height:1.45;color:#FFFDF9;background:#6A58A6;border-radius:16px;padding:14px 22px">상대에게 선택의 여지 → <b>간접적이고 부드럽게</b></p>
+</div>
+<div style="height:170px;display:flex;flex-direction:row;align-items:center;gap:30px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:0 36px">
+<p style="width:170px;font-family:'Do Hyeon', sans-serif;font-size:48px;color:#B04568">명령문</p>
+<p data-build-in="fade 1" style="width:640px;font-size:40px;font-weight:700">말씀해 주십시오.</p>
+<p data-build-in="pop 3" style="flex:1;font-size:30px;line-height:1.45;color:#FFFDF9;background:#B04568;border-radius:16px;padding:14px 22px">행동을 바로 요구 → <b>직접적이고 강하게</b></p>
+</div>
+</div>
+<p data-build-in="pop 4" style="position:absolute;left:128px;top:760px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:56px;color:#7A5F1E">1차시 기억나요? “창문 좀 열어 줄 수 있니?” → 형식은 의문문, 기능은 요청!</p>
+<aside>[탐구 활동 (3) 3분] (3)번은 짝 활동이에요. ㉠ ‘말씀해 주시기 바랍니다’를 의문문으로, 명령문으로 바꿔 써 보고, 듣는 사람 입장에서 어떤 느낌이 드는지 짝이랑 이야기해 보세요. (클릭) 의문문은 ‘말씀해 주시겠습니까?’, 명령문은 ‘말씀해 주십시오.’가 되겠죠. (클릭) 둘 다 말해 달라는 요청인데, 의문문은 상대에게 선택할 여지를 주니까 간접적이고 부드럽게 들리고, (클릭) 명령문은 직접적이고 강하게 들립니다. (클릭) 1차시에 ‘창문 좀 열어 줄 수 있니?’처럼 형식은 의문문인데 기능은 요청이라고 했던 것, 기억나죠? 바로 그거예요.</aside>
+</section>
+
+<section id="tb-sum" data-transition="fade" style="background:#6A58A6;color:#F7F3EC;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:36px">
+<p style="font-size:30px;font-weight:700;color:#F6D98A;letter-spacing:1px">탐구 활동 정리 (3분)</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:80px;font-weight:400;line-height:1.25;color:#F7F3EC">누구에게, 어떤 자리에서 말하느냐에 따라<br>고르는 표현이 달라져요</h2>
+<div data-build-in="rise 1" style="display:flex;flex-direction:row;align-items:center;gap:24px">
+<p style="font-size:36px;font-weight:700;background:#FFFDF9;color:#2E2A3B;border-radius:18px;padding:16px 28px">담화 맥락</p>
+<p style="font-size:44px">→</p>
+<p style="font-size:36px;font-weight:700;background:#FFFDF9;color:#2E2A3B;border-radius:18px;padding:16px 28px">높임 등급 · 문장 유형 선택</p>
+<p style="font-size:44px">→</p>
+<p style="font-size:36px;font-weight:700;background:#F6D98A;color:#2E2A3B;border-radius:18px;padding:16px 28px">화자의 태도</p>
+</div>
+<p data-build-in="fade 2" style="font-size:30px;line-height:1.5;color:#E4DCEF">[12화언01-05] 담화의 맥락에 적절한 어휘와 문법 요소를 선택하여 화자의 태도를 드러낸다.</p>
+<aside>[정리 3분] 모둠 발표 잘 들었어요. 정리하면, 같은 내용이라도 누구에게, 어떤 자리에서 말하느냐에 따라 높임 등급과 문장 유형을 골라 쓰고, 그 선택에 화자의 태도가 드러납니다. (클릭) 이게 우리 성취기준인 ‘담화의 맥락에 적절한 문법 요소를 선택하여 화자의 태도를 드러낸다’의 핵심이에요.</aside>
+</section>
+
+<section id="ws-how" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">활동지 · 높임의 대상 찾기</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">세 가지만 물어보면 돼요</h2>
+<div style="position:absolute;left:128px;top:330px;width:1664px;display:flex;flex-direction:column;gap:22px">
+<div data-build-in="rise 1" style="height:130px;display:flex;flex-direction:row;align-items:center;gap:30px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:0 36px">
+<p style="width:150px;font-family:'Do Hyeon', sans-serif;font-size:52px;color:#6A58A6">주체</p><p style="font-size:36px">문장 전체의 <b>주어</b>는 누구인가?</p></div>
+<div data-build-in="rise 2" style="height:130px;display:flex;flex-direction:row;align-items:center;gap:30px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:0 36px">
+<p style="width:150px;font-family:'Do Hyeon', sans-serif;font-size:52px;color:#B04568">객체</p><p style="font-size:36px"><b>목적어</b>나 <b>부사어</b>의 대상은 누구인가?</p></div>
+<div data-build-in="rise 3" style="height:130px;display:flex;flex-direction:row;align-items:center;gap:30px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:0 36px">
+<p style="width:150px;font-family:'Do Hyeon', sans-serif;font-size:52px;color:#7A5F1E">청자</p><p style="font-size:36px">이 말을 <b>듣는</b> 사람은 누구인가?</p></div>
+</div>
+<p data-build-in="pop 4" style="position:absolute;left:128px;top:820px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:54px;color:#B04568">+ 밑줄 친 표현은 각각 누구를 높이거나 낮추나?</p>
+<aside>[방법 안내] 이제 활동지를 볼게요. 한 문장에도 높임을 받는 사람이 여럿 나올 수 있어요. 세 가지만 물어보면 됩니다. (클릭) 문장 전체의 주어는 누구인가, (클릭) 목적어나 부사어의 대상은 누구인가, (클릭) 이 말을 듣는 사람은 누구인가. (클릭) 그리고 밑줄 친 표현이 각각 누구를 높이거나 낮추는지 찾으면 돼요.</aside>
+</section>
+
+<section id="ws-1" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">활동지 1번 · 같이 풀기 (3분)</p>
+<p style="font-size:30px;color:#5E5870">(학생이 어머니에게)</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:64px;font-weight:400;line-height:1.25;color:#2E2A3B">선생님<span style="color:#6A58A6">께서</span> 어머니를 꼭 한번 <span style="color:#B04568">뵙고</span> 싶다고 하<span style="color:#6A58A6">셨</span>어<span style="color:#7A5F1E">요</span>.</h2>
+<div style="position:absolute;left:128px;top:480px;width:1664px;display:flex;flex-direction:row;gap:28px">
+<div data-build-in="pop 1" style="flex:1;height:240px;display:flex;flex-direction:column;justify-content:center;gap:10px;background:#ECE6F6;border-radius:24px;padding:0 34px"><p style="font-size:28px;color:#5E5870">주체</p><p style="font-size:44px;font-weight:700">선생님</p><p style="font-size:26px">께서, -시-</p></div>
+<div data-build-in="pop 2" style="flex:1;height:240px;display:flex;flex-direction:column;justify-content:center;gap:10px;background:#F8E4EA;border-radius:24px;padding:0 34px"><p style="font-size:28px;color:#5E5870">객체</p><p style="font-size:44px;font-weight:700">어머니</p><p style="font-size:26px">뵙다</p></div>
+<div data-build-in="pop 3" style="flex:1;height:240px;display:flex;flex-direction:column;justify-content:center;gap:10px;background:#F6EBCB;border-radius:24px;padding:0 34px"><p style="font-size:28px;color:#5E5870">청자</p><p style="font-size:44px;font-weight:700">어머니</p><p style="font-size:26px">해요체 ‘-어요’</p></div>
+</div>
+<p data-build-in="pop 4" style="position:absolute;left:128px;top:780px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:58px;color:#B04568">어머니는 객체이면서 청자!</p>
+<aside>[1번 함께 풀기] 1번 같이 해 볼게요. 학생이 어머니께 ‘선생님께서 어머니를 꼭 한번 뵙고 싶다고 하셨어요.’ 주체는? (클릭) 선생님이죠. ‘께서’와 ‘하셨어요’의 ‘-시-’로 높였어요. 객체는? (클릭) 어머니. ‘뵙다’로 높였습니다. 청자는? (클릭) 역시 어머니고, 해요체 ‘-어요’로 높였어요. (클릭) 어머니가 객체이면서 청자이기도 한 거죠.</aside>
+</section>
+
+<section id="ws-group" data-transition="fade" style="background:#2E2A3B;color:#F7F3EC;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:30px;font-weight:700;color:#F6D98A;letter-spacing:1px">활동지 2~7번 · 모둠 풀이 (6분)</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:80px;font-weight:400;line-height:1.2;color:#F7F3EC">숨어 있는 주어를 찾아라!</h2>
+<div style="display:flex;flex-direction:row;flex-wrap:wrap;gap:20px;width:1664px">
+<div style="width:530px;height:150px;display:flex;flex-direction:row;align-items:center;gap:22px;background:#3B3552;border-radius:22px;padding:0 30px"><p style="font-family:'Do Hyeon', sans-serif;font-size:48px;color:#F6D98A">1모둠</p><p style="font-size:34px">2번 발표</p></div>
+<div style="width:530px;height:150px;display:flex;flex-direction:row;align-items:center;gap:22px;background:#3B3552;border-radius:22px;padding:0 30px"><p style="font-family:'Do Hyeon', sans-serif;font-size:48px;color:#F6D98A">2모둠</p><p style="font-size:34px">3번 발표</p></div>
+<div style="width:530px;height:150px;display:flex;flex-direction:row;align-items:center;gap:22px;background:#3B3552;border-radius:22px;padding:0 30px"><p style="font-family:'Do Hyeon', sans-serif;font-size:48px;color:#F6D98A">3모둠</p><p style="font-size:34px">4번 발표</p></div>
+<div style="width:530px;height:150px;display:flex;flex-direction:row;align-items:center;gap:22px;background:#3B3552;border-radius:22px;padding:0 30px"><p style="font-family:'Do Hyeon', sans-serif;font-size:48px;color:#F6D98A">4모둠</p><p style="font-size:34px">5번 발표</p></div>
+<div style="width:530px;height:150px;display:flex;flex-direction:row;align-items:center;gap:22px;background:#3B3552;border-radius:22px;padding:0 30px"><p style="font-family:'Do Hyeon', sans-serif;font-size:48px;color:#F6D98A">5모둠</p><p style="font-size:34px">6번 발표</p></div>
+<div style="width:530px;height:150px;display:flex;flex-direction:row;align-items:center;gap:22px;background:#3B3552;border-radius:22px;padding:0 30px"><p style="font-family:'Do Hyeon', sans-serif;font-size:48px;color:#F6D98A">6모둠</p><p style="font-size:34px">7번 발표</p></div>
+</div>
+<p style="font-size:30px;line-height:1.5;color:#CFC8DC">모든 문항을 같이 풀되, 발표 문항은 근거까지 꼼꼼하게! · 명령문·청유문은 주어가 생략돼요.</p>
+<aside>[모둠 풀이 6분] 2번부터 7번까지 모둠에서 같이 풀어 보세요. 6분 드릴게요. 1모둠은 2번, 2모둠은 3번 하는 식으로 모둠마다 발표할 문항을 정해 줄 테니, 그 문항은 근거까지 꼼꼼하게 준비해 주세요. 주어가 생략된 문장도 있으니까 숨어 있는 주어를 찾아보는 게 포인트예요. (※ 순회하며 3번·7번을 어려워하는 모둠을 먼저 확인)</aside>
+</section>
+
+<section id="ws-23" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">활동지 확인 · 2번, 3번</p>
+<div style="position:absolute;left:128px;top:270px;width:1664px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;color:#5E5870">2. (형이 동생에게)</p>
+<p style="font-size:42px;font-weight:700">할머니<span style="color:#6A58A6">께서</span> 너 오면 같이 저녁 먹자고 하<span style="color:#6A58A6">셨</span>어.</p>
+<div data-build-in="rise 1" style="display:flex;flex-direction:row;gap:18px;margin-top:6px">
+<p style="font-size:28px;background:#ECE6F6;border-radius:14px;padding:10px 20px">주체 <b>할머니</b> · 께서, -시-</p>
+<p style="font-size:28px;background:#F8E4EA;border-radius:14px;padding:10px 20px">객체 <b>없음</b></p>
+<p style="font-size:28px;background:#F6EBCB;border-radius:14px;padding:10px 20px">청자 <b>동생</b> · 해체 ‘-어’로 높이지 않음</p>
+</div>
+</div>
+<div style="position:absolute;left:128px;top:560px;width:1664px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;color:#5E5870">3. (어머니가 아들에게)</p>
+<p style="font-size:42px;font-weight:700">아버지 <span style="color:#6A58A6">진지 잡수시</span>라고 <span style="color:#B04568">말씀드려</span><span style="color:#7A5F1E">라</span>.</p>
+<div data-build-in="rise 2" style="display:flex;flex-direction:row;flex-wrap:wrap;gap:18px;margin-top:6px">
+<p style="font-size:28px;background:#ECE6F6;border-radius:14px;padding:10px 20px">주체 <b>아들</b>(생략) · 인용된 말의 주체 <b>아버지</b>(진지, 잡수시다)</p>
+<p style="font-size:28px;background:#F8E4EA;border-radius:14px;padding:10px 20px">객체 <b>아버지</b> · 말씀드리다</p>
+<p style="font-size:28px;background:#F6EBCB;border-radius:14px;padding:10px 20px">청자 <b>아들</b> · 해라체 ‘-어라’</p>
+</div>
+</div>
+<p data-build-in="pop 3" style="position:absolute;left:128px;top:900px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:50px;color:#B04568">명령문의 주어는? → 지금 듣고 있는 사람!</p>
+<aside>[2번·3번 확인] 1모둠, 2번 발표해 볼까요? (클릭) 주체는 할머니, ‘께서’와 ‘-시-’로 높였고, 객체는 없어요. 청자는 동생이고 해체 ‘-어’로 높이지 않았습니다. 2모둠, 3번요. (클릭) ‘아버지 진지 잡수시라고 말씀드려라.’ 어머니가 아들에게 한 말이죠. 명령문이라 주어가 생략됐는데, 말씀을 드리는 사람은 누구예요? 듣고 있는 아들이에요. 그리고 인용된 말 ‘진지 잡수세요’의 주체는 아버지라서 ‘진지’, ‘잡수시다’로 높였고, ‘말씀드리다’로 객체인 아버지를 높였어요. 청자인 아들은 해라체 ‘-어라’로 높이지 않았습니다. (클릭)</aside>
+</section>
+
+<section id="ws-45" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">활동지 확인 · 4번, 5번</p>
+<div style="position:absolute;left:128px;top:270px;width:1664px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;color:#5E5870">4. (손님이 가게 점원에게)</p>
+<p style="font-size:42px;font-weight:700"><span style="color:#5E5870">저희</span> 어머니<span style="color:#B04568">께</span> 어울릴 만한 옷 좀 보여 주<span style="color:#6A58A6">세</span><span style="color:#7A5F1E">요</span>.</p>
+<div data-build-in="rise 1" style="display:flex;flex-direction:row;flex-wrap:wrap;gap:18px;margin-top:6px">
+<p style="font-size:28px;background:#ECE6F6;border-radius:14px;padding:10px 20px">주체 <b>점원</b>(생략) · -시-</p>
+<p style="font-size:28px;background:#F8E4EA;border-radius:14px;padding:10px 20px">객체 <b>어머니</b> · 께</p>
+<p style="font-size:28px;background:#F6EBCB;border-radius:14px;padding:10px 20px">청자 <b>점원</b> · 해요체</p>
+<p style="font-size:28px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:14px;padding:10px 20px">‘저희’ = 말하는 자신을 낮춤</p>
+</div>
+</div>
+<div style="position:absolute;left:128px;top:590px;width:1664px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;color:#5E5870">5. (부장이 신입사원에게)</p>
+<p style="font-size:42px;font-weight:700">사장님<span style="color:#6A58A6">께서</span> 자네를 찾으<span style="color:#6A58A6">시</span><span style="color:#7A5F1E">네</span>.</p>
+<div data-build-in="rise 2" style="display:flex;flex-direction:row;flex-wrap:wrap;gap:18px;margin-top:6px">
+<p style="font-size:28px;background:#ECE6F6;border-radius:14px;padding:10px 20px">주체 <b>사장님</b> · 께서, -시-</p>
+<p style="font-size:28px;background:#F8E4EA;border-radius:14px;padding:10px 20px">객체 <b>신입사원</b>(자네) · 높이지 않음</p>
+<p style="font-size:28px;background:#F6EBCB;border-radius:14px;padding:10px 20px">청자 <b>신입사원</b> · 하게체 ‘-네’</p>
+</div>
+</div>
+<aside>[4번·5번 확인] 3모둠, 4번요. (클릭) ‘저희 어머니께 어울릴 만한 옷 좀 보여 주세요.’에서 ‘께’는 어머니를, ‘보여 주세요’의 ‘-시-’와 ‘-어요’는 점원을 높여요. 그리고 ‘저희’는 누구를 낮춘 거죠? 말하는 자기 자신을 낮춰서 상대를 높이는 표현입니다. 4모둠, 5번요. (클릭) 주체는 사장님, ‘께서’와 ‘-시-’로 높였어요. 신입사원은 목적어 ‘자네’로 나오지만 높이지 않았고, 청자인 신입사원에게는 하게체 ‘-네’를 썼죠. 2차시에 본 ‘자네’, 하게체 기억나죠?</aside>
+</section>
+
+<section id="ws-67" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">활동지 확인 · 6번, 7번</p>
+<div style="position:absolute;left:128px;top:270px;width:1664px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;color:#5E5870">6. (반장이 조회 시간에 반 친구들에게)</p>
+<p style="font-size:40px;font-weight:700">담임 선생님<span style="color:#6A58A6">께서</span> 오늘 조금 늦으<span style="color:#6A58A6">신</span>다니까 다들 자습하고 있<span style="color:#7A5F1E">자</span>.</p>
+<div data-build-in="rise 1" style="display:flex;flex-direction:row;flex-wrap:wrap;gap:18px;margin-top:6px">
+<p style="font-size:28px;background:#ECE6F6;border-radius:14px;padding:10px 20px">주체 <b>담임 선생님</b> · 께서, -시- / 뒤 절은 <b>우리</b></p>
+<p style="font-size:28px;background:#F8E4EA;border-radius:14px;padding:10px 20px">객체 <b>없음</b></p>
+<p style="font-size:28px;background:#F6EBCB;border-radius:14px;padding:10px 20px">청자 <b>반 친구들</b> · 해라체 ‘-자’</p>
+</div>
+</div>
+<div style="position:absolute;left:128px;top:560px;width:1664px;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:26px;color:#5E5870">7. (손자가 할아버지께)</p>
+<p style="font-size:40px;font-weight:700">할머니<span style="color:#6A58A6">께서</span> 진지 드시라고 하<span style="color:#6A58A6">셨</span>는데 진지가 다 <span style="color:#B04568;text-decoration:underline">식으셨어요</span>.</p>
+<div data-build-in="rise 2" style="display:flex;flex-direction:row;flex-wrap:wrap;gap:18px;margin-top:6px">
+<p style="font-size:28px;background:#ECE6F6;border-radius:14px;padding:10px 20px">주체 <b>할머니</b> · 인용된 말은 <b>할아버지</b>(진지, 드시다)</p>
+<p style="font-size:28px;background:#F6EBCB;border-radius:14px;padding:10px 20px">청자 <b>할아버지</b> · 해요체 ‘-어요’</p>
+</div>
+</div>
+<div data-build-in="pop 3" style="position:absolute;left:128px;top:840px;width:1664px;display:flex;flex-direction:row;align-items:center;gap:26px;background:#2E2A3B;border-radius:20px;padding:18px 34px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:40px;color:#F6D98A">모둠 토론</p>
+<p style="font-size:30px;color:#F7F3EC">‘식으셨어요’ — 간접 높임일까, 사물 높임일까? → <b data-build-in="fade 4" style="color:#F6D98A">‘진지가 다 식었어요’가 자연스러워요</b></p>
+</div>
+<aside>[6번·7번 확인] 5모둠, 6번요. (클릭) 앞 절의 주체는 담임 선생님이라 ‘께서’, ‘늦으신다’의 ‘-시-’로 높였고, 뒤 절 ‘다들 자습하고 있자’의 주체는 우리, 반 친구들이에요. 청자인 반 친구들에게는 해라체 청유 ‘-자’를 썼습니다. 마지막 7번 볼게요. (클릭) 주체는 할머니, 인용된 말 ‘진지 드세요’의 주체는 할아버지, 청자는 할아버지라서 해요체를 썼어요. (클릭) 그런데 ‘진지가 다 식으셨어요.’ 진지는 할아버지 거니까 간접 높임으로 볼 수 있을까요, 아니면 지난 시간 ‘음료 나오셨습니다’처럼 사물을 높인 걸까요? 모둠 의견을 들어 볼게요. (클릭) 진지는 이미 높임 어휘이고, 식는 건 할아버지와 밀접하게 관련된 일이라고 보기 어려워서 ‘진지가 다 식었어요’가 더 자연스럽다고 보는 게 일반적이에요.</aside>
+</section>
+
+<section id="ex-2026" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">수능 기출 ① · 2026학년도 수능 언어와 매체 37번</p>
+<img src="assets/exam-2026-37.png" alt="2026학년도 수능 언어와 매체 37번. 보기의 조건: 관형사가 관형어로 쓰일 것, 선어말 어미를 통한 높임 표현이 나타날 것, 자릿수가 하나인 서술어와 둘인 서술어를 포함할 것. 선지 다섯 개." style="position:absolute;left:128px;top:270px;width:1110px;height:720px;object-fit:contain;background:#FFFFFF;border-radius:20px;box-shadow:0 14px 30px rgba(46,42,59,0.12)">
+<div style="position:absolute;left:1280px;top:270px;width:512px;display:flex;flex-direction:column;gap:16px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:44px;color:#6A58A6">조건 세 개를 하나씩!</p>
+<p style="font-size:28px;line-height:1.5">❶ 관형사가 관형어로<br>❷ 선어말 어미 ‘-시-’<br>❸ 한 자리 + 두 자리 서술어</p>
+<p style="font-size:26px;color:#5E5870">모둠별 2분 · 번호 카드 동시에 들기</p>
+</div>
+<aside>[수능 기출 4분] 이제 수능 문제예요. 2026학년도 수능 37번입니다. [조건]이 세 개죠. 관형사가 관형어로 쓰일 것, 선어말 어미로 높임이 나타날 것, 자릿수가 하나인 서술어와 둘인 서술어가 모두 있을 것. 선지마다 조건 세 개를 하나씩 대입해서 지워 보세요. 2분 드릴게요. (※ 모둠별 번호 카드를 동시에 들게 하면 모든 모둠의 답이 한눈에 보임)</aside>
+</section>
+
+<section id="ex-2026-ans" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">수능 기출 ① · 해설</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:64px;font-weight:400;line-height:1.2;color:#2E2A3B">정답은 ④ — 조건으로 지워 보기</h2>
+<div style="position:absolute;left:128px;top:330px;width:1664px;display:flex;flex-direction:column;gap:0;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:18px 30px">
+<div style="display:flex;flex-direction:row;font-size:26px;font-weight:700;color:#5E5870;padding:10px 0;border-bottom:2px solid #E6DDCB"><p style="width:90px;font-size:26px"> </p><p style="width:430px;font-size:26px">❶ 관형사</p><p style="width:430px;font-size:26px">❷ 선어말 어미 ‘-시-’</p><p style="font-size:26px">❸ 한 자리 + 두 자리</p></div>
+<div data-build-in="fade 1" style="display:flex;flex-direction:row;align-items:center;padding:12px 0;border-bottom:1px solid #EFE8DA"><p style="width:90px;font-size:32px;font-weight:700">①</p><p style="width:430px;font-size:28px">○ 세</p><p style="width:430px;font-size:28px">○ 편찮으신</p><p style="font-size:28px;color:#B04568">× ‘모시다’는 세 자리</p></div>
+<div data-build-in="fade 1" style="display:flex;flex-direction:row;align-items:center;padding:12px 0;border-bottom:1px solid #EFE8DA"><p style="width:90px;font-size:32px;font-weight:700">②</p><p style="width:430px;font-size:28px">○ 몇</p><p style="width:430px;font-size:28px">○ 읽으시다, 드셨다</p><p style="font-size:28px;color:#B04568">× 한 자리 서술어 없음</p></div>
+<div data-build-in="fade 1" style="display:flex;flex-direction:row;align-items:center;padding:12px 0;border-bottom:1px solid #EFE8DA"><p style="width:90px;font-size:32px;font-weight:700">③</p><p style="width:430px;font-size:28px;color:#B04568">× ‘끊임없는’은 형용사</p><p style="width:430px;font-size:28px">○ 합격하셨다</p><p style="font-size:28px">-</p></div>
+<div data-build-in="pop 2" style="display:flex;flex-direction:row;align-items:center;padding:12px 0;border-bottom:1px solid #EFE8DA;background:#FBE7A1;border-radius:12px"><p style="width:90px;font-size:32px;font-weight:700;padding-left:8px">④</p><p style="width:430px;font-size:28px">○ 온갖</p><p style="width:430px;font-size:28px">○ 하셨다</p><p style="font-size:28px">○ 길어지다 / 걱정을 하다</p></div>
+<div data-build-in="fade 3" style="display:flex;flex-direction:row;align-items:center;padding:12px 0"><p style="width:90px;font-size:32px;font-weight:700">⑤</p><p style="width:430px;font-size:28px">○ 저</p><p style="width:430px;font-size:28px;color:#B04568">× ‘다시다’는 원래 단어</p><p style="font-size:28px">-</p></div>
+</div>
+<p data-build-in="pop 4" style="position:absolute;left:128px;top:900px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:52px;color:#B04568">함정! ‘입맛을 다셨다’의 ‘-시-’는 높임이 아니에요</p>
+<aside>[해설] (클릭) ①은 ‘모시다’가 세 자리, ②는 한 자리 서술어가 없고, ③은 ‘끊임없는’이 관형사가 아니라 형용사라서 안 됩니다. (클릭) 답은 ④번 ‘유난히 길어진 추위에 할머니께서는 온갖 걱정을 다 하셨다.’입니다. ‘온갖’이 관형사, ‘하셨다’에 ‘-시-’, ‘길어지다’는 한 자리, ‘하다’는 두 자리 서술어죠. (클릭) 함정은 ⑤번이에요. (클릭) ‘입맛을 다셨다’의 ‘다시다’는 원래 단어라서 ‘-시-’가 없어요.</aside>
+</section>
+
+<section id="ex-2022" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#E4DCEF"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">수능 기출 ② · 2022학년도 9월 모의평가 언어와 매체 38번 (시간 여유 시)</p>
+<img src="assets/exam-2022-9-38.png" alt="2022학년도 9월 모의평가 언어와 매체 38번. 안긴문장에서의 객체 높임의 대상이 안은문장에서 목적어로 실현된 겹문장의 예를 고르는 문제." style="position:absolute;left:128px;top:270px;width:740px;height:750px;object-fit:contain;background:#FFFFFF;border-radius:20px;box-shadow:0 14px 30px rgba(46,42,59,0.12)">
+<div style="position:absolute;left:920px;top:280px;width:872px;display:flex;flex-direction:column;gap:20px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:44px;color:#6A58A6">두 단계로 보기</p>
+<p style="font-size:28px;line-height:1.5">❶ 안긴문장에서 <b>객체 높임</b>을 받는 사람은?<br>❷ 그 사람이 안은문장에서 <b>목적어</b>인가?</p>
+<div data-build-in="rise 1" style="display:flex;flex-direction:column;gap:8px;background:#FBE7A1;border-radius:18px;padding:20px 26px">
+<p style="font-size:30px;font-weight:700">정답 ⑤</p>
+<p style="font-size:26px;line-height:1.5">[동생이 선생님을 <b>찾아뵈려던</b>] → 안은문장에서 ‘<b>선생님을</b>’ 만났습니다(목적어)</p>
+</div>
+<div data-build-in="rise 2" style="display:flex;flex-direction:column;gap:8px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:18px;padding:20px 26px">
+<p style="font-size:26px;line-height:1.5">④ [할머니께 인사를 <b>드릴</b>] → 안은문장에서 ‘할머니<b>께</b>’ (부사어)라서 ×<br>②·③은 안긴문장이 <b>주체</b> 높임</p>
+</div>
+</div>
+<aside>[수능 기출 ②] 시간이 되니까 한 문제 더 가 볼게요. 2022학년도 9월 모의평가 38번은 안긴문장 속 객체 높임의 대상이 안은문장에서 목적어로 쓰인 예를 찾는 문제예요. (클릭) 답은 ⑤번 ‘형은 동생이 찾아뵈려던 선생님을 학교에서 만났습니다.’예요. 안긴문장 ‘동생이 선생님을 찾아뵈다’에서 높인 선생님이 안은문장에서 ‘선생님을’, 목적어로 쓰였죠. (클릭) ④번은 할머니가 부사어 ‘할머니께’로 쓰여서 안 됩니다.</aside>
+</section>
+
+<section id="ex-2025" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">수능 기출 ③ · 2025학년도 수능 언어와 매체 39번 (시간 여유 시)</p>
+<img src="assets/exam-2025-39.png" alt="2025학년도 수능 언어와 매체 39번. 간접 인용될 때 상대 높임 종결 어미가 문장의 종류별로 한 가지로 한정된다는 보기를 바탕으로 자료를 이해하는 문제." style="position:absolute;left:128px;top:270px;width:640px;height:780px;object-fit:contain;background:#FFFFFF;border-radius:20px;box-shadow:0 14px 30px rgba(46,42,59,0.12)">
+<div style="position:absolute;left:820px;top:280px;width:972px;display:flex;flex-direction:column;gap:18px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:44px;color:#6A58A6">간접 인용하면 종결 어미가 하나로!</p>
+<div style="display:flex;flex-direction:row;gap:12px">
+<p style="font-size:28px;background:#ECE6F6;border-radius:12px;padding:8px 16px">평서 -다고</p><p style="font-size:28px;background:#ECE6F6;border-radius:12px;padding:8px 16px">의문 -냐고</p><p style="font-size:28px;background:#ECE6F6;border-radius:12px;padding:8px 16px">명령 -라고</p><p style="font-size:28px;background:#ECE6F6;border-radius:12px;padding:8px 16px">청유 -자고</p>
+</div>
+<div data-build-in="rise 1" style="display:flex;flex-direction:column;gap:8px;background:#FBE7A1;border-radius:18px;padding:20px 26px">
+<p style="font-size:30px;font-weight:700">정답 ②</p>
+<p style="font-size:26px;line-height:1.5">‘청소를 같이 <b>해요</b>’(해요체 청유)도 간접 인용하면 ‘하<b>자고</b>’ → 원래 말이 ‘해요’일 수 있다</p>
+</div>
+<div data-build-in="rise 2" style="display:flex;flex-direction:column;gap:6px;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:18px;padding:20px 26px">
+<p style="font-size:25px;line-height:1.55">① ‘오늘은’ ← 그제 기준 ‘모레는’일 수 있음 ×<br>③ ‘자기도’ ← 원래 말은 ‘나도’(1인칭) ×<br>④ ‘좋아한다고’ ← ‘좋아합니다’일 수 있음 ×<br>⑤ ‘있겠냐고’ ← ‘-겠-’이 들어 있음 ×</p>
+</div>
+</div>
+<aside>[수능 기출 ③] 2025학년도 수능 39번은 간접 인용될 때 상대 높임 종결 어미가 ‘-다고, -냐고, -라고, -자고’로 하나로 바뀐다는 걸 묻는 문제예요. (클릭) 그래서 ‘하자고’의 원래 말은 ‘하자’일 수도, ‘해요’일 수도 있어요. 답은 ②번입니다. (클릭) ①은 그제 한 말이니까 원래는 ‘모레는’일 수 있고, ③의 ‘자기도’는 원래 ‘나도’, 1인칭이에요. ④는 ‘좋아합니다’를 인용한 것일 수 있고, ⑤는 ‘-겠-’이 그대로 들어 있죠. (※ 시간이 부족하면 해설지와 함께 복습 과제로)</aside>
+</section>
+
+<section id="award" data-transition="fade" style="background:#2E2A3B;color:#F7F3EC;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:30px;font-weight:700;color:#F6D98A;letter-spacing:1px">정리 · 모둠 시상 (3분)</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:84px;font-weight:400;line-height:1.2;color:#F7F3EC">오늘의 우수 모둠은?</h2>
+<div style="display:flex;flex-direction:row;gap:18px;width:1664px">
+<div style="flex:1;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#3B3552;border-radius:22px"><p style="font-family:'Do Hyeon', sans-serif;font-size:46px;color:#F6D98A">1모둠</p><p style="font-size:64px;font-weight:700;color:#F7F3EC">　</p></div>
+<div style="flex:1;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#3B3552;border-radius:22px"><p style="font-family:'Do Hyeon', sans-serif;font-size:46px;color:#F6D98A">2모둠</p><p style="font-size:64px;font-weight:700;color:#F7F3EC">　</p></div>
+<div style="flex:1;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#3B3552;border-radius:22px"><p style="font-family:'Do Hyeon', sans-serif;font-size:46px;color:#F6D98A">3모둠</p><p style="font-size:64px;font-weight:700;color:#F7F3EC">　</p></div>
+<div style="flex:1;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#3B3552;border-radius:22px"><p style="font-family:'Do Hyeon', sans-serif;font-size:46px;color:#F6D98A">4모둠</p><p style="font-size:64px;font-weight:700;color:#F7F3EC">　</p></div>
+<div style="flex:1;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#3B3552;border-radius:22px"><p style="font-family:'Do Hyeon', sans-serif;font-size:46px;color:#F6D98A">5모둠</p><p style="font-size:64px;font-weight:700;color:#F7F3EC">　</p></div>
+<div style="flex:1;height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#3B3552;border-radius:22px"><p style="font-family:'Do Hyeon', sans-serif;font-size:46px;color:#F6D98A">6모둠</p><p style="font-size:64px;font-weight:700;color:#F7F3EC">　</p></div>
+</div>
+<p style="font-size:28px;color:#CFC8DC">점수는 칠판 점수판에 적고 합산해요. (빈칸은 수업 중에 채우는 자리)</p>
+<p data-build-in="pop 1" style="font-family:'Nanum Pen Script', cursive;font-size:64px;color:#F8E4EA">근거를 잘 설명한 발표에도 박수!</p>
+<aside>[모둠 시상 3분] 점수 합산해 볼게요. 오늘 1등은 ○모둠입니다. 축하해요! (클릭) 점수와 별개로 ○모둠이 7번에서 간접 높임과 사물 높임을 나눠서 설명한 게 아주 좋았어요. 다 같이 박수 한번 쳐 줍시다.</aside>
+</section>
+
+<section id="wrap" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">정리 · 세 시간 한눈에 (5분)</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">문법 요소를 골라 쓰면, 태도가 드러나요</h2>
+<div style="position:absolute;left:128px;top:320px;width:1664px;display:flex;flex-direction:row;gap:28px">
+<div data-build-in="rise 1" style="flex:1;height:360px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #6A58A6;border-radius:24px;padding:36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:46px;color:#6A58A6">문장 종결 표현</p>
+<p style="font-size:34px;line-height:1.55">평서·의문·명령·청유·감탄<br>형식과 실제 의도는 다를 수 있어요</p>
+</div>
+<div data-build-in="rise 2" style="flex:1;height:360px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #B04568;border-radius:24px;padding:36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:46px;color:#B04568">높임 표현</p>
+<p style="font-size:34px;line-height:1.55">주체 · 객체 · 상대<br>높이는 대상도, 방법도 달라요</p>
+</div>
+<div data-build-in="rise 3" style="flex:1;height:360px;display:flex;flex-direction:column;gap:16px;background:#2E2A3B;border-radius:24px;padding:36px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:46px;color:#F6D98A">담화 맥락</p>
+<p style="font-size:34px;line-height:1.55;color:#F7F3EC">누구에게, 어떤 자리에서?<br>→ 골라 쓴 표현에<br><b style="color:#F6D98A">화자의 태도</b>가 드러나요</p>
+</div>
+</div>
+<p data-build-in="fade 4" style="position:absolute;left:128px;top:740px;width:1664px;font-size:30px;color:#5E5870">복습 과제: 오늘 못 푼 기출 문제(해설과 함께 올려 둠) · 활동지에서 헷갈린 문항 다시 보기</p>
+<aside>[학습 내용 정리 5분] 세 시간 동안 배운 걸 한 번에 정리해 볼게요. (클릭) 문장 종결 표현으로 평서문, 의문문, 명령문, 청유문, 감탄문이 나뉘고, 형식과 실제 의도가 다를 수 있었어요. (클릭) 높임 표현은 주체, 객체, 상대를 높이는 방법이 각각 달랐고요. (클릭) 그리고 오늘 본 것처럼, 누구에게 어떤 자리에서 말하느냐에 따라 이 표현들을 골라 쓰고, 거기에 화자의 태도가 드러납니다. (클릭) 오늘 못 푼 기출 문제는 해설과 함께 올려 둘 테니 집에서 꼭 풀어 보세요. 활동지에서 헷갈렸던 문항도 다시 한번 보시고요.</aside>
+</section>
+
+<section id="next" data-transition="fade" style="background:#2E2A3B;color:#F7F3EC;font-family:'Noto Sans KR', sans-serif;padding:200px 128px 128px;display:flex;flex-direction:column;gap:32px">
+<x-shape kind="ellipse" style="position:absolute;left:1180px;top:200px;width:600px;height:600px;background:#3B3552"></x-shape>
+<x-shape kind="ellipse" style="position:absolute;left:1600px;top:140px;width:180px;height:180px;background:#B04568;opacity:0.85"></x-shape>
+<p style="position:absolute;left:1270px;top:380px;width:420px;font-family:'Do Hyeon', sans-serif;font-size:50px;text-align:center;color:#2E2A3B;background:#ECE6F6;border-radius:20px;padding:14px 0;transform:rotate(-4deg)">담화의 맥락</p>
+<p style="position:absolute;left:1300px;top:510px;width:420px;font-family:'Do Hyeon', sans-serif;font-size:50px;text-align:center;color:#2E2A3B;background:#F8E4EA;border-radius:20px;padding:14px 0;transform:rotate(3deg)">응집성</p>
+<p style="font-size:28px;font-weight:700;color:#E6C77E;letter-spacing:1px">다음 시간 예고</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:100px;font-weight:400;line-height:1.15;color:#F7F3EC">(2) 담화의 맥락과<br>응집성</h2>
+<p data-build-in="pop 1" style="position:absolute;left:128px;top:760px;width:1000px;font-family:'Nanum Pen Script', cursive;font-size:72px;color:#F6D98A">세 시간 동안 수고 많았어요!</p>
+<aside>[차시 예고 및 인사 2분] 다음 시간부터는 (2) ‘담화의 맥락과 응집성’으로 넘어갑니다. 오늘 수업은 여기까지 하겠습니다. (클릭) 세 시간 동안 다들 수고 많았어요. 다음 시간에 볼게요.</aside>
+</section>
+
+</div></div>
+<div id="notes"></div>
+<div id="counter"></div>
+<div id="help">→ / 스페이스 / 클릭: 다음 · ←: 이전 · F: 전체 화면 · N: 발표자 노트</div>
+<script>
+(function () {
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var stage = document.getElementById('stage');
+  var slides = Array.prototype.slice.call(document.querySelectorAll('#deck > section'));
+
+  function copyData(from, to) {
+    for (var i = 0; i < from.attributes.length; i++) {
+      var a = from.attributes[i];
+      if (a.name.indexOf('data-') === 0) to.setAttribute(a.name, a.value);
+    }
+  }
+
+  // <x-shape>: ellipse → rounded div, arrows → inline SVG
+  var ARROWS = {
+    'arrow-right': '0,30 60,30 60,0 100,50 60,100 60,70 0,70',
+    'arrow-left': '100,30 40,30 40,0 0,50 40,100 40,70 100,70',
+    'arrow-down': '30,0 70,0 70,60 100,60 50,100 0,60 30,60',
+    'arrow-up': '30,100 70,100 70,40 100,40 50,0 0,40 30,40'
+  };
+  document.querySelectorAll('x-shape').forEach(function (el) {
+    var kind = el.getAttribute('kind');
+    var d = document.createElement('div');
+    d.setAttribute('style', el.getAttribute('style') || '');
+    copyData(el, d);
+    d.style.flexShrink = '0';
+    if (kind === 'ellipse') {
+      d.style.borderRadius = '50%';
+    } else if (ARROWS[kind]) {
+      var color = d.style.backgroundColor || '#333';
+      d.style.background = 'transparent';
+      d.innerHTML = '<svg viewBox="0 0 100 100" preserveAspectRatio="none" style="width:100%;height:100%;display:block"><polygon points="' + ARROWS[kind] + '" fill="' + color + '"/></svg>';
+    }
+    el.replaceWith(d);
+  });
+
+  // <x-connector>: straight line with an arrowhead, drawn in slide coordinates
+  document.querySelectorAll('x-connector').forEach(function (el) {
+    var x1 = +el.getAttribute('x1'), y1 = +el.getAttribute('y1');
+    var x2 = +el.getAttribute('x2'), y2 = +el.getAttribute('y2');
+    var probe = document.createElement('div');
+    probe.setAttribute('style', el.getAttribute('style') || '');
+    var color = probe.style.color || '#333';
+    var w = parseFloat(probe.style.borderWidth) || 2;
+    var wrap = document.createElement('div');
+    wrap.setAttribute('style', 'position:absolute;left:0;top:0;width:1920px;height:1080px;pointer-events:none');
+    copyData(el, wrap);
+    var svg = document.createElementNS(SVGNS, 'svg');
+    svg.setAttribute('width', '1920'); svg.setAttribute('height', '1080');
+    svg.setAttribute('viewBox', '0 0 1920 1080');
+    var ang = Math.atan2(y2 - y1, x2 - x1), hl = w * 4, hw = w * 2.6;
+    var bx = x2 - hl * Math.cos(ang), by = y2 - hl * Math.sin(ang);
+    var line = document.createElementNS(SVGNS, 'line');
+    line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+    line.setAttribute('x2', bx); line.setAttribute('y2', by);
+    line.setAttribute('stroke', color); line.setAttribute('stroke-width', w);
+    line.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(line);
+    if (el.getAttribute('head') !== 'none') {
+      var head = document.createElementNS(SVGNS, 'polygon');
+      var px = -Math.sin(ang) * hw, py = Math.cos(ang) * hw;
+      head.setAttribute('points', x2 + ',' + y2 + ' ' + (bx + px) + ',' + (by + py) + ' ' + (bx - px) + ',' + (by - py));
+      head.setAttribute('fill', color);
+      svg.appendChild(head);
+    }
+    wrap.appendChild(svg);
+    el.replaceWith(wrap);
+  });
+
+  // data-build-in="effect [order]": group into click steps
+  var builds = slides.map(function (s) {
+    var els = Array.prototype.slice.call(s.querySelectorAll('[data-build-in]'));
+    var next = 1, steps = {};
+    els.forEach(function (el) {
+      var parts = el.getAttribute('data-build-in').trim().split(/\s+/);
+      var effect = parts[0];
+      var n = parts.length > 1 && /^\d+$/.test(parts[1]) ? +parts[1] : next;
+      next = Math.max(next, n + 1);
+      el.classList.add('bi', effect);
+      (steps[n] = steps[n] || []).push(el);
+    });
+    return Object.keys(steps).map(Number).sort(function (a, b) { return a - b; }).map(function (k) { return steps[k]; });
+  });
+
+  var cur = 0, step = 0;
+  var counter = document.getElementById('counter');
+  var notes = document.getElementById('notes');
+
+  function show(i, built) {
+    cur = Math.max(0, Math.min(slides.length - 1, i));
+    step = built ? builds[cur].length : 0;
+    slides.forEach(function (s, j) { s.classList.toggle('off', j !== cur); });
+    builds[cur].forEach(function (group, k) {
+      group.forEach(function (el) { el.classList.toggle('hid', k >= step); });
+    });
+    var aside = slides[cur].querySelector('aside');
+    notes.textContent = aside ? aside.textContent : '(노트 없음)';
+    counter.textContent = (cur + 1) + ' / ' + slides.length;
+    history.replaceState(null, '', '#slide-' + (cur + 1));
+  }
+  function next() {
+    if (step < builds[cur].length) {
+      builds[cur][step].forEach(function (el) { el.classList.remove('hid'); });
+      step++;
+    } else if (cur < slides.length - 1) {
+      show(cur + 1, false);
+    }
+  }
+  function prev() { if (cur > 0) show(cur - 1, true); }
+
+  function fit() {
+    var k = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    stage.style.transform = 'scale(' + k + ') translate(-50%, -50%)';
+  }
+  window.addEventListener('resize', fit);
+  fit();
+
+  // In-slide YouTube player: any [data-yt] element opens it; Esc, ✕ or the backdrop closes it.
+  var ytBox = document.createElement('div');
+  ytBox.id = 'yt-modal';
+  ytBox.innerHTML = '<style>' +
+    '#yt-modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(20,18,28,.88)}' +
+    '#yt-modal.on{display:flex}' +
+    '#yt-modal .yt-frame{position:relative;width:min(88vw,calc(80vh*16/9));aspect-ratio:16/9;background:#000;border-radius:14px;overflow:hidden}' +
+    '#yt-modal.tall .yt-frame{width:auto;height:86vh;aspect-ratio:9/16}' +
+    '#yt-modal iframe{width:100%;height:100%;border:0;display:block}' +
+    '#yt-modal .yt-bar{position:absolute;top:2.5vh;right:2.5vw;display:flex;gap:14px;align-items:center;font-family:"Noto Sans KR",sans-serif}' +
+    '#yt-modal .yt-bar a{color:#CFC8DC;font-size:15px}' +
+    '#yt-modal .yt-close{font-size:22px;font-weight:700;color:#2E2A3B;background:#F6D98A;border:0;border-radius:999px;width:46px;height:46px;cursor:pointer}' +
+    '[data-yt]{cursor:pointer}' +
+    '</style><div class="yt-frame"></div><div class="yt-bar"><a target="_blank" rel="noopener">유튜브에서 열기</a><button class="yt-close" aria-label="닫기">✕</button></div>';
+  document.body.appendChild(ytBox);
+  var ytFrame = ytBox.querySelector('.yt-frame'), ytLink = ytBox.querySelector('a');
+  function ytOn() { return ytBox.classList.contains('on'); }
+  function ytOpen(el) {
+    var id = el.getAttribute('data-yt'), st = +(el.getAttribute('data-start') || 0), en = el.getAttribute('data-end');
+    var src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1&start=' + st + (en ? '&end=' + en : '');
+    ytFrame.innerHTML = '<iframe src="' + src + '" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>';
+    ytLink.href = 'https://www.youtube.com/watch?v=' + id + '&t=' + st + 's';
+    ytBox.classList.toggle('tall', el.hasAttribute('data-tall'));
+    ytBox.classList.add('on');
+  }
+  function ytClose() { ytBox.classList.remove('on'); ytFrame.innerHTML = ''; }
+  ytBox.addEventListener('click', function (e) {
+    if (e.target.closest('a')) return;
+    if (e.target.closest('.yt-close') || !e.target.closest('.yt-frame')) ytClose();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (ytOn()) { if (e.key === 'Escape') ytClose(); e.preventDefault(); return; }
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].indexOf(e.key) >= 0) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].indexOf(e.key) >= 0) { e.preventDefault(); prev(); }
+    else if (e.key === 'Home') show(0, false);
+    else if (e.key === 'End') show(slides.length - 1, true);
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen();
+    }
+    else if (e.key === 'n' || e.key === 'N') notes.classList.toggle('on');
+  });
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('a') || e.target.closest('#notes') || e.target.closest('#yt-modal')) return;
+    var yt = e.target.closest('[data-yt]');
+    if (yt) { ytOpen(yt); return; }
+    next();
+  });
+  document.addEventListener('contextmenu', function (e) { if (ytOn()) return; e.preventDefault(); prev(); });
+
+  // ?all: every build shown · ?export: same, without on-screen help · ?print: all slides stacked for PDF
+  var q = location.search.slice(1);
+  function flag(name) { return new RegExp('(^|&)' + name + '(&|=|$)').test(q); }
+  if (flag('print')) {
+    document.body.classList.add('print', 'export');
+    slides.forEach(function (s) { s.classList.remove('off'); });
+    builds.forEach(function (groups) { groups.forEach(function (g) { g.forEach(function (el) { el.classList.remove('hid'); }); }); });
+    return;
+  }
+  if (flag('export')) document.body.classList.add('export');
+  var m = /^#slide-(\d+)$/.exec(location.hash);
+  show(m ? +m[1] - 1 : 0, flag('all') || flag('export'));
+})();
+</script>
+</body>
+</html>
