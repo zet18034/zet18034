@@ -204,9 +204,9 @@ details.teacher .small{font-size:13.5px;color:var(--muted);margin:12px 0 0}
 <div class="wrap">
   <header>
     <div>
-      <p class="eyebrow"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.5l2.6 7.9 7.9 2.6-7.9 2.6L12 22.5l-2.6-7.9L1.5 12l7.9-2.6z"/></svg>초등 과학 · 계절에 따라 달라지는 별자리</p>
-      <h1>내 생일 별자리는 왜<br><span class="gold">생일 밤</span>에 안 보일까?</h1>
-      <p class="lede">궤도 위에 쓰인 달(1월, 2월 …)을 누르면 지구가 그달의 자리로 공전해요. 밤 12시에 하늘에 떠 있는 별자리는 빛나고, 태양 쪽에 있는 별자리는 햇빛에 가려 어두워져요. 지구를 손가락으로 끌어 옮겨도 됩니다.</p>
+      <p class="eyebrow"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 1.5l2.6 7.9 7.9 2.6-7.9 2.6L12 22.5l-2.6-7.9L1.5 12l7.9-2.6z"/></svg>6학년 과학 · 4. 지구의 운동 · 7차시 생일 별자리를 통해 계절별 별자리 변화 알아보기</p>
+      <h1>내 생일 별자리는<br><span class="gold">언제</span> 밤하늘에서 가장 잘 보일까?</h1>
+      <p class="lede">궤도 위에 쓰인 달(1월, 2월 …)을 누르면 지구가 그달의 자리로 공전해요. 태양 반대쪽(밤) 하늘에 떠 있는 별자리는 빛나고, 태양 쪽(낮)에 있는 별자리는 햇빛에 가려 어두워져요. 지구를 손가락으로 끌어 옮겨도 됩니다.</p>
     </div>
     <div class="tools">
       <button class="icon-btn" id="soundBtn" type="button" aria-pressed="true" aria-label="소리 켜기/끄기" title="소리">
@@ -293,6 +293,7 @@ details.teacher .small{font-size:13.5px;color:var(--muted);margin:12px 0 0}
             <select id="bm" aria-label="생일 월"></select>
             <select id="bd" aria-label="생일 일"></select>
             <button class="btn gold" type="submit">출발</button>
+            <button class="btn" type="button" id="minwoo">민우(12월생, 사수자리)</button>
           </form>
           <p class="bday-msg" id="bdayMsg" hidden></p>
           <div class="row" id="bdayRow" hidden>
@@ -344,6 +345,8 @@ const mod = (a,n) => ((a % n) + n) % n;
 const doyOf = (m,d) => MS[m-1] + d - 1;
 const mdOf = doy => { doy = mod(Math.floor(doy), 365); let m = 11; while (MS[m] > doy) m--; return [m+1, doy - MS[m] + 1]; };
 SIGNS.forEach(g => { g.start = doyOf(g.s[0], g.s[1]); });
+SIGNS[8].alt = "사수자리";   // 생일 별자리로는 '사수자리', 천문학 공식 이름은 '궁수자리'
+const SEASON = m => (m >= 3 && m <= 5) ? "봄" : (m >= 6 && m <= 8) ? "여름" : (m >= 9 && m <= 11) ? "가을" : "겨울";
 SIGNS.forEach((g,i) => {
   const nx = SIGNS[(i+1)%12].start; g.len = mod(nx - g.start, 365);
   const [em, ed] = mdOf(nx - 1); g.range = `${g.s[0]}.${g.s[1]}~${em}.${ed}`;
@@ -459,7 +462,7 @@ const zods = SIGNS.map((s,i) => {
   el("circle", {r:15}, bg);
   const emo = el("text", {"text-anchor":"middle", y:7}, bg); emo.textContent = s.e;
   const nm = el("text", {class:"nm", "text-anchor":"middle", y:56}, g); nm.textContent = s.n;
-  const rg = el("text", {class:"rg", "text-anchor":"middle", y:72}, g); rg.textContent = s.range;
+  const rg = el("text", {class:"rg", "text-anchor":"middle", y:72}, g); rg.textContent = (s.alt ? s.alt + " · " : "") + s.range;
   g.addEventListener("click", () => { stopPlay(); setBirthday(Math.round(s.start + s.len/2), true); });
   g.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" "){ e.preventDefault(); g.dispatchEvent(new Event("click")); } });
   return g;
@@ -487,8 +490,8 @@ el("line", {x1:0, y1:-12, x2:0, y2:-46, stroke:"#aee8ff", "stroke-width":2.4, "s
 el("path", {d:"M0,-58 L-7,-45 L7,-45 Z", fill:"#aee8ff"}, obs);
 el("circle", {cx:0, cy:-8.5, r:3.2, fill:"#ffa3c8"}, obs);
 el("path", {d:"M-3,-5 L3,-5 L2,0 L-2,0 Z", fill:"#ffa3c8"}, obs);
-const southTag = el("text", {"text-anchor":"middle", class:"tag", fill:"#aee8ff"}, topL); southTag.textContent = "남쪽 하늘";
-const sunTag = el("text", {"text-anchor":"middle", class:"tag", fill:"#ffd06b"}, topL); sunTag.textContent = "햇빛에 가려요";
+const southTag = el("text", {"text-anchor":"middle", class:"tag", fill:"#aee8ff"}, topL); southTag.textContent = "태양 반대쪽(밤)";
+const sunTag = el("text", {"text-anchor":"middle", class:"tag", fill:"#ffd06b"}, topL); sunTag.textContent = "태양 쪽(낮) · 햇빛에 가려요";
 
 /* ---------- 남쪽 하늘 풍경 ---------- */
 /* 겹: pBg(하늘·은하수·별, 고정) · pTw(반짝이는 별만) · pIt(별자리, 움직임이 멈추면 빛 번짐) · pFg(땅과 마을, 고정) */
@@ -625,7 +628,7 @@ function render(){
   const bestChanged = !lastKey || lastKey.split("-")[3] !== String(best);
   lastKey = key;
   $("skyTitle").textContent = `${hourName[String(S.off)]}, 남쪽 하늘`;
-  $("whenTxt").textContent = `${m}월 ${d}일`;
+  $("whenTxt").textContent = `${m}월 ${d}일 · ${SEASON(m)}`;
   if (bestChanged){ drawMini(best); pulseG.setAttribute("transform", `translate(${zods[best].dataset.x},${zods[best].dataset.y})`); }
   $("southName").textContent = SIGNS[best].n;
   $("southSub").textContent = `${SIGNS[best].e} 생일이 ${SIGNS[best].range}인 친구의 별자리`;
@@ -717,14 +720,16 @@ function setBirthday(doy, fromSign){
   S.bday = {doy, sign};
   if (!fromSign){ bm.value = m; fillDays(d); }
   const seeM = mdOf(seeDoyOf(sign))[0];
-  const msg = $("bdayMsg"), nm = `<span class="rose">${s.n}</span>`;
+  const msg = $("bdayMsg"), nm = `<span class="rose">${s.alt ? `${s.alt}(${s.n})` : s.n}</span>`;
   msg.innerHTML = fromSign
-    ? `${nm}의 생일은 ${s.range}예요. 이때 지구에서 보면 태양이 ${s.n} 앞을 가려서, 생일 별자리는 낮 하늘에 숨어 버려요.`
-    : `${m}월 ${d}일생의 생일 별자리는 ${nm}예요. 생일날 지구에서 보면 ${s.n}${josa(s.n,"은","는")} 태양과 같은 쪽에 있어서 낮 하늘에 숨어요. 밤 12시 남쪽 하늘에서 보려면 ${seeM}월까지 기다려야 해요.`;
+    ? `${nm}의 생일은 ${s.range}예요. 이때 지구에서 보면 ${s.n}${josa(s.n,"이","가")} 태양 쪽(낮)에 있어서, 생일 별자리는 햇빛에 가려 보이지 않아요. 지구가 ${seeM}월 궤도까지 공전하면 밤하늘에서 볼 수 있어요.`
+    : `${m}월 ${d}일생의 생일 별자리는 ${nm}예요. 생일날에는 ${s.n}${josa(s.n,"이","가")} 태양 쪽(낮)에 있어서 햇빛에 가려 보이지 않아요. 지구가 약 6개월 뒤인 ${seeM}월 궤도까지 공전해야 밤하늘에서 볼 수 있어요.`;
   msg.hidden = false; $("bdayRow").hidden = false;
   travelTo(doy); chime(.08, [523.25, 659.25, 783.99]);
 }
 $("bdayForm").addEventListener("submit", e => { e.preventDefault(); stopPlay(); setBirthday(doyOf(+bm.value, +bd.value), false); });
+/* 수업 도입의 민우: 다음 주(12월 초) 생일, 생일 별자리는 사수자리(궁수자리) */
+$("minwoo").addEventListener("click", () => { stopPlay(); setBirthday(doyOf(12, 1), false); });
 $("goSix").addEventListener("click", () => { if (!S.bday) return; stopPlay(); travelTo(seeDoyOf(S.bday.sign)); setTimeout(sparkle, reduce ? 0 : 1500); chime(); });
 $("goBack").addEventListener("click", () => { if (!S.bday) return; stopPlay(); travelTo(S.bday.doy, -1); chime(); });
 
