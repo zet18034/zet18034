@@ -358,6 +358,8 @@ SIGNS.forEach((g,i) => g.c = 30*i + 15);
 const BOUNDS = [...Array(12).keys()].map(i => 30*i);
 const LON_OFF = 0;
 const nearestTo = L => { let b = 0, ba = 999; for (let i=0;i<12;i++){ const A = Math.abs(wrap180(SIGNS[i].c - L)); if (A < ba){ ba = A; b = i; } } return b; };
+/* 궤도 위 달 표시: 그달 생일 별자리 기간의 한가운데 날(1월 → 염소자리 기간 한가운데 1월 5일). 교구처럼 달마다 별자리와 정확히 맞는다 */
+const monthDoy = m => { const k = (m + 8) % 12; return Math.round(SIGNS[k].start + SIGNS[k].len/2) % 365; };
 const seeDoyOf = i => doyFromLam(SIGNS[i].c - 180 - LON_OFF);   // 그 별자리가 밤 12시 남쪽 하늘 한가운데 오는 날
 function wrap180(a){ return mod(a + 180, 360) - 180; }
 const rad = d => d*Math.PI/180;
@@ -431,13 +433,13 @@ const sunTxt = el("text", {x:C, y:C+5.5, "text-anchor":"middle", style:"font-fam
 /* 월 표시 */
 const marks = [];
 for (let m=1;m<=12;m++){
-  const a = th(lam(doyOf(m,15))) + 180, [x,y] = P(R_ORB, a), [lx,ly] = P(R_ORB - 52, a);
+  const a = th(lam(monthDoy(m))) + 180, [x,y] = P(R_ORB, a), [lx,ly] = P(R_ORB - 52, a);
   const g = el("g", {class:"mk hit", tabindex:0, role:"button", "aria-label":`${m}월로 지구 옮기기`}, mainL);
   el("circle", {cx:x, cy:y, r:24, fill:"transparent"}, g);
   el("circle", {cx:lx, cy:ly, r:18, fill:"transparent"}, g);
   el("circle", {class:"dot", cx:x, cy:y, r:4}, g);
   const t = el("text", {x:lx, y:ly+5, "text-anchor":"middle"}, g); t.textContent = `${m}월`;
-  g.addEventListener("click", () => { stopPlay(); travelTo(doyOf(m,15)); chime(); });
+  g.addEventListener("click", () => { stopPlay(); travelTo(monthDoy(m)); chime(); });
   g.addEventListener("keydown", e => { if (e.key==="Enter"||e.key===" "){ e.preventDefault(); g.dispatchEvent(new Event("click")); } });
   marks.push(g);
 }
@@ -702,7 +704,7 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowRight" || e.key === "ArrowLeft"){
     e.preventDefault(); stopPlay();
     const [m] = mdOf(S.doy), nm = e.key === "ArrowRight" ? m % 12 + 1 : (m + 10) % 12 + 1;
-    travelTo(doyOf(nm,15), e.key === "ArrowRight" ? 1 : -1); chime();
+    travelTo(monthDoy(nm), e.key === "ArrowRight" ? 1 : -1); chime();
   }
 });
 
@@ -735,9 +737,9 @@ const southAt = doy => nearestTo(lam(doy) + 180 + LON_OFF);
 function makeQ(){
   const type = Math.floor(rnd()*3);
   if (type === 0){
-    const m = 1 + Math.floor(rnd()*12), ans = southAt(doyOf(m,15));
+    const m = 1 + Math.floor(rnd()*12), ans = southAt(monthDoy(m));
     const opts = shuffle([ans, ...shuffle([...Array(12).keys()].filter(i => i !== ans)).slice(0,3)]);
-    return {text:`${m}월 밤 12시, 남쪽 하늘 한가운데에 보이는 별자리는?`, opts:opts.map(i => ({k:i, t:`${SIGNS[i].e}  ${SIGNS[i].n}`})), ans, show:doyOf(m,15),
+    return {text:`${m}월 밤 12시, 남쪽 하늘 한가운데에 보이는 별자리는?`, opts:opts.map(i => ({k:i, t:`${SIGNS[i].e}  ${SIGNS[i].n}`})), ans, show:monthDoy(m),
       why:`${m}월에 지구에서 태양을 등지면 ${SIGNS[ans].n} 쪽을 바라보게 돼요.`};
   }
   if (type === 1){
@@ -747,7 +749,7 @@ function makeQ(){
     return {text:`생일이 ${m}월 ${d}일인 친구의 생일 별자리(${SIGNS[sign].n})가 밤 12시 남쪽 하늘에 잘 보이는 때는?`, opts:shuffle([ans, ...pool]).map(x => ({k:x, t:`${x}월`})), ans, show:seeDoy,
       why:`생일에는 태양이 ${SIGNS[sign].n} 앞에 있어요. 약 6개월이 지나 지구가 반대편으로 가면 밤하늘에서 볼 수 있어요.`};
   }
-  const m = 1 + Math.floor(rnd()*12), doy = doyOf(m,15), Ls = lam(doy), ans = nearestTo(Ls);
+  const m = 1 + Math.floor(rnd()*12), doy = monthDoy(m), Ls = lam(doy), ans = nearestTo(Ls);
   const visible = [...Array(12).keys()].filter(i => Math.abs(wrap180(centerL(i) - Ls - 180 - LON_OFF)) <= 60);
   const opts = shuffle([ans, ...shuffle(visible).slice(0,3)]);
   return {text:`${m}월 밤에 볼 수 없는 별자리는?`, opts:opts.map(i => ({k:i, t:`${SIGNS[i].e}  ${SIGNS[i].n}`})), ans, show:doy,
