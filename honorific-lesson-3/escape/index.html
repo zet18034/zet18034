@@ -120,9 +120,11 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 .spot circle.c{fill:#F2EDE2;stroke:#1F1B22;stroke-width:3.5;filter:url(#glow)}
 .spot text{font:700 22px 'Gowun Batang';fill:#1F1B22;text-anchor:middle;dominant-baseline:central;pointer-events:none}
 .spot:hover circle.c{fill:#FFF0C8}
-.spot.got circle.c{fill:#A9A397;stroke:#4A4550;filter:none}
+.spot circle.c{stroke-width:4.5}
+.spot.t-red circle.c{fill:#F6D2CC;stroke:#A8231B}.spot.t-gold circle.c{fill:#F6E3A6;stroke:#8E6418;stroke-dasharray:7 4}.spot.t-blue circle.c{fill:#CFE0F2;stroke:#2C5A86}.spot.t-green circle.c{fill:#C7E8D4;stroke:#2B6E4D}
+.spot.got circle.c{opacity:.5;filter:none}
 .spot.got text{fill:#3A3540}
-.spot.bonus circle.c{fill:#E9C36A;stroke-dasharray:6 4}
+.legend{display:flex;gap:6px;justify-content:center;margin-top:10px;flex-wrap:wrap}.legend .lg{font:13px 'Jua';padding:2px 10px;border-radius:999px;border:2.5px solid;background:#fff}.lg.t-red{border-color:#A8231B;color:#A8231B;background:#F6D2CC}.lg.t-gold{border-color:#8E6418;color:#6E4E12;background:#F6E3A6;border-style:dashed}.lg.t-blue{border-color:#2C5A86;color:#2C5A86;background:#CFE0F2}.lg.t-green{border-color:#2B6E4D;color:#2B6E4D;background:#C7E8D4}
 .spot .pulse{fill:none;stroke:#FF6A55;stroke-width:4;opacity:0;transform-box:fill-box;transform-origin:center;animation:pulse 1.8s ease-out infinite}
 .spot.got .pulse{display:none}
 @keyframes pulse{0%{opacity:.9;transform:scale(1)}100%{opacity:0;transform:scale(1.7)}}
@@ -325,15 +327,17 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
     <div class="rulecard">
       <h2>마지막 검토위원에게</h2>
       <p class="story">밤 11시 40분, 수능 출제 본부. 갑자기 정전이 되고 붉은 비상등만 켜졌다. 보안 시스템이 다시 켜지는 <b>자정 10분</b>이 되면 본부는 시험이 끝날 때까지 봉인된다. 먼저 사라진 검토위원의 책상에서 쪽지 한 장이 나왔다.</p>
-      <p class="memo">"문장을 끝까지 쪼개 봐. 높임이 누구를 향하는지… 그것만이 문을 연다."</p>
+      <p class="memo">“괄호 안에 숨은 사람부터 찾아. 바깥 문장만 보면 다 틀려.<br>장치는 거짓말을 안 해. 숫자만 맞으면 열린다.” — 0시 10분 전, K</p>
       <ul>
         <li><i style="--c:#33363D">🗺</i><span>평면도에서 <b>방을 눌러</b> 들어간다.</span></li>
-        <li><i style="--c:var(--red)">35</i><span>손전등으로 방을 비추며 <b>번호</b>를 눌러 카드를 뒤집는다.</span></li>
-        <li><i style="--c:var(--gold)">🔑</i><span>빨간 카드를 풀어 나온 숫자로 <b>장치</b>를 열면 열쇠를 얻는다. 노란 <b>보너스</b> 카드는 선택(−30초).</span></li>
-        <li><i style="--c:var(--green)">🚨</i><span>틀리면 경보 +30초, 힌트 +1분. 근거는 검토 일지에!</span></li>
+        <li><i style="--c:var(--red)">35</i><span>손전등으로 방을 비추며 <b>번호</b>를 눌러 카드를 뒤집는다. 동그라미 색: <b style="color:var(--red)">빨강</b> 문제 · <b style="color:var(--gold)">노랑</b> 보너스 · <b style="color:var(--blue)">파랑</b> 단서 · <b style="color:var(--green)">초록</b> 장치</span></li>
+        <li><i style="--c:var(--gold)">🔑</i><span>문제를 풀면 번호가 드러난다. 단서 카드의 계산법대로 <b>더하거나 빼서</b> 장치를 열면 열쇠를 얻는다.</span></li>
+        <li><i style="--c:var(--green)">🚨</i><span>틀리면 경보 +30초, 힌트 +1분, 보너스 −30초. 근거는 검토 일지에!</span></li>
       </ul>
-      <p style="margin-top:14px;font:15px 'Jua'">우리 팀 번호</p>
+      <p style="margin-top:14px;font:15px 'Jua'">우리 팀 번호와 팀 이름</p>
       <div class="teams" id="teams"></div>
+      <input id="tname" maxlength="12" placeholder="팀 이름 (예: 마지막 검토위원)" autocomplete="off" style="width:100%;margin-bottom:12px;padding:11px 14px;border-radius:10px;border:2.5px solid #1F1B22;font:18px 'Jua';color:#1F1B22">
+      <p id="liveNote" hidden style="margin:-4px 0 10px;font:13px 'Jua';color:#2B6E4D">● 선생님 관리자 화면과 연결된 수업입니다.</p>
       <button class="btn red" id="startBtn" disabled>손전등을 켠다</button>
     </div>
   </section>
@@ -379,9 +383,10 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 <div id="modal" hidden><div class="flip" id="flip"><div class="in"><div class="face back"><b id="backNo">00</b></div><div class="face front" id="front"></div></div></div></div>
 <div id="alarm" hidden><div class="a"><h3>🚨 경보!</h3><p id="alarmTxt"></p><div class="pen">+30초</div><button class="btn red" id="alarmOk">다시 생각해 보기</button></div></div>
 <div id="keyget" hidden><div class="k" id="keyBody"></div></div>
-<div id="pauseCov" hidden><div><h3>일시정지</h3><p>시간이 멈췄다. 선생님 설명을 들어 보자.</p><button class="btn sm" id="resume">계속하기</button></div></div>
+<div id="pauseCov" hidden><div><h3>일시정지</h3><p id="pauseTxt">시간이 멈췄다. 선생님 설명을 들어 보자.</p><button class="btn sm" id="resume">계속하기</button></div></div>
 <div id="toast"></div>
 <canvas id="fx"></canvas>
+<script src="cards.js"></script>
 <button id="tbtn">교사</button>
 <div id="teacher" class="tmodal" hidden><div class="c">
   <h3>교사 메뉴</h3>
@@ -421,6 +426,7 @@ const ICON = {
   form:()=>`<svg viewBox="0 0 120 90"><g filter="url(#sh2)"><rect x="28" y="8" width="64" height="76" fill="#F2EDE2" ${O}/></g><text x="60" y="26" font-family="Jua" font-size="12" text-anchor="middle" fill="#1F1B22">검토 의견서</text><path d="M38 40h44M38 52h44" stroke="#B4AC98" stroke-width="3"/><circle cx="76" cy="68" r="10" fill="none" stroke="#A8231B" stroke-width="3"/></svg>`,
   scrap:()=>`<svg viewBox="0 0 120 90"><g filter="url(#sh2)"><path d="M22 24 L92 16 L98 62 L30 74Z" fill="#F2EDE2" ${O}/></g><path d="M34 36h44M36 48h40M38 60h30" stroke="#B4AC98" stroke-width="3"/><path d="M84 70 l14 -6" stroke="#1F1B22" stroke-width="3"/></svg>`,
   chart:()=>`<svg viewBox="0 0 120 90"><g filter="url(#sh2)"><rect x="20" y="10" width="80" height="70" fill="#F2EDE2" ${O}/></g><text x="60" y="28" font-family="Jua" font-size="12" text-anchor="middle" fill="#1F1B22">검토 지시서</text><path d="M30 42h60M30 54h50M30 66h56" stroke="#B4AC98" stroke-width="3"/></svg>`,
+  envB:()=>ICON.env('#DDE5EE'), envC:()=>ICON.env('#EEE3C0'),
   key:()=>`<svg viewBox="0 0 120 90"><g filter="url(#sh2)"><circle cx="38" cy="45" r="16" fill="#E0B252" ${O}/><rect x="52" y="40" width="46" height="10" fill="#E0B252" ${O}/><rect x="84" y="50" width="8" height="12" fill="#E0B252" ${O}/></g><circle cx="38" cy="45" r="6" fill="#D9D2C2" ${O}/></svg>`
 };
 
@@ -470,109 +476,7 @@ r4: `${WALLS('wood2')}
 };
 
 // ==================== 시나리오 ====================
-const ROOMS = [
-{ id:'r1', name:'문서 수발실', short:'수발실', key:'7', art:'r1',
-  cap:'본부를 드나드는 편지가 모이는 곳. 분류대 위 편지들에는 빨간 펜으로 대괄호가 그어져 있다.', pen:'안긴문장마다 따로 따져라',
-  spots:[{n:12,x:126,y:262},{n:25,x:274,y:262},{n:38,x:200,y:196},{n:7,x:52,y:246},{n:49,x:333,y:362}],
-  cards:{
-    12:{c:'red', ty:'편지', ic:'env', title:'편지 A', digit:'4', sent:'아버지께서는 [삼촌이 할아버지를 모시고 왔음]을 뒤늦게 아셨다.',
-      opts:[['1','명사절 속 ‘모시다’는 명사절의 주어인 삼촌을 높인다.'],['2','안은문장의 ‘-시-’는 할아버지를 높인다.'],['3','명사절은 안은문장에서 목적어로 쓰였고, 명사절 속 객체 높임의 대상은 할아버지이다.'],['4','‘알다’는 세 자리 서술어이다.']], ans:'3',
-      traps:{'1':'‘모시다’는 데리고 오는 사람(삼촌)이 아니라 모심을 받는 사람, 곧 목적어 ‘할아버지’를 높이는 객체 높임이에요.','2':'‘아셨다’의 ‘-시-’는 안은문장의 주어 ‘아버지께서’를 높여요.','4':'‘알다’는 누가, 무엇을 → 두 자리예요. 명사절 전체가 목적어 하나예요.'},
-      hint:'명사절 뒤에 붙은 조사 ‘을’을 보세요. 그리고 ‘모시다’는 하는 사람과 받는 사람 중 누구를 높일까요?',
-      done:'명사절 ‘삼촌이 할아버지를 모시고 왔음’ + ‘을’ → 안은문장의 <b>목적어</b>. 명사절 안의 ‘모시다’ → 할아버지(<b>객체 높임</b>), 안은문장의 ‘께서·-시-’ → 아버지(주체 높임).'},
-    25:{c:'red', ty:'편지', ic:()=>ICON.env('#DDE5EE'), title:'편지 B', digit:'7', sent:'할아버지께서는 [손이 유난히 크시다].',
-      opts:[['1','‘-시-’가 서술절의 주어 ‘손’을 높였으므로 사물 높임으로 잘못 쓴 문장이다.'],['2','서술절이 안은문장의 서술어로 쓰였고, ‘-시-’는 신체를 높여 할아버지를 간접적으로 높인다.'],['3','주어가 하나뿐인 홑문장이다.'],['4','‘크다’는 두 자리 서술어이다.']], ans:'2',
-      traps:{'1':'손은 할아버지의 신체예요. 신체를 높여 그 사람을 높이는 간접 높임은 바른 표현이에요.','3':'주어가 ‘할아버지께서는’과 ‘손이’ 두 개예요. 서술절을 안은 겹문장이에요.','4':'‘손이 크다’의 ‘크다’는 주어 하나만 필요한 한 자리 서술어예요.'},
-      hint:'주어처럼 보이는 말이 몇 개인지 세어 보세요. 손은 누구의 것인가요?',
-      done:'‘손이 유난히 크시다’는 <b>서술절</b>로 안은문장의 서술어. 할아버지의 신체 ‘손’을 높여 할아버지를 높인 <b>간접 높임</b>이에요.'},
-    38:{c:'gold', bonus:true, ty:'보너스', ic:()=>ICON.env('#EEE3C0'), title:'구겨진 편지', sent:'[오랫동안 편찮으셨던] 외할머니께서 마침내 퇴원하셨다.',
-      opts:[['1','관형절의 ‘-시-’와 안은문장의 ‘-시-’가 높이는 대상은 서로 다르다.'],['2','관형절의 생략된 주어는 ‘외할머니’이며, ‘-시-’로 높였다.'],['3','‘퇴원하다’는 주어와 목적어가 필요한 두 자리 서술어이다.'],['4','이 문장에는 객체 높임이 실현되어 있다.']], ans:'2',
-      traps:{'1':'둘 다 외할머니를 높여요. 관형절의 생략된 주어도 외할머니예요.','3':'‘퇴원하다’에는 목적어가 필요 없어요.','4':'목적어·부사어를 높이는 표현(께, 모시다, 드리다 등)이 없어요.'},
-      hint:'관형절을 문장으로 풀어 보세요: ‘(누가) 오랫동안 편찮으셨다’.',
-      done:'관형절 ‘(외할머니께서) 오랫동안 편찮으셨다’의 생략된 주어는 꾸밈을 받는 외할머니. 두 ‘-시-’ 모두 외할머니를 높여요.'},
-    7:{c:'blue', ty:'단서', ic:'memo', title:'벽에 붙은 메모', info:`<div class="rules"><p><b>안긴문장 알아보기</b></p><p>명사절 ‘-음/-기’ · 관형절 ‘-은/-는/-을/-던’ · 서술절(주어가 둘) · 인용절 ‘-고/-라고’</p><p style="margin-top:6px"><b>높임 판별</b>: 주어 → 주체 높임 / 목적어·부사어 → 객체 높임 / 듣는 사람 → 상대 높임</p><p class="pen">대괄호 안과 밖을 따로 봐. 같은 사람이 아닐 수 있어.</p></div>`},
-    49:{c:'green', ty:'장치', ic:'safe', title:'수발실 금고', dev:{len:2, code:'47', ask:'편지 A와 편지 B를 풀면 나오는 숫자를 <em>A → B</em> 순서로 넣어라.'}}
-  },
-  why:`<table><tr><th>편지</th><th>안긴문장</th><th>높임</th></tr>
-    <tr><td>A</td><td>명사절 → 안은문장의 목적어</td><td class="l">명사절 속 ‘모시다’ → 할아버지(객체) / ‘아셨다’ → 아버지(주체)</td></tr>
-    <tr><td>B</td><td>서술절 → 안은문장의 서술어</td><td class="l">‘손’을 높여 할아버지를 간접 높임</td></tr></table>
-    <p>높임은 <b>안긴문장 안과 밖에서 따로</b> 따져야 합니다. 그리고 객체 높임은 <b>받는 사람</b>을 높입니다.</p>`},
-{ id:'r2', name:'구내식당', short:'식당', key:'3', art:'r2',
-  cap:'식은 음식 냄새. 안내문마다 높임이 넘쳐 난다. 사람이 아닌 것까지 높여 버린 것은 누구일까.', pen:'사람인가, 사람의 것인가, 그냥 물건인가',
-  spots:[{n:14,x:85,y:368},{n:26,x:52,y:244},{n:31,x:244,y:322},{n:8,x:344,y:132},{n:40,x:366,y:268}],
-  cards:{
-    14:{c:'red', ty:'안내문', ic:'sign', title:'배송 안내문', digit:'5', sent:'[고객님께서 주문하신] 상품은 내일 도착하실 예정입니다.',
-      opts:[['1','관형절의 ‘-시-’는 꾸밈을 받는 ‘상품’을 높인다.'],['2','‘고객님께서’는 안은문장의 주어이다.'],['3','‘-습니다’는 상품을 높이는 상대 높임이다.'],['4','관형절의 ‘-시-’는 주어인 고객을 높여 적절하지만, ‘도착하실’은 주어인 ‘상품’을 높여 적절하지 않다.']], ans:'4',
-      traps:{'1':'관형절 ‘고객님께서 (상품을) 주문하시다’의 주어는 고객님이에요.','2':'‘고객님께서’는 관형절의 주어예요. 안은문장의 주어는 ‘상품은’이에요.','3':'상대 높임은 이 말을 듣는 사람(고객)을 높여요.'},
-      hint:'관형절 안과 밖에서 주어를 각각 찾으세요. ‘도착하다’의 주어는 무엇인가요?',
-      done:'‘주문하신’은 관형절의 주어 고객을 높여 바름. ‘도착하실’은 상품을 높인 <b>사물 높임</b> → ‘도착할 예정입니다’.'},
-    26:{c:'red', ty:'게시판', ic:'notice', title:'게시판 메모', digit:'1', sent:'㉠ 교장 선생님께서는 지금 교무실에 계신다.<br>㉡ 교장 선생님께서는 [학생들에 대한 걱정이 많으시다].',
-      opts:[['1','㉠의 ‘계시다’는 주체 높임의 특수 어휘이고, ‘교무실에’는 서술어가 반드시 필요로 하는 부사어이다.'],['2','㉡의 ‘-시-’는 서술절의 주어 ‘걱정’을 직접 높인 것이다.'],['3','㉠의 ‘계신다’를 ‘있으시다’로 바꾸어도 높임의 방식은 같다.'],['4','㉡의 ‘교장 선생님께서는’은 서술절의 주어이다.']], ans:'1',
-      traps:{'2':'‘걱정’을 높여 결국 교장 선생님을 높인 간접 높임이에요.','3':'사람이 직접 있으면 ‘계시다’, 간접 높임은 ‘있으시다’예요. 방식이 달라요.','4':'서술절 ‘학생들에 대한 걱정이 많으시다’의 주어는 ‘걱정이’예요.'},
-      hint:'‘계시다’는 ‘있다’의 높임말이에요. ‘어디에’가 빠지면 문장이 어떻게 되나요?',
-      done:'㉠ ‘계시다’ = 주체 높임 특수 어휘, ‘교무실에’ = <b>필수적 부사어</b>. ㉡은 서술절의 주어 ‘걱정’을 높인 <b>간접 높임</b>.'},
-    31:{c:'gold', bonus:true, ty:'보너스', ic:'note', title:'식탁 위 쪽지', sent:'할머니께서 [버스가 곧 온다고] 하셨는데, 그 버스는 이미 떠나셨다.',
-      opts:[['1','인용절 ‘버스가 곧 온다고’의 주어는 할머니이다.'],['2','뒤 절의 ‘-시-’는 앞 절의 주어인 할머니를 높이므로 적절하다.'],['3','앞 절의 ‘께서’와 ‘-시-’는 할머니를 높이고, 뒤 절의 ‘떠나셨다’는 주어 ‘버스’를 높였으므로 고쳐야 한다.'],['4','인용절에 주체 높임이 실현되어 있다.']], ans:'3',
-      traps:{'1':'인용절의 주어는 ‘버스가’예요.','2':'‘-시-’는 자기 절의 주어를 높여요. 뒤 절의 주어는 버스예요.','4':'‘온다고’에는 ‘-시-’가 없어요.'},
-      hint:'절마다 주어를 찾으세요. 앞 절, 인용절, 뒤 절.',
-      done:'앞 절 ‘하셨는데’ → 할머니(바름). 뒤 절 ‘떠나셨다’ → 버스(사물 높임) → ‘그 버스는 이미 <b>떠났다</b>’.'},
-    8:{c:'blue', ty:'단서', ic:'fridge', title:'냉장고 메모', info:`<div class="rules"><p><b>간접 높임</b>: 높일 사람의 <b>신체, 소유물, 생각, 가족</b>처럼 그 사람과 밀접한 대상을 ‘-(으)시-’로 높여 결국 그 사람을 높이는 것.</p><p style="margin-top:6px">※ 사람이 직접 있으면 <b>계시다</b>, 간접 높임은 <b>있으시다</b>.</p><p>※ 그 사람과 상관없는 물건을 높이면 <b>사물 높임</b>(잘못).</p><p class="pen">커피도, 상품도, 버스도 사람이 아니야.</p></div>`},
-    40:{c:'green', ty:'장치', ic:'alarm', title:'사물 높임 경보기', dev:{len:2, code:'51', ask:'카드 14 → 26 순서로, 풀어서 나온 숫자를 넣어라.'}}
-  },
-  why:`<table><tr><th>카드</th><th>판정</th></tr>
-    <tr><td class="l">주문하신 (관형절의 주어 고객)</td><td>○</td></tr><tr><td class="l">도착하실 (주어 상품)</td><td>× 사물 높임</td></tr>
-    <tr><td class="l">교무실에 계신다 (직접)</td><td>○ 필수 부사어</td></tr><tr><td class="l">걱정이 많으시다 (서술절)</td><td>○ 간접 높임</td></tr></table>
-    <p>‘-시-’가 붙은 서술어의 <b>주어</b>를 먼저 찾고, 그 주어가 <b>사람과 밀접한 것</b>인지 따지세요.</p>`},
-{ id:'r3', name:'출제실', short:'출제실', key:'4', art:'r3',
-  cap:'2026학년도 수능 37번을 검토하던 책상. 모니터에는 같은 말이 반복해서 떠 있다.', pen:'자릿수… -시-… 자릿수…',
-  spots:[{n:16,x:200,y:58},{n:27,x:186,y:128},{n:33,x:290,y:236},{n:9,x:358,y:300},{n:44,x:95,y:396}],
-  cards:{
-    16:{c:'red', ty:'화이트보드', ic:'board', title:'화이트보드', digit:'8', sent:'할머니께서 손녀에게 [직접 뜨신] 목도리를 선물로 주셨다.',
-      opts:[['1','‘손녀에게’는 생략해도 문장이 성립하는 부사어이다.'],['2','‘주다’는 주어·목적어·부사어를 요구하는 세 자리 서술어이며, ‘-시-’는 할머니를 높인다.'],['3','관형절 ‘직접 뜨신’의 생략된 주어는 손녀이다.'],['4','‘주셨다’를 ‘드리셨다’로 바꾸어야 객체 높임이 바르게 실현된다.']], ans:'2',
-      traps:{'1':'‘주다’는 누가, 누구에게, 무엇을이 필요해요. ‘손녀에게’는 필수적 부사어예요.','3':'목도리를 뜬 사람은 할머니예요. 관형절의 ‘-시-’도 할머니를 높여요.','4':'‘드리다’는 받는 사람을 높이는 말이에요. 손녀는 높일 대상이 아니에요.'},
-      hint:'‘주다’에 꼭 필요한 성분을 세어 보세요. 누가? 누구에게? 무엇을?',
-      done:'‘주다’ = 주어 + 목적어 + 필수 부사어 → <b>세 자리 서술어</b>. 관형절과 안은문장의 ‘-시-’ 모두 할머니를 높여요.'},
-    27:{c:'red', ty:'책상 위', ic:'drawer', title:'흩어진 원고', digit:'2', sent:'삼촌은 [동생이 타 준] 커피를 단숨에 마셨다.',
-      opts:[['1','‘마셨다’에는 주체를 높이는 ‘-시-’가 들어 있다.'],['2','관형절 ‘동생이 타 준’의 주어는 삼촌이다.'],['3','‘마셨다’는 ‘마시- + -었- + -다’로 분석되므로, 이 문장에는 주체 높임이 실현되지 않았다.'],['4','‘마시다’는 한 자리 서술어이다.']], ans:'3',
-      traps:{'1':'함정! ‘마셨다’는 ‘마시- + -었-’이에요. ‘시’는 어간 ‘마시-’의 일부예요. (수능 37번의 ‘다셨다’와 같은 함정)','2':'커피를 타 준 사람은 동생이에요.','4':'‘마시다’는 누가, 무엇을 → 두 자리예요.'},
-      hint:'‘마셨다’를 형태소로 쪼개 보세요. ‘마-’일까요, ‘마시-’일까요?',
-      done:'‘마셨다’ = <b>마시- + -었- + -다</b>. ‘시’는 어간의 일부라 주체 높임이 아니에요. ‘다시다’, ‘모시다’도 마찬가지예요.'},
-    33:{c:'gold', bonus:true, ty:'보너스', ic:'monitor', title:'모니터 속 문장', sent:'[새로 부임하신] 교감 선생님께서 모든 학생에게 웃으며 인사하셨다.',
-      opts:[['1','‘모든’은 관형사로서 관형어로 쓰였고, 관형절의 생략된 주어는 교감 선생님이다.'],['2','‘새로’와 ‘모든’은 모두 관형사이다.'],['3','관형절의 ‘-시-’와 안은문장의 ‘-시-’는 서로 다른 대상을 높인다.'],['4','‘학생에게’를 ‘학생께’로 바꾸어야 한다.']], ans:'1',
-      traps:{'2':'‘새로’는 ‘부임하다’를 꾸미는 부사예요.','3':'둘 다 교감 선생님을 높여요.','4':'‘께’는 높일 대상에게 써요. 학생은 높일 대상이 아니에요.'},
-      hint:'‘새로’가 꾸미는 말이 체언인지 용언인지 보세요.',
-      done:'‘모든’ = <b>관형사</b>(관형어). ‘새로’ = 부사. 관형절 ‘(교감 선생님께서) 새로 부임하시다’.'},
-    9:{c:'blue', ty:'단서', ic:'book', title:'책장 속 문법 사전', info:`<div class="rules"><p><b>서술어 자릿수</b>: 주어를 포함해 꼭 필요한 성분의 수. 크다(누가) 한 자리 / 마시다(누가, 무엇을) 두 자리 / 주다·드리다(누가, 누구에게, 무엇을) 세 자리.</p><p style="margin-top:6px"><b>‘-시-’ 구별</b>: 마시다·다시다·모시다의 ‘시’는 어간의 일부.</p><p><b>관형사</b>: 새, 헌, 온갖, 모든, 이·그·저, 한·두·세·몇 …</p><p class="pen">수능 37번… 사람들이 다 ⑤에서 넘어졌지.</p></div>`},
-    44:{c:'green', ty:'장치', ic:'form', title:'검토 의견서', dev:{len:2, code:'82', ask:'화이트보드(16) → 원고(27) 순서로 숫자를 넣어라.'}}
-  },
-  why:`<table><tr><th>카드</th><th>핵심</th></tr><tr><td>16</td><td class="l">‘주다’ = 세 자리, ‘손녀에게’는 필수 부사어</td></tr><tr><td>27</td><td class="l">‘마셨다’ = 마시- + -었-, 주체 높임 없음</td></tr></table>
-    <p>2026 수능 37번이 물은 것도 바로 이것: <b>관형사 / 선어말 어미 ‘-시-’ / 서술어 자릿수</b>.</p>`},
-{ id:'r4', name:'검토실', short:'검토실', key:'5', art:'r4',
-  cap:'마지막 방. 회의 탁자 위에 검토 지시서가 흩어져 있다. 누군가 급히 떠난 흔적.', pen:'높임을 받은 사람이 바깥 문장에서는 어디에 있는지',
-  spots:[{n:18,x:198,y:228},{n:29,x:200,y:58},{n:35,x:226,y:300},{n:10,x:300,y:400},{n:47,x:118,y:88}],
-  cards:{
-    18:{c:'red', ty:'지시서', ic:'chart', title:'검토 지시서 1', digit:'6', sent:'언니는 [내가 어제 찾아뵌] 은사님을 오늘 우연히 만났다.',
-      opts:[['1','관형절의 객체 높임 대상은 안은문장에서 목적어로 쓰였다.'],['2','‘찾아뵌’은 주체인 ‘나’를 높인다.'],['3','관형절의 객체 높임 대상은 안은문장에서 부사어로 쓰였다.'],['4','안은문장에 주체 높임이 실현되어 있다.']], ans:'1',
-      traps:{'2':'‘찾아뵙다’는 찾아가 만나는 대상(은사님)을 높이는 객체 높임이에요.','3':'‘은사님을’에 목적격 조사 ‘을’이 붙었어요.','4':'‘만났다’에 ‘-시-’가 없어요. 안은문장의 주어는 언니예요.'},
-      hint:'관형절을 문장으로 풀어 보세요: ‘내가 어제 은사님을 찾아뵙다’. 그다음 바깥 문장에서 ‘은사님’ 뒤의 조사를 보세요.',
-      done:'관형절 ‘내가 은사님을 찾아뵙다’ → 객체 높임 대상 은사님 → 안은문장에서 ‘은사님<b>을</b>’ = <b>목적어</b>.'},
-    29:{c:'red', ty:'지시서', ic:'chart', title:'검토 지시서 2', digit:'9', head:'조건: 안긴문장의 <em>주체</em> 높임 대상이 안은문장에서 <em>부사어</em>로 쓰인 문장',
-      ask:'조건에 맞는 문장은?',
-      opts:[['1','형은 [시골에 계신] 조부모님을 서울로 모셨다.'],['2','나는 [선생님께서 추천하신] 책을 읽었다.'],['3','[정원을 가꾸시던] 할아버지께서 환하게 웃으셨다.'],['4','나는 [감기에 걸리신] 어머니께 따뜻한 차를 드렸다.']], ans:'4',
-      traps:{'1':'조부모님은 안은문장에서 ‘조부모님을’, 곧 목적어예요.','2':'선생님은 관형절 안에만 있고, 안은문장의 성분이 아니에요.','3':'할아버지는 안은문장에서 ‘할아버지께서’, 곧 주어예요.'},
-      hint:'먼저 [ ] 속 ‘-시-’가 누구를 높이는지 찾고, 그 사람이 바깥 문장에서 어떤 조사와 함께 쓰였는지 보세요.',
-      done:'관형절 ‘(어머니께서) 감기에 걸리시다’ → 주체 높임 대상 어머니 → 안은문장에서 ‘어머니<b>께</b>’ = <b>부사어</b>.'},
-    35:{c:'gold', bonus:true, ty:'보너스', ic:'scrap', title:'찢어진 지시서', sent:'동생은 [명절에 선물을 드릴] 이모님께 미리 전화를 걸었다.',
-      opts:[['1','관형절의 생략된 주어는 이모님이다.'],['2','‘걸었다’에는 이모님을 높이는 선어말 어미가 있다.'],['3','‘드리다’는 주어와 목적어만 필요로 하는 두 자리 서술어이다.'],['4','관형절의 객체 높임 대상인 이모님은 안은문장에서 부사어로 쓰였다.']], ans:'4',
-      traps:{'1':'선물을 드릴 사람은 동생이에요.','2':'‘걸었다’에는 ‘-시-’가 없어요. 있더라도 ‘-시-’는 주어를 높여요.','3':'‘드리다’는 누가, 누구에게, 무엇을 → 세 자리예요.'},
-      hint:'관형절: ‘(동생이) 명절에 이모님께 선물을 드리다’.',
-      done:'관형절의 객체 높임 대상 이모님 → 안은문장에서 ‘이모님<b>께</b>’ = <b>부사어</b>.'},
-    10:{c:'blue', ty:'단서', ic:'scrap', title:'파쇄기 옆 종잇조각', info:`<div class="rules"><p><b>떼어 내기 연습</b></p><p>[학교에 오신] 할머니께서 교실을 둘러보셨다.</p><p>① 안긴문장: ‘할머니께서 학교에 오시다’<br>② 높임: <b>주체 높임</b>, 대상은 할머니<br>③ 바깥 문장에서: ‘할머니께서’ → <b>주어</b></p><p style="margin-top:6px">조사로 성분 확인: 이/가·께서 = 주어, 을/를 = 목적어, 에게·께 = 부사어</p><p class="pen">2022학년도 9월 38번도 이렇게 풀었어.</p></div>`},
-    47:{c:'green', ty:'장치', ic:'form', title:'성분 추적기', dev:{len:2, code:'69', ask:'지시서 1 → 지시서 2 순서로 숫자를 넣어라.'}}
-  },
-  why:`<table><tr><th>안긴문장의 높임</th><th>안은문장에서</th></tr><tr><td class="l">객체: 은사님 (찾아뵌)</td><td>목적어 (을)</td></tr><tr><td class="l">주체: 어머니 (걸리신)</td><td>부사어 (께)</td></tr></table>
-    <p><b>높임의 종류</b>(주체/객체)와 <b>문장 성분</b>(주어/목적어/부사어)을 따로 따지면 2022학년도 9월 모평 38번도 풀려요.</p>`}
-];
+const ROOMS = window.ESC_ROOMS;
 const FINAL_CODE = ROOMS.map(r => r.key).join('');
 const MAP = [{x:40,y:40,w:400,h:230,door:[240,270]},{x:500,y:40,w:400,h:230,door:[700,270]},{x:40,y:370,w:400,h:230,door:[240,370]},{x:500,y:370,w:400,h:230,door:[700,370]}];
 const START = [470,320], GATE = [955,320];
@@ -582,7 +486,7 @@ const reqAsks = R => Object.keys(R.cards).filter(n => R.cards[n].opts && !R.card
 // ==================== 상태 ====================
 const KEY = 'escape-hq-v5';
 let S = load();
-function blank(){ return {team:null, startAt:null, endAt:null, paused:0, pausedAt:null, open:1, view:'map', got:{r1:[],r2:[],r3:[],r4:[]}, solved:{}, keys:[], wrong:0, hints:0, bonus:0, hintUsed:{}, log:[], fresh:[], pawn:START, mute:false}; }
+function blank(){ return {team:null, tname:'', startAt:null, endAt:null, paused:0, pausedAt:null, pausedBy:null, open:1, view:'map', got:{r1:[],r2:[],r3:[],r4:[]}, solved:{}, keys:[], wrong:0, hints:0, bonus:0, hintUsed:{}, log:[], fresh:[], pawn:START, mute:false, outbox:[], msgSeen:0}; }
 function load(){ try { const v = JSON.parse(localStorage.getItem(KEY)); if (v && typeof v === 'object') return Object.assign(blank(), v); } catch(e){} return blank(); }
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
 const elapsed = () => S.startAt ? Math.max(0, ((S.endAt || (S.pausedAt || Date.now())) - S.startAt - S.paused) / 1000) : 0;
@@ -620,7 +524,43 @@ const sfx = {
   step(){ [0,.2,.4,.6].forEach(w=>tone(110,.08,'sine',.06,w)); },
   beat(){ tone(62,.12,'sine',.18); tone(55,.14,'sine',.14,.18); }
 };
-function toast(t){ const d = document.createElement('div'); d.textContent = t; $('#toast').appendChild(d); setTimeout(()=>d.remove(), 2600); }
+function toast(t, ms){ const d = document.createElement('div'); d.textContent = t; $('#toast').appendChild(d); setTimeout(()=>d.remove(), ms || 2600); }
+
+// ==================== 관리자 연결 (선택) ====================
+// 주소에 ?api=<Apps Script 웹 앱 주소>&s=<수업 코드> 가 있으면 진행 상황을 보내고, 선생님의 일시정지·공지를 받는다.
+// api=local 은 같은 컴퓨터의 관리자 페이지와 연결하는 시험용 모드.
+const QP = new URLSearchParams(location.search);
+const API = QP.get('api') || '', SES = QP.get('s') || '';
+const LIVE = !!(API && SES);
+const LKEY = 'escape-local-events', LCTL = 'escape-local-ctl';
+function summary(){ return {room:S.view, keys:S.keys.length, wrong:S.wrong, hints:S.hints, bonus:S.bonus, solved:Object.keys(S.solved).length, el:Math.round(elapsed()), end:!!S.endAt, total:S.endAt?Math.round(Math.max(0, elapsed()+penalty())):null}; }
+function send(ty, r, c, o){
+  if (!LIVE || !S.team) return;
+  S.outbox.push({s:SES, t:S.team, n:S.tname, ty, r:r||'', c:c||'', o:o||'', e:Math.round(elapsed()), x:summary(), at:Date.now()});
+  save(); flush();
+}
+let flushing = false;
+async function flush(){
+  if (!LIVE || flushing || !S.outbox.length) return;
+  flushing = true; const batch = S.outbox.slice(0, 20);
+  try {
+    if (API === 'local') { const all = JSON.parse(localStorage.getItem(LKEY) || '[]'); localStorage.setItem(LKEY, JSON.stringify(all.concat(batch))); }
+    else await fetch(API, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(batch)});
+    S.outbox.splice(0, batch.length); save();
+  } catch(e) {}
+  flushing = false;
+  if (S.outbox.length) setTimeout(flush, 4000);
+}
+async function pollCtl(){
+  if (!LIVE || !S.startAt || S.endAt) return;
+  let c = null;
+  try { if (API === 'local') c = JSON.parse(localStorage.getItem(LCTL) || '{}')[SES] || {}; else { const r = await fetch(`${API}?op=ctl&s=${encodeURIComponent(SES)}`); c = await r.json(); } } catch(e) { return; }
+  if (!c) return;
+  if (c.pause && !S.pausedAt) { S.pausedAt = Date.now(); S.pausedBy = 'teacher'; save(); stopHum(); showPause(); tick(); }
+  if (!c.pause && S.pausedAt && S.pausedBy === 'teacher') resumeGame();
+  if (c.msgId && c.msgId !== S.msgSeen && c.msg) { S.msgSeen = c.msgId; save(); toast('📢 선생님: ' + c.msg, 9000); sfx.card(); }
+}
+if (LIVE) { setInterval(pollCtl, 8000); setInterval(flush, 15000); setInterval(() => { if (S.startAt && !S.endAt) send('beat'); }, 60000); }
 
 // ==================== 화면 ====================
 function show(id){ for (const s of ['intro','game','done']) $('#'+s).hidden = s !== id; }
@@ -629,18 +569,22 @@ function render(){
   if (S.endAt) return renderDone();
   show('game'); renderDevice();
   if (S.view === 'map') renderMap(); else renderRoom(S.view);
-  $('#pauseCov').hidden = !S.pausedAt;
+  if (S.pausedAt) showPause(); else $('#pauseCov').hidden = true;
 }
 function renderIntro(){
   show('intro');
   const box = $('#teams'); box.innerHTML = ''; let pick = S.team;
-  for (let i = 1; i <= 7; i++) { const b = document.createElement('button'); b.textContent = i; if (pick === i) b.classList.add('on');
-    b.onclick = () => { pick = i; sfx.tap(); [...box.children].forEach(c => c.classList.toggle('on', c === b)); $('#startBtn').disabled = false; }; box.appendChild(b); }
-  $('#startBtn').disabled = !pick;
-  $('#startBtn').onclick = () => { const m = S.mute; S = blank(); S.mute = m; S.team = pick; S.startAt = Date.now(); save(); sfx.unlock(); startHum(); render(); };
+  const nm = $('#tname'); nm.value = S.tname || '';
+  const ready = () => { $('#startBtn').disabled = !(pick && nm.value.trim()); };
+  for (let i = 1; i <= 6; i++) { const b = document.createElement('button'); b.textContent = i; if (pick === i) b.classList.add('on');
+    b.onclick = () => { pick = i; sfx.tap(); [...box.children].forEach(c => c.classList.toggle('on', c === b)); ready(); }; box.appendChild(b); }
+  nm.oninput = ready; ready();
+  $('#liveNote').hidden = !LIVE;
+  $('#startBtn').onclick = () => { const m = S.mute; S = blank(); S.mute = m; S.team = pick; S.tname = nm.value.trim().slice(0, 12); S.startAt = Date.now(); save(); sfx.unlock(); startHum(); send('start'); render(); };
 }
+const teamLabel = () => `${S.team}팀 · ${S.tname || ''}`;
 function renderDevice(){
-  $('#dTeam').textContent = S.team + '팀';
+  $('#dTeam').textContent = teamLabel();
   $('#keys').innerHTML = ROOMS.map(r => { const has = S.keys.includes(r.id); return `<span class="${has?'on':''}">${has?r.key:'?'}<small>${r.short}</small></span>`; }).join('');
   $('#bSnd i').textContent = S.mute ? '🔇' : '🔊';
   $('#bMap').classList.toggle('hl', S.view !== 'map');
@@ -661,8 +605,10 @@ document.addEventListener('pointerdown', () => { if (S.startAt && !S.endAt) star
 
 $('#bMap').onclick = () => { if (S.view === 'map') return; sfx.tap(); S.view = 'map'; save(); render(); window.scrollTo({top:0,behavior:'smooth'}); };
 $('#bSnd').onclick = () => { S.mute = !S.mute; save(); if (S.mute) stopHum(); else startHum(); renderDevice(); sfx.tap(); };
-$('#bPause').onclick = () => { if (S.pausedAt) return; S.pausedAt = Date.now(); save(); $('#pauseCov').hidden = false; stopHum(); tick(); };
-$('#resume').onclick = () => { if (S.pausedAt) { S.paused += Date.now() - S.pausedAt; S.pausedAt = null; save(); } $('#pauseCov').hidden = true; sfx.tap(); startHum(); tick(); };
+function showPause(){ const t = S.pausedBy === 'teacher'; $('#pauseTxt').textContent = t ? '선생님이 모든 팀의 시간을 멈췄다. 화면을 보자.' : '시간이 멈췄다. 선생님 설명을 들어 보자.'; $('#resume').hidden = t; $('#pauseCov').hidden = false; }
+function resumeGame(){ if (S.pausedAt) { S.paused += Date.now() - S.pausedAt; S.pausedAt = null; S.pausedBy = null; save(); } $('#pauseCov').hidden = true; startHum(); tick(); }
+$('#bPause').onclick = () => { if (S.pausedAt) return; S.pausedAt = Date.now(); S.pausedBy = 'team'; save(); showPause(); stopHum(); tick(); };
+$('#resume').onclick = () => { resumeGame(); sfx.tap(); };
 
 // ---------- 평면도 ----------
 function renderMap(){
@@ -708,7 +654,7 @@ function renderMap(){
     const k = g.dataset.i;
     if (k === 'gate') { if (!all) { toast('🔒 열쇠 네 개가 있어야 비상구가 열린다.'); return sfx.bad(); } return walk(GATE, () => openGate()); }
     const i = +k; if (i >= S.open) { toast('🔒 앞 방의 열쇠가 필요하다.'); return sfx.bad(); }
-    const d = MAP[i].door; walk([d[0], i < 2 ? d[1]+30 : d[1]-30], () => { S.view = i; save(); sfx.door(); render(); window.scrollTo({top:0,behavior:'smooth'}); });
+    const d = MAP[i].door; walk([d[0], i < 2 ? d[1]+30 : d[1]-30], () => { S.view = i; save(); sfx.door(); send('room', ROOMS[i].id); render(); window.scrollTo({top:0,behavior:'smooth'}); });
   });
 }
 function pawnShape(){ return `<path d="M0 -46 a13 13 0 0 1 13 13 c0 6 -3 9 -6 11 l20 7 c6 2 8 8 4 12 l-10 6 6 22 h-54 l6 -22 -10 -6 c-4 -4 -2 -10 4 -12 l20 -7 c-3 -2 -6 -5 -6 -11 a13 13 0 0 1 13 -13z" fill="#E0B252" stroke="#05060A" stroke-width="3.5" stroke-linejoin="round"/>`; }
@@ -726,15 +672,15 @@ let torch = {x:200, y:240};
 function renderRoom(i){
   const R = ROOMS[i];
   $('#hTitle').textContent = `ROOM ${i+1} · ${R.name}`;
-  $('#hSub').textContent = '손전등으로 방을 비추고, 번호를 눌러 카드를 뒤집자. 노란 번호는 보너스.';
+  $('#hSub').textContent = '손전등으로 방을 비추고 번호를 눌러 카드를 뒤집자. 빨강 문제 · 노랑 보너스 · 파랑 단서 · 초록 장치.';
   $('#hAct').innerHTML = `<button class="btn sm ghost" id="backMap">◀ 평면도</button>`;
   $('#backMap').onclick = () => $('#bMap').click();
   const got = S.got[R.id];
-  const spots = R.spots.map(s => { const cd = R.cards[s.n]; return `<g class="spot${got.includes(s.n)?' got':''}${cd.bonus?' bonus':''}" data-n="${s.n}"><circle class="pulse" cx="${s.x}" cy="${s.y}" r="22"/><circle class="c" cx="${s.x}" cy="${s.y}" r="22"/><text x="${s.x}" y="${s.y+1}">${s.n}</text></g>`; }).join('');
+  const spots = R.spots.map(s => { const cd = R.cards[s.n]; return `<g class="spot t-${cd.c}${got.includes(s.n)?' got':''}" data-n="${s.n}"><circle class="pulse" cx="${s.x}" cy="${s.y}" r="22"/><circle class="c" cx="${s.x}" cy="${s.y}" r="22"/><text x="${s.x}" y="${s.y+1}">${s.n}</text></g>`; }).join('');
   const cards = got.map(n => cardTile(R, n)).join('');
   $('#stage').innerHTML = `<div class="tablewrap">
     <div class="roomcard"><div class="plaque">${R.name}</div><div class="art"><svg viewBox="0 0 400 480" id="roomSvg"><defs><radialGradient id="torchG" gradientUnits="userSpaceOnUse" cx="${torch.x}" cy="${torch.y}" r="170"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".45" stop-color="#000" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity=".9"/></radialGradient></defs>${ART[R.art]}<rect id="torchLayer" width="400" height="480" fill="url(#torchG)"/><rect width="400" height="480" fill="rgba(160,20,10,.10)" class="elight" pointer-events="none"/>${spots}</svg></div>
-      <p class="cap">${R.cap}<span class="pen">“${R.pen}”</span></p></div>
+      <div class="legend"><span class="lg t-red">문제</span><span class="lg t-gold">보너스</span><span class="lg t-blue">단서</span><span class="lg t-green">장치</span></div><p class="cap">${R.cap}<span class="pen">“${R.pen}”</span></p></div>
     <div><div class="next">${nextStep(R)}</div><div class="spread">${cards || `<div class="hint0">🔦 손전등으로 왼쪽 방을 비추고 번호 동그라미를 눌러 보자. 그 번호의 카드가 이 책상 위에 펼쳐진다.</div>`}</div></div>
   </div>`;
   const svg = $('#roomSvg'), grad = svg.querySelector('#torchG');
@@ -754,7 +700,7 @@ function nextStep(R){
   if (!got.length) t = '손전등으로 방을 비추고 번호 동그라미를 눌러 카드를 뒤집자.';
   else if (unsolved.length) t = `아직 풀지 않은 빨간 카드: <em>${unsolved.join(', ')}번</em>`;
   else if (left.length) t = `아직 뒤집지 않은 번호가 있다: ${left.join(', ')}번`;
-  else if (!S.solved[sk(R.id, devN)]) t = `빨간 카드를 모두 풀었다! <span class="g">${devN}번 장치</span>에 숫자를 넣자.`;
+  else if (!S.solved[sk(R.id, devN)]) t = `빨간 카드를 모두 풀었다! 단서 카드의 계산법대로 <span class="g">${devN}번 장치</span>를 열자.`;
   else t = '이 방은 해제됐다. 평면도로 돌아가자.';
   return `<b>다음 할 일</b><span>${t}</span>${bar}`;
 }
@@ -771,7 +717,7 @@ let cur = null;
 function openCard(R, n, isNew){
   const cd = R.cards[n]; if (!cd) return;
   const k = sk(R.id, n);
-  if (isNew && !S.got[R.id].includes(n)) { S.got[R.id].push(n); save(); }
+  if (isNew && !S.got[R.id].includes(n)) { S.got[R.id].push(n); save(); send('open', R.id, n); }
   cur = {R, n, cd, k};
   $('#backNo').textContent = n;
   const fl = $('#flip'); fl.classList.remove('show');
@@ -790,7 +736,7 @@ function cardBig(R, n){
     if (cd.sent) body += `<div class="txt"><div class="sent">${B(cd.sent)}</div></div>`;
     if (cd.head) body += `<div class="txt"><div class="sent" style="font-size:16.5px">${cd.head}</div></div>`;
     body += `<p class="ask">${cd.ask || '이 문장에 대한 설명으로 <em>적절한</em> 것은?'}</p>`;
-    if (sv) body += `<div class="solvedbox">${cd.digit?`<span class="dg">${cd.digit}</span>`:''}${cd.done}</div>`;
+    if (sv) body += `<div class="solvedbox">${cd.digit?`<span class="dg">${cd.digit}</span><b style="display:block;margin-bottom:4px;color:#6E4E12">드러난 ${cd.dl||'번호'}: ${cd.digit}</b>`:''}${cd.done}</div>`;
     else body += `<div class="opts">${cd.opts.map(([id,t])=>`<button class="opt" data-id="${id}"><i>${'①②③④⑤'[+id-1]}</i><span>${B(t)}</span></button>`).join('')}</div>
       <div class="brow"><button class="btn" id="chk">확인</button>${S.hintUsed[k]?'':'<button class="btn sm ghost" id="hb">💡 힌트 +1분</button>'}</div>${S.hintUsed[k]?`<div class="hintx"><b>힌트</b>${cd.hint}</div>`:''}<p class="msg" id="msg"></p>`;
   }
@@ -811,10 +757,10 @@ function bindBig(){
       const m = $('#msg');
       if (!sel) { m.className = 'msg bad'; m.textContent = '하나를 골라 주세요.'; return; }
       if (sel === cd.ans) return solveCard();
-      alarm(cd.traps[sel] || '근거를 다시 따져 보자.', n);
+      alarm(cd.traps[sel] || '근거를 다시 따져 보자.', n, sel, R.id);
     };
     const hb = $('#hb'); if (hb) hb.onclick = () => { if (hb.dataset.arm !== '1') { hb.dataset.arm = '1'; hb.textContent = '정말? +1분'; setTimeout(()=>{ if (hb.isConnected) { hb.dataset.arm=''; hb.textContent='💡 힌트 +1분'; } }, 3000); return; }
-      S.hintUsed[k] = 1; S.hints++; save(); sfx.card(); $('#front').innerHTML = cardBig(R, n); bindBig(); tick(); };
+      S.hintUsed[k] = 1; S.hints++; save(); send('hint', R.id, n); sfx.card(); $('#front').innerHTML = cardBig(R, n); bindBig(); tick(); };
   }
   if (cd.dev && !S.solved[k]) {
     let v = '';
@@ -828,13 +774,13 @@ function bindBig(){
       if (v.length < cd.dev.len) { m.className = 'msg bad'; m.textContent = '숫자를 끝까지 넣어 주세요.'; return; }
       if (v === cd.dev.code) return solveDevice();
       const need = reqAsks(R).length, have = reqAsks(R).filter(x => S.solved[sk(R.id, x)]).length;
-      alarm(have < need ? `아직 풀지 않은 빨간 카드가 있다. (${have}/${need}) 카드를 풀어 숫자를 모으자.` : '비밀번호가 맞지 않는다. 카드 숫자와 순서를 다시 확인하자.', n);
+      alarm(have < need ? `아직 풀지 않은 빨간 카드가 있다. (${have}/${need}) 카드를 풀어 숫자를 모으자.` : '비밀번호가 맞지 않는다. 단서 카드의 계산법(더하기·빼기)을 다시 확인하자.', n, 'dev:' + v, R.id);
       v = ''; paint();
     }
   }
 }
-function alarm(t, n){
-  S.wrong++; S.log.push({n, t:'🚨 ' + t, c:'#A8231B'}); save(); sfx.bad();
+function alarm(t, n, o, rid){
+  S.wrong++; S.log.push({n, t:'🚨 ' + t, c:'#A8231B'}); save(); sfx.bad(); send('wrong', rid || (cur && cur.R ? cur.R.id : 'gate'), n, o || '');
   $('#alarmTxt').innerHTML = t; $('#alarm').hidden = false;
   const fr = $('#front'); fr.classList.remove('shake'); void fr.offsetWidth; fr.classList.add('shake');
   renderDevice();
@@ -843,8 +789,8 @@ $('#alarmOk').onclick = () => { $('#alarm').hidden = true; sfx.tap(); };
 function solveCard(skipped){
   const {R, n, cd, k} = cur;
   S.solved[k] = true; if (cd.bonus && !skipped) S.bonus++;
-  S.log.push({n, t:(skipped?'(교사 통과) ':'') + cd.title + (cd.digit ? ` → 숫자 ${cd.digit}` : cd.bonus ? ' → 보너스 −30초' : ' 해결'), c: cd.bonus ? '#B8862E' : '#2B6E4D'});
-  save(); sfx.good(); burst(30);
+  S.log.push({n, t:(skipped?'(교사 통과) ':'') + cd.title + (cd.digit ? ` → ${cd.dl||'숫자'} ${cd.digit}` : cd.bonus ? ' → 보너스 −30초' : ' 해결'), c: cd.bonus ? '#B8862E' : '#2B6E4D'});
+  save(); send(cd.bonus ? 'bonus' : 'solve', R.id, n, skipped ? 'skip' : ''); sfx.good(); burst(30);
   $('#front').innerHTML = cardBig(R, n); bindBig(); renderDevice();
 }
 function solveDevice(skipped){
@@ -854,11 +800,11 @@ function solveDevice(skipped){
   if (!S.keys.includes(R.id)) S.keys.push(R.id);
   S.open = Math.max(S.open, i + 2);
   S.log.push({n, t:(skipped?'(교사 통과) ':'') + `${R.name} 해제 → 열쇠 숫자 ${R.key}`, c:'#B8862E'});
-  save(); sfx.unlock(); burst(80);
+  save(); send('device', R.id, n, skipped ? 'skip' : ''); sfx.unlock(); burst(80);
   $('#modal').hidden = true; window.onkeydown = null;
   const bLeft = Object.keys(R.cards).filter(x => R.cards[x].bonus && !S.solved[sk(R.id, x)]);
   $('#keyBody').innerHTML = `<div class="bigstamp">해제</div><p style="font:15px 'Jua';color:#A8231B;letter-spacing:.2em">ROOM ${i+1} CLEAR</p><h3>${R.name}의 장치가 열렸다</h3>
-    <div class="kv"><div class="kk">${R.key}</div><div style="font:17px/1.6 'Jua'">열쇠 숫자 <b style="color:#E0B252">${R.key}</b>를 얻었다.<br><span style="opacity:.8;font-size:15px">${i < ROOMS.length-1 ? `평면도에서 ${ROOMS[i+1].name}이(가) 열렸다.` : '이제 비상구로!'}${bLeft.length ? ` (보너스 카드 ${bLeft.join(', ')}번은 아직 풀 수 있다)` : ''}</span></div></div>
+    <div class="kv"><div class="kk">${R.key}</div><div style="font:17px/1.6 'Jua'">장치 비밀번호 <b>${cd.dev.code}</b>의 일의 자리, 열쇠 숫자 <b style="color:#E0B252">${R.key}</b>를 얻었다.<br><span style="opacity:.8;font-size:15px">${i < ROOMS.length-1 ? `평면도에서 ${ROOMS[i+1].name}이(가) 열렸다.` : '이제 비상구로!'}${bLeft.length ? ` (보너스 카드 ${bLeft.join(', ')}번은 아직 풀 수 있다)` : ''}</span></div></div>
     <div class="why">${R.why}</div><div class="brow"><button class="btn" id="kOk">평면도로 ▶</button>${bLeft.length?'<button class="btn ghost" id="kStay">이 방에 남아 보너스 풀기</button>':''}</div>`;
   $('#keyget').hidden = false;
   $('#kOk').onclick = () => { $('#keyget').hidden = true; S.view = 'map'; save(); render(); window.scrollTo({top:0,behavior:'smooth'}); };
@@ -871,7 +817,7 @@ function openGate(){
   cur = {R:null, n:'EXIT', cd:null, k:'gate'};
   $('#backNo').textContent = '🔑';
   $('#front').innerHTML = `<div class="big green"><div class="hd"><span class="no">★</span><div><small>마지막 장치</small><h3>비상구 자물쇠</h3></div><button class="x" id="xb">✕</button></div><div class="bd">
-    <div class="ill">${ICON.key()}</div><p class="ask">네 방에서 얻은 <em>열쇠 숫자</em>를 방 순서대로 넣어라.</p>
+    <div class="ill">${ICON.key()}</div><p class="ask">네 장치 비밀번호의 <em>일의 자리(열쇠 숫자)</em>를 방 순서대로 넣어라.</p>
     <div class="slots">${[0,1,2,3].map(()=>`<span></span>`).join('')}</div>
     <div class="pad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button data-k="${d}">${d}</button>`).join('')}<button data-k="del">⌫</button><button data-k="0">0</button><button class="go" data-k="go">열기</button></div><p class="msg" id="msg"></p></div></div>`;
   $('#modal').hidden = false; const fl = $('#flip'); fl.classList.remove('show'); setTimeout(()=>fl.classList.add('show'), 300); sfx.card();
@@ -886,15 +832,15 @@ function openGate(){
 function escape(skipped){
   if (skipped) S.log.push({n:'EXIT', t:'(교사 통과)', c:'#B8862E'});
   S.endAt = Date.now(); if (S.pausedAt) { S.paused += S.endAt - S.pausedAt; S.pausedAt = null; }
-  save(); $('#modal').hidden = true; window.onkeydown = null; stopHum(); sfx.unlock(); renderDone(true);
+  save(); send('escape', 'gate', '', skipped ? 'skip' : ''); $('#modal').hidden = true; window.onkeydown = null; stopHum(); sfx.unlock(); renderDone(true);
 }
 function renderDone(fresh){
   show('done');
   const e = elapsed(), p = penalty(), total = Math.max(0, e + p), ratio = total / (LIMIT_MIN*60);
   const stars = ratio <= .55 ? 5 : ratio <= .7 ? 4 : ratio <= .85 ? 3 : ratio <= 1 ? 2 : 1;
   $('#stars').innerHTML = '★'.repeat(stars) + `<i>${'★'.repeat(5-stars)}</i>`;
-  $('#doneLine').textContent = `${S.team}팀이 봉인 직전, 비상구 비밀번호 ${FINAL_CODE}로 출제 본부를 빠져나왔다.`;
-  $('#recordDl').innerHTML = `<dt>팀</dt><dd>${S.team}팀</dd><dt>걸린 시간</dt><dd>${fmt(e)}</dd><dt>경보</dt><dd>${S.wrong}번 (+${fmt(S.wrong*WRONG_PEN)})</dd><dt>힌트</dt><dd>${S.hints}번 (+${fmt(S.hints*HINT_PEN)})</dd><dt>보너스</dt><dd>${S.bonus}장 (−${fmt(S.bonus*BONUS)})</dd>`;
+  $('#doneLine').textContent = `${S.tname || ''}(${S.team}팀)이 봉인 직전, 비상구 비밀번호 ${FINAL_CODE}로 출제 본부를 빠져나왔다.`;
+  $('#recordDl').innerHTML = `<dt>팀</dt><dd>${teamLabel()}</dd><dt>걸린 시간</dt><dd>${fmt(e)}</dd><dt>경보</dt><dd>${S.wrong}번 (+${fmt(S.wrong*WRONG_PEN)})</dd><dt>힌트</dt><dd>${S.hints}번 (+${fmt(S.hints*HINT_PEN)})</dd><dt>보너스</dt><dd>${S.bonus}장 (−${fmt(S.bonus*BONUS)})</dd>`;
   $('#recordTotal').textContent = fmt(total);
   if (fresh) { burst(180); setTimeout(()=>burst(140), 600); }
 }
