@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>출제 본부 단서지</title>
+<title>출제 본부 검토 일지</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Nanum+Gothic+Coding:wght@400;700&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
@@ -116,23 +116,28 @@ body.key .keyonly{display:flex}
 </head>
 <body>
 <style>
-.grp td.g{font-family:'Do Hyeon';font-size:15pt;background:var(--soft);width:9mm}
-.grp td.s{font-size:9.6pt;text-align:left;line-height:1.45}
-.grp td.s small{display:block;font-size:7.8pt;color:var(--mute)}
-.grp td.e{font-weight:700;font-size:9.6pt}
-.grp td{height:8.6mm}
-.kinds{display:flex;gap:2mm;flex-wrap:wrap;font-size:8.3pt;color:var(--mute);margin-top:1.5mm}
-.kinds span{border:.7pt solid #8D8596;border-radius:1.2mm;padding:.2mm 1.6mm}
-.found td{height:9.6mm}
+.cardrow td{height:13mm;vertical-align:top;text-align:left;font-size:9.4pt;line-height:1.45}
+.cardrow td.n{width:12mm;text-align:center;vertical-align:middle}
+.cardrow td.n b{display:inline-grid;place-items:center;width:9mm;height:9mm;border-radius:50%;border:1.3pt solid var(--line);font:700 11pt 'Gowun Batang',serif}
+.cardrow td.s small{display:block;font-size:7.6pt;color:var(--mute)}
+.cardrow td.d{width:14mm;text-align:center;vertical-align:middle}
+.cardrow td.w{width:62mm}
+.red b{color:var(--red)}
+.devline{display:flex;align-items:center;gap:3mm;margin-top:2mm;padding:2mm 3mm;border:1.2pt solid var(--line);border-radius:2mm;background:repeating-linear-gradient(135deg,#fff 0 3mm,#F3F7F4 3mm 6mm)}
+.devline .lbl{font-family:'Do Hyeon';font-size:12.5pt;white-space:nowrap}
+.devline .boxes{display:flex;gap:1.4mm}
+.devline .boxes > span{width:8.5mm;height:9.5mm;border:1.2pt solid var(--line);border-radius:1.3mm;background:#fff;display:grid;place-items:center;font:700 13pt 'Nanum Gothic Coding'}
+.devline .q{font-size:8.8pt;color:var(--mute)}
+.record div{height:11mm}.door{margin-top:3.5mm;padding:3mm 5mm}.exit{margin-top:3mm;padding-top:2mm}.sheet .room .work td{padding:1mm 1.4mm}
+.keybox{display:inline-grid;place-items:center;width:10mm;height:10mm;border-radius:2mm;background:#F6E2A8;border:1.2pt solid var(--line);font:700 13pt 'Nanum Gothic Coding';margin-left:auto}
 </style>
 
-<!-- 1쪽 -->
-<section class="sheet" data-page="1 / 3">
+<section class="sheet" data-page="1 / 2">
   <div class="keybar keyonly">교사용 정답본 · 학생에게 배부하지 마세요</div>
   <div class="top">
     <div>
       <p class="kick">출제 본부 · 국어 영역 검토 기록</p>
-      <h1 class="title">단서지<small>높임 표현</small></h1>
+      <h1 class="title">검토 일지<small>높임 표현</small></h1>
       <div class="fields"><span>2학년 <i></i>반</span><span><i></i>팀</span><span>번호 <i></i></span><span>이름 <i class="w"></i></span></div>
     </div>
     <div style="text-align:right">
@@ -141,114 +146,76 @@ body.key .keyonly{display:flex}
       <p class="fileno">화법과 언어 3. (1) 문장의 짜임과 문법 요소</p>
     </div>
   </div>
-
   <div class="brief">
     <div>
-      <p>검토를 마친 마지막 날 아침, 본부의 문이 모두 잠겼다. <b>“높임을 정확히 읽는 사람만 나갈 수 있다.”</b> 본부를 샅샅이 뒤져 카드를 모으고, 방마다 장치를 풀어 열쇠 조각 네 개를 찾아라.</p>
-      <div class="route"><b>평면도</b><em>→</em><b>1 우편실</b><em>→</em><b>2 식당</b><em>→</em><b>3 출제실</b><em>→</em><b>4 검토실</b><em>→</em><b>정문</b></div>
+      <p>검토 마지막 날 아침, 출제 본부의 문이 모두 잠겼다. 방마다 카드를 뒤집어 문제를 풀고, 나온 숫자로 장치를 열어 <b>열쇠 숫자</b>를 모아라. 열쇠 네 개면 정문이 열린다.</p>
+      <div class="route"><b>1 문서 수발실</b><em>→</em><b>2 구내식당</b><em>→</em><b>3 출제실</b><em>→</em><b>4 검토실</b><em>→</em><b>정문</b></div>
     </div>
     <ul>
-      <li>그림 속 번호를 누르면 카드가 나온다.</li>
-      <li>숨은 번호도 있다. 복도도 살필 것.</li>
-      <li>경보 카드·오답 +30초, 힌트 +1분.</li>
-      <li>근거는 이 단서지에 남긴다.</li>
+      <li>카드마다 <b>고른 답과 근거</b>를 적는다.</li>
+      <li>[ ]는 안긴문장(인용절·관형절).</li>
+      <li>경보 +30초, 힌트 +1분.</li>
+      <li>틀린 이유는 경보 칸에 적어 둔다.</li>
     </ul>
   </div>
 
   <div class="room">
-    <div class="rh"><span class="n">ROOM 1</span><h2>우편실</h2><span class="tag">누가 누구를 높였나</span><span class="piece">열쇠 조각 <i></i></span></div>
-    <p class="lead">편지 속 밑줄 친 표현(파란 카드)이 <b>누구를</b> 높이거나 낮추는지 적고, 그 사람의 인물 카드(빨간 카드)와 맞대어 확인 카드 번호를 적으세요.</p>
-    <table class="grp">
-      <tr><th style="width:9mm">편지</th><th>편지 내용</th><th style="width:24mm">표현 (번호)</th><th style="width:27mm">높이는 / 낮추는 사람</th><th style="width:26mm">종류</th><th style="width:15mm">확인 카드</th></tr>
-      <tr><td class="g" rowspan="3">A</td><td class="s" rowspan="3"><small>학생 → 어머니</small>선생님께서 어머니를 꼭 한번 뵙고 싶다고 하셨어요.</td><td class="e">께서·-시- (10)</td><td><span class="ans">선생님</span></td><td><span class="ans">주체 높임</span></td><td><span class="ans">11</span></td></tr>
-      <tr><td class="e">뵙다 (20)</td><td><span class="ans">어머니</span></td><td><span class="ans">객체 높임</span></td><td><span class="ans">23</span></td></tr>
-      <tr><td class="e">-어요 (30)</td><td><span class="ans">어머니(청자)</span></td><td><span class="ans">상대 높임</span></td><td><span class="ans">33</span></td></tr>
-      <tr><td class="g" rowspan="3">B</td><td class="s" rowspan="3"><small>어머니 → 아들</small>아버지 진지 잡수시라고 말씀드려라.</td><td class="e">잡수시다 (40)</td><td><span class="ans">아버지(인용 속)</span></td><td><span class="ans">주체 높임</span></td><td><span class="ans">46</span></td></tr>
-      <tr><td class="e">말씀드리다 (50)</td><td><span class="ans">아버지</span></td><td><span class="ans">객체 높임</span></td><td><span class="ans">56</span></td></tr>
-      <tr><td class="e">-어라 (60)</td><td><span class="ans">아들</span></td><td><span class="ans">상대 높임 ×</span></td><td><span class="ans">65</span></td></tr>
-      <tr><td class="g" rowspan="3">C</td><td class="s" rowspan="3"><small>손님 → 가게 점원</small>저희 어머니께 어울릴 만한 옷 좀 보여 주세요.</td><td class="e">저희 (70)</td><td><span class="ans">손님(화자)</span></td><td><span class="ans">화자 낮춤</span></td><td><span class="ans">77</span></td></tr>
-      <tr><td class="e">께 (80)</td><td><span class="ans">손님의 어머니</span></td><td><span class="ans">객체 높임</span></td><td><span class="ans">89</span></td></tr>
-      <tr><td class="e">주세요의 -시- (90)</td><td><span class="ans">점원(생략)</span></td><td><span class="ans">주체 높임</span></td><td><span class="ans">98</span></td></tr>
+    <div class="rh"><span class="n">ROOM 1</span><h2>문서 수발실</h2><span class="tag">누가 누구를 높였나 · 인용절과 관형절</span><span class="keybox"><span class="ans">7</span></span></div>
+    <table class="cardrow">
+      <tr><th>카드</th><th>문장</th><th>근거 (높임 종류 · 대상 · 문장 성분)</th><th>숫자</th></tr>
+      <tr><td class="n"><b>12</b></td><td class="s"><small>학생 → 어머니</small>선생님께서 [어머니를 꼭 한번 뵙고 싶다고] 하셨어요.</td><td class="w"><span class="ans">뵙다 → 인용절 목적어 어머니(객체) / -시- → 선생님 / -어요 → 어머니</span></td><td class="d"><span class="ans">4</span></td></tr>
+      <tr><td class="n"><b>25</b></td><td class="s"><small>어머니 → 아들</small>[아버지 진지 잡수시라고] 말씀드려라.</td><td class="w"><span class="ans">인용절 주어 아버지(잡수시다) / 생략 주어 아들 → 아버지께 말씀드림(객체)</span></td><td class="d"><span class="ans">7</span></td></tr>
+      <tr><td class="n"><b>38</b></td><td class="s"><small>손님 → 가게 점원</small>저희 [어머니께 어울릴] 만한 옷 좀 보여 주세요.</td><td class="w"><span class="ans">관형절: (옷이) 어머니께 어울리다 → 께 = 부사어 어머니 / 주세요 -시- → 생략 주어 점원</span></td><td class="d"><span class="ans">2</span></td></tr>
     </table>
-    <div class="kinds"><span>주체 높임</span><span>객체 높임</span><span>상대 높임</span><span>상대 높임 ×</span><span>화자 낮춤</span></div>
+    <div class="devline"><span class="lbl">49 금고</span><span class="boxes"><span><span class="ans">4</span></span><span><span class="ans">7</span></span><span><span class="ans">2</span></span></span><span class="q">A → B → C</span></div>
+  </div>
 
-    <div class="lockline" style="margin-top:2.5mm">
-      <span class="lbl">우편실 금고</span>
-      <span class="q">① 듣는 사람이 객체이기도 한 편지 <span class="blank" style="min-width:10mm"><span class="ans">A</span></span> &nbsp; ② 듣는 사람을 ‘-시-’로도 높인 편지 <span class="blank" style="min-width:10mm"><span class="ans">C</span></span><br>③ 인용된 말 속의 주체를 높인 편지 <span class="blank" style="min-width:10mm"><span class="ans">B</span></span></span>
-    </div>
-    <div class="memo" style="margin-top:2.5mm">우리가 받은 경보 카드 가운데 가장 아팠던 한 장: 무엇을 헷갈렸나?<div class="lines" style="min-height:7mm;margin-top:1mm"></div></div>
+  <div class="room">
+    <div class="rh"><span class="n">ROOM 2</span><h2>구내식당</h2><span class="tag">간접 높임과 사물 높임</span><span class="keybox"><span class="ans">3</span></span></div>
+    <table class="cardrow">
+      <tr><th>카드</th><th>문장</th><th>근거</th><th>숫자</th></tr>
+      <tr><td class="n"><b>14</b></td><td class="s">[주문하신] 커피가 나오셨습니다.</td><td class="w"><span class="ans">관형절 생략 주어 손님 높임 ○ / ‘나오다’의 주어 커피 → 사물 높임 × → 나왔습니다</span></td><td class="d"><span class="ans">5</span></td></tr>
+      <tr><td class="n"><b>26</b></td><td class="s">① 댁에 계신다 ② [손주가 아프다는] 걱정이 있으시다 ③ … 걱정이 계시다</td><td class="w"><span class="ans">직접 → 계시다 / 간접(마음) → 있으시다 → ③ 틀림</span></td><td class="d"><span class="ans">1</span></td></tr>
+      <tr><td class="n"><b>31</b></td><td class="s"><small>손자 → 할아버지</small>할머니께서 [진지 드시라고] 하셨는데 진지가 다 식으셨어요.</td><td class="w"><span class="ans">앞 절 -시- 할머니 ○ / 인용절 주어 할아버지 / 뒤 절 주어 진지 → 식었어요</span></td><td class="d"><span class="ans">9</span></td></tr>
+    </table>
+    <div class="devline"><span class="lbl">40 경보기</span><span class="boxes"><span><span class="ans">5</span></span><span><span class="ans">1</span></span><span><span class="ans">9</span></span></span><span class="q">14 → 26 → 31</span></div>
+    <div class="memo" style="margin-top:2.5mm;color:var(--ink)"><b>우리 판결</b>: 진지는 할아버지와 ‘밀접한 대상’일까? 간접 높임으로 볼 수 있을까?<div class="lines" style="min-height:7mm;margin-top:1mm"><span class="ans blk" style="font-size:12pt">진지는 이미 높임 어휘, 식는 일까지 높일 필요 없음 → 사물 높임으로 보는 것이 일반적</span></div></div>
   </div>
 </section>
 
-<!-- 2쪽 -->
-<section class="sheet" data-page="2 / 3">
+<section class="sheet" data-page="2 / 2">
   <div class="keybar keyonly">교사용 정답본 · 학생에게 배부하지 마세요</div>
   <div class="room" style="margin-top:0">
-    <div class="rh"><span class="n">ROOM 2</span><h2>식당</h2><span class="tag">간접 높임과 사물 높임</span><span class="piece">열쇠 조각 <i></i></span></div>
-    <p class="lead">본부 곳곳에서 찾은 응대 문구 카드를 적고 판정하세요. 잘못 높인 문구는 <b>모두 다섯 장</b>, 게시판 밖에도 있다.</p>
-    <table class="found">
-      <tr><th style="width:13mm">카드 번호</th><th>문구 (줄여 적기)</th><th style="width:17mm">바름 / 잘못</th><th style="width:52mm">까닭 또는 고쳐 쓰기</th></tr>
-      <tr><td><span class="ans">11</span></td><td class="l"><span class="ans">다리가 아프시다</span></td><td><span class="ans">바름</span></td><td class="l"><span class="ans" style="font-size:12.5pt">간접 높임(신체)</span></td></tr>
-      <tr><td><span class="ans">14</span></td><td class="l"><span class="ans">커피 나오셨습니다 (복도 자판기)</span></td><td><span class="ans">잘못</span></td><td class="l"><span class="ans" style="font-size:12.5pt">커피 나왔습니다</span></td></tr>
-      <tr><td><span class="ans">17</span></td><td class="l"><span class="ans">걱정이 있으시다</span></td><td><span class="ans">바름</span></td><td class="l"><span class="ans" style="font-size:12.5pt">간접 높임(마음) · 있으시다</span></td></tr>
-      <tr><td><span class="ans">19</span></td><td class="l"><span class="ans">걱정이 계시다</span></td><td><span class="ans">잘못</span></td><td class="l"><span class="ans" style="font-size:12.5pt">걱정이 있으시다</span></td></tr>
-      <tr><td><span class="ans">23</span></td><td class="l"><span class="ans">말씀이 계시겠습니다</span></td><td><span class="ans">잘못</span></td><td class="l"><span class="ans" style="font-size:12.5pt">말씀이 있으시겠습니다</span></td></tr>
-      <tr><td><span class="ans">26</span></td><td class="l"><span class="ans">댁에 계신다</span></td><td><span class="ans">바름</span></td><td class="l"><span class="ans" style="font-size:12.5pt">직접 높임 · 계시다</span></td></tr>
-      <tr><td><span class="ans">28</span></td><td class="l"><span class="ans">품절이세요</span></td><td><span class="ans">잘못</span></td><td class="l"><span class="ans" style="font-size:12.5pt">품절입니다</span></td></tr>
-      <tr><td><span class="ans">31</span></td><td class="l"><span class="ans">진지가 다 식으셨어요 (밥그릇 밑)</span></td><td><span class="ans">잘못</span></td><td class="l"><span class="ans" style="font-size:12.5pt">진지가 다 식었어요</span></td></tr>
-      <tr><td><span class="ans">35</span></td><td class="l"><span class="ans">따님이 둘이시다</span></td><td><span class="ans">바름</span></td><td class="l"><span class="ans" style="font-size:12.5pt">간접 높임(가족)</span></td></tr>
-    </table>
-    <div class="lockline"><span class="lbl">경보기</span><span class="q">잘못 높인 카드 번호의 합 <span class="blank"><span class="ans">14+19+23+28+31 = 115</span></span></span></div>
-    <div class="two" style="margin-top:2.5mm">
-      <div class="memo" style="color:var(--ink)"><b>‘계시다’와 ‘있으시다’</b>는 어떻게 구별할까?<div class="lines" style="min-height:13mm;margin-top:1mm"><span class="ans blk" style="font-size:12.5pt">사람이 직접 있음 → 계시다 / 간접 높임 → 있으시다</span></div></div>
-      <div class="memo" style="color:var(--ink)"><b>우리 판결</b>: 진지는 할아버지와 ‘밀접한 대상’일까?<div class="lines" style="min-height:13mm;margin-top:1mm"><span class="ans blk" style="font-size:12.5pt">진지는 이미 높임 어휘, 식는 일은 밀접하다 보기 어려움 → 사물 높임으로 보는 것이 일반적</span></div></div>
+    <div class="rh"><span class="n">ROOM 3</span><h2>출제실</h2><span class="tag">2026학년도 수능 언어와 매체 37번</span><span class="keybox"><span class="ans">4</span></span></div>
+    <div class="two" style="grid-template-columns:80mm 1fr">
+      <div class="exam"><img src="../assets/exam-2026-37.png" alt="2026학년도 수능 언어와 매체 37번 문항"></div>
+      <div>
+        <table class="work">
+          <tr><th style="width:12mm">카드</th><th>조건</th><th style="width:22mm">지운 선지</th></tr>
+          <tr><td><b>16</b></td><td class="l" style="font-size:9pt">관형사가 관형어로 쓰일 것</td><td><span class="ans">③ 끊임없는</span></td></tr>
+          <tr><td><b>27</b></td><td class="l" style="font-size:9pt">선어말 어미 ‘-시-’로 높일 것</td><td><span class="ans">⑤ 다시다</span></td></tr>
+          <tr><td><b>33</b></td><td class="l" style="font-size:9pt">한 자리·두 자리 서술어를 함께</td><td><span class="ans">① ②</span></td></tr>
+        </table>
+        <div class="devline"><span class="lbl">44 의견서</span><span class="boxes"><span><span class="ans">4</span></span></span><span class="q">살아남은 선지</span></div>
+        <div class="memo" style="margin-top:2mm">가장 매력적인 오답과 그 까닭<br><span class="ans">⑤ ‘다셨다’ = 다시- + -었-, ‘-시-’ 없음</span></div>
+      </div>
     </div>
   </div>
 
   <div class="room">
-    <div class="rh"><span class="n">ROOM 3</span><h2>출제실</h2><span class="tag">2026학년도 수능 언어와 매체 37번</span><span class="piece">열쇠 조각 <i></i></span></div>
-    <p class="lead">선지마다 [조건] 첫째·둘째·셋째를 ○×로 따지고, 화이트보드의 신호표로 숫자를 만드세요.</p>
-    <div class="two" style="grid-template-columns:92mm 1fr">
-      <div>
-        <div class="exam"><img src="../assets/exam-2026-37.png" alt="2026학년도 수능 언어와 매체 37번 문항"></div>
-        <table class="sig" style="margin-top:1.5mm"><tr><th>○○○</th><th>○○×</th><th>○×○</th><th>○××</th><th>×○○</th><th>×○×</th><th>××○</th><th>×××</th></tr><tr><td>7</td><td>6</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></table>
-      </div>
-      <div>
-        <table class="work">
-          <tr><th style="width:8mm">선지</th><th>관형사<br>관형어</th><th>‘-시-’<br>높임</th><th>한·두<br>자리</th><th style="width:12mm">숫자</th></tr>
-          <tr><td>①</td><td><span class="ans">○ 세</span></td><td><span class="ans">○</span></td><td><span class="ans">× 모시다 3</span></td><td><span class="num"><span class="ans">6</span></span></td></tr>
-          <tr><td>②</td><td><span class="ans">○ 몇</span></td><td><span class="ans">○</span></td><td><span class="ans">× 한 자리 X</span></td><td><span class="num"><span class="ans">6</span></span></td></tr>
-          <tr><td>③</td><td><span class="ans">× 끊임없는</span></td><td><span class="ans">○</span></td><td><span class="ans">○</span></td><td><span class="num"><span class="ans">3</span></span></td></tr>
-          <tr><td>④</td><td><span class="ans">○ 온갖</span></td><td><span class="ans">○</span></td><td><span class="ans">○</span></td><td><span class="num"><span class="ans">7</span></span></td></tr>
-          <tr><td>⑤</td><td><span class="ans">○ 저</span></td><td><span class="ans">× 다시다</span></td><td><span class="ans">○</span></td><td><span class="num"><span class="ans">5</span></span></td></tr>
-        </table>
-        <div class="lockline" style="flex-wrap:wrap"><span class="lbl">검사기</span><span class="boxes"><span><span class="ans">6</span></span><span><span class="ans">6</span></span><span><span class="ans">3</span></span><span><span class="ans">7</span></span><span><span class="ans">5</span></span></span><span class="q">정답 <span class="blank" style="min-width:10mm"><span class="ans">④</span></span></span></div>
-      </div>
-    </div>
-  </div>
-  <p class="foot">기출 문항 © 한국교육과정평가원</p>
-</section>
-
-<!-- 3쪽 -->
-<section class="sheet" data-page="3 / 3">
-  <div class="keybar keyonly">교사용 정답본 · 학생에게 배부하지 마세요</div>
-  <div class="room" style="margin-top:0">
-    <div class="rh"><span class="n">ROOM 4</span><h2>검토실</h2><span class="tag">2022학년도 9월 모의평가 언어와 매체 38번</span><span class="piece">열쇠 조각 <i></i></span></div>
-    <p class="lead">선지마다 안긴문장을 떼어 내고, 거기서 높임을 받은 사람이 안은문장에서 어떤 성분인지 번호로 적으세요.</p>
-    <div class="two" style="grid-template-columns:82mm 1fr">
+    <div class="rh"><span class="n">ROOM 4</span><h2>검토실</h2><span class="tag">2022학년도 9월 모의평가 언어와 매체 38번</span><span class="keybox"><span class="ans">5</span></span></div>
+    <div class="two" style="grid-template-columns:68mm 1fr">
       <div class="exam"><img src="../assets/exam-2022-9-38.png" alt="2022학년도 9월 모의평가 언어와 매체 38번 문항"></div>
       <div>
-        <div class="legend" style="margin-bottom:2mm"><span><b>1</b>주어</span><span><b>2</b>목적어</span><span><b>3</b>부사어</span><span><b>0</b>안은문장의 성분 아님</span></div>
         <table class="work">
-          <tr><th style="width:8mm">선지</th><th>안긴문장</th><th style="width:15mm">주체 /<br>객체</th><th style="width:15mm">높인<br>사람</th><th style="width:12mm">번호</th></tr>
-          <tr><td>①</td><td class="l"><span class="ans" style="font-size:12.5pt">어르신이 편찮으시다</span></td><td><span class="ans">주체</span></td><td><span class="ans">어르신</span></td><td><span class="num"><span class="ans">1</span></span></td></tr>
-          <tr><td>②</td><td class="l"><span class="ans" style="font-size:12.5pt">부모님이 고향에 계시다</span></td><td><span class="ans">주체</span></td><td><span class="ans">부모님</span></td><td><span class="num"><span class="ans">2</span></span></td></tr>
-          <tr><td>③</td><td class="l"><span class="ans" style="font-size:12.5pt">할아버지께서 선물을 주시다</span></td><td><span class="ans">주체</span></td><td><span class="ans">할아버지</span></td><td><span class="num"><span class="ans">0</span></span></td></tr>
-          <tr><td>④</td><td class="l"><span class="ans" style="font-size:12.5pt">(누나가) 할머니께 인사를 드리다</span></td><td><span class="ans">객체</span></td><td><span class="ans">할머니</span></td><td><span class="num"><span class="ans">3</span></span></td></tr>
-          <tr><td>⑤</td><td class="l"><span class="ans" style="font-size:12.5pt">동생이 선생님을 찾아뵈다</span></td><td><span class="ans">객체</span></td><td><span class="ans">선생님</span></td><td><span class="num"><span class="ans">2</span></span></td></tr>
+          <tr><th style="width:9mm">선지</th><th>안긴문장</th><th style="width:13mm">주체/객체</th><th style="width:15mm">안은문장 성분</th></tr>
+          <tr><td>①</td><td class="l"><span class="ans" style="font-size:12pt">어르신이 편찮으시다</span></td><td><span class="ans">주체</span></td><td><span class="ans">주어</span></td></tr>
+          <tr><td>②</td><td class="l"><span class="ans" style="font-size:12pt">부모님이 고향에 계시다</span></td><td><span class="ans">주체</span></td><td><span class="ans">목적어</span></td></tr>
+          <tr><td>③</td><td class="l"><span class="ans" style="font-size:12pt">할아버지께서 선물을 주시다</span></td><td><span class="ans">주체</span></td><td><span class="ans">성분 아님</span></td></tr>
+          <tr><td>④</td><td class="l"><span class="ans" style="font-size:12pt">할머니께 인사를 드리다</span></td><td><span class="ans">객체</span></td><td><span class="ans">부사어</span></td></tr>
+          <tr><td>⑤</td><td class="l"><span class="ans" style="font-size:12pt">동생이 선생님을 찾아뵈다</span></td><td><span class="ans">객체</span></td><td><span class="ans">목적어</span></td></tr>
         </table>
-        <div class="lockline" style="flex-wrap:wrap"><span class="lbl">추적기</span><span class="boxes"><span><span class="ans">1</span></span><span><span class="ans">2</span></span><span><span class="ans">0</span></span><span><span class="ans">3</span></span><span><span class="ans">2</span></span></span><span class="q">정답 <span class="blank" style="min-width:10mm"><span class="ans">⑤</span></span></span></div>
-        <div class="memo" style="margin-top:2mm">②와 ⑤는 둘 다 목적어인데, 왜 하나만 정답일까?<br><span class="ans">②는 주체 높임(계시다), ⑤는 객체 높임(찾아뵈다)</span></div>
+        <div class="devline"><span class="lbl">47 추적기</span><span class="boxes"><span><span class="ans">5</span></span></span><span class="q">㉠에 들어갈 선지</span></div>
       </div>
     </div>
   </div>
@@ -256,25 +223,23 @@ body.key .keyonly{display:flex}
   <div class="door">
     <span class="stamp" style="position:absolute;right:6mm;top:-4mm;background:#fff;font-size:13pt">FINAL</span>
     <p class="dh" style="font-size:20pt">정문</p>
-    <p class="note" style="margin-top:0">모은 열쇠 조각을 배열해 정문에 새겨진 글(우리 단원의 성취기준)을 완성하세요.</p>
-    <p class="engr" style="margin-top:1mm">담화의 맥락에 적절한 문법 요소를 선택하여 <span><span class="ans">화자의 태도</span></span> 를 드러낸다.</p>
-    <div class="record">
-      <div>걸린 시간</div><div>힌트·탐지기 (×1분)</div><div>경보·오답 (×30초)</div><div>최종 기록 · 별</div>
-    </div>
+    <p class="note" style="margin-top:0">방 순서대로 모은 열쇠 숫자</p>
+    <div class="devline" style="justify-content:center;margin:2mm auto 0;width:max-content"><span class="boxes"><span><span class="ans">7</span></span><span><span class="ans">3</span></span><span><span class="ans">4</span></span><span><span class="ans">5</span></span></span></div>
+    <div class="record"><div>걸린 시간</div><div>경보 (×30초)</div><div>힌트 (×1분)</div><div>최종 기록 · 별</div></div>
   </div>
 
   <div class="exit">
     <p class="cut">✂ - - - - - - - - - - - - - - - - - - - - - 출구 카드 (잘라서 내고 나가기) - - - - - - - - - - - - - - - - - - - - -</p>
     <div class="two">
-      <div><p style="font-size:9.5pt;font-weight:700">오늘 가장 헷갈렸던 높임 한 가지</p><div class="lines" style="margin-top:1mm;min-height:14mm"></div></div>
-      <div><p style="font-size:9.5pt;font-weight:700">그걸 이제 어떻게 구별하는지 한 줄로</p><div class="lines" style="margin-top:1mm;min-height:14mm"></div></div>
+      <div><p style="font-size:9.5pt;font-weight:700">오늘 가장 헷갈렸던 높임 한 가지</p><div class="lines" style="margin-top:1mm;min-height:11mm"></div></div>
+      <div><p style="font-size:9.5pt;font-weight:700">누구에게, 어떤 자리에서 말하느냐에 따라 높임이 달라진 예 하나</p><div class="lines" style="margin-top:1mm;min-height:11mm"></div></div>
     </div>
   </div>
   <p class="foot">기출 문항 © 한국교육과정평가원</p>
 </section>
 
 <script>
-if (/[?&]key\b/.test(location.search)) { document.body.classList.add('key'); document.title = '출제 본부 단서지 (교사용 정답본)'; }
+if (/[?&]key\b/.test(location.search)) { document.body.classList.add('key'); document.title = '출제 본부 검토 일지 (교사용 정답본)'; }
 </script>
 </body>
 </html>
