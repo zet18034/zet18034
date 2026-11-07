@@ -135,7 +135,7 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 .next .bar i.ok{background:#5DB37E}
 .card.ready{animation:ready 1.4s ease-in-out infinite}
 @keyframes ready{50%{box-shadow:0 0 0 5px #5DB37E,0 0 0 7.5px #2A2530,0 14px 24px rgba(40,20,5,.4);transform:translateY(-4px)}}/* ---------- 큰 카드(모달) ---------- */
-#modal{position:fixed;inset:0;z-index:50;background:rgba(30,18,8,.62);display:grid;place-items:center;padding:16px;backdrop-filter:blur(3px)}
+#modal{position:fixed;inset:0;z-index:50;background:rgba(30,18,8,.62);display:grid;place-items:center;padding:16px;backdrop-filter:blur(3px);overflow:auto}
 .flip{width:min(460px,100%);perspective:1400px}
 .flip .in{position:relative;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.3,1.25,.5,1)}
 .flip.show .in{transform:rotateY(180deg)}
@@ -149,7 +149,9 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 .big .hd small{display:block;font:12.5px 'Jua';opacity:.85}
 .big .hd .x{margin-left:auto;border:0;background:rgba(0,0,0,.18);border-radius:10px;width:36px;height:36px;font-size:18px;color:#fff}
 .big.red{--c:var(--red);--c2:var(--red2)} .big.blue{--c:var(--blue);--c2:var(--blue2)} .big.green{--c:var(--green);--c2:var(--green2)} .big.gold{--c:#B9852A;--c2:var(--gold2)}
-.big .bd{padding:16px 18px 18px;overflow:auto}
+.big{display:flex;flex-direction:column;max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);min-height:0}
+.big .bd{padding:16px 18px 18px;overflow:auto;flex:1 1 auto;min-height:0;overscroll-behavior:contain}
+@media (max-height:820px){.big .ill{height:96px;margin-bottom:10px}.big .ill.img{height:auto}.big .txt .sent{font-size:17px;padding:9px 12px}.opt{padding:8px 11px;font-size:14.5px}.big .hd{padding:7px 12px}}
 .big .ill{height:150px;border-radius:12px;background:linear-gradient(180deg,#E9E7E2,#D7D4CC);display:grid;place-items:center;margin-bottom:14px;overflow:hidden}
 .big .ill svg{height:100%;width:auto}
 .big .ill.img{height:auto;background:#fff;padding:6px}
@@ -300,7 +302,7 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
         </g>
       </svg>
       <div class="ttl"><small>화법과 언어 · 높임 표현</small><h1>출제 본부<br>탈출</h1><p>높임을 정확히 읽는 사람만 나갈 수 있다</p></div>
-      <div class="meta"><span>👥 1~3명</span><span>⏱ 30분</span><span>🔑 방 4개</span></div>
+      <div class="meta"><span>👥 4~5명 한 팀</span><span>⏱ 30분</span><span>🔑 방 4개</span></div>
     </div>
     <div class="rulecard">
       <h2>검토위원 안내문</h2>
@@ -597,7 +599,7 @@ function render(){
 function renderIntro(){
   show('intro');
   const box = $('#teams'); box.innerHTML = ''; let pick = S.team;
-  for (let i = 1; i <= 14; i++) { const b = document.createElement('button'); b.textContent = i; if (pick === i) b.classList.add('on');
+  for (let i = 1; i <= 7; i++) { const b = document.createElement('button'); b.textContent = i; if (pick === i) b.classList.add('on');
     b.onclick = () => { pick = i; sfx.tap(); [...box.children].forEach(c => c.classList.toggle('on', c === b)); $('#startBtn').disabled = false; }; box.appendChild(b); }
   $('#startBtn').disabled = !pick;
   $('#startBtn').onclick = () => { const m = S.mute; S = blank(); S.mute = m; S.team = pick; S.startAt = Date.now(); save(); sfx.unlock(); render(); };
