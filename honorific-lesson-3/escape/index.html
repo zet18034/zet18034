@@ -212,6 +212,10 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 .big .rules b{color:var(--red)}
 .big .rules .pen{font:21px/1.25 'Nanum Pen Script';color:#A8231B;margin-top:8px}
 .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.tiles button{height:56px;border-radius:12px;border:2px solid #1F1B22;background:#F6E9C4;font:700 26px 'Gowun Batang',serif;box-shadow:0 3px 0 #6E4E12;color:var(--ink)}
+.tiles button:active{transform:translateY(2px);box-shadow:0 1px 0 #6E4E12}
+.wslots span{font-family:'Gowun Batang',serif!important;font-size:26px!important}
 .pad button{height:52px;border-radius:12px;border:2px solid #1F1B22;background:#FBF8F1;font:700 22px 'Nanum Gothic Coding';box-shadow:0 3px 0 #1F1B22;color:var(--ink)}
 .pad button:active{transform:translateY(2px);box-shadow:0 1px 0 #1F1B22}
 .pad .go{background:var(--green2);color:#fff;font:20px 'Jua'}
@@ -752,7 +756,8 @@ function nextStep(R){
   else if (unsolved.length) t = `아직 풀지 않은 빨간 카드: <em>${unsolved.join(', ')}번</em>`;
   else if (left.length) t = `아직 뒤집지 않은 번호가 있다: ${left.join(', ')}번`;
   else if (!S.solved[sk(R.id, devN)]) t = `빨간 카드를 모두 풀었다! 단서 카드의 계산법대로 <span class="g">${devN}번 장치</span>를 열자.`;
-  else if (!S.solved[sk(R.id, vN)]) t = `장치 안에서 나온 <em>${vN}번 서류</em>를 풀어야 열쇠를 꺼낼 수 있다.`;
+  else if (!S.solved[sk(R.id, vN)]) t = `장치 안에서 나온 <em>${vN}번 서류</em>를 풀어야 열쇠 상자를 열 수 있다.`;
+  else if (!S.keys.includes(R.id)) t = `<span class="g">열쇠 상자</span>를 열자. 검토 일지 <em>근거 판정표</em>에서 고른 글자 세 개가 필요하다.`;
   else t = '이 방은 해제됐다. 평면도로 돌아가자.';
   return `<b>다음 할 일</b><span>${t}</span>${bar}`;
 }
@@ -797,13 +802,13 @@ function cardBig(R, n){
     else body += `<p class="ask">${cd.dev.ask}</p><div class="slots">${Array.from({length:cd.dev.len},()=>`<span></span>`).join('')}</div><div class="pad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button data-k="${d}">${d}</button>`).join('')}<button data-k="del">⌫</button><button data-k="0">0</button><button class="go" data-k="go">열기</button></div><p class="msg" id="msg"></p>`;
   }
   const keyBtn = cd.vault && sv && !S.keys.includes(R.id);
-  const closeBtn = keyBtn ? '<div class="brow"><button class="btn red" id="keyb">🔑 열쇠 꺼내기</button></div>' : (cd.info || sv) && !(cd.dev && !sv) ? '<div class="brow"><button class="btn" id="okb">책상에 내려놓기</button></div>' : '';
+  const closeBtn = keyBtn ? '<div class="brow"><button class="btn red" id="keyb">🔑 열쇠 상자 열기</button></div>' : (cd.info || sv) && !(cd.dev && !sv) ? '<div class="brow"><button class="btn" id="okb">책상에 내려놓기</button></div>' : '';
   return `<div class="big ${cd.c}"><div class="hd"><span class="no">${n}</span><div><small>${cd.ty} 카드</small><h3>${cd.title}</h3></div><button class="x" id="xb" aria-label="닫기">✕</button></div><div class="bd">${body}${closeBtn}</div></div>`;
 }
 function bindBig(){
   const {R, n, cd, k} = cur;
   $('#xb').onclick = closeCard; const okb = $('#okb'); if (okb) okb.onclick = closeCard;
-  const kb = $('#keyb'); if (kb) kb.onclick = () => clearRoom(R);
+  const kb = $('#keyb'); if (kb) kb.onclick = () => openKeyBox(R);
   if (cd.opts && !S.solved[k]) {
     let sel = null;
     document.querySelectorAll('.opt').forEach(b => b.onclick = () => { sfx.tap(); sel = b.dataset.id; document.querySelectorAll('.opt').forEach(x => x.classList.toggle('on', x === b)); });
@@ -880,6 +885,33 @@ function clearRoom(R, skipped){
   $('#kOk').onclick = () => { $('#keyget').hidden = true; S.view = 'map'; save(); render(); window.scrollTo({top:0,behavior:'smooth'}); };
   const ks = $('#kStay'); if (ks) ks.onclick = () => { $('#keyget').hidden = true; renderRoom(i); renderDevice(); };
   renderDevice();
+}
+
+// ---------- 열쇠 상자: 검토 일지(종이)의 근거 판정표에서 고른 글자 세 개 ----------
+function openKeyBox(R){
+  const i = ROOMS.indexOf(R), k = 'key:' + R.id;
+  cur = {R, n:'KEY', cd:null, k};
+  $('#backNo').textContent = '🔑';
+  $('#front').innerHTML = `<div class="big gold"><div class="hd"><span class="no">🔑</span><div><small>${R.short} · 마지막 잠금</small><h3>열쇠 상자</h3></div><button class="x" id="xb" aria-label="닫기">✕</button></div><div class="bd">
+    <div class="ill">${ICON.key()}</div>
+    <p class="ask">검토 일지 <em>ROOM ${i+1} 근거 판정표</em>에서 바르게 고른 칸의 글자를 <em>카드 순서대로</em> 눌러라.</p>
+    <div class="slots wslots">${[0,1,2].map(() => '<span></span>').join('')}</div>
+    <div class="tiles">${R.tiles.map(t => `<button data-t="${t}">${t}</button>`).join('')}</div>
+    <div class="brow"><button class="btn ghost sm" id="kdel">⌫ 지우기</button><button class="btn" id="kgo">열기</button></div><p class="msg" id="msg"></p></div></div>`;
+  $('#modal').hidden = false; const fl = $('#flip'); fl.classList.add('show'); sfx.card();
+  $('#xb').onclick = closeCard;
+  let v = [];
+  const paint = () => document.querySelectorAll('.wslots span').forEach((s, j) => { s.textContent = v[j] || ''; s.classList.toggle('cur', j === v.length); });
+  paint();
+  document.querySelector('.tiles').onclick = e => { const t = e.target.closest('button')?.dataset.t; if (!t || v.length >= 3) return; sfx.tap(); v.push(t); paint(); };
+  $('#kdel').onclick = () => { v.pop(); paint(); sfx.tap(); };
+  $('#kgo').onclick = () => {
+    const m = $('#msg');
+    if (v.length < 3) { m.className = 'msg bad'; m.textContent = '글자 세 개를 모두 눌러 주세요.'; return; }
+    if (v.join('') === R.word) { S.solved[k] = true; save(); clearRoom(R); return; }
+    alarm('열쇠 상자가 열리지 않는다. 검토 일지의 판정을 한 줄씩 다시 따져 보자. (글자는 카드 순서대로)', 'key', v.join(''), R.id);
+    v = []; paint();
+  };
 }
 
 // ---------- 비상구 ----------

@@ -34,6 +34,8 @@ function cardList(){
   (window.ESC_ROOMS || []).forEach((R, ri) => Object.entries(R.cards).forEach(([n, cd]) => {
     if (cd.opts || cd.dev) out.push({key:`${R.id}:${n}`, room:R, ri, n:+n, cd, kind: cd.dev ? 'dev' : cd.bonus ? 'bonus' : 'req'});
   }));
+  // 열쇠 상자(검토 일지 근거 판정표의 글자)도 오답을 센다
+  (window.ESC_ROOMS || []).forEach((R, ri) => out.push({key:`${R.id}:key`, room:R, ri, n:'🔑', cd:{title:'열쇠 상자(판정표)'}, kind:'key'}));
   return out;
 }
 const optText = (cd, o) => { const f = (cd.opts || []).find(x => x[0] === o); return f ? f[1] : o; };
@@ -51,6 +53,7 @@ function aggregate(rows){
     if (e.ty === 'clear') {   // 방 해제 = 그 방의 필수 카드·장치·금고 속 서류가 모두 끝남
       const R = (window.ESC_ROOMS || []).find(r => r.id === e.r);
       if (R) Object.entries(R.cards).forEach(([n, cd]) => { if ((cd.opts || cd.dev) && !cd.bonus) { const s = st(`${R.id}:${n}`); if (!s.s) { s.s = true; if (e.o === 'skip') s.p = true; } } });
+      if (R) { const s = st(`${R.id}:key`); if (!s.s) { s.s = true; if (e.o === 'skip') s.p = true; } }
     }
     const k = `${e.r}:${e.c}`, C = cards[k];
     if (!C) return;
@@ -66,7 +69,7 @@ function aggregate(rows){
   });
   const list = Object.values(cards).map(C => {
     const top = Object.entries(C.opts).sort((a,b) => b[1]-a[1])[0];
-    return {...C, wrongTeamsN:C.wrongTeams.size, solvedN:C.solvedTeams.size, openN:C.openTeams.size, topWrong: top ? {o:top[0], n:top[1], text: C.kind === 'dev' ? `비밀번호 ${top[0].replace('dev:','')}` : optText(C.cd, top[0]), why: C.kind === 'dev' ? '단서 카드의 계산법을 다시 확인' : (C.cd.traps || {})[top[0]] || ''} : null};
+    return {...C, wrongTeamsN:C.wrongTeams.size, solvedN:C.solvedTeams.size, openN:C.openTeams.size, topWrong: top ? {o:top[0], n:top[1], text: C.kind === 'dev' ? `비밀번호 ${top[0].replace('dev:','')}` : C.kind === 'key' ? `글자 ‘${top[0]}’` : optText(C.cd, top[0]), why: C.kind === 'dev' ? '단서 카드의 계산법을 다시 확인' : C.kind === 'key' ? '검토 일지 판정표를 한 줄씩 다시 확인' : (C.cd.traps || {})[top[0]] || ''} : null};
   });
   const tl = Object.values(teams).sort((a,b) => +a.t - +b.t);
   const rank = tl.slice().sort((a,b) => {
@@ -75,7 +78,7 @@ function aggregate(rows){
     if (A.end !== Bx.end) return A.end ? -1 : 1;
     return (Bx.keys||0) - (A.keys||0) || (Bx.solved||0) - (A.solved||0);
   });
-  const missed = list.filter(c => c.kind !== 'dev' && c.wrong > 0).sort((a,b) => b.wrong - a.wrong || b.wrongTeamsN - a.wrongTeamsN);
+  const missed = list.filter(c => c.kind !== 'dev' && c.kind !== 'key' && c.wrong > 0).sort((a,b) => b.wrong - a.wrong || b.wrongTeamsN - a.wrongTeamsN);
   const best = rank.find(T => (T.x||{}).end) || null;
   const fewest = tl.filter(T => (T.x||{}).end).sort((a,b) => (a.x.wrong - b.x.wrong) || (a.x.total - b.x.total))[0] || null;
   const bonusKing = tl.slice().sort((a,b) => ((b.x||{}).bonus||0) - ((a.x||{}).bonus||0))[0] || null;
