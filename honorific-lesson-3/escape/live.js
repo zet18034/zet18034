@@ -43,11 +43,22 @@ function aggregate(rows){
   cardList().forEach(c => { cards[c.key] = {...c, wrong:0, wrongTeams:new Set(), opts:{}, solvedTeams:new Set(), openTeams:new Set(), hints:0}; });
   (rows || []).forEach(e => {
     const t = String(e.t); if (!t) return;
-    const T = teams[t] || (teams[t] = {t, n:'', first:e.at || e.time, last:0, x:{}, events:0});
+    const T = teams[t] || (teams[t] = {t, n:'', first:e.at || e.time, last:0, x:{}, events:0, cs:{}, lastCard:null});
     T.n = e.n || T.n; T.events++; T.last = Math.max(T.last, e.at || e.time || 0); T.x = e.x || T.x;
-    if (e.ty === 'start') T.first = e.at || e.time;
+    if (e.ty === 'start') { T.first = e.at || e.time; T.cs = {}; T.lastCard = null; }   // 다시 시작하면 카드 상태도 새로
+    // 팀별 카드 상태: s 해결, w 오답 수, o 열어 봄, p 선생님 통과
+    const st = key => T.cs[key] || (T.cs[key] = {s:false, w:0, o:false, p:false});
+    if (e.ty === 'clear') {   // 방 해제 = 그 방의 필수 카드·장치·금고 속 서류가 모두 끝남
+      const R = (window.ESC_ROOMS || []).find(r => r.id === e.r);
+      if (R) Object.entries(R.cards).forEach(([n, cd]) => { if ((cd.opts || cd.dev) && !cd.bonus) { const s = st(`${R.id}:${n}`); if (!s.s) { s.s = true; if (e.o === 'skip') s.p = true; } } });
+    }
     const k = `${e.r}:${e.c}`, C = cards[k];
     if (!C) return;
+    const s = st(k);
+    if (e.ty === 'open') s.o = true;
+    if (e.ty === 'wrong') { s.w++; s.o = true; T.lastCard = k; }
+    if (e.ty === 'solve' || e.ty === 'bonus' || e.ty === 'device') { s.s = true; s.o = true; if (e.o === 'skip') s.p = true; }
+    if (e.ty === 'open' || e.ty === 'hint') T.lastCard = k;
     if (e.ty === 'wrong') { C.wrong++; C.wrongTeams.add(t); const o = String(e.o || ''); C.opts[o] = (C.opts[o] || 0) + 1; }
     if (e.ty === 'solve' || e.ty === 'bonus' || e.ty === 'device') C.solvedTeams.add(t);
     if (e.ty === 'open') C.openTeams.add(t);
@@ -72,5 +83,15 @@ function aggregate(rows){
 }
 const fmt = s => { s = Math.max(0, Math.round(s || 0)); return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0'); };
 const label = T => T ? `${T.t}팀 ${T.n ? '· ' + T.n : ''}` : '—';
-window.ESC_LIVE = {cfg, setCfg, ready, joinUrl, fetchRows, setCtl, getCtl, aggregate, cardList, fmt, label, GAME_URL};
+// 관리자 → 특정 팀 기기 명령 (카드·방 통과, 다시 시작, 팀 공지). 제어 정보(ctl)의 cmds 목록에 쌓아 보낸다.
+// 기기는 8초마다 목록을 읽어 자기 팀 명령 중 처음 보는 것만 실행한다. 목록은 최근 12개·15분 안의 것만 남긴다(주소 길이 제한).
+async function sendCmd(c, ctl, cmd){
+  const now = Date.now();
+  const cmds = (Array.isArray(ctl.cmds) ? ctl.cmds : []).filter(m => m && now - m.id < 15*60*1000).slice(-11);
+  cmds.push(Object.assign({id: now}, cmd));
+  const next = Object.assign({}, ctl, {cmds});
+  await setCtl(c, next);
+  return next;
+}
+window.ESC_LIVE = {cfg, setCfg, ready, joinUrl, fetchRows, setCtl, getCtl, sendCmd, aggregate, cardList, fmt, label, GAME_URL};
 })();

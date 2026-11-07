@@ -116,7 +116,7 @@ body.key .keyonly{display:flex}
 </head>
 <body>
 <style>
-.cardrow td{height:13mm;vertical-align:top;text-align:left;font-size:9.4pt;line-height:1.45}
+.cardrow td{height:11mm;vertical-align:top;text-align:left;font-size:9.4pt;line-height:1.45}
 .cardrow td.n{width:12mm;text-align:center;vertical-align:middle}
 .cardrow td.n b{display:inline-grid;place-items:center;width:9mm;height:9mm;border-radius:50%;border:1.3pt solid var(--line);font:700 11pt 'Gowun Batang',serif}
 .cardrow td.s small{display:block;font-size:7.6pt;color:var(--mute)}
@@ -127,9 +127,12 @@ body.key .keyonly{display:flex}
 .devline .lbl{font-family:'Do Hyeon';font-size:12.5pt;white-space:nowrap}
 .devline .boxes{display:flex;gap:1.4mm}
 .devline .boxes > span{width:8.5mm;height:9.5mm;border:1.2pt solid var(--line);border-radius:1.3mm;background:#fff;display:grid;place-items:center;font:700 13pt 'Nanum Gothic Coding'}
+.cardrow.vault{margin-top:1.5mm}
+.cardrow.vault td.s small{color:#2B6E4D}
+.cardrow .lk{font-size:8pt;color:var(--mute)}
 .devline .q{font-size:8.8pt;color:var(--mute)}
 .keybox{display:inline-grid;place-items:center;width:10mm;height:10mm;border-radius:2mm;background:#F6E2A8;border:1.2pt solid var(--line);font:700 13pt 'Nanum Gothic Coding';margin-left:auto}
-.record div{height:11mm}.door{margin-top:3.5mm;padding:3mm 5mm}.exit{margin-top:3mm;padding-top:2mm}.cardrow td.d{width:12mm}.cardrow td{height:14mm}.cardrow td.w{width:60mm}.cardrow td.s{text-align:left}
+.record div{height:11mm}.door{margin-top:3.5mm;padding:3mm 5mm}.exit{margin-top:3mm;padding-top:2mm}.cardrow td.d{width:12mm}.cardrow td{height:10.5mm;padding:1mm 1.6mm;line-height:1.38}.room{margin-top:3.5mm}.devline{margin-top:1.5mm;padding:1.4mm 3mm}.cardrow.vault{margin-top:1.2mm}.cardrow th{padding:.8mm 1.6mm}.cardrow td.w{width:60mm}.cardrow td.s{text-align:left}
 </style>
 <section class="sheet" data-page="1 / 2">
   <div class="keybar keyonly">교사용 정답본 · 학생에게 배부하지 마세요</div>
@@ -166,7 +169,8 @@ body.key .keyonly{display:flex}
       <tr><td class="n"><b>25</b></td><td class="s">할아버지께서는 [손이 유난히 크시다].</td><td class="d"><span class="ans">②</span></td><td class="w"><span class="ans">서술절 → 서술어 / 신체 '손'을 높여 할아버지를 간접 높임</span></td><td class="d"><span class="ans">21</span></td></tr>
       <tr><td class="n"><b>38</b></td><td class="s"><small style="color:#B8862E">★ 보너스</small>[오랫동안 편찮으셨던] 외할머니께서 마침내 퇴원하셨다.</td><td class="d"><span class="ans">②</span></td><td class="w"><span class="ans">관형절의 생략된 주어 = 외할머니, 두 '-시-' 모두 외할머니</span></td><td class="d"><span style="font-size:8pt;color:var(--mute)">−30초</span></td></tr>
     </table>
-    <div class="devline"><span class="lbl">49 금고</span><span class="boxes"><span><span class="ans">4</span></span><span><span class="ans">7</span></span></span><span class="q">3번 단서: 편지 A 소인 + 편지 B 소인 → 일의 자리 = 열쇠</span></div>
+    <div class="devline"><span class="lbl">49 금고</span><span class="boxes"><span><span class="ans">4</span></span><span><span class="ans">7</span></span></span><span class="q">3번 단서: 편지 A 봉투 번호 + 편지 B 봉투 번호 → 일의 자리 = 열쇠</span></div>
+    <table class="cardrow vault"><tr><td class="n"><b>58</b></td><td class="s"><small>🔒 장치 속 서류</small>선생님께서 [어머니께 상담 일정을 여쭈어 보라고] 저에게 말씀하셨어요.</td><td class="d"><span class="ans">②</span></td><td class="w"><span class="ans">인용절 부사어 '어머니께' ← 여쭈다(객체 높임) / 께서·-시- → 선생님</span></td><td class="d"><span class="lk">열쇠</span></td></tr></table>
   </div>
 
   <div class="room">
@@ -178,6 +182,7 @@ body.key .keyonly{display:flex}
       <tr><td class="n"><b>31</b></td><td class="s"><small style="color:#B8862E">★ 보너스</small>할머니께서 [버스가 곧 온다고] 하셨는데, 그 버스는 이미 떠나셨다.</td><td class="d"><span class="ans">③</span></td><td class="w"><span class="ans">앞 절 → 할머니 ○ / 뒤 절 주어 버스 → '떠났다'로 고침</span></td><td class="d"><span style="font-size:8pt;color:var(--mute)">−30초</span></td></tr>
     </table>
     <div class="devline"><span class="lbl">40 경보기</span><span class="boxes"><span><span class="ans">5</span></span><span><span class="ans">3</span></span></span><span class="q">5번 단서: 주문 번호 − 게시 번호 → 일의 자리 = 열쇠</span></div>
+    <table class="cardrow vault"><tr><td class="n"><b>66</b></td><td class="s"><small>🔒 장치 속 서류</small>[오늘 방문하신] 고객님께서는 주차권이 필요하시면 안내 데스크에 말씀해 주십시오.</td><td class="d"><span class="ans">②</span></td><td class="w"><span class="ans">관형절 생략 주어 = 고객님(-시-) / '필요하시면'도 서술절 → 고객님 높임</span></td><td class="d"><span class="lk">열쇠</span></td></tr></table>
   </div>
 </section>
 
@@ -192,6 +197,7 @@ body.key .keyonly{display:flex}
       <tr><td class="n"><b>33</b></td><td class="s"><small style="color:#B8862E">★ 보너스</small>[새로 부임하신] 교감 선생님께서 모든 학생에게 웃으며 인사하셨다.</td><td class="d"><span class="ans">①</span></td><td class="w"><span class="ans">모든 = 관형사, 새로 = 부사 / 관형절 주어 = 교감 선생님</span></td><td class="d"><span style="font-size:8pt;color:var(--mute)">−30초</span></td></tr>
     </table>
     <div class="devline"><span class="lbl">44 의견서</span><span class="boxes"><span><span class="ans">8</span></span><span><span class="ans">4</span></span></span><span class="q">2번 단서: 판서 번호 + 원고 번호 → 일의 자리 = 열쇠</span></div>
+    <table class="cardrow vault"><tr><td class="n"><b>71</b></td><td class="s"><small>🔒 장치 속 서류</small>아버지께서는 [이웃이 맡긴] 온갖 서류를 밤새 검토하셨다.</td><td class="d"><span class="ans">①</span></td><td class="w"><span class="ans">온갖 = 관형사(관형어) / 검토하다 = 두 자리 / -시- → 아버지</span></td><td class="d"><span class="lk">열쇠</span></td></tr></table>
   </div>
 
   <div class="room">
@@ -203,6 +209,7 @@ body.key .keyonly{display:flex}
       <tr><td class="n"><b>35</b></td><td class="s"><small style="color:#B8862E">★ 보너스</small>동생은 [명절에 선물을 드릴] 이모님께 미리 전화를 걸었다.</td><td class="d"><span class="ans">④</span></td><td class="w"><span class="ans">객체 높임 대상 이모님 → '이모님께' = 부사어 / 드리다 = 세 자리</span></td><td class="d"><span style="font-size:8pt;color:var(--mute)">−30초</span></td></tr>
     </table>
     <div class="devline"><span class="lbl">47 추적기</span><span class="boxes"><span><span class="ans">4</span></span><span><span class="ans">5</span></span></span><span class="q">4번 단서: 지시서 1 번호 − 지시서 2 번호 → 일의 자리 = 열쇠</span></div>
+    <table class="cardrow vault"><tr><td class="n"><b>83</b></td><td class="s"><small>🔒 장치 속 서류</small>할머니께서는 [아버지께서 모시고 온] 손님께 차를 대접하셨다.</td><td class="d"><span class="ans">②</span></td><td class="w"><span class="ans">관형절 객체 높임 대상 손님 → '손님께' = 부사어</span></td><td class="d"><span class="lk">열쇠</span></td></tr></table>
   </div>
 
   <div class="door">

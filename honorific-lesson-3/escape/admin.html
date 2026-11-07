@@ -42,6 +42,25 @@ input[type=text]{width:100%;padding:10px 12px;border-radius:10px;border:1px soli
 .stats b{display:block;font:700 18px 'Nanum Gothic Coding';color:var(--ink)}
 .team .ago{position:absolute;right:12px;top:12px;font:12px 'Jua';color:var(--mute)}
 .team.empty{opacity:.45}
+.rooms{display:grid;gap:5px;margin-top:10px}
+.rrow{display:grid;grid-template-columns:52px 1fr auto;gap:6px;align-items:center;padding:4px 6px;border-radius:9px;background:#15171D}
+.rrow.cur{background:#26211A;box-shadow:inset 0 0 0 1px #6E5522}.rrow.clr{opacity:.7}
+.rrow .rn{font:13px 'Jua';color:var(--mute)}.rrow.cur .rn{color:var(--gold)}
+.pips{display:flex;gap:4px;flex-wrap:wrap}
+.pip{min-width:34px;height:26px;padding:0 5px;border-radius:7px;border:1px solid #3A3D45;background:#1B1D23;color:#6B6F78;font:700 12px 'Nanum Gothic Coding';cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:2px}
+.pip:hover{filter:brightness(1.35)}
+.pip.k-dev{border-radius:13px}.pip.k-bonus{border-style:dashed}
+.pip.o{color:#C9CCD2;border-color:#6B6F78}
+.pip.w{background:#3A1614;border-color:#D23B30;color:#FFB4A8}
+.pip.s{background:#1F4A33;border-color:#3F9268;color:#C7F5DC;cursor:default}
+.pip.p{background:#1D3550;border-color:#4C7DAE;color:#CFE0F2;cursor:default}
+.pip sup{font:10px 'Noto Sans KR';color:#FF8C80}
+.mini{padding:4px 8px;border-radius:7px;border:0;background:#2A2C33;font:12px 'Jua';cursor:pointer;color:#C9CCD2}
+.mini:hover{filter:brightness(1.25)}.mini.red{background:#5A1C18;color:#FFD0C8}.mini.gold{background:#5A4415;color:#FFE6A8}
+.tacts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.legend2{display:flex;gap:10px;flex-wrap:wrap;font-size:12.5px;color:var(--mute);margin:-4px 0 10px}
+.legend2 i{display:inline-block;width:14px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:4px;border:1px solid #3A3D45}
+.toastA{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1F4A33;color:#C7F5DC;padding:10px 18px;border-radius:12px;font:15px 'Jua';z-index:9}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th,td{padding:8px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
 th{color:var(--mute);font-weight:500;font-size:12.5px}
@@ -77,7 +96,7 @@ tr.click{cursor:pointer}tr.click:hover{background:#1C1F26}tr.sel{background:#222
       <label>수업 코드 (반마다 다르게)</label>
       <div class="row" style="margin-top:0"><input type="text" id="ses" style="flex:1"><button class="btn" id="newSes">새 코드</button><button class="btn green" id="save">저장하고 연결</button></div>
       <div class="join" style="margin-top:14px">
-        <div><label style="margin-top:0">학생 접속 주소 (발표 슬라이드 7번의 QR도 이 주소로 바뀝니다)</label><code id="joinUrl">—</code><div class="row"><button class="btn" id="copy">주소 복사</button><a class="btn" id="openGame" target="_blank" style="text-decoration:none">게임 열기 ↗</a></div></div>
+        <div><label style="margin-top:0">학생 접속 주소 (발표 슬라이드 15번(접속)의 QR도 이 주소로 바뀝니다)</label><code id="joinUrl">—</code><div class="row"><button class="btn" id="copy">주소 복사</button><a class="btn" id="openGame" target="_blank" style="text-decoration:none">게임 열기 ↗</a></div></div>
         <div id="qr"></div>
       </div>
     </section>
@@ -93,11 +112,12 @@ tr.click{cursor:pointer}tr.click:hover{background:#1C1F26}tr.sel{background:#222
         <button class="btn" data-q="먼저 탈출한 팀은 노란 보너스 카드에 도전하세요.">보너스 도전</button>
         <button class="btn" data-q="장치에 숫자를 넣기 전에 팀원 모두 근거에 동의했나요?">근거 합의</button>
       </div>
-      <p class="note" style="margin-top:12px">공지·일시정지는 각 기기에 8초 안에 반영됩니다. 막힌 팀은 게임 화면 왼쪽 아래 ‘교사’ 버튼(번호 1110)으로 통과시킬 수 있습니다.</p>
+      <p class="note" style="margin-top:12px">공지·일시정지·통과는 각 기기에 8초 안에 반영됩니다. 막힌 팀은 아래 ③에서 카드 칸을 눌러 그 카드만 통과시키거나, ‘방 통과’로 방 전체를 넘길 수 있습니다. (관리자와 연결된 수업에서는 게임 화면의 ‘교사’ 버튼이 숨겨집니다.)</p>
     </section>
 
     <section class="card s12">
-      <h2>③ 팀별 진행 상황 <small>빨간 테두리 = 3분 넘게 진행이 없는 팀</small></h2>
+      <h2>③ 팀별 진행 상황 · 교사 메뉴 <small>빨간 테두리 = 3분 넘게 진행이 없는 팀 · 카드 칸을 누르면 그 카드를 통과시킵니다</small></h2>
+      <div class="legend2"><span><i style="background:#1B1D23"></i>아직 안 엶</span><span><i style="background:#1B1D23;border-color:#6B6F78"></i>열어 봄</span><span><i style="background:#3A1614;border-color:#D23B30"></i>틀림(숫자 = 경보 횟수)</span><span><i style="background:#1F4A33;border-color:#3F9268"></i>해결</span><span><i style="background:#1D3550;border-color:#4C7DAE"></i>선생님 통과</span><span>네모 = 문제 · 둥근 칸 = 장치 · 점선 = 보너스 · 🔒 = 금고 속 서류</span></div>
       <div class="teams" id="teams"></div>
     </section>
 
@@ -146,10 +166,44 @@ function teamCard(i){
   const el = x.end ? x.el : (x.el || 0) + (ctl.pause ? 0 : Math.max(0, ago));
   const where = x.end ? `✅ 탈출 · 기록 ${L.fmt(x.total)}` : (typeof x.room === 'number' ? `ROOM ${x.room+1} · ${roomName(window.ESC_ROOMS[x.room].id)}` : '평면도');
   const stuck = !x.end && ago > 180;
-  return `<div class="team${x.end?' done':''}${stuck?' stuck':''}"><span class="ago">${ago < 60 ? ago + '초 전' : Math.floor(ago/60) + '분 전'}</span><div class="tn">${i}팀<small>${T.n||''}</small></div><div class="where">${where}</div>
-    <div class="keys">${[0,1,2,3].map(k => `<i class="${k < (x.keys||0) ? 'on' : ''}">${k < (x.keys||0) ? window.ESC_ROOMS[k].key : ''}</i>`).join('')}</div>
-    <div class="stats"><div>경과<b>${L.fmt(el)}</b></div><div>경보<b>${x.wrong||0}</b></div><div>힌트<b>${x.hints||0}</b></div><div>보너스<b>${x.bonus||0}</b></div></div></div>`;
+  const keys = x.keys || 0, curRoom = typeof x.room === 'number' ? x.room : Math.min(keys, 3);
+  const last = T.lastCard ? T.lastCard.split(':') : null;
+  const lastTxt = last && !x.end ? (() => { const R = window.ESC_ROOMS.find(r => r.id === last[0]); const cd = R && R.cards[last[1]]; return cd ? ` · 마지막으로 본 카드 ${last[1]} ${cd.title}` : ''; })() : '';
+  const rooms = window.ESC_ROOMS.map((R, ri) => {
+    const ns = Object.keys(R.cards).filter(n => R.cards[n].opts || R.cards[n].dev);
+    const order = [...ns.filter(n => !R.cards[n].bonus && !R.cards[n].vault && !R.cards[n].dev), ...ns.filter(n => R.cards[n].dev), ...ns.filter(n => R.cards[n].vault), ...ns.filter(n => R.cards[n].bonus)];
+    const cleared = ri < keys, reach = ri <= keys;
+    const pips = order.map(n => {
+      const cd = R.cards[n], s = (T.cs || {})[`${R.id}:${n}`] || {}, kind = cd.dev ? 'dev' : cd.bonus ? 'bonus' : 'req';
+      const cls = s.p ? 'p' : s.s ? 's' : s.w ? 'w' : s.o ? 'o' : '';
+      const can = !x.end && reach && !s.s;
+      return `<button class="pip k-${kind} ${cls}" ${can ? `data-cmd="card" data-t="${i}" data-r="${R.id}" data-c="${n}"` : 'disabled'} title="${n} ${cd.title}${s.w ? ` · 경보 ${s.w}번` : ''}${s.p ? ' · 선생님 통과' : ''}">${cd.vault ? '🔒' : ''}${n}${s.w && !s.s ? `<sup>${s.w}</sup>` : ''}</button>`;
+    }).join('');
+    const btn = !x.end && reach && !cleared ? `<button class="mini" data-cmd="room" data-t="${i}" data-r="${R.id}">방 통과</button>` : cleared ? '<span class="note">🔑 ' + R.key + '</span>' : '';
+    return `<div class="rrow${ri === curRoom && !x.end ? ' cur' : ''}${cleared ? ' clr' : ''}"><span class="rn">${R.short}</span><div class="pips">${pips}</div>${btn}</div>`;
+  }).join('');
+  const acts = x.end ? `<button class="mini red" data-cmd="reset" data-t="${i}">다시 시작</button>`
+    : `<button class="mini gold" data-cmd="msg" data-t="${i}">이 팀에만 공지</button>${keys >= 4 ? `<button class="mini" data-cmd="gate" data-t="${i}">비상구 통과</button>` : ''}<button class="mini red" data-cmd="reset" data-t="${i}">처음부터 다시</button>`;
+  return `<div class="team${x.end?' done':''}${stuck?' stuck':''}"><span class="ago">${ago < 60 ? ago + '초 전' : Math.floor(ago/60) + '분 전'}</span><div class="tn">${i}팀<small>${T.n||''}</small></div><div class="where">${where}<span class="note" style="font-family:'Noto Sans KR'">${lastTxt}</span></div>
+    <div class="keys">${[0,1,2,3].map(k => `<i class="${k < keys ? 'on' : ''}">${k < keys ? window.ESC_ROOMS[k].key : ''}</i>`).join('')}</div>
+    <div class="stats"><div>경과<b>${L.fmt(el)}</b></div><div>경보<b>${x.wrong||0}</b></div><div>힌트<b>${x.hints||0}</b></div><div>보너스<b>${x.bonus||0}</b></div></div>
+    <div class="rooms">${rooms}</div><div class="tacts">${acts}</div></div>`;
 }
+function toastA(t){ const d = document.createElement('div'); d.className = 'toastA'; d.textContent = t; document.body.appendChild(d); setTimeout(() => d.remove(), 3500); }
+// 교사 메뉴: 팀 카드 안의 버튼 → 그 팀 기기에 명령
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-cmd]'); if (!b || !L.ready(C)) return;
+  const t = +b.dataset.t, a = b.dataset.cmd, r = b.dataset.r, c = b.dataset.c;
+  const R = r ? window.ESC_ROOMS.find(x => x.id === r) : null, cd = R && c ? R.cards[c] : null;
+  const T = (AGG ? AGG.teams : []).find(x => +x.t === t), who = L.label(T || {t});
+  let cmd = {t, a};
+  if (a === 'card') { if (!confirm(`${who}\n${R.short} · ${c}번 ${cd.title}을(를) 통과시킬까요?${cd.dev ? '\n(장치가 열리고 금고 속 서류가 나옵니다)' : cd.vault ? '\n(열쇠까지 바로 줍니다)' : ''}`)) return; cmd.r = r; cmd.c = c; }
+  else if (a === 'room') { if (!confirm(`${who}\n${R.name} 방 전체를 통과시킬까요? (보너스 카드는 남습니다)`)) return; cmd.r = r; }
+  else if (a === 'gate') { if (!confirm(`${who}\n비상구를 통과시켜 탈출 처리할까요?`)) return; }
+  else if (a === 'reset') { if (!confirm(`${who}\n이 팀의 기록을 지우고 처음부터 다시 시작하게 할까요?\n(이미 보낸 기록은 관리자 기록에 남습니다)`)) return; }
+  else if (a === 'msg') { const m = prompt(`${who}에게만 보낼 공지`, '장치 옆 단서 카드를 다시 읽어 보세요.'); if (!m || !m.trim()) return; cmd.msg = m.trim().slice(0, 80); }
+  try { ctl = await L.sendCmd(C, ctl, cmd); toastA(`보냈습니다 · ${who} (8초 안에 반영)`); } catch(err) { toastA('보내지 못했습니다. 연결을 확인하세요.'); }
+});
 function render(){
   $('#teams').innerHTML = [1,2,3,4,5,6].map(teamCard).join('');
   const list = (AGG ? AGG.cards : L.aggregate([]).cards).slice().sort((a,b) => b.wrong - a.wrong || a.ri - b.ri || a.n - b.n);

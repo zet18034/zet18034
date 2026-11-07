@@ -198,6 +198,15 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 .hintx{margin-top:12px;padding:11px 13px;border-radius:10px;background:#E2EAF3;border:2px solid #9DB5D0;font-size:14.5px;line-height:1.6}
 .hintx b{font-family:'Jua';font-weight:400;color:var(--blue);margin-right:6px}
 .solvedbox{margin-top:12px;padding:12px 14px;border-radius:12px;background:#F6EBCB;border:2px solid #1F1B22;font-size:15px;line-height:1.7}
+.explain{margin-top:12px;border-radius:12px;background:#FBF8F1;border:2px solid #D5CDBA;padding:10px 14px}
+.explain summary{cursor:pointer;font:16px 'Jua';color:#2B6E4D}
+.explain .exh{margin:10px 0 4px;font:14px 'Jua';color:#6A6370}
+.explain ol.ana{margin:0;padding-left:20px;font-size:14.5px;line-height:1.7}
+.explain .ex{display:flex;gap:8px;align-items:flex-start;padding:7px 8px;border-radius:8px;margin-top:5px;font-size:14px;line-height:1.55}
+.explain .ex b{flex:none;font:15px 'Jua';min-width:38px}
+.explain .ex small{display:block;font-size:13px;color:#5E5870;margin-top:2px}
+.explain .ex.ok{background:#E3F2E8}.explain .ex.ok b{color:#2B6E4D}
+.explain .ex.no{background:#F7E6E2}.explain .ex.no b{color:#A8231B}
 .solvedbox .dg{float:right;margin:0 0 6px 10px;min-width:52px;height:52px;border-radius:10px;background:var(--gold2);border:3px solid #1F1B22;display:grid;place-items:center;font:700 28px 'Nanum Gothic Coding';box-shadow:0 4px 0 #1F1B22}
 .big .rules{font-size:15px;line-height:1.75}
 .big .rules b{color:var(--red)}
@@ -386,7 +395,7 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 <div id="pauseCov" hidden><div><h3>일시정지</h3><p id="pauseTxt">시간이 멈췄다. 선생님 설명을 들어 보자.</p><button class="btn sm" id="resume">계속하기</button></div></div>
 <div id="toast"></div>
 <canvas id="fx"></canvas>
-<script src="cards.js"></script>
+<script src="cards.js"></script><script src="bgm.js"></script>
 <button id="tbtn">교사</button>
 <div id="teacher" class="tmodal" hidden><div class="c">
   <h3>교사 메뉴</h3>
@@ -482,11 +491,12 @@ const MAP = [{x:40,y:40,w:400,h:230,door:[240,270]},{x:500,y:40,w:400,h:230,door
 const START = [470,320], GATE = [955,320];
 const sk = (rid, n) => rid + ':' + n;
 const reqAsks = R => Object.keys(R.cards).filter(n => R.cards[n].opts && !R.cards[n].bonus);
+const reqPre = R => reqAsks(R).filter(n => !R.cards[n].vault);   // 장치를 열기 전에 풀어야 하는 빨간 카드
 
 // ==================== 상태 ====================
 const KEY = 'escape-hq-v5';
 let S = load();
-function blank(){ return {team:null, tname:'', startAt:null, endAt:null, paused:0, pausedAt:null, pausedBy:null, open:1, view:'map', got:{r1:[],r2:[],r3:[],r4:[]}, solved:{}, keys:[], wrong:0, hints:0, bonus:0, hintUsed:{}, log:[], fresh:[], pawn:START, mute:false, outbox:[], msgSeen:0}; }
+function blank(){ return {team:null, tname:'', startAt:null, endAt:null, paused:0, pausedAt:null, pausedBy:null, open:1, view:'map', got:{r1:[],r2:[],r3:[],r4:[]}, solved:{}, keys:[], wrong:0, hints:0, bonus:0, hintUsed:{}, log:[], fresh:[], pawn:START, mute:false, outbox:[], msgSeen:0, cmdInit:false, cmdDone:[]}; }
 function load(){ try { const v = JSON.parse(localStorage.getItem(KEY)); if (v && typeof v === 'object') return Object.assign(blank(), v); } catch(e){} return blank(); }
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
 const elapsed = () => S.startAt ? Math.max(0, ((S.endAt || (S.pausedAt || Date.now())) - S.startAt - S.paused) / 1000) : 0;
@@ -503,17 +513,14 @@ function tone(f, d, type='sine', v=.08, when=0, slide=0){
   g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(v, t + .015); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
   o.connect(g).connect(AC.destination); o.start(t); o.stop(t + d + .05);
 }
+// 배경 음악: bgm.js (드론 + 바람 + 먼 오르골 + 가끔 삐걱임). 남은 시간이 5분 아래면 긴장이 오른다.
+const BGM_VOL = 1;   // 전체 크기(교실이 시끄러우면 1.5, 조용히 하려면 0.6)
 function startHum(){
-  if (S.mute || hum || !ac() || !S.startAt || S.endAt) return;
-  const g = AC.createGain(); g.gain.value = 0.018; g.connect(AC.destination);
-  const o1 = AC.createOscillator(); o1.type = 'sawtooth'; o1.frequency.value = 60;
-  const f = AC.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 180;
-  const o2 = AC.createOscillator(); o2.type = 'sine'; o2.frequency.value = 120;
-  const lfo = AC.createOscillator(); lfo.frequency.value = .15; const lg = AC.createGain(); lg.gain.value = .008; lfo.connect(lg).connect(g.gain);
-  o1.connect(f).connect(g); o2.connect(g); o1.start(); o2.start(); lfo.start();
-  hum = {g, nodes:[o1,o2,lfo]};
+  if (S.mute || hum || !ac() || !S.startAt || S.endAt || S.pausedAt || !window.ESC_BGM) return;
+  try { hum = ESC_BGM.start(AC, BGM_VOL); } catch(e){ hum = null; }
 }
-function stopHum(){ if (!hum) return; try { hum.nodes.forEach(n => n.stop()); hum.g.disconnect(); } catch(e){} hum = null; }
+function tenseHum(){ if (hum) hum.tense(); }
+function stopHum(){ if (!hum) return; const h = hum; hum = null; h.stop(); }
 const sfx = {
   tap(){ tone(620,.04,'triangle',.04); },
   card(){ tone(180,.12,'sawtooth',.03,0,90); tone(700,.05,'triangle',.03,.12); },
@@ -559,6 +566,48 @@ async function pollCtl(){
   if (c.pause && !S.pausedAt) { S.pausedAt = Date.now(); S.pausedBy = 'teacher'; save(); stopHum(); showPause(); tick(); }
   if (!c.pause && S.pausedAt && S.pausedBy === 'teacher') resumeGame();
   if (c.msgId && c.msgId !== S.msgSeen && c.msg) { S.msgSeen = c.msgId; save(); toast('📢 선생님: ' + c.msg, 9000); sfx.card(); }
+  // 관리자 페이지가 이 팀에 보낸 명령(카드·방 통과, 다시 시작, 팀 공지).
+  // 게임을 시작한 뒤 처음 받은 목록은 '이미 지난 명령'으로 표시만 한다(기기마다 시계가 달라 시각 비교는 쓰지 않는다).
+  const cmds = Array.isArray(c.cmds) ? c.cmds.filter(m => m && m.id) : [];
+  if (!S.cmdInit) { S.cmdInit = true; S.cmdDone = cmds.map(m => m.id).slice(-40); save(); return; }
+  for (const m of cmds) {
+    if (String(m.t) !== String(S.team) || (S.cmdDone || []).includes(m.id)) continue;
+    S.cmdDone = (S.cmdDone || []).concat(m.id).slice(-40); save();
+    runCmd(m);
+    if (!S.startAt || S.endAt) break;
+  }
+}
+function runCmd(m){
+  const R = ROOMS.find(x => x.id === m.r);
+  if (m.a === 'msg' && m.msg) { toast('📢 선생님 → ' + teamLabel() + ': ' + m.msg, 10000); sfx.card(); return; }
+  if (m.a === 'reset') { const keep = {mute:S.mute, team:S.team, tname:S.tname}; S = Object.assign(blank(), keep); save(); stopHum(); ['modal','alarm','keyget','pauseCov','teacher'].forEach(id => { const e = $('#'+id); if (e) e.hidden = true; }); render(); toast('선생님이 기록을 지웠다. 처음부터 다시 시작하자.', 6000); return; }
+  if (m.a === 'gate') { escape(true); return; }
+  if (!R) return;
+  if (m.a === 'room') { passRoom(R); return; }
+  if (m.a === 'card') passCard(R, String(m.c));
+}
+// 선생님 통과: 카드 하나 (문제·장치·금고 속 서류)
+function passCard(R, n){
+  const cd = R.cards[n]; if (!cd) return; const k = sk(R.id, n);
+  if (S.solved[k] && !(cd.vault && !S.keys.includes(R.id))) return;
+  if (!S.got[R.id].includes(+n)) S.got[R.id].push(+n);
+  const open = !!(cur && cur.k === k && !$('#modal').hidden);
+  toast(`📢 선생님이 ${n}번 카드(${cd.title})를 통과시켰다.`, 4000);
+  if (cd.dev) { cur = {R, n:+n, cd, k}; solveDevice(true); return; }
+  if (cd.vault) { S.solved[k] = true; save(); clearRoom(R, true); return; }
+  if (open) { solveCard(true); return; }
+  S.solved[k] = true; if (cd.bonus) S.bonus++;
+  S.log.push({n, t:'(교사 통과) ' + cd.title + (cd.digit ? ` → ${cd.dl||'숫자'} ${cd.digit}` : ' 해결'), c:'#2B6E4D'});
+  save(); send(cd.bonus ? 'bonus' : 'solve', R.id, n, 'skip'); renderDevice();
+  if (S.view === ROOMS.indexOf(R)) renderRoom(S.view);
+}
+// 선생님 통과: 방 전체 (보너스는 그대로 남긴다)
+function passRoom(R){
+  if (S.keys.includes(R.id)) return;
+  for (const n of Object.keys(R.cards)) { const cd = R.cards[n]; if (cd.bonus) continue; if (!S.got[R.id].includes(+n)) S.got[R.id].push(+n); if (cd.opts) S.solved[sk(R.id, n)] = true; }
+  const dn = Object.keys(R.cards).find(n => R.cards[n].dev); S.solved[sk(R.id, dn)] = true; save();
+  $('#modal').hidden = true; window.onkeydown = null;
+  clearRoom(R, true);
 }
 if (LIVE) { setInterval(pollCtl, 8000); setInterval(flush, 15000); setInterval(() => { if (S.startAt && !S.endAt) send('beat'); }, 60000); }
 
@@ -598,6 +647,7 @@ function tick(){
   t.classList.toggle('pz', !!S.pausedAt); t.classList.toggle('low', left < 300 && !S.pausedAt);
   $('#dPen').textContent = '벌점 ' + (penalty() >= 0 ? '+' : '') + fmt(penalty());
   $('#dCnt').textContent = `경보 ${S.wrong} · 보너스 ${S.bonus}`;
+  if (left < 300) tenseHum();
   if (left < 300 && left > -600 && !S.pausedAt && Date.now() - beatT > 1100) { beatT = Date.now(); sfx.beat(); }
 }
 setInterval(tick, 250);
@@ -692,22 +742,24 @@ function renderRoom(i){
 }
 function nextStep(R){
   const got = S.got[R.id], ids = Object.keys(R.cards);
-  const asks = reqAsks(R), bonus = ids.filter(n => R.cards[n].bonus), devN = ids.find(n => R.cards[n].dev);
+  const asks = reqPre(R), bonus = ids.filter(n => R.cards[n].bonus), devN = ids.find(n => R.cards[n].dev), vN = String(R.vault);
   const unsolved = asks.filter(n => got.includes(+n) && !S.solved[sk(R.id, n)]);
   const left = R.spots.filter(s => !got.includes(s.n) && !R.cards[s.n].bonus).map(s => s.n);
-  const bar = `<span class="bar">${asks.map(n => `<i class="${S.solved[sk(R.id,n)]?'ok':''}"></i>`).join('')}<i class="${S.solved[sk(R.id,devN)]?'ok':''}" style="border-radius:50%"></i>${bonus.map(n => `<i class="bo${S.solved[sk(R.id,n)]?' ok':''}"></i>`).join('')}</span>`;
+  const pip = n => `<i class="${S.solved[sk(R.id,n)]?'ok':''}"></i>`;
+  const bar = `<span class="bar">${asks.map(pip).join('')}<i class="${S.solved[sk(R.id,devN)]?'ok':''}" style="border-radius:50%"></i>${pip(vN)}${bonus.map(n => `<i class="bo${S.solved[sk(R.id,n)]?' ok':''}"></i>`).join('')}</span>`;
   let t;
   if (!got.length) t = '손전등으로 방을 비추고 번호 동그라미를 눌러 카드를 뒤집자.';
   else if (unsolved.length) t = `아직 풀지 않은 빨간 카드: <em>${unsolved.join(', ')}번</em>`;
   else if (left.length) t = `아직 뒤집지 않은 번호가 있다: ${left.join(', ')}번`;
   else if (!S.solved[sk(R.id, devN)]) t = `빨간 카드를 모두 풀었다! 단서 카드의 계산법대로 <span class="g">${devN}번 장치</span>를 열자.`;
+  else if (!S.solved[sk(R.id, vN)]) t = `장치 안에서 나온 <em>${vN}번 서류</em>를 풀어야 열쇠를 꺼낼 수 있다.`;
   else t = '이 방은 해제됐다. 평면도로 돌아가자.';
   return `<b>다음 할 일</b><span>${t}</span>${bar}`;
 }
 function iconOf(cd){ return typeof cd.ic === 'function' ? cd.ic() : ICON[cd.ic](); }
 function cardTile(R, n){
   const cd = R.cards[n], k = sk(R.id, n), sv = S.solved[k];
-  const ready = cd.dev && !sv && reqAsks(R).every(x => S.solved[sk(R.id, x)]);
+  const ready = cd.dev && !sv && reqPre(R).every(x => S.solved[sk(R.id, x)]);
   const status = cd.dev ? (sv ? '열림!' : '비밀번호 필요') : cd.info ? '읽어 보기' : sv ? '해결' : cd.bonus ? '선택 · −30초' : '풀어 보기';
   return `<button class="card ${cd.c}${S.fresh.includes(k)?' new':''}${ready?' ready':''}" data-n="${n}"><div class="hd"><span class="no">${n}</span><span class="ty">${cd.ty}</span></div><div class="ic">${iconOf(cd)}</div><div class="ft">${cd.title}<br><span style="font-size:12px;color:#6A6370">${status}</span></div>${sv && cd.digit ? `<span class="digit">${cd.digit}</span>` : ''}${sv && cd.opts ? '<span class="stamp">해결</span>' : ''}${cd.bonus && !sv ? '<span class="bribbon">BONUS</span>' : ''}</button>`;
 }
@@ -736,20 +788,22 @@ function cardBig(R, n){
     if (cd.sent) body += `<div class="txt"><div class="sent">${B(cd.sent)}</div></div>`;
     if (cd.head) body += `<div class="txt"><div class="sent" style="font-size:16.5px">${cd.head}</div></div>`;
     body += `<p class="ask">${cd.ask || '이 문장에 대한 설명으로 <em>적절한</em> 것은?'}</p>`;
-    if (sv) body += `<div class="solvedbox">${cd.digit?`<span class="dg">${cd.digit}</span><b style="display:block;margin-bottom:4px;color:#6E4E12">드러난 ${cd.dl||'번호'}: ${cd.digit}</b>`:''}${cd.done}</div>`;
+    if (sv) body += `<div class="solvedbox">${cd.digit?`<span class="dg">${cd.digit}</span><b style="display:block;margin-bottom:4px;color:#6E4E12">드러난 ${cd.dl||'번호'}: ${cd.digit}</b>`:''}${cd.done}</div>${explain(cd)}`;
     else body += `<div class="opts">${cd.opts.map(([id,t])=>`<button class="opt" data-id="${id}"><i>${'①②③④⑤'[+id-1]}</i><span>${B(t)}</span></button>`).join('')}</div>
       <div class="brow"><button class="btn" id="chk">확인</button>${S.hintUsed[k]?'':'<button class="btn sm ghost" id="hb">💡 힌트 +1분</button>'}</div>${S.hintUsed[k]?`<div class="hintx"><b>힌트</b>${cd.hint}</div>`:''}<p class="msg" id="msg"></p>`;
   }
   if (cd.dev) {
-    if (sv) body += `<div class="solvedbox"><span class="dg">🔓</span>장치가 열렸다! 열쇠 숫자 <b>${R.key}</b>를 얻었다.</div>`;
+    if (sv) body += `<div class="solvedbox"><span class="dg">🔓</span>장치가 열렸다! 안에서 <b>${R.vault}번 서류</b>가 나왔다. 서류를 풀면 열쇠를 꺼낼 수 있다.</div>`;
     else body += `<p class="ask">${cd.dev.ask}</p><div class="slots">${Array.from({length:cd.dev.len},()=>`<span></span>`).join('')}</div><div class="pad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button data-k="${d}">${d}</button>`).join('')}<button data-k="del">⌫</button><button data-k="0">0</button><button class="go" data-k="go">열기</button></div><p class="msg" id="msg"></p>`;
   }
-  const closeBtn = (cd.info || sv) && !(cd.dev && !sv) ? '<div class="brow"><button class="btn" id="okb">책상에 내려놓기</button></div>' : '';
+  const keyBtn = cd.vault && sv && !S.keys.includes(R.id);
+  const closeBtn = keyBtn ? '<div class="brow"><button class="btn red" id="keyb">🔑 열쇠 꺼내기</button></div>' : (cd.info || sv) && !(cd.dev && !sv) ? '<div class="brow"><button class="btn" id="okb">책상에 내려놓기</button></div>' : '';
   return `<div class="big ${cd.c}"><div class="hd"><span class="no">${n}</span><div><small>${cd.ty} 카드</small><h3>${cd.title}</h3></div><button class="x" id="xb" aria-label="닫기">✕</button></div><div class="bd">${body}${closeBtn}</div></div>`;
 }
 function bindBig(){
   const {R, n, cd, k} = cur;
   $('#xb').onclick = closeCard; const okb = $('#okb'); if (okb) okb.onclick = closeCard;
+  const kb = $('#keyb'); if (kb) kb.onclick = () => clearRoom(R);
   if (cd.opts && !S.solved[k]) {
     let sel = null;
     document.querySelectorAll('.opt').forEach(b => b.onclick = () => { sfx.tap(); sel = b.dataset.id; document.querySelectorAll('.opt').forEach(x => x.classList.toggle('on', x === b)); });
@@ -773,7 +827,7 @@ function bindBig(){
       const m = $('#msg');
       if (v.length < cd.dev.len) { m.className = 'msg bad'; m.textContent = '숫자를 끝까지 넣어 주세요.'; return; }
       if (v === cd.dev.code) return solveDevice();
-      const need = reqAsks(R).length, have = reqAsks(R).filter(x => S.solved[sk(R.id, x)]).length;
+      const need = reqPre(R).length, have = reqPre(R).filter(x => S.solved[sk(R.id, x)]).length;
       alarm(have < need ? `아직 풀지 않은 빨간 카드가 있다. (${have}/${need}) 카드를 풀어 숫자를 모으자.` : '비밀번호가 맞지 않는다. 단서 카드의 계산법(더하기·빼기)을 다시 확인하자.', n, 'dev:' + v, R.id);
       v = ''; paint();
     }
@@ -793,15 +847,31 @@ function solveCard(skipped){
   save(); send(cd.bonus ? 'bonus' : 'solve', R.id, n, skipped ? 'skip' : ''); sfx.good(); burst(30);
   $('#front').innerHTML = cardBig(R, n); bindBig(); renderDevice();
 }
+// 맞힌 뒤 해설: 문장 분석 + 선지별 ○× 이유
+function explain(cd){
+  if (!cd.opts) return '';
+  const ana = (cd.ana || []).map(a => `<li>${B(a)}</li>`).join('');
+  const opts = cd.opts.map(([o, t]) => { const ok = o === cd.ans; return `<div class="ex ${ok?'ok':'no'}"><b>${'①②③④⑤'[+o-1]} ${ok?'○':'×'}</b><span>${B(t)}<small>${ok ? '정답: ' + cd.done.replace(/<[^>]+>/g,'') : (cd.traps[o] || '')}</small></span></div>`; }).join('');
+  return `<details class="explain" open><summary>자세한 해설 · 문장 분석과 선지 풀이</summary>${ana ? `<p class="exh">문장 분석</p><ol class="ana">${ana}</ol>` : ''}<p class="exh">선지 풀이</p>${opts}</details>`;
+}
 function solveDevice(skipped){
   const {R, n, cd, k} = cur;
   S.solved[k] = true;
-  const i = ROOMS.indexOf(R);
+  S.log.push({n, t:(skipped?'(교사 통과) ':'') + `${cd.title} 열림 → ${R.vault}번 서류 발견`, c:'#2B6E4D'});
+  const v = R.vault; if (!S.got[R.id].includes(v)) { S.got[R.id].push(v); S.fresh.push(sk(R.id, v)); }
+  save(); send('device', R.id, n, skipped ? 'skip' : ''); sfx.unlock(); burst(60);
+  $('#modal').hidden = true; window.onkeydown = null; renderDevice();
+  toast(`🔓 ${cd.title}이(가) 열렸다! 안에서 서류(${v}번)가 나왔다.`, 3500);
+  setTimeout(() => { if (typeof S.view === 'number') renderRoom(S.view); openCard(R, v, true); }, 700);
+}
+function clearRoom(R, skipped){
+  const i = ROOMS.indexOf(R), dev = Object.values(R.cards).find(c => c.dev);
   if (!S.keys.includes(R.id)) S.keys.push(R.id);
   S.open = Math.max(S.open, i + 2);
-  S.log.push({n, t:(skipped?'(교사 통과) ':'') + `${R.name} 해제 → 열쇠 숫자 ${R.key}`, c:'#B8862E'});
-  save(); send('device', R.id, n, skipped ? 'skip' : ''); sfx.unlock(); burst(80);
+  S.log.push({n:R.vault, t:(skipped?'(교사 통과) ':'') + `${R.name} 해제 → 열쇠 숫자 ${R.key}`, c:'#B8862E'});
+  save(); send('clear', R.id, R.vault, skipped ? 'skip' : ''); sfx.unlock(); burst(80);
   $('#modal').hidden = true; window.onkeydown = null;
+  const cd = dev;
   const bLeft = Object.keys(R.cards).filter(x => R.cards[x].bonus && !S.solved[sk(R.id, x)]);
   $('#keyBody').innerHTML = `<div class="bigstamp">해제</div><p style="font:15px 'Jua';color:#A8231B;letter-spacing:.2em">ROOM ${i+1} CLEAR</p><h3>${R.name}의 장치가 열렸다</h3>
     <div class="kv"><div class="kk">${R.key}</div><div style="font:17px/1.6 'Jua'">장치 비밀번호 <b>${cd.dev.code}</b>의 일의 자리, 열쇠 숫자 <b style="color:#E0B252">${R.key}</b>를 얻었다.<br><span style="opacity:.8;font-size:15px">${i < ROOMS.length-1 ? `평면도에서 ${ROOMS[i+1].name}이(가) 열렸다.` : '이제 비상구로!'}${bLeft.length ? ` (보너스 카드 ${bLeft.join(', ')}번은 아직 풀 수 있다)` : ''}</span></div></div>
@@ -876,12 +946,11 @@ $('#teacher').onclick = e => { const t = e.target.closest('button')?.dataset.t; 
   }
   if (t === 'room') {
     if (typeof S.view !== 'number') { if (S.keys.length === ROOMS.length) escape(true); else toast('방 안에서 사용하세요.'); return; }
-    const R = ROOMS[S.view];
-    for (const n of Object.keys(R.cards)) { const cd = R.cards[n]; if (cd.bonus) continue; if (!S.got[R.id].includes(+n)) S.got[R.id].push(+n); if (cd.opts) S.solved[sk(R.id, n)] = true; }
-    const dn = Object.keys(R.cards).find(n => R.cards[n].dev);
-    cur = {R, n:+dn, cd:R.cards[dn], k:sk(R.id, dn)}; solveDevice(true);
+    passRoom(ROOMS[S.view]);
   }
 };
+// 관리자 페이지와 연결된 수업에서는 교사 메뉴를 관리자 페이지에서 쓴다(게임 화면에는 버튼을 두지 않는다).
+if (LIVE) $('#tbtn').hidden = true;
 
 render();
 })();
