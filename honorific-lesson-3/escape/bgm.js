@@ -6,7 +6,10 @@
     vol = vol || 1;
     const t0 = AC.currentTime, nodes = [], timers = [];
     let alive = true, tense = false;
-    const out = AC.createGain(); out.gain.setValueAtTime(0.0001, t0); out.gain.exponentialRampToValueAtTime(vol, t0 + 4); out.connect(AC.destination);
+    const out = AC.createGain(); out.gain.setValueAtTime(0.0001, t0); out.gain.exponentialRampToValueAtTime(vol, t0 + 4); 
+    // 크게 틀어도 소리가 깨지지 않게 리미터를 거친다
+    const lim = AC.createDynamicsCompressor(); lim.threshold.value = -6; lim.knee.value = 6; lim.ratio.value = 12; lim.attack.value = .003; lim.release.value = .25;
+    out.connect(lim); lim.connect(AC.destination);
     // 잔향: 짧게 사라지는 잡음으로 만든 울림
     const rv = AC.createConvolver(), len = Math.floor(AC.sampleRate * 3.2), ib = AC.createBuffer(2, len, AC.sampleRate);
     for (let c = 0; c < 2; c++) { const d = ib.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random()*2 - 1) * Math.pow(1 - i/len, 2.8); }
@@ -63,7 +66,7 @@
       stop(){
         if (!alive) return; alive = false; timers.forEach(clearTimeout);
         try { const t = AC.currentTime; out.gain.cancelScheduledValues(t); out.gain.setValueAtTime(Math.max(.0001, out.gain.value), t); out.gain.exponentialRampToValueAtTime(0.0001, t + .5); } catch(e){}
-        setTimeout(() => { nodes.forEach(n => { try { n.stop(); } catch(e){} }); try { out.disconnect(); } catch(e){} }, 650);
+        setTimeout(() => { nodes.forEach(n => { try { n.stop(); } catch(e){} }); try { out.disconnect(); lim.disconnect(); } catch(e){} }, 650);
       }
     };
   }

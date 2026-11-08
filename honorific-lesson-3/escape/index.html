@@ -518,7 +518,7 @@ function tone(f, d, type='sine', v=.08, when=0, slide=0){
   o.connect(g).connect(AC.destination); o.start(t); o.stop(t + d + .05);
 }
 // 배경 음악: bgm.js (드론 + 바람 + 먼 오르골 + 가끔 삐걱임). 남은 시간이 5분 아래면 긴장이 오른다.
-const BGM_VOL = 1;   // 전체 크기(교실이 시끄러우면 1.5, 조용히 하려면 0.6)
+const BGM_VOL = 1.8;   // 전체 크기(예전 1. 교실이 시끄러우면 2.5, 조용히 하려면 1)
 function startHum(){
   if (S.mute || hum || !ac() || !S.startAt || S.endAt || S.pausedAt || !window.ESC_BGM) return;
   try { hum = ESC_BGM.start(AC, BGM_VOL); } catch(e){ hum = null; }
@@ -757,7 +757,7 @@ function nextStep(R){
   else if (left.length) t = `아직 뒤집지 않은 번호가 있다: ${left.join(', ')}번`;
   else if (!S.solved[sk(R.id, devN)]) t = `빨간 카드를 모두 풀었다! 단서 카드의 계산법대로 <span class="g">${devN}번 장치</span>를 열자.`;
   else if (!S.solved[sk(R.id, vN)]) t = `장치 안에서 나온 <em>${vN}번 서류</em>를 풀어야 열쇠 상자를 열 수 있다.`;
-  else if (!S.keys.includes(R.id)) t = `<span class="g">열쇠 상자</span>를 열자. 검토 일지 <em>근거 판정표</em>에서 고른 글자 세 개가 필요하다.`;
+  else if (!S.keys.includes(R.id)) t = `<span class="g">열쇠 상자</span>를 열자. 검토 일지 <em>암호 해독표</em>에서 고른 글자 세 개가 필요하다.`;
   else t = '이 방은 해제됐다. 평면도로 돌아가자.';
   return `<b>다음 할 일</b><span>${t}</span>${bar}`;
 }
@@ -887,14 +887,14 @@ function clearRoom(R, skipped){
   renderDevice();
 }
 
-// ---------- 열쇠 상자: 검토 일지(종이)의 근거 판정표에서 고른 글자 세 개 ----------
+// ---------- 열쇠 상자: 검토 일지(종이)의 암호 해독표에서 고른 글자 세 개 ----------
 function openKeyBox(R){
   const i = ROOMS.indexOf(R), k = 'key:' + R.id;
   cur = {R, n:'KEY', cd:null, k};
   $('#backNo').textContent = '🔑';
   $('#front').innerHTML = `<div class="big gold"><div class="hd"><span class="no">🔑</span><div><small>${R.short} · 마지막 잠금</small><h3>열쇠 상자</h3></div><button class="x" id="xb" aria-label="닫기">✕</button></div><div class="bd">
     <div class="ill">${ICON.key()}</div>
-    <p class="ask">검토 일지 <em>ROOM ${i+1} 근거 판정표</em>에서 바르게 고른 칸의 글자를 <em>카드 순서대로</em> 눌러라.</p>
+    <p class="ask">검토 일지 <em>ROOM ${i+1} 암호 해독표</em>에서 바르게 고른 칸의 글자를 <em>카드 순서대로</em> 눌러라.</p>
     <div class="slots wslots">${[0,1,2].map(() => '<span></span>').join('')}</div>
     <div class="tiles">${R.tiles.map(t => `<button data-t="${t}">${t}</button>`).join('')}</div>
     <div class="brow"><button class="btn ghost sm" id="kdel">⌫ 지우기</button><button class="btn" id="kgo">열기</button></div><p class="msg" id="msg"></p></div></div>`;
@@ -909,7 +909,7 @@ function openKeyBox(R){
     const m = $('#msg');
     if (v.length < 3) { m.className = 'msg bad'; m.textContent = '글자 세 개를 모두 눌러 주세요.'; return; }
     if (v.join('') === R.word) { S.solved[k] = true; save(); clearRoom(R); return; }
-    alarm('열쇠 상자가 열리지 않는다. 검토 일지의 판정을 한 줄씩 다시 따져 보자. (글자는 카드 순서대로)', 'key', v.join(''), R.id);
+    alarm('열쇠 상자가 열리지 않는다. 검토 일지의 해독표를 한 줄씩 다시 따져 보자. (글자는 카드 순서대로)', 'key', v.join(''), R.id);
     v = []; paint();
   };
 }

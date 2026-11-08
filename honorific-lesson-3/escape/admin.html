@@ -117,7 +117,7 @@ tr.click{cursor:pointer}tr.click:hover{background:#1C1F26}tr.sel{background:#222
 
     <section class="card s12">
       <h2>③ 팀별 진행 상황 · 교사 메뉴 <small>빨간 테두리 = 3분 넘게 진행이 없는 팀 · 카드 칸을 누르면 그 카드를 통과시킵니다</small></h2>
-      <div class="legend2"><span><i style="background:#1B1D23"></i>아직 안 엶</span><span><i style="background:#1B1D23;border-color:#6B6F78"></i>열어 봄</span><span><i style="background:#3A1614;border-color:#D23B30"></i>틀림(숫자 = 경보 횟수)</span><span><i style="background:#1F4A33;border-color:#3F9268"></i>해결</span><span><i style="background:#1D3550;border-color:#4C7DAE"></i>선생님 통과</span><span>네모 = 문제 · 둥근 칸 = 장치 · 점선 = 보너스 · 🔒 = 금고 속 서류 · 🔑 = 열쇠 상자(검토 일지 판정표 글자)</span></div>
+      <div class="legend2"><span><i style="background:#1B1D23"></i>아직 안 엶</span><span><i style="background:#1B1D23;border-color:#6B6F78"></i>열어 봄</span><span><i style="background:#3A1614;border-color:#D23B30"></i>틀림(숫자 = 경보 횟수)</span><span><i style="background:#1F4A33;border-color:#3F9268"></i>해결</span><span><i style="background:#1D3550;border-color:#4C7DAE"></i>선생님 통과</span><span>네모 = 문제 · 둥근 칸 = 장치 · 점선 = 보너스 · 🔒 = 금고 속 서류 · 🔑 = 열쇠 상자(검토 일지 해독표 글자)</span></div>
       <div class="teams" id="teams"></div>
     </section>
 
@@ -178,10 +178,10 @@ function teamCard(i){
       const cls = s.p ? 'p' : s.s ? 's' : s.w ? 'w' : s.o ? 'o' : '';
       const can = !x.end && reach && (!s.s || (cd.vault && !cleared));
       return `<button class="pip k-${kind} ${cls}" ${can ? `data-cmd="card" data-t="${i}" data-r="${R.id}" data-c="${n}"` : 'disabled'} title="${n} ${cd.title}${s.w ? ` · 경보 ${s.w}번` : ''}${s.p ? ' · 선생님 통과' : ''}">${cd.vault ? '🔒' : ''}${n}${s.w && !s.s ? `<sup>${s.w}</sup>` : ''}</button>`;
-    }).join('') + (() => {   // 열쇠 상자(판정표 글자): 금고 속 서류를 푼 뒤 막히면 눌러서 열쇠까지 통과
+    }).join('') + (() => {   // 열쇠 상자(해독표 글자): 금고 속 서류를 푼 뒤 막히면 눌러서 열쇠까지 통과
       const s = (T.cs || {})[`${R.id}:key`] || {}, vs = ((T.cs || {})[`${R.id}:${R.vault}`] || {}).s;
       const cls = s.p ? 'p' : s.s ? 's' : s.w ? 'w' : vs ? 'o' : '', can = !x.end && reach && !cleared;
-      return `<button class="pip k-key ${cls}" ${can ? `data-cmd="card" data-t="${i}" data-r="${R.id}" data-c="${R.vault}" data-key="1"` : 'disabled'} title="열쇠 상자(판정표 글자 ${R.word})${s.w ? ` · 경보 ${s.w}번` : ''}">🔑${s.w && !s.s ? `<sup>${s.w}</sup>` : ''}</button>`;
+      return `<button class="pip k-key ${cls}" ${can ? `data-cmd="card" data-t="${i}" data-r="${R.id}" data-c="${R.vault}" data-key="1"` : 'disabled'} title="열쇠 상자(해독표 글자 ${R.word})${s.w ? ` · 경보 ${s.w}번` : ''}">🔑${s.w && !s.s ? `<sup>${s.w}</sup>` : ''}</button>`;
     })();
     const btn = !x.end && reach && !cleared ? `<button class="mini" data-cmd="room" data-t="${i}" data-r="${R.id}">방 통과</button>` : cleared ? '<span class="note">🔑 ' + R.key + '</span>' : '';
     return `<div class="rrow${ri === curRoom && !x.end ? ' cur' : ''}${cleared ? ' clr' : ''}"><span class="rn">${R.short}</span><div class="pips">${pips}</div>${btn}</div>`;
@@ -201,7 +201,7 @@ document.addEventListener('click', async e => {
   const R = r ? window.ESC_ROOMS.find(x => x.id === r) : null, cd = R && c ? R.cards[c] : null;
   const T = (AGG ? AGG.teams : []).find(x => +x.t === t), who = L.label(T || {t});
   let cmd = {t, a};
-  if (a === 'card') { if (!confirm(b.dataset.key ? `${who}\n${R.short} · 열쇠 상자(판정표 글자 ‘${R.word}’)를 통과시키고 열쇠를 줄까요?` : `${who}\n${R.short} · ${c}번 ${cd.title}을(를) 통과시킬까요?${cd.dev ? '\n(장치가 열리고 금고 속 서류가 나옵니다)' : cd.vault ? '\n(열쇠 상자까지 바로 통과해 열쇠를 줍니다)' : ''}`)) return; cmd.r = r; cmd.c = c; }
+  if (a === 'card') { if (!confirm(b.dataset.key ? `${who}\n${R.short} · 열쇠 상자(해독표 글자 ‘${R.word}’)를 통과시키고 열쇠를 줄까요?` : `${who}\n${R.short} · ${c}번 ${cd.title}을(를) 통과시킬까요?${cd.dev ? '\n(장치가 열리고 금고 속 서류가 나옵니다)' : cd.vault ? '\n(열쇠 상자까지 바로 통과해 열쇠를 줍니다)' : ''}`)) return; cmd.r = r; cmd.c = c; }
   else if (a === 'room') { if (!confirm(`${who}\n${R.name} 방 전체를 통과시킬까요? (보너스 카드는 남습니다)`)) return; cmd.r = r; }
   else if (a === 'gate') { if (!confirm(`${who}\n비상구를 통과시켜 탈출 처리할까요?`)) return; }
   else if (a === 'reset') { if (!confirm(`${who}\n이 팀의 기록을 지우고 처음부터 다시 시작하게 할까요?\n(이미 보낸 기록은 관리자 기록에 남습니다)`)) return; }
@@ -212,7 +212,7 @@ function render(){
   $('#teams').innerHTML = [1,2,3,4,5,6].map(teamCard).join('');
   const list = (AGG ? AGG.cards : L.aggregate([]).cards).slice().sort((a,b) => b.wrong - a.wrong || a.ri - b.ri || a.n - b.n);
   const maxW = Math.max(1, ...list.map(c => c.wrong));
-  $('#cardRows').innerHTML = list.map(c => `<tr class="click${sel===c.key?' sel':''}" data-k="${c.key}"><td>${c.room.short}</td><td>${c.n} ${c.cd.title}</td><td><span class="tag ${c.kind}">${c.kind==='req'?'필수':c.kind==='bonus'?'보너스':c.kind==='key'?'판정표':'장치'}</span></td>
+  $('#cardRows').innerHTML = list.map(c => `<tr class="click${sel===c.key?' sel':''}" data-k="${c.key}"><td>${c.room.short}</td><td>${c.n} ${c.cd.title}</td><td><span class="tag ${c.kind}">${c.kind==='req'?'필수':c.kind==='bonus'?'보너스':c.kind==='key'?'해독표':'장치'}</span></td>
     <td><div class="bar"><i style="width:${c.wrong/maxW*100}%"></i></div>${c.wrong}</td><td>${c.wrongTeamsN}</td><td>${c.solvedN}/6</td><td style="max-width:300px">${c.topWrong ? (c.kind==='dev' ? c.topWrong.text : `${'①②③④'[+c.topWrong.o-1]||''} ${c.topWrong.text}`) + ` <span class="note">(${c.topWrong.n}번)</span>` : '<span class="empty">—</span>'}</td></tr>`).join('');
   document.querySelectorAll('#cardRows tr').forEach(tr => tr.onclick = () => { sel = sel === tr.dataset.k ? null : tr.dataset.k; render(); });
   const d = list.find(c => c.key === sel);

@@ -92,52 +92,32 @@
   #bgmTag { position: fixed; right: 16px; top: 12px; font: 13px 'Noto Sans KR', sans-serif; color: #FFB4A8; background: rgba(42,14,12,.8); border: 1px solid #A8231B; border-radius: 999px; padding: 3px 12px; display: none; }
   #bgmTag.on { display: block; }
   body.export #bgmTag { display: none !important; }
-  @media (prefers-reduced-motion: reduce) { #deck section.hz::after, #deck .hz .flk { animation: none; } }
+  /* 반전 화면: 넘어오는 순간 정전된 듯 깜빡이며 켜진다 */
+  #deck #twist { animation: twIn 1.8s linear; }
+  @keyframes twIn { 0% { filter: brightness(0); } 18% { filter: brightness(0); } 22% { filter: brightness(1.5); } 27% { filter: brightness(0); } 45% { filter: brightness(0); } 49% { filter: brightness(1.2); } 53% { filter: brightness(.15); } 70% { filter: brightness(1); } 100% { filter: brightness(1); } }
+  body.print #deck #twist { animation: none; }
+  @media (prefers-reduced-motion: reduce) { #deck section.hz::after, #deck .hz .flk, #deck #twist { animation: none; } }
 </style>
 </head>
 <body>
 <div id="stage"><div id="deck">
-<section id="cover" data-transition="fade" style="background:#0E0F13;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:30px">
-<x-shape kind="ellipse" style="position:absolute;left:1180px;top:120px;width:760px;height:760px;background:#2A0E0C;opacity:0.9"></x-shape>
-<x-shape kind="ellipse" style="position:absolute;left:1380px;top:320px;width:360px;height:360px;background:#A8231B;opacity:0.35"></x-shape>
-<div style="position:absolute;left:1300px;top:250px;width:520px;height:600px;background:#1A1E28;border:8px solid #05060A;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px">
-<p style="font-family:'Do Hyeon', sans-serif;font-size:58px;color:#6A2A24;background:#2A1210;padding:6px 26px;border-radius:6px">본부</p>
-<p style="width:120px;height:120px;background:#A8231B;border-radius:8px;box-shadow:0 0 80px rgba(210,40,30,0.8)"></p>
-<p style="font-family:'Do Hyeon', sans-serif;font-size:34px;color:#CFFFE6;background:#1F7A50;padding:4px 22px;border-radius:6px">비상구</p>
-</div>
-<p style="font-size:28px;font-weight:700;color:#E0453A;letter-spacing:2px">화법과 언어 · 3. 문장과 담화, 국어의 변화</p>
-<h1 style="font-family:'Do Hyeon', sans-serif;font-size:150px;font-weight:400;line-height:1.05;color:#EDE6D8">출제 본부<br>탈출</h1>
-<div style="width:120px;height:6px;background:#A8231B;border-radius:3px"></div>
-<p style="font-size:34px;color:#B8B0A4">높임 표현 × 문장의 짜임 · 3차시</p>
-<p data-build-in="fade 1" style="font-family:'Nanum Pen Script', cursive;font-size:60px;color:#E0453A">자정이 지나면, 이곳은 봉인된다.</p>
-<aside>[도입 · 인사] 안녕하세요, 여러분. 오늘은 문장 종결 표현과 높임 표현 마지막 시간입니다. (클릭) 오늘은 조금 특별하게 방탈출 게임으로 수업을 할 거예요.</aside>
-</section>
-
-<section id="teams" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
-<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
-<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">도입 · 팀 편성 (2분)</p>
-<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">여섯 팀 · 팀 이름 정하기 · 기기는 한 대</h2>
-<div style="position:absolute;left:128px;top:330px;width:1664px;display:flex;flex-direction:row;gap:32px">
-<div data-build-in="rise 1" style="flex:1;height:340px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #2E2A3B;border-radius:24px;padding:40px">
-<p style="font-family:'Do Hyeon', sans-serif;font-size:52px;color:#2E2A3B">단말기 담당 1명</p>
-<p style="font-size:34px;line-height:1.5">태블릿을 조작해요.<br>팀이 합의한 답만 누르기!</p>
-</div>
-<div data-build-in="rise 2" style="flex:1;height:340px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #A8231B;border-radius:24px;padding:40px">
-<p style="font-family:'Do Hyeon', sans-serif;font-size:52px;color:#A8231B">검토위원 모두</p>
-<p style="font-size:34px;line-height:1.5">빨간 카드를 나눠 풀고<br>근거를 말로 설명해요.</p>
-</div>
-<div data-build-in="rise 3" style="flex:1;height:340px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #C9A85C;border-radius:24px;padding:40px">
-<p style="font-family:'Do Hyeon', sans-serif;font-size:52px;color:#7A5F1E">검토 일지 각자</p>
-<p style="font-size:34px;line-height:1.5">카드를 풀면 <b>판정표</b>에 ○.<br>열쇠 상자 글자가 여기서!</p>
-</div>
-</div>
-<p data-build-in="pop 4" style="position:absolute;left:128px;top:730px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:56px;color:#B04568">팀 이름을 정하고, 팀원 모두가 동의해야 장치에 숫자를 넣는다!</p>
-<aside>[팀 편성 2분] 자리표대로 4~5명씩 여섯 팀으로 앉아 주시고, 팀 이름을 하나 정해 주세요. 팀마다 태블릿 한 대와 검토 일지를 받아 가세요. (클릭) 기기를 조작할 사람 한 명만 정하고, (클릭) 나머지는 모두 검토위원입니다. 카드를 나눠 풀고 근거를 설명해 주세요. (클릭) 검토 일지는 각자 한 장씩 채웁니다. 일지의 근거 판정표가 있어야 방마다 열쇠 상자를 열 수 있어요. (클릭) 장치에 숫자를 넣기 전에는 팀원 모두가 동의해야 해요. (※ 자리표는 칠판이나 별도 슬라이드로 안내)</aside>
+<section id="cover" data-transition="fade" style="background:#2E2A3B;color:#F7F3EC;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:32px">
+<x-shape kind="ellipse" style="position:absolute;left:1140px;top:150px;width:640px;height:640px;background:#3B3552"></x-shape>
+<x-shape kind="ellipse" style="position:absolute;left:1560px;top:660px;width:220px;height:220px;background:#C9A85C;opacity:0.85"></x-shape>
+<x-shape kind="ellipse" style="position:absolute;left:1150px;top:170px;width:90px;height:90px;background:#B04568;opacity:0.9"></x-shape>
+<p style="position:absolute;left:1250px;top:290px;width:380px;font-family:'Do Hyeon', sans-serif;font-size:56px;text-align:center;color:#2E2A3B;background:#F8E4EA;border-radius:20px;padding:12px 0;transform:rotate(-6deg)">교과서 107쪽</p>
+<p style="position:absolute;left:1400px;top:430px;width:360px;font-family:'Do Hyeon', sans-serif;font-size:56px;text-align:center;color:#2E2A3B;background:#F6EBCB;border-radius:20px;padding:12px 0;transform:rotate(4deg)">문장의 짜임</p>
+<p style="position:absolute;left:1240px;top:570px;width:330px;font-family:'Do Hyeon', sans-serif;font-size:56px;text-align:center;color:#2E2A3B;background:#ECE6F6;border-radius:20px;padding:12px 0;transform:rotate(-3deg)">높임 표현</p>
+<p style="font-size:28px;font-weight:700;color:#E6C77E;letter-spacing:1px">화법과 언어 · 3. 문장과 담화, 국어의 변화</p>
+<h1 style="font-family:'Do Hyeon', sans-serif;font-size:128px;font-weight:400;line-height:1.1;color:#F7F3EC">높임 표현,<br>문장에 적용해 보기</h1>
+<div style="width:120px;height:6px;background:#C9A85C;border-radius:3px"></div>
+<p style="font-size:34px;color:#CFC8DC">(1) 문장의 짜임과 문법 요소 · 3차시</p>
+<aside>[인사] 안녕하세요, 여러분. 오늘은 문장 종결 표현과 높임 표현 마지막 시간입니다. 지난 두 시간 동안 배운 걸 오늘은 문장에 직접 적용해 볼 거예요. 먼저 교과서 107쪽으로 지난 시간 내용을 빠르게 점검해 볼게요. (※ 오늘 방탈출을 한다는 건 아직 말하지 않기. 팀 편성까지 평범한 수업처럼 진행)</aside>
 </section>
 
 <section id="tb-1" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
 <svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
-<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">도입 · 교과서 107쪽으로 점검 (2분)</p>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">교과서 107쪽으로 점검</p>
 <h2 style="font-family:'Do Hyeon', sans-serif;font-size:60px;font-weight:400;line-height:1.2;color:#2E2A3B">어떤 방법으로, 어느 등급의 상대 높임?</h2>
 <img src="assets/textbook-107.png" alt="교과서 107쪽 그림. 가: 친구 사이에 ‘너 그 영화 봤어?’, ‘주말에 봤지.’ 나: 학생회 회의에서 ‘총무부장님, 올해 학생회 예산을 ㉠말씀해 주시기 바랍니다.’, ‘학생회 예산은 다음과 같습니다.’" style="position:absolute;left:128px;top:300px;width:900px;height:338px;object-fit:contain;background:#FFFFFF;border-radius:24px;box-shadow:0 14px 30px rgba(46,42,59,0.12)">
 <div style="position:absolute;left:1060px;top:300px;width:732px;display:flex;flex-direction:column;gap:0;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:22px 28px">
@@ -154,7 +134,7 @@
 
 <section id="tb-3" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
 <svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
-<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">도입 · 교과서 107쪽으로 점검 (2분)</p>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">교과서 107쪽으로 점검</p>
 <h2 style="font-family:'Do Hyeon', sans-serif;font-size:64px;font-weight:400;line-height:1.2;color:#2E2A3B">㉠ ‘말씀해 주시기 바랍니다’를 바꾸어 보면?</h2>
 <div style="position:absolute;left:128px;top:330px;width:1664px;display:flex;flex-direction:column;gap:24px">
 <div style="height:170px;display:flex;flex-direction:row;align-items:center;gap:30px;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:24px;padding:0 36px">
@@ -172,17 +152,67 @@
 <aside>[교과서 107쪽 점검 2분] (3)번은 짝 활동이에요. ㉠ ‘말씀해 주시기 바랍니다’를 의문문으로, 명령문으로 바꿔 써 보고, 듣는 사람 입장에서 어떤 느낌이 드는지 짝이랑 이야기해 보세요. (클릭) 의문문은 ‘말씀해 주시겠습니까?’, 명령문은 ‘말씀해 주십시오.’가 되겠죠. (클릭) 둘 다 말해 달라는 요청인데, 의문문은 상대에게 선택할 여지를 주니까 간접적이고 부드럽게 들리고, (클릭) 명령문은 직접적이고 강하게 들립니다. (클릭) 1차시에 ‘창문 좀 열어 줄 수 있니?’처럼 형식은 의문문인데 기능은 요청이라고 했던 것, 기억나죠? 바로 그거예요.</aside>
 </section>
 
+<section id="teams" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">팀 편성</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">여섯 팀으로 앉고, 팀 이름 정하기</h2>
+<div style="position:absolute;left:128px;top:330px;width:1664px;display:flex;flex-direction:row;gap:32px">
+<div data-build-in="rise 1" style="flex:1;height:340px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #2E2A3B;border-radius:24px;padding:40px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:52px;color:#2E2A3B">4~5명씩 여섯 팀</p>
+<p style="font-size:34px;line-height:1.5">자리표대로 앉아요.<br>팀 번호는 1~6팀!</p>
+</div>
+<div data-build-in="rise 2" style="flex:1;height:340px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #B04568;border-radius:24px;padding:40px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:52px;color:#B04568">팀 이름 하나</p>
+<p style="font-size:34px;line-height:1.5">팀원 모두가 동의한<br>이름을 정해요.</p>
+</div>
+<div data-build-in="rise 3" style="flex:1;height:340px;display:flex;flex-direction:column;gap:18px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #C9A85C;border-radius:24px;padding:40px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:52px;color:#7A5F1E">준비물 받기</p>
+<p style="font-size:34px;line-height:1.5">팀마다 태블릿 한 대,<br>활동지는 한 사람에 한 장.</p>
+</div>
+</div>
+<p data-build-in="pop 4" style="position:absolute;left:128px;top:730px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:56px;color:#B04568">팀 이름은 오늘 수업 끝까지 기록에 남아요. 신중하게!</p>
+<aside>[팀 편성] 자리표대로 4~5명씩 여섯 팀으로 앉아 주세요. (클릭) 팀마다 이름을 하나 정해 주세요. 팀원 모두가 동의한 이름이어야 해요. (클릭) 팀마다 태블릿 한 대, 활동지는 한 사람에 한 장씩 받아 가세요. 활동지는 아직 펼치지 마세요. (클릭) 팀 이름은 오늘 수업 끝까지 기록에 남습니다. (※ 자리표는 칠판이나 별도 슬라이드로 안내. 다음 슬라이드로 넘기면 화면이 바뀌고 배경 음악이 자동으로 켜짐)</aside>
+</section>
+
+<section id="twist" class="hz" data-bgm="on" data-transition="fade" style="background:#0E0F13;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:30px">
+<x-shape kind="ellipse" style="position:absolute;left:1180px;top:120px;width:760px;height:760px;background:#2A0E0C;opacity:0.9"></x-shape>
+<x-shape kind="ellipse" style="position:absolute;left:1380px;top:320px;width:360px;height:360px;background:#A8231B;opacity:0.35"></x-shape>
+<div style="position:absolute;left:1300px;top:250px;width:520px;height:600px;background:#1A1E28;border:8px solid #05060A;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px">
+<p style="font-family:'Do Hyeon', sans-serif;font-size:58px;color:#6A2A24;background:#2A1210;padding:6px 26px;border-radius:6px">본부</p>
+<p style="width:120px;height:120px;background:#A8231B;border-radius:8px;box-shadow:0 0 80px rgba(210,40,30,0.8)"></p>
+<p style="font-family:'Do Hyeon', sans-serif;font-size:34px;color:#CFFFE6;background:#1F7A50;padding:4px 22px;border-radius:6px">비상구</p>
+</div>
+<p style="font-size:28px;font-weight:700;color:#E0453A;letter-spacing:2px">화법과 언어 · 3. 문장과 담화, 국어의 변화</p>
+<h1 class="flk" style="font-family:'Do Hyeon', sans-serif;font-size:150px;font-weight:400;line-height:1.05;color:#EDE6D8">출제 본부<br>탈출</h1>
+<div style="width:120px;height:6px;background:#A8231B;border-radius:3px"></div>
+<p style="font-size:34px;color:#B8B0A4">높임 표현 × 문장의 짜임 · 3차시</p>
+<p data-build-in="fade 1" style="font-family:'Nanum Pen Script', cursive;font-size:60px;color:#E0453A">자정이 지나면, 이곳은 봉인된다.</p>
+<aside>[반전] (※ 이 화면으로 넘어오면 배경 음악이 자동으로 켜집니다. 끄고 켜기는 M 키) …잠깐, 불이 이상하죠? 사실 오늘 수업은 평범한 문제 풀이가 아닙니다. 오늘 여러분은 이곳, 출제 본부에 갇혔어요. (클릭) 자정이 지나면 이곳은 봉인됩니다. 오늘은 방탈출 게임으로 수업을 하겠습니다.</aside>
+</section>
+
 <section id="story" class="hz" data-transition="fade" style="background:#07080B;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:30px">
-<p class="tag">도입 · 상황 안내 (1분)</p>
+<p class="tag">상황 안내</p>
 <p class="flk" style="font-family:'Nanum Gothic Coding', monospace;font-size:44px;color:#FF5A4A;text-shadow:0 0 18px rgba(255,70,50,.6)">23:40 · 수능 출제 본부</p>
 <p data-build-in="fade 1" style="font-size:40px;line-height:1.7;width:1500px">갑자기 정전이 됐다. 붉은 비상등만 켜진 복도.<br>보안 시스템이 다시 켜지는 <b style="color:#FF7A6A">자정 10분</b>이 되면,<br>본부는 시험이 끝날 때까지 <b style="color:#FF7A6A">봉인</b>된다.</p>
 <p data-build-in="fade 2" style="font-size:40px;line-height:1.7;width:1500px">여러분은 남아 있는 <b style="color:#E0B252">마지막 검토위원</b>.<br>먼저 사라진 검토위원의 책상에서 쪽지가 나왔다.</p>
 <p data-build-in="pop 3" class="memo" style="position:absolute;left:128px;top:790px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:62px;line-height:1.25;color:#E0453A">23:52. 복도 불이 또 나갔다. 출제실 문은 밖에서 잠겨 있고, 경비실은 전화를 받지 않는다.<br>방금 누가 계단을 내려갔다. 나는 아니다.</p>
-<aside>[상황 안내 1분] (※ M 키를 누르면 게임과 같은 배경 음악이 나옵니다. 설명이 끝나면 다시 M으로 끄기) 자, 이제 상황을 알려 줄게요. (클릭) 밤 11시 40분, 출제 본부에 정전이 됐고, 자정 10분이 되면 본부가 봉인돼요. (클릭) 여러분은 남아 있는 마지막 검토위원입니다. (클릭) 먼저 사라진 검토위원의 책상에서 이런 쪽지가 나왔어요. 시간이 많지 않습니다. 탈출하는 방법을 지금부터 자세히 알려 줄게요.</aside>
+<aside>[상황 안내] (※ 배경 음악은 앞 화면에서 자동으로 켜짐. 끄고 켜기는 M 키) 자, 이제 상황을 알려 줄게요. (클릭) 밤 11시 40분, 출제 본부에 정전이 됐고, 자정 10분이 되면 본부가 봉인돼요. (클릭) 여러분은 남아 있는 마지막 검토위원입니다. (클릭) 먼저 사라진 검토위원의 책상에서 이런 쪽지가 나왔어요. 시간이 많지 않습니다. 탈출하는 방법을 지금부터 자세히 알려 줄게요.</aside>
+</section>
+
+<section id="roles" class="hz" data-transition="fade" style="background:#07080B;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
+<p class="tag">역할 나누기</p>
+<h2 class="ttl">남은 검토위원, 각자 맡을 일</h2>
+<div style="position:absolute;left:128px;top:330px;width:1664px;display:flex;flex-direction:row;gap:32px">
+<div data-build-in="rise 1" class="hcard" style="flex:1;height:340px;display:flex;flex-direction:column;gap:18px;border-top-color:#8D8596;padding:40px"><p class="h" style="font-size:50px">단말기 담당 1명</p><p class="d" style="font-size:32px">태블릿을 조작해요.<br>팀이 합의한 답만 누르기!</p></div>
+<div data-build-in="rise 2" class="hcard" style="flex:1;height:340px;display:flex;flex-direction:column;gap:18px;border-top-color:#A8231B;padding:40px"><p class="h" style="font-size:50px;color:#FF7A6A">검토위원 모두</p><p class="d" style="font-size:32px">빨간 카드를 나눠 풀고<br>근거를 말로 설명해요.</p></div>
+<div data-build-in="rise 3" class="hcard" style="flex:1;height:340px;display:flex;flex-direction:column;gap:18px;border-top-color:#E0B252;padding:40px"><p class="h" style="font-size:50px;color:#E0B252">검토 일지 각자</p><p class="d" style="font-size:32px">카드를 풀면 <b class="g">암호 해독표</b>에 ○.<br>열쇠 상자 글자가 여기서!</p></div>
+</div>
+<p data-build-in="pop 4" class="memo" style="position:absolute;left:128px;top:730px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:56px;color:#E0453A">팀원 모두가 동의해야 장치에 숫자를 넣는다. 혼자 누르면, 경보가 울린다.</p>
+<aside>[역할 나누기] 아까 받은 활동지, 이제 펼쳐 보세요. 그게 사라진 검토위원이 남긴 검토 일지입니다. 팀에서 역할을 나눌게요. (클릭) 태블릿을 조작할 단말기 담당 한 명만 정하고, (클릭) 나머지는 모두 검토위원입니다. 카드를 나눠 풀고 근거를 말로 설명해 주세요. (클릭) 검토 일지는 각자 한 장씩 채웁니다. 일지의 암호 해독표가 있어야 방마다 열쇠 상자를 열 수 있어요. (클릭) 장치에 숫자를 넣기 전에는 팀원 모두가 동의해야 해요.</aside>
 </section>
 
 <section id="guide-1" class="hz" data-transition="fade" style="background:#07080B;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:96px 128px;display:flex;flex-direction:column;gap:16px">
-<p class="tag">도입 · 게임 방법 1/9 · 탈출 순서</p>
+<p class="tag">게임 방법 1/9 · 탈출 순서</p>
 <h2 class="ttl">네 방을 차례로 열고, 열쇠 숫자 네 개로 비상구를 연다</h2>
 <div style="position:absolute;left:128px;top:300px;width:1664px;display:flex;flex-direction:row;gap:14px;align-items:stretch">
 <div data-build-in="rise 1" class="hcard" style="flex:1;height:380px;display:flex;flex-direction:column;gap:12px"><p class="no">1</p><p class="dot" style="background:#1F232B;border-color:#8E979F">🚪</p><p class="h">방에 들어가기</p><p class="d">평면도에서 열린 방을 누른다. 앞 방을 풀어야 다음 방이 열린다.</p></div>
@@ -195,17 +225,17 @@
 <p data-build-in="rise 5" class="arr">›</p>
 <div data-build-in="rise 5" class="hcard" style="flex:1;height:380px;display:flex;flex-direction:column;gap:12px;border-top-color:#A8231B"><p class="no">5</p><p class="dot" style="background:#F6D2CC;border-color:#A8231B;color:#1F1B22">🔒</p><p class="h" style="color:#FF7A6A">금고 속 서류</p><p class="d">장치 안에서 나온 <b class="r">마지막 문제</b>까지 푼다.</p></div>
 <p data-build-in="rise 6" class="arr">›</p>
-<div data-build-in="rise 6" class="hcard" style="flex:1;height:380px;display:flex;flex-direction:column;gap:12px;border-top-color:#E0B252"><p class="no">6</p><p class="dot" style="background:#F6E3A6;border-color:#B8862E;color:#2A1A04">🔑</p><p class="h" style="color:#E0B252">열쇠 상자</p><p class="d">검토 일지 <b class="g">판정표</b>의 글자 3개로 연다. → 열쇠 숫자</p></div>
+<div data-build-in="rise 6" class="hcard" style="flex:1;height:380px;display:flex;flex-direction:column;gap:12px;border-top-color:#E0B252"><p class="no">6</p><p class="dot" style="background:#F6E3A6;border-color:#B8862E;color:#2A1A04">🔑</p><p class="h" style="color:#E0B252">열쇠 상자</p><p class="d">검토 일지 <b class="g">해독표</b>의 글자 3개로 연다. → 열쇠 숫자</p></div>
 </div>
 <div data-build-in="fade 7" style="position:absolute;left:128px;top:730px;width:1664px;display:flex;flex-direction:row;gap:22px;align-items:stretch">
 <div class="panel" style="flex:1.35;display:flex;flex-direction:row;align-items:center;gap:26px"><p style="font-family:'Do Hyeon', sans-serif;font-size:60px;color:#FF7A6A">× 4방</p><p style="font-size:30px;line-height:1.5">보안 검색실 → 구내식당 → 출제실 → 검토실<br>마지막에 <b class="gr">비상구</b>에 열쇠 숫자 4개를 <b class="g">방 순서대로</b> 넣는다.</p></div>
 <div class="panel" style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px"><p style="font-size:30px;line-height:1.5"><b class="r">필수 12문항</b> (방마다 3문항) · 제한 <b class="r">30분</b></p><p style="font-size:26px;line-height:1.5;color:#CFC7B8">노란 <b class="g">보너스</b> 4문항은 선택: 맞히면 기록 −30초</p></div>
 </div>
-<aside>[게임 방법 1/9 · 탈출 순서] 먼저 전체 흐름부터 볼게요. (클릭) 평면도에서 열린 방을 눌러 들어갑니다. (클릭) 방마다 빨간 문제 카드가 두 장 있어요. 문장을 분석해서 맞히면 번호가 하나씩 드러납니다. (클릭) 그 번호를 어떻게 쓰는지는 파란 단서 카드에 적혀 있어요. (클릭) 단서의 계산법대로 두 번호를 더하거나 빼서 초록 장치에 비밀번호를 넣습니다. (클릭) 장치가 열리면 안에서 서류가 한 장 더 나와요. 이게 그 방의 마지막 문제입니다. (클릭) 그것까지 맞히면 열쇠 상자가 나와요. 상자는 검토 일지의 근거 판정표에서 고른 글자 세 개로 열립니다. 열면 장치 비밀번호의 일의 자리가 열쇠 숫자가 되고, 다음 방이 열려요. (클릭) 이걸 네 방에서 반복하고, 마지막에 비상구에 열쇠 숫자 네 개를 방 순서대로 넣으면 탈출입니다. 꼭 풀어야 하는 문제는 열두 개, 제한 시간은 30분이에요.</aside>
+<aside>[게임 방법 1/9 · 탈출 순서] 먼저 전체 흐름부터 볼게요. (클릭) 평면도에서 열린 방을 눌러 들어갑니다. (클릭) 방마다 빨간 문제 카드가 두 장 있어요. 문장을 분석해서 맞히면 번호가 하나씩 드러납니다. (클릭) 그 번호를 어떻게 쓰는지는 파란 단서 카드에 적혀 있어요. (클릭) 단서의 계산법대로 두 번호를 더하거나 빼서 초록 장치에 비밀번호를 넣습니다. (클릭) 장치가 열리면 안에서 서류가 한 장 더 나와요. 이게 그 방의 마지막 문제입니다. (클릭) 그것까지 맞히면 열쇠 상자가 나와요. 상자는 검토 일지의 암호 해독표에서 고른 글자 세 개로 열립니다. 열면 장치 비밀번호의 일의 자리가 열쇠 숫자가 되고, 다음 방이 열려요. (클릭) 이걸 네 방에서 반복하고, 마지막에 비상구에 열쇠 숫자 네 개를 방 순서대로 넣으면 탈출입니다. 꼭 풀어야 하는 문제는 열두 개, 제한 시간은 30분이에요.</aside>
 </section>
 
 <section id="guide-2" class="hz" data-transition="fade" style="background:#07080B;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:96px 128px;display:flex;flex-direction:column;gap:16px">
-<p class="tag">도입 · 게임 방법 2/9 · 화면 보기</p>
+<p class="tag">게임 방법 2/9 · 화면 보기</p>
 <h2 class="ttl">평면도 → 방 → 카드, 화면은 세 단계예요</h2><p class="demo">연습용 예시 화면 · 실제 게임에 없는 방(경비실)</p>
 <img class="shot" src="assets/game-room.png" alt="게임 방 화면: 왼쪽 방 그림과 번호 동그라미, 가운데 다음 할 일 띠와 펼친 카드, 오른쪽 단말기와 검토 기록" style="position:absolute;left:128px;top:262px;width:1100px;height:603px">
 <p data-build-in="pop 2" class="call" style="position:absolute;left:286px;top:520px">2</p>
@@ -225,7 +255,7 @@
 </section>
 
 <section id="guide-3" class="hz" data-transition="fade" style="background:#07080B;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:96px 128px;display:flex;flex-direction:column;gap:16px">
-<p class="tag">도입 · 게임 방법 3/9 · 동그라미 색</p>
+<p class="tag">게임 방법 3/9 · 동그라미 색</p>
 <h2 class="ttl">무엇을 눌렀는지는 동그라미 색으로 알 수 있어요</h2>
 <div style="position:absolute;left:128px;top:290px;width:1664px;display:flex;flex-direction:row;gap:22px">
 <div data-build-in="rise 1" class="hcard" style="flex:1;height:440px;display:flex;flex-direction:column;gap:14px;border-top-color:#A8231B"><p class="dot big" style="background:#F6D2CC;border-color:#A8231B;color:#1F1B22">11</p><p class="h" style="color:#FF7A6A;font-size:44px">문제 <span style="font-size:28px">(필수)</span></p><p class="d">방마다 2장 + 금고 속 서류 1장.<br>수능형 문장을 분석해 맞히면 <b class="g">번호</b>가 드러나요.</p></div>
@@ -238,21 +268,21 @@
 </section>
 
 <section id="guide-4" class="hz" data-transition="fade" style="background:#07080B;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:96px 128px;display:flex;flex-direction:column;gap:16px">
-<p class="tag">도입 · 게임 방법 4/9 · 문제 카드 풀기</p>
+<p class="tag">게임 방법 4/9 · 문제 카드 풀기</p>
 <h2 class="ttl">문장을 뜯어 보고, 팀이 합의한 답만 누른다</h2><p class="demo">연습용 예시 화면 · 실제 게임에 없는 방(경비실)</p>
 <img class="shot" src="assets/game-card.png" alt="연습용 문제 카드 화면: 인수인계 메모의 문장과 선지 네 개, 확인 버튼과 힌트 버튼" style="position:absolute;left:128px;top:250px;width:520px;height:799px;object-fit:contain;background:#0B0C10">
 <div style="position:absolute;left:700px;top:262px;width:700px;display:flex;flex-direction:column;gap:22px">
 <div data-build-in="rise 1" class="step" style="display:flex;flex-direction:row;gap:20px;align-items:flex-start"><p class="no">1</p><div style="display:flex;flex-direction:column;gap:6px"><p class="h2">문장을 읽는다</p><p class="d"><b class="g">[ ] 대괄호 = 안긴문장.</b> 높임은 대괄호 안과 밖을 따로 따져요.</p></div></div>
 <div data-build-in="rise 2" class="step" style="display:flex;flex-direction:row;gap:20px;align-items:flex-start"><p class="no">2</p><div style="display:flex;flex-direction:column;gap:6px"><p class="h2">선지를 고른다</p><p class="d">“이 문장에 대한 설명으로 <b class="r">적절한</b> 것은?” 하나를 골라요.</p></div></div>
-<div data-build-in="rise 3" class="step" style="display:flex;flex-direction:row;gap:20px;align-items:flex-start"><p class="no">3</p><div style="display:flex;flex-direction:column;gap:6px"><p class="h2">근거를 말하고 ‘확인’</p><p class="d">팀원 모두 동의했을 때만 눌러요. 맞히면 검토 일지 <b class="g">판정표</b>에 ○!</p></div></div>
+<div data-build-in="rise 3" class="step" style="display:flex;flex-direction:row;gap:20px;align-items:flex-start"><p class="no">3</p><div style="display:flex;flex-direction:column;gap:6px"><p class="h2">근거를 말하고 ‘확인’</p><p class="d">팀원 모두 동의했을 때만 눌러요. 맞히면 검토 일지 <b class="g">해독표</b>에 ○!</p></div></div>
 <div data-build-in="rise 4" class="step" style="display:flex;flex-direction:row;gap:20px;align-items:flex-start"><p class="no" style="background:#2C5A86">💡</p><div style="display:flex;flex-direction:column;gap:6px"><p class="h2">막히면 힌트</p><p class="d">두 번 눌러야 열려요. 기록 <b class="bl">+1분</b>. 카드마다 한 번.</p></div></div>
 </div>
 <img data-build-in="fade 4" class="shot" src="assets/game-hint.png" alt="힌트를 연 카드: 선지 아래에 파란 힌트 상자" style="position:absolute;left:1440px;top:470px;width:352px;height:540px;object-fit:cover;object-position:center 60%">
-<aside>[게임 방법 4/9 · 문제 카드] 빨간 카드를 누르면 이런 문제가 나옵니다. (클릭) 먼저 문장을 읽어요. 대괄호로 묶인 부분이 안긴문장입니다. 높임은 대괄호 안과 밖을 따로 따져야 해요. (클릭) 그다음 문장에 대한 설명으로 적절한 것 하나를 고릅니다. (클릭) 고른 답의 근거를 팀원에게 말로 설명하고, 모두 동의하면 확인을 누르세요. 맞힌 카드는 검토 일지에 고른 답을 적고, 그 줄의 근거 판정표에 ○합니다. (클릭) 정말 막히면 힌트를 볼 수 있어요. 실수로 누르지 않도록 두 번 눌러야 열리고, 기록에 1분이 더해집니다.</aside>
+<aside>[게임 방법 4/9 · 문제 카드] 빨간 카드를 누르면 이런 문제가 나옵니다. (클릭) 먼저 문장을 읽어요. 대괄호로 묶인 부분이 안긴문장입니다. 높임은 대괄호 안과 밖을 따로 따져야 해요. (클릭) 그다음 문장에 대한 설명으로 적절한 것 하나를 고릅니다. (클릭) 고른 답의 근거를 팀원에게 말로 설명하고, 모두 동의하면 확인을 누르세요. 맞힌 카드는 검토 일지에 고른 답을 적고, 그 줄의 암호 해독표에 ○합니다. (클릭) 정말 막히면 힌트를 볼 수 있어요. 실수로 누르지 않도록 두 번 눌러야 열리고, 기록에 1분이 더해집니다.</aside>
 </section>
 
 <section id="guide-5" class="hz" data-transition="fade" style="background:#07080B;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:96px 128px;display:flex;flex-direction:column;gap:16px">
-<p class="tag">도입 · 게임 방법 5/9 · 틀리면, 맞히면</p>
+<p class="tag">게임 방법 5/9 · 틀리면, 맞히면</p>
 <h2 class="ttl">틀리면 경보, 맞히면 번호와 자세한 해설</h2><p class="demo">연습용 예시 화면 · 실제 게임에 없는 방(경비실)</p>
 <div style="position:absolute;left:128px;top:262px;width:808px;display:flex;flex-direction:row;gap:24px">
 <img class="shot" src="assets/game-alarm.png" alt="경보 화면: 붉은 화면에 경보! 문구와 +30초" style="width:420px;height:645px;object-fit:cover;object-position:center 30%">
@@ -266,7 +296,7 @@
 </section>
 
 <section id="guide-6" class="hz" data-transition="fade" style="background:#07080B;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:96px 128px;display:flex;flex-direction:column;gap:16px">
-<p class="tag">도입 · 게임 방법 6/9 · 연습 방 예시</p>
+<p class="tag">게임 방법 6/9 · 연습 방 예시</p>
 <h2 class="ttl">번호 + 단서의 계산법 = 장치 비밀번호</h2><p class="demo">연습용 예시 화면 · 실제 게임에 없는 방(경비실)</p>
 <div style="position:absolute;left:128px;top:280px;width:1664px;display:flex;flex-direction:row;align-items:center;gap:18px">
 <div class="ecard" style="width:300px;height:330px;display:flex;flex-direction:column;gap:10px;border-top-color:#A8231B"><p class="eh" style="color:#FF7A6A">11 근무 일지</p><p class="d" style="font-size:26px">문장을 분석해 맞히면</p><p class="ev">쪽 번호 15</p></div>
@@ -285,11 +315,11 @@
 </section>
 
 <section id="guide-7" class="hz" data-transition="fade" style="background:#07080B;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:96px 128px;display:flex;flex-direction:column;gap:16px">
-<p class="tag">도입 · 게임 방법 7/9 · 금고 속 서류와 열쇠 상자</p>
-<h2 class="ttl">마지막 잠금은 종이에 있다: 검토 일지의 근거 판정표</h2><p class="demo">연습용 예시 화면 · 실제 게임에 없는 방(경비실)</p>
+<p class="tag">게임 방법 7/9 · 금고 속 서류와 열쇠 상자</p>
+<h2 class="ttl">마지막 잠금은 종이에 있다: 검토 일지의 암호 해독표</h2><p class="demo">연습용 예시 화면 · 실제 게임에 없는 방(경비실)</p>
 <img class="shot" src="assets/game-vault.png" alt="연습용 금고 속 서류 카드 52 사물함 속 쪽지: 문장과 선지 네 개" style="position:absolute;left:128px;top:250px;width:400px;height:614px;object-fit:contain;background:#0B0C10">
 <div data-build-in="fade 1" class="jt" style="position:absolute;left:566px;top:250px;width:690px;display:flex;flex-direction:column;gap:0">
-<p style="font-family:'Do Hyeon', sans-serif;font-size:32px;color:#A8231B">검토 일지 · 근거 판정표 <span style="font-size:22px;color:#6A6370">(연습용 경비실)</span></p>
+<p style="font-family:'Do Hyeon', sans-serif;font-size:32px;color:#A8231B">검토 일지 · 암호 해독표 <span style="font-size:22px;color:#6A6370">(연습용 경비실)</span></p>
 <div class="jr"><p class="jn">11</p><div style="display:flex;flex-direction:column;gap:2px"><p class="jq" style="font-size:20px;color:#6A6370;font-weight:500">근무 일지</p><p class="jq">‘드셨다’가 높이는 사람</p><div class="jo"><span class="ch ok">할아버지<b>손</b></span><span class="ch">동생<b>창</b></span><span class="ch">사과<b>문</b></span></div></div></div>
 <div class="jr"><p class="jn">24</p><div style="display:flex;flex-direction:column;gap:2px"><p class="jq" style="font-size:20px;color:#6A6370;font-weight:500">인수인계 메모</p><p class="jq">[ ] 안긴문장의 종류</p><div class="jo"><span class="ch">명사절<b>경</b></span><span class="ch ok">관형절<b>전</b></span><span class="ch">인용절<b>비</b></span></div></div></div>
 <div class="jr"><p class="jn">52</p><div style="display:flex;flex-direction:column;gap:2px"><p class="jq" style="font-size:20px;color:#6A6370;font-weight:500">🔒 사물함 속 쪽지</p><p class="jq">‘주신’의 생략된 목적어</p><div class="jo"><span class="ch">형<b>초</b></span><span class="ch ok">시계<b>등</b></span><span class="ch">아버지<b>불</b></span></div></div></div>
@@ -297,12 +327,12 @@
 </div>
 <img data-build-in="fade 3" class="shot" src="assets/game-keybox.png" alt="연습용 열쇠 상자 화면: 글자 타일 아홉 개 중 손, 전을 누른 모습" style="position:absolute;left:1292px;top:250px;width:400px;height:614px;object-fit:contain;background:#0B0C10">
 <p data-build-in="fade 3" class="op" style="position:absolute;left:1262px;top:520px;font-size:44px">→</p>
-<div data-build-in="fade 4" class="panel" style="position:absolute;left:128px;top:892px;width:1664px;display:flex;flex-direction:row;gap:30px;align-items:center;padding:16px 28px"><p class="d" style="flex:1">카드를 맞힐 때마다 <b class="g">그 줄의 판정표</b>에 ○ → 상자에 글자를 순서대로 누르면 <b class="g">열쇠 숫자</b>와 그 방 <b class="g">정리표</b>가 나와요. 글자가 틀리면 경보 <b class="r">+30초</b>.</p></div>
-<aside>[게임 방법 7/9 · 금고 속 서류와 열쇠 상자] 장치를 열었다고 끝이 아니에요. 장치가 열리면 안에서 서류가 한 장 나옵니다. 그 방의 마지막 문제예요. (클릭) 그리고 마지막 잠금은 종이에 있습니다. 검토 일지를 보면 방마다 근거 판정표가 있어요. 빨간 카드와 금고 속 서류를 맞힐 때마다, 그 줄의 질문에 알맞은 칸에 ○를 칩니다. 예를 들어 이 연습 방에서 ‘드셨다’가 높이는 사람은 할아버지니까 ‘손’, 안긴문장은 관형절이니까 ‘전’, ‘주신’의 생략된 목적어는 시계니까 ‘등’이에요. (클릭) 위에서부터 모으면 ‘손전등’이 되죠. (클릭) 이 글자를 게임의 열쇠 상자에 차례로 누르면 열쇠 숫자와 그 방의 정리표가 나옵니다. (클릭) 글자가 틀리면 경보가 울리니까, 판정표는 팀이 근거를 맞춰 보고 ○를 치세요. 이건 연습 방이고, 실제 방의 글자는 직접 찾아야 합니다.</aside>
+<div data-build-in="fade 4" class="panel" style="position:absolute;left:128px;top:892px;width:1664px;display:flex;flex-direction:row;gap:30px;align-items:center;padding:16px 28px"><p class="d" style="flex:1">카드를 맞힐 때마다 <b class="g">그 줄의 해독표</b>에 ○ → 상자에 글자를 순서대로 누르면 <b class="g">열쇠 숫자</b>와 그 방 <b class="g">정리표</b>가 나와요. 글자가 틀리면 경보 <b class="r">+30초</b>.</p></div>
+<aside>[게임 방법 7/9 · 금고 속 서류와 열쇠 상자] 장치를 열었다고 끝이 아니에요. 장치가 열리면 안에서 서류가 한 장 나옵니다. 그 방의 마지막 문제예요. (클릭) 그리고 마지막 잠금은 종이에 있습니다. 검토 일지를 보면 방마다 암호 해독표가 있어요. 빨간 카드와 금고 속 서류를 맞힐 때마다, 그 줄의 질문에 알맞은 칸에 ○를 칩니다. 예를 들어 이 연습 방에서 ‘드셨다’가 높이는 사람은 할아버지니까 ‘손’, 안긴문장은 관형절이니까 ‘전’, ‘주신’의 생략된 목적어는 시계니까 ‘등’이에요. (클릭) 위에서부터 모으면 ‘손전등’이 되죠. (클릭) 이 글자를 게임의 열쇠 상자에 차례로 누르면 열쇠 숫자와 그 방의 정리표가 나옵니다. (클릭) 글자가 틀리면 경보가 울리니까, 해독표는 팀이 근거를 맞춰 보고 ○를 치세요. 이건 연습 방이고, 실제 방의 글자는 직접 찾아야 합니다.</aside>
 </section>
 
 <section id="guide-8" class="hz" data-transition="fade" style="background:#07080B;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:96px 128px;display:flex;flex-direction:column;gap:16px">
-<p class="tag">도입 · 게임 방법 8/9 · 단말기와 기록</p>
+<p class="tag">게임 방법 8/9 · 단말기와 기록</p>
 <h2 class="ttl">기록 = 걸린 시간 + 벌점 − 보너스</h2><p class="demo">연습용 예시 화면 · 실제 게임에 없는 방(경비실)</p>
 <img class="shot" src="assets/game-terminal.png" alt="본부 단말기: 남은 시간, 열쇠 칸 네 개, 벌점·경보·보너스, 평면도·일시정지·소리 버튼" style="position:absolute;left:128px;top:250px;width:616px;height:744px">
 <p data-build-in="pop 1" class="call" style="position:absolute;left:96px;top:434px">1</p>
@@ -323,22 +353,22 @@
 </section>
 
 <section id="guide-9" class="hz" data-transition="fade" style="background:#07080B;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:96px 128px;display:flex;flex-direction:column;gap:16px">
-<p class="tag">도입 · 게임 방법 9/9 · 이럴 땐 이렇게</p>
+<p class="tag">게임 방법 9/9 · 이럴 땐 이렇게</p>
 <h2 class="ttl">막혔을 때 먼저 볼 것</h2>
 <div style="position:absolute;left:128px;top:262px;width:1664px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
 <div data-build-in="rise 1" class="faq" style="display:flex;flex-direction:column;gap:10px"><p class="q">장치가 안 열려요</p><p class="d">빨간 카드 2장을 다 풀었나요?<br>단서 카드의 <b class="bl">더하기·빼기</b>를 다시 확인!</p></div>
 <div data-build-in="rise 1" class="faq" style="display:flex;flex-direction:column;gap:10px"><p class="q">다음에 뭘 하죠?</p><p class="d">위쪽 <b class="g">‘다음 할 일’ 띠</b>를 읽어요. 남은 카드 번호까지 알려 줘요.</p></div>
-<div data-build-in="rise 1" class="faq" style="display:flex;flex-direction:column;gap:10px"><p class="q">열쇠 상자가 안 열려요</p><p class="d">검토 일지 <b class="g">판정표</b>를 한 줄씩 다시! 글자는 <b class="g">위에서부터 차례로</b>.</p></div>
+<div data-build-in="rise 1" class="faq" style="display:flex;flex-direction:column;gap:10px"><p class="q">열쇠 상자가 안 열려요</p><p class="d">검토 일지 <b class="g">해독표</b>를 한 줄씩 다시! 글자는 <b class="g">위에서부터 차례로</b>.</p></div>
 <div data-build-in="rise 2" class="faq" style="display:flex;flex-direction:column;gap:10px"><p class="q">3분 넘게 막혔어요</p><p class="d">💡 힌트(+1분)를 보거나 <b class="r">손을 들어요</b>. 선생님이 관리자 화면에서 도와줄 수 있어요.</p></div>
 <div data-build-in="rise 2" class="faq" style="display:flex;flex-direction:column;gap:10px"><p class="q">화면이 멈췄어요</p><p class="d">선생님이 <b class="r">모든 팀을 멈춘</b> 거예요. 앞 화면을 봐요. 시간도 멈춰 있어요.</p></div>
 <div data-build-in="rise 2" class="faq" style="display:flex;flex-direction:column;gap:10px"><p class="q">창을 닫아 버렸어요</p><p class="d">같은 기기로 같은 주소를 다시 열면 <b class="gr">이어서</b> 할 수 있어요.</p></div>
 </div>
 <p data-build-in="fade 3" class="memo" style="position:absolute;left:128px;top:850px;width:1664px;font-family:'Nanum Pen Script', cursive;font-size:56px;color:#E0453A">기기는 팀에 한 대. 누르기 전에, 팀원 모두가 근거에 동의할 것.</p>
-<aside>[게임 방법 9/9 · 이럴 땐 이렇게] 마지막으로, 막혔을 때 먼저 볼 것들이에요. (클릭) 장치가 안 열리면 빨간 카드를 다 풀었는지, 단서의 더하기 빼기를 맞게 했는지 확인하세요. 뭘 해야 할지 모르겠으면 위쪽 ‘다음 할 일’ 띠를 읽으면 됩니다. 열쇠 상자가 안 열리면 검토 일지의 판정표를 한 줄씩 다시 따져 보고, 글자를 위에서부터 차례로 눌렀는지 확인하세요. (클릭) 3분 넘게 막히면 힌트를 보거나 손을 드세요. 선생님이 관리자 화면에서 도와줄 수 있습니다. 화면이 멈추면 선생님이 모든 팀을 멈춘 거니까 앞을 봐 주세요. 실수로 창을 닫아도 같은 기기로 다시 열면 이어서 할 수 있어요. (클릭) 기기는 팀에 한 대입니다. 누르기 전에 팀원 모두가 근거에 동의해야 해요.</aside>
+<aside>[게임 방법 9/9 · 이럴 땐 이렇게] 마지막으로, 막혔을 때 먼저 볼 것들이에요. (클릭) 장치가 안 열리면 빨간 카드를 다 풀었는지, 단서의 더하기 빼기를 맞게 했는지 확인하세요. 뭘 해야 할지 모르겠으면 위쪽 ‘다음 할 일’ 띠를 읽으면 됩니다. 열쇠 상자가 안 열리면 검토 일지의 해독표를 한 줄씩 다시 따져 보고, 글자를 위에서부터 차례로 눌렀는지 확인하세요. (클릭) 3분 넘게 막히면 힌트를 보거나 손을 드세요. 선생님이 관리자 화면에서 도와줄 수 있습니다. 화면이 멈추면 선생님이 모든 팀을 멈춘 거니까 앞을 봐 주세요. 실수로 창을 닫아도 같은 기기로 다시 열면 이어서 할 수 있어요. (클릭) 기기는 팀에 한 대입니다. 누르기 전에 팀원 모두가 근거에 동의해야 해요.</aside>
 </section>
 
 <section id="join" class="hz" data-transition="fade" style="background:#0E0F13;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:24px">
-<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#FFB4A8;background:#2A0E0C;border:2px solid #A8231B;border-radius:999px;padding:6px 26px">전개 · 접속</p>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#FFB4A8;background:#2A0E0C;border:2px solid #A8231B;border-radius:999px;padding:6px 26px">접속</p>
 <h2 style="font-family:'Do Hyeon', sans-serif;font-size:72px;font-weight:400;line-height:1.2;color:#EDE6D8">단말기를 켜세요</h2>
 <div style="position:absolute;left:128px;top:330px;width:1040px;display:flex;flex-direction:column;gap:24px">
 <p style="font-size:40px;line-height:1.5">① 태블릿으로 <b style="color:#E0B252">QR</b>을 찍는다</p>
@@ -361,7 +391,7 @@
 </section>
 
 <section id="live" data-transition="fade" style="background:#1A0707;color:#FFE2DC;font-family:'Noto Sans KR', sans-serif;padding:110px 128px;display:flex;flex-direction:column;gap:22px">
-<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#FFFFFF;background:#A8231B;border-radius:999px;padding:6px 26px">전개 · 지금 경보가 가장 많이 울리는 문제 (실시간)</p>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#FFFFFF;background:#A8231B;border-radius:999px;padding:6px 26px">지금 경보가 가장 많이 울리는 문제 (실시간)</p>
 <p id="liveHead" style="font-family:'Do Hyeon', sans-serif;font-size:56px;color:#FF6A55">🚨 <span id="liveRoom">관리자 연결 전</span></p>
 <p id="liveSent" style="font-family:'Gowun Batang', serif;font-weight:700;font-size:44px;line-height:1.6;background:#ECE5D4;color:#1F1B22;border-radius:22px;padding:28px 36px">관리자 페이지를 연결하면 팀들이 가장 많이 틀리고 있는 문제가 여기에 나타납니다.</p>
 <p id="liveWrong" style="font-size:34px;line-height:1.55;color:#FFB4A8"></p>
@@ -371,7 +401,7 @@
 </section>
 
 <section id="award" data-transition="fade" style="background:#0E0F13;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:28px">
-<p style="font-size:30px;font-weight:700;color:#6FDCA4;letter-spacing:1px">정리 · 기록 확인 및 시상 (2분)</p>
+<p style="font-size:30px;font-weight:700;color:#6FDCA4;letter-spacing:1px">기록 확인 및 시상</p>
 <h2 style="font-family:'Do Hyeon', sans-serif;font-size:84px;font-weight:400;line-height:1.2;color:#EDE6D8">누가 가장 먼저 빠져나왔나</h2>
 <div style="display:flex;flex-direction:row;gap:28px;width:1664px">
 <div data-build-in="rise 1" style="flex:1.3;height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#1E2A23;border:3px solid #3F9268;border-radius:24px"><p style="font-family:'Do Hyeon', sans-serif;font-size:52px;color:#E0B252">🏆 최단 탈출</p><p id="awBest" style="font-size:56px;font-weight:700">○팀</p><p id="awBestT" style="font-family:'Nanum Gothic Coding', monospace;font-size:50px;color:#9EF0C6">○○:○○</p></div>
@@ -383,7 +413,7 @@
 </section>
 
 <section id="top-1" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:100px 128px;display:flex;flex-direction:column;gap:18px">
-<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">정리 · 오답 TOP <span class="tRank">1</span> · <span class="tRoom">—</span></p>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">오답 TOP <span class="tRank">1</span> · <span class="tRoom">—</span></p>
 <h2 style="font-family:'Do Hyeon', sans-serif;font-size:56px;font-weight:400;line-height:1.2;color:#2E2A3B" class="tHead">가장 많이 틀린 문제</h2>
 <p class="tSent" style="font-family:'Gowun Batang', serif;font-weight:700;font-size:48px;line-height:1.6;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:22px;padding:24px 34px">—</p>
 <div style="display:flex;flex-direction:row;gap:24px;width:1664px">
@@ -395,7 +425,7 @@
 </section>
 
 <section id="top-2" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:100px 128px;display:flex;flex-direction:column;gap:18px">
-<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">정리 · 오답 TOP <span class="tRank">2</span> · <span class="tRoom">—</span></p>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">오답 TOP <span class="tRank">2</span> · <span class="tRoom">—</span></p>
 <h2 style="font-family:'Do Hyeon', sans-serif;font-size:56px;font-weight:400;line-height:1.2;color:#2E2A3B" class="tHead">두 번째로 많이 틀린 문제</h2>
 <p class="tSent" style="font-family:'Gowun Batang', serif;font-weight:700;font-size:48px;line-height:1.6;background:#FFFDF9;border:2px solid #E2D9EE;border-radius:22px;padding:24px 34px">—</p>
 <div style="display:flex;flex-direction:row;gap:24px;width:1664px">
@@ -407,7 +437,7 @@
 </section>
 
 <section id="top-3" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:100px 128px;display:flex;flex-direction:column;gap:18px">
-<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">정리 · 오답 TOP <span class="tRank">3</span> · <span class="tRoom">—</span></p>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">오답 TOP <span class="tRank">3</span> · <span class="tRoom">—</span></p>
 <h2 style="font-family:'Do Hyeon', sans-serif;font-size:56px;font-weight:400;line-height:1.2;color:#2E2A3B" class="tHead">세 번째로 많이 틀린 문제</h2>
 <p class="tSent" style="font-family:'Gowun Batang', serif;font-weight:700;font-size:48px;line-height:1.6;background:#FFFDF9;border:2px solid #E6DDCB;border-radius:22px;padding:24px 34px">—</p>
 <div style="display:flex;flex-direction:row;gap:24px;width:1664px">
@@ -420,7 +450,7 @@
 
 <section id="wrap" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
 <svg aria-label="장식 물결" width="1920" height="200" viewBox="0 0 1920 200" style="position:absolute;left:0px;top:0px;width:1920px;height:200px"><path d="M0 0H1920V120C1560 190 1240 90 900 140C560 190 260 110 0 160Z" fill="#EAE2D3"/></svg>
-<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">정리 · 화자의 태도 (2분)</p>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">화자의 태도</p>
 <h2 style="font-family:'Do Hyeon', sans-serif;font-size:68px;font-weight:400;line-height:1.2;color:#2E2A3B">문법 요소를 골라 쓰면, 태도가 드러나요</h2>
 <div style="position:absolute;left:128px;top:320px;width:1664px;display:flex;flex-direction:row;gap:28px">
 <div data-build-in="rise 1" style="flex:1;height:360px;display:flex;flex-direction:column;gap:16px;background:#FFFDF9;border:2px solid #E6DDCB;border-top:12px solid #6A58A6;border-radius:24px;padding:36px">
@@ -441,7 +471,7 @@
 </section>
 
 <section id="exit" data-transition="fade" style="background:#0E0F13;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:28px">
-<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#CFFFE6;background:#1F7A50;border-radius:999px;padding:6px 26px">정리 · 출구 카드 (2분)</p>
+<p style="align-self:flex-start;font-size:26px;font-weight:700;color:#CFFFE6;background:#1F7A50;border-radius:999px;padding:6px 26px">출구 카드</p>
 <h2 style="font-family:'Do Hyeon', sans-serif;font-size:80px;font-weight:400;line-height:1.2;color:#EDE6D8">비상구를 나가기 전에</h2>
 <div style="display:flex;flex-direction:row;gap:28px;width:1664px">
 <div style="flex:1;height:330px;display:flex;flex-direction:column;gap:18px;background:#ECE5D4;color:#1F1B22;border-radius:24px;padding:40px"><p style="font-family:'Do Hyeon', sans-serif;font-size:48px;color:#A8231B">하나</p><p style="font-size:38px;line-height:1.5">오늘 가장 헷갈렸던<br>문장과 그 까닭</p></div>
@@ -709,13 +739,16 @@ window.addEventListener('storage', function(e){ if (e.key === 'escape-admin-cfg'
 <div id="bgmTag">♪ 배경 음악 (M)</div>
 <script src="escape/bgm.js"></script>
 <script>
-// M 키: 게임과 같은 배경 음악 켜기/끄기 (발표 중 분위기용)
+// 배경 음악: 반전 화면(data-bgm="on")에 들어오면 자동으로 켜지고, M 키로 끄고 켠다
 (function(){
+  var VOL = 3;   // 슬라이드 배경 음악 크기 (예전 1.4. 더 키우려면 4, 줄이려면 2)
   var AC = null, h = null, tag = document.getElementById('bgmTag');
-  document.addEventListener('keydown', function(e){
-    if (e.key !== 'm' && e.key !== 'M') return;
-    if (h) { h.stop(); h = null; tag.classList.remove('on'); return; }
-    try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); h = window.ESC_BGM.start(AC, 1.4); tag.classList.add('on'); } catch(err) { h = null; }
+  function on(){ if (h) return; try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state === 'suspended') AC.resume(); h = window.ESC_BGM.start(AC, VOL); tag.classList.add('on'); } catch(err) { h = null; } }
+  function off(){ if (!h) return; h.stop(); h = null; tag.classList.remove('on'); }
+  document.addEventListener('keydown', function(e){ if (e.key === 'm' || e.key === 'M') { if (h) off(); else on(); } });
+  if (/(^|&)(print|export|all)(&|=|$)/.test(location.search.slice(1))) return;
+  document.querySelectorAll('#deck > section[data-bgm="on"]').forEach(function(s){
+    new MutationObserver(function(){ if (!s.classList.contains('off')) on(); }).observe(s, {attributes: true, attributeFilter: ['class']});
   });
 })();
 </script>
