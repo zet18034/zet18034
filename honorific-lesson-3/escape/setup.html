@@ -31,22 +31,42 @@ a{color:#9EC3F0}
     <li>시트 메뉴에서 <b>확장 프로그램 → Apps Script</b>를 엽니다.</li>
     <li>편집기에 있던 코드를 모두 지우고 아래 코드를 붙여 넣은 뒤 <kbd>Ctrl</kbd>+<kbd>S</kbd>로 저장합니다.
       <div style="margin-top:10px"><button class="btn" id="copy">코드 복사</button></div>
-      <pre id="code">불러오는 중…</pre></li>
+      <pre id="code"></pre></li>
     <li>오른쪽 위 <b>배포 → 새 배포</b>를 누르고, ‘유형 선택’ 톱니바퀴에서 <b>웹 앱</b>을 고릅니다.<br>
       · 다음 사용자 인증 정보로 실행: <b>나</b><br>· 액세스 권한이 있는 사용자: <b>모든 사용자</b><br>그리고 <b>배포</b>를 누릅니다.</li>
     <li>권한 승인 창이 뜨면 선생님 계정을 고르고, ‘확인되지 않은 앱’ 경고가 나오면 <b>고급 → (프로젝트 이름)(으)로 이동 → 허용</b>을 누릅니다. 직접 만든 스크립트라 뜨는 정상적인 경고입니다.</li>
     <li>마지막 화면의 <b>웹 앱 URL</b>(https://script.google.com/macros/s/…/exec)을 복사해 <a href="admin.html">관리자 페이지</a> ①의 주소 칸에 붙여 넣고 <b>저장하고 연결</b>을 누릅니다.</li>
     <li>수업 전에 관리자 페이지의 <b>게임 열기</b>로 한 팀을 시험해 보고, 관리자 화면에 팀이 뜨는지 확인합니다.</li>
   </ol>
+  <div class="box" style="background:#2A1512;border-color:#7A2A22">
+    <p style="margin:0"><b>‘연결 오류’가 날 때 확인할 것</b></p>
+    <p style="margin:6px 0 0">① 주소가 <b>https://script.google.com/macros/s/…/exec</b> 로 끝나는지 (편집기 주소나 …/dev 주소가 아님)<br>
+    ② 배포할 때 액세스 권한이 <b>‘모든 사용자’</b>인지 (‘Google 계정이 있는 모든 사용자’는 안 됨). 학교 구글 계정이라 ‘모든 사용자’가 목록에 없으면 <b>개인 Gmail 계정</b>으로 시트를 만들어 주세요.<br>
+    ③ 코드를 고친 뒤에는 <b>배포 → 배포 관리 → 연필 → 버전: 새 버전 → 배포</b>를 해야 반영됩니다. (새 배포를 하면 주소가 바뀌니 새 주소를 다시 넣기)<br>
+    ④ 주소를 브라우저 새 탭에 붙여 넣어 열었을 때 <b>{"last":…}</b> 같은 글자가 나오면 서버는 정상입니다. 로그인 화면이나 오류가 나오면 ②·③을 다시 확인하세요.</p>
+  </div>
   <div class="box">
     <p style="margin:0"><b>수업 당일 순서</b></p>
-    <p style="margin:6px 0 0">① 선생님 컴퓨터에서 관리자 페이지를 열어 <b>새 코드</b>로 수업 코드를 만들고 저장 → ② 같은 브라우저로 <a href="../index.html">발표 슬라이드</a>를 열면 7번 슬라이드 QR이 이 수업으로 연결됩니다 → ③ 학생들은 QR로 접속 → ④ 수업 중 관리자 페이지로 진행 상황과 오답을 보고, 정리 시간에 발표 슬라이드의 시상·오답 TOP 3가 자동으로 채워집니다.</p>
+    <p style="margin:6px 0 0">① 선생님 컴퓨터에서 관리자 페이지를 열어 <b>새 코드</b>로 수업 코드를 만들고 저장 → ② 같은 브라우저로 <a href="../index.html">발표 슬라이드</a>를 열면 17번 슬라이드(접속) QR이 이 수업으로 연결됩니다 → ③ 학생들은 QR로 접속 → ④ 수업 중 관리자 페이지로 진행 상황과 오답을 보고, 정리 시간에 발표 슬라이드의 시상·오답 TOP 3가 자동으로 채워집니다.</p>
     <p style="margin:6px 0 0;color:var(--mute);font-size:14px">※ 발표 슬라이드와 관리자 페이지는 같은 브라우저에서, 둘 다 zet18034.github.io 주소로 열어야 연결됩니다(내 컴퓨터의 파일로 열면 연결되지 않음). 반마다 수업 코드를 새로 만들면 기록이 섞이지 않습니다.</p>
   </div>
 </main>
 <script>
-fetch('apps-script.gs').then(r => r.text()).then(t => { document.getElementById('code').textContent = t; }).catch(() => { document.getElementById('code').textContent = '코드를 불러오지 못했습니다. 같은 폴더의 apps-script.gs 파일을 여세요.'; });
-document.getElementById('copy').onclick = async () => { try { await navigator.clipboard.writeText(document.getElementById('code').textContent); document.getElementById('copy').textContent = '복사됨 ✓'; } catch(e) {} };
+// 서버 코드 (apps-script.gs와 같은 내용. 파일로 열어도 복사되도록 페이지 안에 넣어 둠)
+const GS = "// 출제 본부 탈출 · 수업 기록 서버 (Google Apps Script)\n// 사용법은 setup.html 참고. 이 코드를 Google 시트의 [확장 프로그램 → Apps Script]에 붙여 넣고\n// [배포 → 새 배포 → 웹 앱, 실행: 나, 액세스: 모든 사용자]로 배포한 뒤 나온 주소를 관리자 페이지에 넣는다.\nconst SHEET = 'events';\nconst HEAD = ['시각', '수업 코드', '팀', '팀 이름', '종류', '방', '카드', '선택', '경과(초)', '요약', 'at'];\n\nfunction sheet_() {\n  const ss = SpreadsheetApp.getActiveSpreadsheet();\n  let sh = ss.getSheetByName(SHEET);\n  if (!sh) { sh = ss.insertSheet(SHEET); sh.appendRow(HEAD); sh.setFrozenRows(1); }\n  return sh;\n}\n\n// 게임 기기 → 진행 기록 저장 (여러 건을 배열로 받음)\nfunction doPost(e) {\n  const lock = LockService.getScriptLock();\n  lock.waitLock(15000);\n  try {\n    const data = JSON.parse(e.postData.contents);\n    const list = Array.isArray(data) ? data : [data];\n    if (!list.length) return out_('ok');\n    const rows = list.map(x => [new Date(), x.s || '', x.t || '', x.n || '', x.ty || '', x.r || '', String(x.c || ''), String(x.o || ''), x.e || 0, JSON.stringify(x.x || {}), x.at || Date.now()]);\n    const sh = sheet_();\n    sh.getRange(sh.getLastRow() + 1, 1, rows.length, HEAD.length).setValues(rows);\n    return out_('ok');\n  } finally {\n    lock.releaseLock();\n  }\n}\n\n// 관리자 페이지·발표 슬라이드 → 기록 읽기 / 일시정지·공지 주고받기\nfunction doGet(e) {\n  const p = e.parameter || {};\n  if (p.op === 'ctl') {\n    const props = PropertiesService.getScriptProperties();\n    const key = 'ctl_' + (p.s || '');\n    if (p.set) props.setProperty(key, p.set);\n    return json_(JSON.parse(props.getProperty(key) || '{}'));\n  }\n  const sh = sheet_();\n  const last = sh.getLastRow();\n  if (last < 2) return json_({ last: last, rows: [] });\n  const vals = sh.getRange(2, 1, last - 1, HEAD.length).getValues();\n  const rows = vals.filter(v => String(v[1]) === String(p.s || '')).map(v => ({\n    t: v[2], n: v[3], ty: v[4], r: v[5], c: String(v[6]), o: String(v[7]), e: v[8], x: v[9], at: Number(v[10]) || (v[0] instanceof Date ? v[0].getTime() : 0)\n  }));\n  return json_({ last: last, rows: rows });\n}\n\nfunction json_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }\nfunction out_(s) { return ContentService.createTextOutput(s); }\n";
+const pre = document.getElementById('code'); pre.textContent = GS;
+document.getElementById('copy').onclick = async () => {
+  const b = document.getElementById('copy');
+  let ok = false;
+  try { await navigator.clipboard.writeText(GS); ok = true; } catch(e) {}
+  if (!ok) {   // 파일로 열었을 때 등 클립보드 권한이 없으면 예전 방식으로
+    const ta = document.createElement('textarea'); ta.value = GS; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select();
+    try { ok = document.execCommand('copy'); } catch(e) {} ta.remove();
+  }
+  if (!ok) { const r = document.createRange(); r.selectNodeContents(pre); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); }
+  b.textContent = ok ? '복사됨 ✓' : '코드를 선택해 두었어요. Ctrl+C로 복사하세요';
+  setTimeout(() => b.textContent = '코드 복사', 2500);
+};
 </script>
 </body>
 </html>

@@ -95,8 +95,9 @@ tr.click{cursor:pointer}tr.click:hover{background:#1C1F26}tr.sel{background:#222
       <input type="text" id="api" placeholder="https://script.google.com/macros/s/……/exec">
       <label>수업 코드 (반마다 다르게)</label>
       <div class="row" style="margin-top:0"><input type="text" id="ses" style="flex:1"><button class="btn" id="newSes">새 코드</button><button class="btn green" id="save">저장하고 연결</button></div>
+      <p id="connWhy" style="margin:8px 0 0;color:#FF8A7A;font-size:14px;line-height:1.5"></p>
       <div class="join" style="margin-top:14px">
-        <div><label style="margin-top:0">학생 접속 주소 (발표 슬라이드 15번(접속)의 QR도 이 주소로 바뀝니다)</label><code id="joinUrl">—</code><div class="row"><button class="btn" id="copy">주소 복사</button><a class="btn" id="openGame" target="_blank" style="text-decoration:none">게임 열기 ↗</a></div></div>
+        <div><label style="margin-top:0">학생 접속 주소 (발표 슬라이드 17번(접속)의 QR도 이 주소로 바뀝니다)</label><code id="joinUrl">—</code><div class="row"><button class="btn" id="copy">주소 복사</button><a class="btn" id="openGame" target="_blank" style="text-decoration:none">게임 열기 ↗</a></div></div>
         <div id="qr"></div>
       </div>
     </section>
@@ -237,10 +238,11 @@ async function refresh(){
   try {
     const rows = await L.fetchRows(C); rowsCache = rows || [];
     AGG = L.aggregate(rowsCache); ctl = await L.getCtl(C) || {};
+    refresh.shown = ''; { const w = document.getElementById('connWhy'); if (w) w.textContent = ''; }
     $('#conn').className = 'pill on'; $('#conn').textContent = '연결됨 · 기록 ' + rowsCache.length + '건';
     $('#upd').textContent = '갱신 ' + new Date().toLocaleTimeString('ko-KR');
     $('#ctlState').textContent = '현재: ' + (ctl.pause ? '⏸ 모든 팀 일시정지' : '진행 중') + (ctl.msg ? ` · 마지막 공지 “${ctl.msg}”` : '');
-  } catch(e) { $('#conn').className = 'pill off'; $('#conn').textContent = '연결 오류 (주소·배포 설정 확인)'; }
+  } catch(e) { $('#conn').className = 'pill off'; $('#conn').textContent = '연결 오류'; $('#conn').title = ''; const why = L.urlProblem(C.api) || e.why || ('주소·배포 설정을 확인하세요. (' + (e.message || e) + ')'); if (!refresh.shown || refresh.shown !== why) { refresh.shown = why; toastA('연결 오류: ' + why); } $('#conn').title = why; const w = document.getElementById('connWhy'); if (w) w.textContent = why; }
   render();
 }
 showJoin(); refresh(); setInterval(refresh, 5000);

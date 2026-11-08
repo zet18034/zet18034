@@ -9,11 +9,32 @@ function setCfg(c){ try { localStorage.setItem(CFG_KEY, JSON.stringify(c)); } ca
 const ready = c => !!(c && c.api && c.s);
 function joinUrl(c){ return ready(c) ? `${GAME_URL}?api=${encodeURIComponent(c.api)}&s=${encodeURIComponent(c.s)}` : GAME_URL; }
 
+// Apps Script 응답 읽기: 로그인 화면(HTML)이 오거나 요청이 막히면 원인을 알 수 있는 오류를 던진다
+async function getJSON(url){
+  let r;
+  try { r = await fetch(url, {redirect:'follow'}); }
+  catch(e) { const err = new Error('net'); err.why = '서버에 닿지 못했어요. 배포의 액세스 권한이 ‘모든 사용자’인지 확인하세요(‘Google 계정이 있는 모든 사용자’면 로그인 화면으로 넘어가 막힙니다).'; throw err; }
+  const txt = await r.text();
+  try { return JSON.parse(txt); }
+  catch(e) {
+    const err = new Error('bad');
+    err.why = /<html|<!doctype/i.test(txt)
+      ? (/accounts\.google|로그인|Sign in/i.test(txt) ? '로그인 화면이 왔어요. 액세스 권한을 ‘모든 사용자’로 다시 배포하세요.'
+        : /doGet|함수를 찾을 수 없|Script function not found/i.test(txt) ? '서버 코드가 비어 있어요. 코드를 붙여 넣고 저장한 뒤 새 버전으로 다시 배포하세요.'
+        : '웹 앱 주소가 아닌 것 같아요. 배포 화면의 …/exec 주소를 넣었는지 확인하세요.')
+      : '서버 응답을 읽지 못했어요: ' + txt.slice(0, 80);
+    throw err;
+  }
+}
+const urlProblem = u => !u || u === 'local' ? '' : !/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec\/?$/.test(u.trim())
+  ? (/\/dev\/?$/.test(u) ? '…/dev 주소는 테스트용이라 학생 기기에서 안 됩니다. 배포 → 새 배포로 받은 …/exec 주소를 넣으세요.'
+    : /script\.google\.com\/(home|d\/)|\/edit/.test(u) ? '편집기 주소예요. 배포 → 새 배포 마지막 화면의 웹 앱 URL(…/exec)을 넣으세요.'
+    : '주소는 https://script.google.com/macros/s/…/exec 모양이어야 해요.') : '';
+
 async function fetchRows(c){
   if (!ready(c)) return null;
   if (c.api === 'local') return JSON.parse(localStorage.getItem('escape-local-events') || '[]').filter(e => e.s === c.s);
-  const r = await fetch(`${c.api}?s=${encodeURIComponent(c.s)}&after=1&t=${Date.now()}`);
-  const j = await r.json();
+  const j = await getJSON(`${c.api}?s=${encodeURIComponent(c.s)}&after=1&t=${Date.now()}`);
   return (j.rows || []).map(x => ({...x, x: typeof x.x === 'string' ? safeJSON(x.x) : (x.x || {})}));
 }
 function safeJSON(s){ try { return JSON.parse(s); } catch(e) { return {}; } }
@@ -25,7 +46,7 @@ async function setCtl(c, obj){
 async function getCtl(c){
   if (!ready(c)) return {};
   if (c.api === 'local') return safeJSON(localStorage.getItem('escape-local-ctl') || '{}')[c.s] || {};
-  const r = await fetch(`${c.api}?op=ctl&s=${encodeURIComponent(c.s)}&t=${Date.now()}`); return r.json();
+  return getJSON(`${c.api}?op=ctl&s=${encodeURIComponent(c.s)}&t=${Date.now()}`);
 }
 
 // 카드 목록 (cards.js 필요)
@@ -96,5 +117,5 @@ async function sendCmd(c, ctl, cmd){
   await setCtl(c, next);
   return next;
 }
-window.ESC_LIVE = {cfg, setCfg, ready, joinUrl, fetchRows, setCtl, getCtl, sendCmd, aggregate, cardList, fmt, label, GAME_URL};
+window.ESC_LIVE = {urlProblem, getJSON, cfg, setCfg, ready, joinUrl, fetchRows, setCtl, getCtl, sendCmd, aggregate, cardList, fmt, label, GAME_URL};
 })();
