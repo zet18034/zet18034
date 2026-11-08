@@ -151,7 +151,7 @@ $('#save').onclick = () => { C = {api:$('#api').value.trim(), s:$('#ses').value.
 $('#copy').onclick = async () => { try { await navigator.clipboard.writeText(L.joinUrl(C)); $('#copy').textContent = '복사됨 ✓'; setTimeout(() => $('#copy').textContent = '주소 복사', 1500); } catch(e) {} };
 function showJoin(){
   const u = L.joinUrl(C); $('#joinUrl').textContent = u; $('#openGame').href = u; $('#sesPill').textContent = '수업 코드 ' + (C.s || '—');
-  $('#qr').innerHTML = ''; try { new QRCode($('#qr'), {text:u, width:164, height:164}); } catch(e) { $('#qr').textContent = 'QR 불러오기 실패'; }
+  $('#qr').innerHTML = ''; try { new QRCode($('#qr'), {text:u, width:164, height:164, correctLevel:QRCode.CorrectLevel.L}); } catch(e) { $('#qr').textContent = 'QR 불러오기 실패'; }
 }
 async function sendCtl(patch){ ctl = Object.assign({}, ctl, patch); await L.setCtl(C, ctl); $('#ctlState').textContent = '현재: ' + (ctl.pause ? '⏸ 모든 팀 일시정지' : '진행 중') + (ctl.msg ? ` · 마지막 공지 “${ctl.msg}”` : ''); }
 $('#pauseAll').onclick = () => sendCtl({pause:true});
