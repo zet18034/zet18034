@@ -347,7 +347,7 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
   body.ingame .roomcard{height:100%;min-height:0;max-width:none;display:flex;flex-direction:column;padding:12px 12px 10px}
   body.ingame .roomcard .plaque{flex:none;margin-bottom:8px;font-size:22px;padding:3px 22px}
   body.ingame .roomcard .art{flex:1;min-height:0;display:grid;place-items:center;background:transparent;border:0;overflow:visible}
-  body.ingame .roomcard .art svg{width:auto;height:100%;max-width:100%;border:6px solid #1C1D21;border-radius:6px;background:#000}
+  body.ingame .roomcard .art svg{width:100%;height:auto;max-height:100%;border:6px solid #1C1D21;border-radius:6px;background:#000}
   body.ingame .roomcard .legend,body.ingame .roomcard .cap{flex:none}
   body.ingame .roomcard .cap{margin-top:6px;font-size:13.5px;line-height:1.45}
   body.ingame .roomcard .cap .pen{margin-top:2px;font-size:18px}
@@ -513,7 +513,7 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 <script>
 (() => {
 const LIMIT_MIN = Math.max(5, Math.min(90, parseInt(new URLSearchParams(location.search).get('min')) || 30));
-const HINT_PEN = 60, WRONG_PEN = 30, BONUS = 120;   // 남은 시간에서 경보 −30초, 힌트 −1분, 보너스 +2분
+const HINT_PEN = 60, WRONG_PEN = 30, BONUS = 120, HIDDEN = 60;   // 남은 시간에서 경보 −30초, 힌트 −1분, 보너스 +2분
 function h(s){let x=0x811c9dc5;for(const ch of s){x^=ch.codePointAt(0);x=Math.imul(x,0x01000193)>>>0;}return x.toString(16).padStart(8,'0');}
 const PIN = 'e6d166b9';
 const $ = s => document.querySelector(s);
@@ -606,7 +606,7 @@ function blank(){ return {team:null, tname:'', startAt:null, endAt:null, paused:
 function load(){ try { const v = JSON.parse(localStorage.getItem(KEY)); if (v && typeof v === 'object') return Object.assign(blank(), v); } catch(e){} return blank(); }
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
 const elapsed = () => S.startAt ? Math.max(0, ((S.endAt || (S.pausedAt || Date.now())) - S.startAt - S.paused) / 1000) : 0;
-const penalty = () => S.hints*HINT_PEN + S.wrong*WRONG_PEN - S.bonus*BONUS;
+const penalty = () => S.hints*HINT_PEN + S.wrong*WRONG_PEN - (S.bonus-(S.hb||0))*BONUS - (S.hb||0)*HIDDEN;
 const fmt = s => { const neg = s < 0; s = Math.abs(Math.round(s)); return (neg?'-':'') + String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0'); };
 
 // ==================== 소리 ====================
@@ -702,7 +702,7 @@ function passCard(R, n){
   if (cd.dev) { cur = {R, n:+n, cd, k}; solveDevice(true); return; }
   if (cd.vault) { S.solved[k] = true; save(); clearRoom(R, true); return; }
   if (open) { solveCard(true); return; }
-  S.solved[k] = true; if (cd.bonus) S.bonus++;
+  S.solved[k] = true; if (cd.bonus) { S.bonus++; if (cd.hiddenB) S.hb = (S.hb||0) + 1; }
   S.log.push({n, t:'(교사 통과) ' + cd.title + (cd.digit ? ` → ${cd.dl||'숫자'} ${cd.digit}` : ' 해결'), c:'#2B6E4D'});
   save(); send(cd.bonus ? 'bonus' : 'solve', R.id, n, 'skip'); renderDevice();
   if (S.view === ROOMS.indexOf(R)) renderRoom(S.view);
@@ -840,7 +840,7 @@ function renderRoom(i){
   const spots = R.spots.map(s => { const cd = R.cards[s.n]; return `<g class="spot t-${cd.c}${got.includes(s.n)?' got':''}" data-n="${s.n}"><circle class="pulse" cx="${s.x}" cy="${s.y}" r="22"/><circle class="c" cx="${s.x}" cy="${s.y}" r="22"/><text x="${s.x}" y="${s.y+1}">${s.n}</text></g>`; }).join('');
   const cards = got.filter(n => !isUsed(R, n)).map(n => cardTile(R, n)).join('');
   $('#stage').innerHTML = `<div class="tablewrap">
-    <div class="roomcard"><div class="plaque">${R.name}</div><div class="art"><svg viewBox="0 0 400 480" id="roomSvg"><defs><radialGradient id="torchG" gradientUnits="userSpaceOnUse" cx="${torch.x}" cy="${torch.y}" r="170"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".45" stop-color="#000" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity=".9"/></radialGradient></defs>${ART[R.art]}<rect id="torchLayer" width="400" height="480" fill="url(#torchG)"/><rect width="400" height="480" fill="rgba(160,20,10,.10)" class="elight" pointer-events="none"/>${spots}</svg></div>
+    <div class="roomcard"><div class="plaque">${R.name}</div><div class="art"><svg viewBox="0 0 400 480" id="roomSvg"><defs><radialGradient id="torchG" gradientUnits="userSpaceOnUse" cx="${torch.x}" cy="${torch.y}" r="170"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".45" stop-color="#000" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity=".9"/></radialGradient></defs>${ART[R.art]}${R.hiddenB ? `<text x="${R.hiddenB.x}" y="${R.hiddenB.y}" transform="rotate(${R.hiddenB.r} ${R.hiddenB.x} ${R.hiddenB.y})" text-anchor="middle" font-family="Gowun Batang" font-weight="700" font-size="19" fill="${R.hiddenB.c || '#F2E7BE'}" opacity=".72" pointer-events="none">${R.hiddenB.n}</text>` : ''}<rect id="torchLayer" width="400" height="480" fill="url(#torchG)"/><rect width="400" height="480" fill="rgba(160,20,10,.10)" class="elight" pointer-events="none"/>${spots}</svg></div>
       <div class="legend"><span class="lg t-red">잠긴 물건·문제</span><span class="lg t-blue">도구·단서</span><span class="lg t-green">장치 퍼즐</span><span class="lg t-gold">보너스</span></div><p class="cap">${R.cap}<span class="pen">“${R.pen}”</span></p></div>
     <div class="deskcol">${nextStep(R)}<div class="spread">${cards || `<div class="hint0">🔦 손전등으로 왼쪽 방을 비추고 번호 동그라미를 눌러 보자. 그 번호의 카드가 이 책상 위에 펼쳐진다.</div>`}</div></div>
   </div>`;
@@ -863,7 +863,7 @@ function isUsed(R, n){   // 결합을 마친 잠긴 물건·도구는 책상에�
 }
 function nextStep(R){
   const got = S.got[R.id], ids = Object.keys(R.cards);
-  const asks = reqPre(R), bonus = ids.filter(n => R.cards[n].bonus), devN = ids.find(n => R.cards[n].dev), vN = String(R.vault);
+  const asks = reqPre(R), bonus = ids.filter(n => R.cards[n].bonus && !R.cards[n].hiddenB), devN = ids.find(n => R.cards[n].dev), vN = String(R.vault);
   const unsolved = asks.filter(n => got.includes(+n) && !S.solved[sk(R.id, n)]);
   const left = R.spots.filter(s => !got.includes(s.n) && !R.cards[s.n].bonus).map(s => s.n);
   const pending = pendingCombos(R), sec = R.secret;
@@ -884,7 +884,7 @@ function iconOf(cd){ return typeof cd.ic === 'function' ? cd.ic() : ICON[cd.ic](
 function cardTile(R, n){
   const cd = R.cards[n], k = sk(R.id, n), sv = S.solved[k];
   const ready = cd.dev && !sv && devReady(R);
-  const status = cd.locked ? '도구와 결합' : cd.tool ? '잠긴 물건과 결합' : cd.dev ? (sv ? '열림!' : devReady(R) ? '퍼즐 풀기' : '전원 꺼짐') : cd.info ? '읽어 보기' : sv ? '해결' : cd.bonus ? '선택 · +2분' : '풀어 보기';
+  const status = cd.locked ? '도구와 결합' : cd.tool ? '잠긴 물건과 결합' : cd.dev ? (sv ? '열림!' : devReady(R) ? '퍼즐 풀기' : '전원 꺼짐') : cd.info ? '읽어 보기' : sv ? '해결' : cd.hiddenB ? '선택 · +1분' : cd.bonus ? '선택 · +2분' : '풀어 보기';
   return `<button class="card ${cd.c}${S.fresh.includes(k)?' new':''}${ready?' ready':''}" data-n="${n}"><div class="hd"><span class="no">${n}</span><span class="ty">${cd.ty}</span></div><div class="ic">${iconOf(cd)}</div><div class="ft">${cd.title}<br><span style="font-size:12px;color:#6A6370">${status}</span></div>${sv && cd.digit ? `<span class="digit">${cd.digit}</span>` : ''}${sv && cd.opts ? '<span class="stamp">해결</span>' : ''}${cd.bonus && !sv ? '<span class="bribbon">BONUS</span>' : ''}</button>`;
 }
 
@@ -910,7 +910,7 @@ function cardBig(R, n){
   if (cd.info) body += cd.info;
   if (sec && !S.got[R.id].includes(sec.n)) body += `<p class="secretnote">🔍 그림을 자세히 보자. 번호가 숨어 있다면 단말기의 <b>번호 입력</b>에 넣는다.</p>`;
   if (cd.opts) {
-    if (cd.bonus) body += `<div class="bonusnote">⭐ 보너스 카드: 어렵지만 맞히면 남은 시간 +2분. 풀지 않아도 탈출할 수 있다.</div>`;
+    if (cd.bonus) body += `<div class="bonusnote">${cd.hiddenB ? '🔦 숨은 보너스를 찾았다! 맞히면 남은 시간 +1분.' : '⭐ 보너스 카드: 어렵지만 맞히면 남은 시간 +2분. 풀지 않아도 탈출할 수 있다.'}</div>`;
     if (cd.sent) body += `<div class="txt"><div class="sent">${B(cd.sent)}</div></div>`;
     if (cd.head) body += `<div class="txt"><div class="sent" style="font-size:16.5px">${cd.head}</div></div>`;
     body += `<p class="ask">${cd.ask || '이 문장에 대한 설명으로 <em>적절한</em> 것은?'}</p>`;
@@ -1033,6 +1033,7 @@ function openPad(R){
     const m = $('#msg'), x = +v, sec = R.secret, c = (R.combos || []).find(q => q.to === x);
     if (!v) { m.className = 'msg bad'; m.textContent = '번호를 넣어 주세요.'; return; }
     if (sec && x === sec.n && !got.includes(x) && got.includes(sec.from)) return reveal(x, `숨은 번호 발견 → ${R.cards[x].title}`);
+    if (R.hiddenB && x === R.hiddenB.n && !got.includes(x)) { send('open', R.id, x); return reveal(x, `숨은 보너스 발견 → ${R.cards[x].title}`); }
     if (c && !got.includes(x)) {
       if (got.includes(c.a) && got.includes(c.b)) return reveal(x, `${R.cards[c.a].title} + ${R.cards[c.b].title} → 결합 성공`);
       m.className = 'msg bad'; m.textContent = '아직 찾지 못한 물건이 있다.'; v = ''; return paint();
@@ -1052,8 +1053,8 @@ function alarm(t, n, o, rid){
 $('#alarmOk').onclick = () => { $('#alarm').hidden = true; sfx.tap(); };
 function solveCard(skipped){
   const {R, n, cd, k} = cur;
-  S.solved[k] = true; if (cd.bonus && !skipped) S.bonus++;
-  S.log.push({n, t:(skipped?'(교사 통과) ':'') + cd.title + (cd.digit ? ` → ${cd.dl||'숫자'} ${cd.digit}` : cd.bonus ? ' → 보너스 +2분' : ' 해결'), c: cd.bonus ? '#B8862E' : '#2B6E4D'});
+  S.solved[k] = true; if (cd.bonus && !skipped) { S.bonus++; if (cd.hiddenB) S.hb = (S.hb||0) + 1; }
+  S.log.push({n, t:(skipped?'(교사 통과) ':'') + cd.title + (cd.digit ? ` → ${cd.dl||'숫자'} ${cd.digit}` : cd.hiddenB ? ' → 숨은 보너스 +1분' : cd.bonus ? ' → 보너스 +2분' : ' 해결'), c: cd.bonus ? '#B8862E' : '#2B6E4D'});
   save(); send(cd.bonus ? 'bonus' : 'solve', R.id, n, skipped ? 'skip' : ''); sfx.good(); burst(30);
   $('#front').innerHTML = cardBig(R, n); bindBig(); renderDevice();
 }
@@ -1082,7 +1083,7 @@ function clearRoom(R, skipped){
   save(); send('clear', R.id, R.vault, skipped ? 'skip' : ''); sfx.unlock(); burst(80);
   $('#modal').hidden = true; window.onkeydown = null;
   const cd = dev;
-  const bLeft = Object.keys(R.cards).filter(x => R.cards[x].bonus && !S.solved[sk(R.id, x)]);
+  const bLeft = Object.keys(R.cards).filter(x => R.cards[x].bonus && !R.cards[x].hiddenB && !S.solved[sk(R.id, x)]);
   $('#keyBody').innerHTML = `<div class="bigstamp">해제</div><p style="font:15px 'Jua';color:#A8231B;letter-spacing:.2em">ROOM ${i+1} CLEAR</p><h3>${R.name}의 장치가 열렸다</h3>
     <div class="kv"><div class="kk">${R.key}</div><div style="font:17px/1.6 'Jua'">장치 비밀번호 <b>${cd.dev.code}</b>의 일의 자리, 열쇠 숫자 <b style="color:#E0B252">${R.key}</b>를 얻었다.<br><span style="opacity:.8;font-size:15px">${i < ROOMS.length-1 ? `평면도에서 ${ROOMS[i+1].name}이(가) 열렸다.` : '이제 비상구로!'}${bLeft.length ? ` (보너스 카드 ${bLeft.join(', ')}번은 아직 풀 수 있다)` : ''}</span></div></div>
     <div class="why">${R.why}</div><div class="brow"><button class="btn" id="kOk">평면도로 ▶</button>${bLeft.length?'<button class="btn ghost" id="kStay">이 방에 남아 보너스 풀기</button>':''}</div>`;
@@ -1147,7 +1148,7 @@ function renderDone(fresh){
   const stars = ratio <= .55 ? 5 : ratio <= .7 ? 4 : ratio <= .85 ? 3 : ratio <= 1 ? 2 : 1;
   $('#stars').innerHTML = '★'.repeat(stars) + `<i>${'★'.repeat(5-stars)}</i>`;
   $('#doneLine').textContent = `${S.tname || ''}(${S.team}팀)이 봉인 직전, 비상구 비밀번호 ${FINAL_CODE}로 출제 본부를 빠져나왔다.`;
-  $('#recordDl').innerHTML = `<dt>팀</dt><dd>${teamLabel()}</dd><dt>걸린 시간</dt><dd>${fmt(e)}</dd><dt>경보</dt><dd>${S.wrong}번 (−${fmt(S.wrong*WRONG_PEN)})</dd><dt>힌트</dt><dd>${S.hints}번 (−${fmt(S.hints*HINT_PEN)})</dd><dt>보너스</dt><dd>${S.bonus}장 (+${fmt(S.bonus*BONUS)})</dd>`;
+  $('#recordDl').innerHTML = `<dt>팀</dt><dd>${teamLabel()}</dd><dt>걸린 시간</dt><dd>${fmt(e)}</dd><dt>경보</dt><dd>${S.wrong}번 (−${fmt(S.wrong*WRONG_PEN)})</dd><dt>힌트</dt><dd>${S.hints}번 (−${fmt(S.hints*HINT_PEN)})</dd><dt>보너스</dt><dd>${S.bonus}장 (+${fmt((S.bonus-(S.hb||0))*BONUS + (S.hb||0)*HIDDEN)})</dd>`;
   $('#recordLabel').textContent = left >= 0 ? '남은 시간' : '초과 시간';
   $('#recordTotal').textContent = fmt(Math.abs(left));
   if (fresh) { burst(180); setTimeout(()=>burst(140), 600); }
