@@ -59,15 +59,15 @@
   :where(.slide > *) { position: relative; }
   .abs { position: absolute; }
 
-  .kicker { font: 500 26px var(--sans); letter-spacing: 6px; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 18px; }
+  .kicker { font: 500 30px var(--sans); letter-spacing: 5px; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 18px; }
   .kicker::before { content: ''; width: 46px; height: 2px; background: var(--gold); }
   .dark .kicker { color: var(--gold-soft); }
   .title { font: 600 84px/1.12 var(--serif); margin-top: 18px !important; }
   .title em, .accent { font-style: italic; color: var(--wine); }
   .dark .title em, .dark .accent { color: var(--gold-soft); }
-  .lead { font-size: 40px; line-height: 1.45; }
+  .lead { font-size: 44px; line-height: 1.45; }
   .muted { color: var(--ink-soft); }
-  .ref { position: absolute; right: 92px; bottom: 66px; font: italic 28px var(--serif); color: var(--ink-soft); }
+  .ref { position: absolute; right: 92px; bottom: 66px; font: italic 32px var(--serif); color: var(--ink-soft); }
   .dark .ref { color: var(--gold-soft); }
   .ko { font-family: 'Noto Sans KR', sans-serif; }
   mark { background: linear-gradient(transparent 58%, rgba(140,47,57,.22) 58%); color: inherit; padding: 0 4px; }
@@ -105,7 +105,7 @@
   /* timers */
   .timer { cursor: pointer; user-select: none; display: inline-flex; flex-direction: column; align-items: center; padding: 22px 56px 18px; border: 2px solid var(--gold); border-radius: 8px; background: rgba(255,255,255,.04); }
   .timer .t { font: 600 120px/1 var(--serif); font-variant-numeric: tabular-nums; letter-spacing: 2px; }
-  .timer small { margin-top: 10px; font: 400 22px var(--sans); letter-spacing: 3px; text-transform: uppercase; opacity: .6; }
+  .timer small { margin-top: 10px; font: 400 28px var(--sans); letter-spacing: 3px; text-transform: uppercase; opacity: .6; }
   .timer.run { border-color: var(--gold-soft); box-shadow: 0 0 0 6px rgba(217,192,138,.15); }
   .timer.done .t { color: var(--wine); animation: blink 1s steps(2) infinite; }
   .dark .timer.done .t { color: #F0A8A8; }
@@ -115,7 +115,7 @@
   .divider { justify-content: center; padding-left: 220px; }
   .divider .part { font: italic 44px var(--serif); color: var(--gold-soft); }
   .divider h2 { font: 600 150px/1.05 var(--serif); margin-top: 16px !important; }
-  .divider .sub { margin-top: 34px !important; font-size: 40px; color: rgba(244,238,226,.8); }
+  .divider .sub { margin-top: 34px !important; font-size: 44px; color: rgba(244,238,226,.8); }
   .big-roman { position: absolute; right: 150px; top: 50%; translate: 0 -50%; font: italic 600 520px/1 var(--serif); color: rgba(217,192,138,.10); pointer-events: none; }
 
   /* builds */
@@ -138,19 +138,19 @@
   @page { size: 1920px 1080px; margin: 0; }
   /* lesson 2: plot timeline */
   .plot { position: relative; display: flex; justify-content: space-between; margin-top: 70px; }
-  .plot::before { content: ''; position: absolute; left: 110px; right: 110px; top: 14px; height: 3px; background: var(--gold-soft); }
-  .plot .st { width: 220px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
+  .plot::before { content: ''; position: absolute; left: 130px; right: 130px; top: 14px; height: 3px; background: var(--gold-soft); }
+  .plot .st { width: 260px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
   .plot .st i { width: 30px; height: 30px; border-radius: 50%; background: var(--paper); border: 4px solid var(--gold); }
   .plot .st.done i { background: var(--gold); }
   .plot .st.on i { background: var(--wine); border-color: var(--wine); transform: scale(1.35); box-shadow: 0 0 0 8px rgba(140,47,57,.15); }
-  .plot .st b { margin-top: 20px; font: 600 34px/1.2 var(--serif); }
-  .plot .st small { margin-top: 4px; font: 24px 'Noto Sans KR', sans-serif; color: var(--ink-soft); }
+  .plot .st b { margin-top: 20px; font: 600 38px/1.2 var(--serif); }
+  .plot .st small { margin-top: 4px; font: 30px 'Noto Sans KR', sans-serif; color: var(--ink-soft); }
   .plot .st.on b, .plot .st.on small { color: var(--wine); }
-  .story { margin: auto 0 !important; align-self: center; max-width: 1400px; text-align: center; font: 54px/1.5 var(--serif); }
+  .story { margin: auto 0 !important; align-self: center; max-width: 1500px; text-align: center; font: 58px/1.5 var(--serif); }
 
   /* lesson 2: diary paper + blanks */
-  .diary { margin: auto 0 !important; padding: 56px 80px 44px; font: 48px/1.75 var(--serif); text-align: justify; border-left: 6px double var(--wine); }
-  .diary .sign { display: block; margin-top: 18px; text-align: right; font: italic 32px var(--serif); color: var(--gold); }
+  .diary { margin: auto 0 !important; padding: 56px 80px 44px; font: 52px/1.7 var(--serif); text-align: justify; border-left: 6px double var(--wine); }
+  .diary .sign { display: block; margin-top: 18px; text-align: right; font: italic 36px var(--serif); color: var(--gold); }
   .blank { display: inline-block; min-width: 230px; border-bottom: 3px solid var(--ink); text-align: center; line-height: 1.15; }
   .blank > span { display: inline-block; color: var(--wine); font-style: italic; font-weight: 600; }
 </style>
@@ -342,13 +342,13 @@ Answers: artist, beggar</aside>
 <section class="slide">
   <p class="kicker">Pre-writing 1 · Components</p>
   <h2 class="title">Components</h2>
-  <div class="col" style="margin-top:50px;gap:16px">
-    <div class="card row" style="padding:20px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Who</p><p class="lead">‘Baron’s’ diary</p></div>
-    <div class="card row" style="padding:20px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">What</p><p class="lead">I gave a speech</p></div>
-    <div class="card row" style="padding:20px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Where</p><p class="lead">at Hughie Erskine’s wedding</p></div>
-    <div class="card row" style="padding:20px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">When</p><p class="lead">today (wedding day)</p></div>
-    <div class="card row" style="padding:20px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Impression</p><p class="lead">“It was a wedding present for somebody who deserved it!”</p></div>
-    <div class="card row" style="padding:20px 40px;gap:40px;align-items:center;border-left:8px solid var(--gold)"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--gold)">Elaboration</p><p class="lead">more details</p></div>
+  <div class="col" style="margin-top:36px;gap:14px">
+    <div class="card row" style="padding:15px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Who</p><p class="lead">‘Baron’s’ diary</p></div>
+    <div class="card row" style="padding:15px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">What</p><p class="lead">I gave a speech</p></div>
+    <div class="card row" style="padding:15px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Where</p><p class="lead">at Hughie Erskine’s wedding</p></div>
+    <div class="card row" style="padding:15px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">When</p><p class="lead">today (wedding day)</p></div>
+    <div class="card row" style="padding:15px 40px;gap:40px;align-items:center"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Impression</p><p class="lead">“It was a wedding present for somebody who deserved it!”</p></div>
+    <div class="card row" style="padding:15px 40px;gap:40px;align-items:center;border-left:8px solid var(--gold)"><p style="width:290px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--gold)">Elaboration</p><p class="lead">more details</p></div>
   </div>
   <aside>Analyze the Baron's diary together, one component at a time:
 "Whose diary is it? — The Baron's. What did he do? — He gave a speech. Where? — At Hughie's wedding. When? — Today, the wedding day. How did he feel? — 'It was a wedding present for somebody who deserved it!'"
@@ -395,7 +395,7 @@ Answers: artist, beggar</aside>
   </svg>
   <div class="abs col center" style="left:820px;top:170px;width:280px;height:280px;border-radius:50%;border:5px solid var(--gold);background:var(--card);box-shadow:0 0 0 10px var(--paper), 0 0 0 12px var(--gold-soft)">
     <p style="font:italic 600 66px var(--serif);color:var(--wine)">Topic</p>
-    <p class="muted" style="font-size:24px;margin-top:6px">scene &amp; character</p>
+    <p class="muted" style="font-size:30px;margin-top:6px">scene &amp; character</p>
   </div>
   <div class="abs card col center" style="left:380px;top:640px;width:360px;height:150px"><p style="font:600 50px var(--serif)">My writing</p></div>
   <div class="abs card col center" style="left:1180px;top:640px;width:360px;height:150px"><p style="font:600 50px var(--serif)">Partner’s</p></div>
@@ -444,7 +444,7 @@ Walk around and help students who raise their hands. When time is up: "Please st
   <div class="col" style="margin-top:60px;gap:20px">
     <div class="card row" style="padding:28px 44px;gap:40px;align-items:center"><p style="width:250px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Length</p><p class="lead">1 ~ 2 sentences</p></div>
     <div class="card row" style="padding:28px 44px;gap:40px;align-items:flex-start"><p style="width:250px;flex-shrink:0;font:italic 600 44px var(--serif);color:var(--wine)">Ex)</p>
-      <div class="col" style="gap:8px;font:italic 42px/1.4 var(--serif)">
+      <div class="col" style="gap:8px;font:italic 46px/1.4 var(--serif)">
         <p>I think <span class="accent">~</span> is <span class="accent">~</span>.</p>
         <p>I liked the idea of <span class="accent">~</span>.</p>
         <p>Your writing is <span class="accent">~</span> because <span class="accent">~</span>…</p>
@@ -479,7 +479,7 @@ When time is up: "Give the worksheet back to your partner and read the comment."
 <section class="slide dark center" style="justify-content:center">
   <p style="font:400 230px/1 'Pinyon Script', cursive;color:var(--paper)">Thank you!</p>
   <div class="rule" style="margin-top:50px"></div>
-  <p style="margin-top:34px;font:italic 36px var(--serif);color:var(--gold-soft)">The Model Millionaire · Special Lesson 2</p>
+  <p style="margin-top:34px;font:italic 40px var(--serif);color:var(--gold-soft)">The Model Millionaire · Special Lesson 2</p>
   <aside>[Thank You · 1m]
 "Thank you so much for taking part so well. You gave me great memories!" Applaud together.
 Collect the worksheets (to evaluate with the criteria later). End class.</aside>

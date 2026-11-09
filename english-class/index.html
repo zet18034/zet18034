@@ -59,7 +59,7 @@
   :where(.slide > *) { position: relative; }
   .abs { position: absolute; }
 
-  .kicker { font: 500 26px var(--sans); letter-spacing: 6px; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 18px; }
+  .kicker { font: 500 34px var(--sans); letter-spacing: 5px; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 18px; }
   .kicker::before { content: ''; width: 46px; height: 2px; background: var(--gold); }
   .dark .kicker { color: var(--gold-soft); }
   .title { font: 600 84px/1.12 var(--serif); margin-top: 18px !important; }
@@ -67,7 +67,7 @@
   .dark .title em, .dark .accent { color: var(--gold-soft); }
   .lead { font-size: 40px; line-height: 1.45; }
   .muted { color: var(--ink-soft); }
-  .ref { position: absolute; right: 92px; bottom: 66px; font: italic 28px var(--serif); color: var(--ink-soft); }
+  .ref { position: absolute; right: 92px; bottom: 66px; font: italic 36px var(--serif); color: var(--ink-soft); }
   .dark .ref { color: var(--gold-soft); }
   .ko { font-family: 'Noto Sans KR', sans-serif; }
   mark { background: linear-gradient(transparent 58%, rgba(140,47,57,.22) 58%); color: inherit; padding: 0 4px; }
@@ -85,27 +85,27 @@
   .gilt > .inner { background: var(--card); box-shadow: inset 0 0 0 3px #7E602A, inset 0 0 22px rgba(0,0,0,.25); overflow: hidden; display: flex; }
 
   /* cameo portraits */
-  .cameo { width: 230px; height: 290px; border-radius: 50%; border: 5px solid var(--gold); box-shadow: 0 0 0 9px var(--card), 0 0 0 11px var(--gold-soft), 0 24px 40px -20px rgba(31,42,46,.5); display: flex; align-items: center; justify-content: center; font: italic 600 80px var(--serif); color: var(--paper); overflow: hidden; flex-shrink: 0; }
+  .cameo { width: 230px; height: 290px; border-radius: 50%; border: 5px solid var(--gold); box-shadow: 0 0 0 9px var(--card), 0 0 0 11px var(--gold-soft), 0 24px 40px -20px rgba(31,42,46,.5); display: flex; align-items: center; justify-content: center; font: italic 600 56px var(--serif); color: var(--paper); overflow: hidden; flex-shrink: 0; }
   .cameo img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; padding: 22px 10px 6px; }
-  .who { margin-top: 30px; font: 600 36px var(--serif); text-align: center; }
-  .who small { display: block; margin-top: 6px; font: 400 25px var(--sans); color: var(--ink-soft); }
+  .who { margin-top: 30px; font: 600 44px var(--serif); text-align: center; }
+  .who small { display: block; margin-top: 6px; font: 400 34px var(--sans); color: var(--ink-soft); }
 
-  .bubble { position: absolute; background: var(--card); border: 3px solid var(--ink); border-radius: 50px; padding: 16px 30px; font: 500 34px var(--sans); white-space: nowrap; }
+  .bubble { position: absolute; background: var(--card); border: 3px solid var(--ink); border-radius: 50px; padding: 16px 30px; font: 500 40px var(--sans); white-space: nowrap; }
   .bubble::after { content: ''; position: absolute; bottom: -22px; width: 26px; height: 26px; background: var(--card); border-right: 3px solid var(--ink); border-bottom: 3px solid var(--ink); transform: skewX(25deg) rotate(45deg); }
   .bubble.tl::after { left: 46px; }
   .bubble.tr::after { right: 46px; }
 
-  .caption { margin-top: auto !important; align-self: center; max-width: 1400px; text-align: center; font: italic 38px/1.45 var(--serif); color: var(--ink); }
+  .caption { margin-top: auto !important; align-self: center; max-width: 1560px; text-align: center; font: italic 42px/1.45 var(--serif); color: var(--ink); }
   .caption::before { content: ''; display: block; width: 80px; height: 2px; background: var(--gold); margin: 0 auto 22px; }
 
   .num { font: italic 600 64px var(--serif); color: var(--gold); width: 80px; flex-shrink: 0; }
-  .chip { display: inline-flex; align-items: center; padding: 8px 24px; border-radius: 999px; font: 500 26px var(--sans); border: 2px solid var(--gold); color: var(--ink); background: var(--card); }
+  .chip { display: inline-flex; align-items: center; padding: 8px 24px; border-radius: 999px; font: 500 34px var(--sans); border: 2px solid var(--gold); color: var(--ink); background: var(--card); }
   .dark .chip { background: transparent; color: var(--paper); border-color: var(--gold-soft); }
 
   /* timers */
   .timer { cursor: pointer; user-select: none; display: inline-flex; flex-direction: column; align-items: center; padding: 22px 56px 18px; border: 2px solid var(--gold); border-radius: 8px; background: rgba(255,255,255,.04); }
   .timer .t { font: 600 120px/1 var(--serif); font-variant-numeric: tabular-nums; letter-spacing: 2px; }
-  .timer small { margin-top: 10px; font: 400 22px var(--sans); letter-spacing: 3px; text-transform: uppercase; opacity: .6; }
+  .timer small { margin-top: 10px; font: 400 30px var(--sans); letter-spacing: 3px; text-transform: uppercase; opacity: .6; }
   .timer.run { border-color: var(--gold-soft); box-shadow: 0 0 0 6px rgba(217,192,138,.15); }
   .timer.done .t { color: var(--wine); animation: blink 1s steps(2) infinite; }
   .dark .timer.done .t { color: #F0A8A8; }
@@ -179,7 +179,7 @@ Let students answer freely from what they already know. Then: "Let's look at the
         <p style="font:600 76px var(--serif)">₩1,337,200,000</p>
       </div>
     </div>
-    <p data-build-in="fade" class="muted" style="font-size:26px">exchange rate as of Oct. 29, 2026</p>
+    <p data-build-in="fade" class="muted" style="font-size:34px">exchange rate as of Oct. 29, 2026</p>
     <p data-build-in="rise" class="lead" style="margin-top:14px">a <b>millionaire</b> = a person who has <mark>more than a million dollars</mark></p>
   </div>
   <p class="ref">P. 138</p>
@@ -194,13 +194,13 @@ Let students answer freely from what they already know. Then: "Let's look at the
     <div data-build-in="pop" class="col" style="align-items:center">
       <div class="gilt" style="width:384px;height:476px"><div class="inner" style="width:100%;height:100%"><img src="assets/model-bazaar.jpg" alt="Fashion magazine cover" style="width:100%;height:100%;object-fit:cover"></div></div>
       <p style="margin-top:28px;font:600 40px var(--serif)">① a <span class="accent">model</span></p>
-      <p class="muted" style="font-size:28px;margin-top:6px !important;text-align:center;line-height:1.35">a person who poses for<br>photographs or paintings</p>
+      <p class="muted" style="font-size:36px;margin-top:6px !important;text-align:center;line-height:1.35">a person who poses for<br>photographs or paintings</p>
     </div>
     <p data-build-in="fade" style="font:italic 110px var(--serif);color:var(--gold)">vs</p>
     <div data-build-in="pop" class="col" style="align-items:center">
       <div class="gilt" style="width:384px;height:476px"><div class="inner" style="width:100%;height:100%"><img src="assets/model-faker.jpg" alt="Pro gamer poster" style="width:100%;height:100%;object-fit:cover"></div></div>
       <p style="margin-top:28px;font:600 40px var(--serif)">② a <span class="accent">role model</span></p>
-      <p class="muted" style="font-size:28px;margin-top:6px !important;text-align:center;line-height:1.35">a person who is a good<br>example to follow</p>
+      <p class="muted" style="font-size:36px;margin-top:6px !important;text-align:center;line-height:1.35">a person who is a good<br>example to follow</p>
     </div>
   </div>
   <p class="ref">P. 138</p>
@@ -216,17 +216,17 @@ Let students answer freely from what they already know. Then: "Let's look at the
     <div data-build-in="rise" class="card col grow" style="padding:46px 44px;border-top:6px solid var(--gold)">
       <p class="num">A.</p>
       <p style="margin-top:18px !important;font:500 40px/1.4 var(--sans)">A millionaire who works as a <span class="accent">model</span></p>
-      <p class="muted" style="margin-top:auto !important;padding-top:30px;font-size:26px">model ①</p>
+      <p class="muted" style="margin-top:auto !important;padding-top:30px;font-size:34px">model ①</p>
     </div>
     <div data-build-in="rise" class="card col grow" style="padding:46px 44px;border-top:6px solid var(--gold)">
       <p class="num">B.</p>
       <p style="margin-top:18px !important;font:500 40px/1.4 var(--sans)">A millionaire who is a good <span class="accent">example</span> to others</p>
-      <p class="muted" style="margin-top:auto !important;padding-top:30px;font-size:26px">model ②</p>
+      <p class="muted" style="margin-top:auto !important;padding-top:30px;font-size:34px">model ②</p>
     </div>
     <div data-build-in="rise" class="card col grow" style="padding:46px 44px;border-top:6px solid var(--gold);background:transparent;border-style:dashed">
       <p class="num">C.</p>
       <p style="margin-top:18px !important;font:500 40px/1.4 var(--sans)">Your idea?</p>
-      <p class="muted" style="margin-top:auto !important;padding-top:30px;font-size:26px">…</p>
+      <p class="muted" style="margin-top:auto !important;padding-top:30px;font-size:34px">…</p>
     </div>
   </div>
   <p data-build-in="fade" style="margin-top:70px !important;align-self:center;font:italic 44px var(--serif)">Keep this question in mind <mark>while you read!</mark></p>
@@ -259,22 +259,22 @@ A: a rich man who is a model. B: a rich man who is a good example. C: ask a stud
 
 <section class="slide">
   <p class="kicker">Summary · Meet the Characters</p>
-  <div class="row grow" style="justify-content:space-between;align-items:center;margin-top:20px;padding:0 10px">
+  <div class="grow" style="display:grid;grid-template-columns:repeat(5,1fr);align-items:start;align-content:center;margin:20px -60px 0">
     <div class="col" style="align-items:center">
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #35594F, #1F3A33)">H.E.</div>
-      <p class="who">Hughie Erskine<small>the main character · $0</small></p>
+      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #35594F, #1F3A33)">Hughie</div>
+      <p class="who">Hughie Erskine<small>the main character<br>$0</small></p>
     </div>
     <div class="col" style="align-items:center">
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #A8474F, #7A2832)">L.M.</div>
+      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #A8474F, #7A2832)">Laura</div>
       <p class="who">Laura Merton<small>the colonel’s daughter</small></p>
     </div>
     <div class="col" style="align-items:center">
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #5B6A72, #2F3B41)">Col.</div>
+      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #5B6A72, #2F3B41)">Colonel</div>
       <p class="who">The Retired Colonel<small>Laura’s father</small></p>
     </div>
     <div class="col" style="align-items:center">
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #C49A52, #8E6A2C)">A.T.</div>
-      <p class="who">Alan Trevor<small>a painter · Hughie’s friend</small></p>
+      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #C49A52, #8E6A2C)">Alan</div>
+      <p class="who">Alan Trevor<small>a painter<br>Hughie’s friend</small></p>
     </div>
     <div class="col" style="align-items:center">
       <div class="cameo" style="background:#F6F0E3"><img src="assets/beggar.png" alt="An old beggar"></div>
@@ -294,12 +294,12 @@ A beggar — an old man who poses for Alan's painting.</aside>
   <p class="kicker">Summary</p>
   <div class="row grow center" style="gap:120px;margin-top:-10px">
     <div class="col" style="align-items:center">
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #35594F, #1F3A33)">H.E.</div>
+      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #35594F, #1F3A33)">Hughie</div>
       <p class="who">Hughie Erskine<small>$0</small></p>
     </div>
     <svg width="200" height="180" viewBox="0 0 100 90" aria-label="heart"><path d="M50 86 C20 64 4 46 4 28 A22 22 0 0 1 50 18 A22 22 0 0 1 96 28 C96 46 80 64 50 86Z" fill="#8C2F39"/></svg>
     <div class="col" style="align-items:center">
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #A8474F, #7A2832)">L.M.</div>
+      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #A8474F, #7A2832)">Laura</div>
       <p class="who">Laura Merton<small>the colonel’s daughter</small></p>
     </div>
   </div>
@@ -314,7 +314,7 @@ A beggar — an old man who poses for Alan's painting.</aside>
   <div class="row grow center" style="gap:150px;margin-top:40px">
     <div class="col" style="align-items:center;position:relative">
       <p class="bubble tr" style="right:150px;top:-130px">Make money first!</p>
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #5B6A72, #2F3B41)">Col.</div>
+      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #5B6A72, #2F3B41)">Colonel</div>
       <p class="who">The Retired Colonel<small>Laura’s father</small></p>
     </div>
     <svg width="220" height="200" viewBox="0 0 110 100" aria-label="no wedding ring">
@@ -324,7 +324,7 @@ A beggar — an old man who poses for Alan's painting.</aside>
     </svg>
     <div class="col" style="align-items:center;position:relative">
       <p class="bubble tl" style="left:150px;top:-130px">…</p>
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #35594F, #1F3A33)">H.E.</div>
+      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #35594F, #1F3A33)">Hughie</div>
       <p class="who">Hughie Erskine<small>$0</small></p>
     </div>
   </div>
@@ -339,11 +339,11 @@ A beggar — an old man who poses for Alan's painting.</aside>
   <div class="row grow" style="align-items:center;justify-content:center;gap:90px;margin-top:40px">
     <div class="col" style="align-items:center;position:relative">
       <p class="bubble tr" style="right:120px;top:-120px">Hi, Alan!</p>
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #35594F, #1F3A33)">H.E.</div>
+      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #35594F, #1F3A33)">Hughie</div>
       <p class="who">Hughie Erskine</p>
     </div>
     <div class="col" style="align-items:center;position:relative">
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #C49A52, #8E6A2C)">A.T.</div>
+      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #C49A52, #8E6A2C)">Alan</div>
       <svg class="abs" style="right:-62px;top:140px" width="120" height="100" viewBox="0 0 120 100" aria-label="palette">
         <path d="M60 6 C100 6 116 30 114 52 C112 70 96 66 88 74 C80 82 92 96 70 96 C30 96 6 76 6 50 C6 24 30 6 60 6Z" fill="#F4EEE2" stroke="#1F2A2E" stroke-width="4"/>
         <circle cx="34" cy="40" r="9" fill="#8C2F39"/><circle cx="58" cy="26" r="9" fill="#B8924A"/><circle cx="84" cy="36" r="9" fill="#2B4C43"/><circle cx="32" cy="68" r="9" fill="#3E6A9A"/><circle cx="62" cy="72" r="8" fill="none" stroke="#1F2A2E" stroke-width="4"/>
@@ -365,7 +365,7 @@ A beggar — an old man who poses for Alan's painting.</aside>
   <p class="kicker">Summary</p>
   <div class="row grow center" style="gap:70px;margin-top:40px">
     <div class="col" style="align-items:center">
-      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #35594F, #1F3A33)">H.E.</div>
+      <div class="cameo" style="background:radial-gradient(circle at 40% 35%, #35594F, #1F3A33)">Hughie</div>
       <p class="who">Hughie Erskine</p>
     </div>
     <svg width="360" height="160" viewBox="0 0 360 160" aria-label="gives a coin">
@@ -496,11 +496,11 @@ Level 2: ask each group in turn — "Group 1, what word did you think of?" Accep
     <circle data-build-in="pop 4" cx="1110" cy="380" r="24" fill="#8C2F39"/>
     <circle data-build-in="pop 5" cx="1575" cy="760" r="16" fill="#B8924A"/>
   </svg>
-  <div data-build-in="rise 1" class="abs col center" style="left:255px;top:790px;width:280px"><p style="font:600 40px var(--serif)">Exposition</p><p class="ko muted" style="font-size:28px">발단</p><p class="muted" style="font-size:24px;margin-top:6px !important">characters &amp; setting</p></div>
-  <div data-build-in="rise 2" class="abs col center" style="left:350px;top:520px;width:300px;align-items:flex-end;text-align:right"><p style="font:600 40px var(--serif)">Rising Action</p><p class="ko muted" style="font-size:28px">전개</p><p class="muted" style="font-size:24px;margin-top:6px !important">the problem grows</p></div>
-  <div data-build-in="rise 3" class="abs col center" style="left:910px;top:580px;width:280px;align-items:flex-start;text-align:left"><p style="font:600 40px var(--serif)">Crisis</p><p class="ko muted" style="font-size:28px">위기</p><p class="muted" style="font-size:24px;margin-top:6px !important">things get worse</p></div>
-  <div data-build-in="rise 4" class="abs col center" style="left:970px;top:200px;width:280px"><p style="font:600 44px var(--serif);color:var(--wine)">Climax</p><p class="ko muted" style="font-size:28px">절정</p><p class="muted" style="font-size:24px;margin-top:6px !important">the turning point</p></div>
-  <div data-build-in="rise 5" class="abs col center" style="left:1435px;top:790px;width:280px"><p style="font:600 40px var(--serif)">Resolution</p><p class="ko muted" style="font-size:28px">결말</p><p class="muted" style="font-size:24px;margin-top:6px !important">how it ends</p></div>
+  <div data-build-in="rise 1" class="abs col center" style="left:225px;top:790px;width:340px"><p style="font:600 40px var(--serif)">Exposition</p><p class="ko muted" style="font-size:36px">발단</p><p class="muted" style="font-size:34px;margin-top:6px !important">characters &amp; setting</p></div>
+  <div data-build-in="rise 2" class="abs col center" style="left:310px;top:520px;width:340px;align-items:flex-end;text-align:right"><p style="font:600 40px var(--serif)">Rising Action</p><p class="ko muted" style="font-size:36px">전개</p><p class="muted" style="font-size:34px;margin-top:6px !important">the problem grows</p></div>
+  <div data-build-in="rise 3" class="abs col center" style="left:930px;top:580px;width:320px;align-items:flex-start;text-align:left"><p style="font:600 40px var(--serif)">Crisis</p><p class="ko muted" style="font-size:36px">위기</p><p class="muted" style="font-size:34px;margin-top:6px !important">things get worse</p></div>
+  <div data-build-in="rise 4" class="abs col center" style="left:940px;top:172px;width:340px"><p style="font:600 44px var(--serif);color:var(--wine)">Climax</p><p class="ko muted" style="font-size:36px">절정</p><p class="muted" style="font-size:34px;margin-top:6px !important">the turning point</p></div>
+  <div data-build-in="rise 5" class="abs col center" style="left:1405px;top:790px;width:340px"><p style="font:600 40px var(--serif)">Resolution</p><p class="ko muted" style="font-size:36px">결말</p><p class="muted" style="font-size:34px;margin-top:6px !important">how it ends</p></div>
   <div data-build-in="pop 6" class="abs row" style="right:160px;top:400px;align-items:center;gap:20px">
     <p style="font:italic 64px var(--serif);color:var(--gold)">→</p>
     <div class="card" style="padding:20px 40px;border:2px solid var(--wine)"><p style="font:italic 600 60px var(--serif);color:var(--wine)">‘Lesson’</p></div>
@@ -519,30 +519,30 @@ Resolution — the problem is solved; the story ends.
   <h2 class="title" style="font-size:70px">Let’s summarize <em>The Model Millionaire</em></h2>
   <div class="col" style="margin-top:40px;gap:20px">
     <div class="card row" style="padding:24px 36px;gap:36px;align-items:center;border-left:8px solid var(--green)">
-      <p style="width:270px;flex-shrink:0;font:600 36px var(--serif)">Exposition<small class="ko muted" style="display:block;font:400 22px 'Noto Sans KR'">발단</small></p>
-      <p style="font-size:31px;line-height:1.4">Hughie is kind but has no money. He loves Laura, but her father won’t let them marry until Hughie has enough money.</p>
+      <p style="width:270px;flex-shrink:0;font:600 38px var(--serif)">Exposition<small class="ko muted" style="display:block;font:400 30px 'Noto Sans KR'">발단</small></p>
+      <p style="font-size:38px;line-height:1.4">Hughie is kind but has no money. He loves Laura, but her father won’t let them marry until Hughie has enough money.</p>
     </div>
     <div class="card row" style="padding:24px 36px;gap:36px;align-items:center;border-left:8px solid var(--green)">
-      <p style="width:270px;flex-shrink:0;font:600 36px var(--serif)">Rising Action<small class="ko muted" style="display:block;font:400 22px 'Noto Sans KR'">전개</small></p>
-      <p style="font-size:31px;line-height:1.4">Hughie drops in at Alan’s studio and meets an old beggar. Feeling sorry for him, Hughie gives him a coin.</p>
+      <p style="width:270px;flex-shrink:0;font:600 38px var(--serif)">Rising Action<small class="ko muted" style="display:block;font:400 30px 'Noto Sans KR'">전개</small></p>
+      <p style="font-size:38px;line-height:1.4">Hughie drops in at Alan’s studio and meets an old beggar. Feeling sorry for him, Hughie gives him a coin.</p>
     </div>
     <div data-build-in="rise 1" class="row" style="gap:20px">
       <div class="col grow" style="padding:22px 32px;border:2px dashed var(--gold);border-radius:6px;min-height:150px">
-        <p style="font:600 36px var(--serif)">Crisis <span class="ko muted" style="font:400 22px 'Noto Sans KR'">위기</span></p>
-        <p style="margin-top:auto !important;font:italic 34px var(--serif);color:var(--wine)">?</p>
+        <p style="font:600 38px var(--serif)">Crisis <span class="ko muted" style="font:400 30px 'Noto Sans KR'">위기</span></p>
+        <p style="margin-top:auto !important;font:italic 38px var(--serif);color:var(--wine)">?</p>
       </div>
       <div class="col grow" style="padding:22px 32px;border:2px dashed var(--gold);border-radius:6px;min-height:150px">
-        <p style="font:600 36px var(--serif)">Climax <span class="ko muted" style="font:400 22px 'Noto Sans KR'">절정</span></p>
-        <p style="margin-top:auto !important;font:italic 34px var(--serif);color:var(--wine)">?</p>
+        <p style="font:600 38px var(--serif)">Climax <span class="ko muted" style="font:400 30px 'Noto Sans KR'">절정</span></p>
+        <p style="margin-top:auto !important;font:italic 38px var(--serif);color:var(--wine)">?</p>
       </div>
       <div class="col grow" style="padding:22px 32px;border:2px dashed var(--gold);border-radius:6px;min-height:150px">
-        <p style="font:600 36px var(--serif)">Resolution <span class="ko muted" style="font:400 22px 'Noto Sans KR'">결말</span></p>
-        <p style="margin-top:auto !important;font:italic 34px var(--serif);color:var(--wine)">?</p>
+        <p style="font:600 38px var(--serif)">Resolution <span class="ko muted" style="font:400 30px 'Noto Sans KR'">결말</span></p>
+        <p style="margin-top:auto !important;font:italic 38px var(--serif);color:var(--wine)">?</p>
       </div>
     </div>
     <div data-build-in="rise 2" class="row" style="padding:22px 36px;gap:36px;align-items:center;border:2px dashed var(--wine);border-radius:6px;background:var(--wine-soft)">
-      <p style="width:270px;flex-shrink:0;font:italic 600 36px var(--serif);color:var(--wine)">→ Lesson</p>
-      <p style="font:italic 34px var(--serif);color:var(--wine)">? &nbsp;Your group’s turn!</p>
+      <p style="width:270px;flex-shrink:0;font:italic 600 38px var(--serif);color:var(--wine)">→ Lesson</p>
+      <p style="font:italic 38px var(--serif);color:var(--wine)">? &nbsp;Your group’s turn!</p>
     </div>
   </div>
   <aside>"Here is an example. I summarized the exposition and the rising action — the part I told you."
@@ -554,7 +554,7 @@ Resolution — the problem is solved; the story ends.
   <p class="kicker">Act. 2 · Summarizing</p>
   <h2 class="title">Your group’s mission</h2>
   <div class="col" style="margin-top:70px;gap:34px">
-    <div data-build-in="glide" class="card row" style="padding:32px 50px;gap:40px;align-items:center"><p class="num">1</p><p class="lead">Summarize the <b>crisis</b>, <b>climax</b>, and <b>resolution</b> of <i>‘The Model Millionaire’</i><span class="muted" style="display:block;font-size:30px;margin-top:6px"> 1~2 sentences each</span></p></div>
+    <div data-build-in="glide" class="card row" style="padding:32px 50px;gap:40px;align-items:center"><p class="num">1</p><p class="lead">Summarize the <b>crisis</b>, <b>climax</b>, and <b>resolution</b> of <i>‘The Model Millionaire’</i><span class="muted" style="display:block;font-size:36px;margin-top:6px"> 1~2 sentences each</span></p></div>
     <div data-build-in="glide" class="card row" style="padding:32px 50px;gap:40px;align-items:center"><p class="num">2</p><p class="lead">Propose the <b>lesson</b> of the story</p></div>
     <div data-build-in="glide" class="card row" style="padding:32px 50px;gap:40px;align-items:center"><p class="num">3</p><p class="lead">Upload it on the <b>Padlet</b></p></div>
   </div>
@@ -565,7 +565,7 @@ Resolution — the problem is solved; the story ends.
 <section class="slide dark" style="justify-content:center">
   <a class="abs col" href="https://padlet.com/wrldyng22/special-lesson-s024xzbdmv3rumolwrrr" target="_blank" rel="noopener" title="Open the Padlet" style="right:200px;top:200px;align-items:center;z-index:5;cursor:pointer;text-decoration:none;padding:20px">
     <div style="background:#fff;padding:30px;border-radius:10px;box-shadow:0 0 0 3px var(--gold-soft)"><img src="assets/padlet-qr.png" alt="Padlet QR code" style="width:470px;height:466px"></div>
-    <p style="margin-top:22px;font:italic 30px var(--serif);color:var(--gold-soft)">scan or click to open the Padlet</p>
+    <p style="margin-top:22px;font:italic 36px var(--serif);color:var(--gold-soft)">scan or click to open the Padlet</p>
   </a>
   <p class="kicker">Group Discussion</p>
   <h2 style="font:600 112px/1.08 var(--serif);margin-top:20px">Summarize<br><em style="color:var(--gold-soft)">&amp;</em> upload!</h2>
@@ -605,9 +605,9 @@ Ask one or two volunteer groups. Give positive feedback; point out how each grou
       <p class="lead" style="margin-top:36px !important">Choose a character and write a short <b>diary</b> as that person.</p>
     </div>
     <div class="gilt" style="width:440px;height:540px;transform:rotate(3deg)"><div class="inner" style="width:100%;height:100%;flex-direction:column;padding:50px 44px;background:repeating-linear-gradient(#FBF8F1 0 58px, #E3D6BC 58px 60px)">
-      <p style="font:italic 34px var(--serif);color:var(--ink-soft)">Dear Diary,</p>
-      <p style="margin-top:30px;font:italic 30px/2 var(--serif);color:var(--ink)">Today, I met a kind young man at Alan’s studio…</p>
-      <p style="margin-top:auto;align-self:flex-end;font:italic 28px var(--serif);color:var(--gold)">— ?</p>
+      <p style="font:italic 40px var(--serif);color:var(--ink-soft)">Dear Diary,</p>
+      <p style="margin-top:30px;font:italic 36px/60px var(--serif);color:var(--ink)">Today, I met a kind young man at Alan’s studio…</p>
+      <p style="margin-top:auto;align-self:flex-end;font:italic 36px var(--serif);color:var(--gold)">— ?</p>
     </div></div>
   </div>
   <aside>"Did you enjoy today's lesson?" (Listen to a few answers.)
@@ -618,7 +618,7 @@ Ask one or two volunteer groups. Give positive feedback; point out how each grou
 <section class="slide dark center" style="justify-content:center">
   <p style="font:400 230px/1 'Pinyon Script', cursive;color:var(--paper)">Thank you!</p>
   <div class="rule" style="margin-top:50px"></div>
-  <p style="margin-top:34px;font:italic 36px var(--serif);color:var(--gold-soft)">The Model Millionaire · Special Lesson 1</p>
+  <p style="margin-top:34px;font:italic 40px var(--serif);color:var(--gold-soft)">The Model Millionaire · Special Lesson 1</p>
   <aside>End class.</aside>
 </section>
 
