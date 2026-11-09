@@ -423,18 +423,6 @@
 <aside>[공통 오류 짚기 · 필요할 때] 관리자 페이지에서 ‘모든 팀 일시정지’를 누르고 이 화면을 보여 줍니다. 지금 많은 팀이 이 문제에서 경보를 받았어요. 가장 많이 고른 답은 이것인데, 왜 틀렸을지 생각해 봅시다. (짚어 줄 말을 읽어 준 뒤) 이제 다시 시작할게요. (※ 화면 내용은 관리자 기록으로 10초마다 바뀜. 종료 5분 전에는 관리자 페이지의 ‘5분 남음’ 공지 사용)</aside>
 </section>
 
-<section id="award" data-transition="fade" style="background:#0E0F13;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:28px">
-<p style="font-size:30px;font-weight:700;color:#6FDCA4;letter-spacing:1px">기록 확인 및 시상</p>
-<h2 style="font-family:'Do Hyeon', sans-serif;font-size:84px;font-weight:400;line-height:1.2;color:#EDE6D8">누가 가장 먼저 빠져나왔나</h2>
-<div style="display:flex;flex-direction:row;gap:28px;width:1664px">
-<div data-build-in="rise 1" style="flex:1.3;height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#1E2A23;border:3px solid #3F9268;border-radius:24px"><p style="font-family:'Do Hyeon', sans-serif;font-size:52px;color:#E0B252">🏆 최단 탈출</p><p id="awBest" style="font-size:56px;font-weight:700">○팀</p><p id="awBestT" style="font-family:'Nanum Gothic Coding', monospace;font-size:50px;color:#9EF0C6">○○:○○</p></div>
-<div data-build-in="rise 2" style="flex:1;height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#1A1C22;border:2px solid #33363D;border-radius:24px"><p style="font-family:'Do Hyeon', sans-serif;font-size:46px;color:#9EF0C6">경보 최소</p><p id="awFew" style="font-size:50px;font-weight:700">○팀</p><p id="awFewN" style="font-size:30px;color:#B8B0A4"></p></div>
-<div data-build-in="rise 3" style="flex:1;height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#1A1C22;border:2px solid #33363D;border-radius:24px"><p style="font-family:'Do Hyeon', sans-serif;font-size:46px;color:#E0B252">보너스 왕</p><p id="awBonus" style="font-size:50px;font-weight:700">○팀</p><p id="awBonusN" style="font-size:30px;color:#B8B0A4"></p></div>
-</div>
-<p id="awNote" style="font-size:28px;color:#8E979F">남은 시간이 많을수록 높은 순위 (경보 −30초 · 힌트 −1분 · 보너스 +2분) (관리자 페이지 기록으로 자동 표시)</p>
-<aside>[기록 확인 및 시상 2분] 오늘 기록을 볼게요. (클릭) 가장 빨리 탈출한 팀은 이 팀이고, 남은 시간은 이렇습니다. 축하합니다! (클릭) 경보를 가장 적게 받은 팀, (클릭) 보너스를 가장 많이 푼 팀에게도 박수 한번 쳐 줄게요. (※ 관리자 페이지가 연결돼 있으면 팀 이름과 기록이 자동으로 채워짐. 연결이 안 되면 ○ 자리를 말로 채움)</aside>
-</section>
-
 <section id="top-1" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:100px 128px;display:flex;flex-direction:column;gap:18px">
 <p style="align-self:flex-start;font-size:26px;font-weight:700;color:#B04568;background:#FFFDF9;border:2px solid #C9A85C;border-radius:999px;padding:6px 26px">오답 TOP <span class="tRank">1</span> · <span class="tRoom">—</span></p>
 <h2 style="font-family:'Do Hyeon', sans-serif;font-size:56px;font-weight:400;line-height:1.2;color:#2E2A3B" class="tHead">가장 많이 틀린 문제</h2>
@@ -444,7 +432,7 @@
 <div data-build-in="rise 2" style="flex:1;min-height:420px;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border:2px solid #E6DDCB;border-left:12px solid #2B6E4D;border-radius:22px;padding:26px"><p style="font-size:28px;color:#2B6E4D;font-weight:700">정답</p><p class="tAns" style="font-size:38px;line-height:1.5">—</p><p class="tDone" style="font-size:31px;line-height:1.55;color:#5E5870">—</p></div>
 </div>
 <p class="tNote" style="font-size:24px;color:#8E8778"></p>
-<aside>[오답 TOP 3 해설 · 4분 안에 세 문제] 오늘 경보가 가장 많이 울린 문제를 같이 볼게요. 이 문장에서 많은 팀이 고른 답은 이것이었어요. 왜 그렇게 골랐을까요? (클릭) 이 답이 틀린 까닭은 여기에 있습니다. (클릭) 정답은 이것이에요. 높임은 안긴문장 안과 밖에서 따로 따지고, 그 사람이 바깥 문장에서 어떤 성분인지까지 확인해야 합니다. (※ 관리자 기록이 있으면 실제로 가장 많이 틀린 문제가 자동으로 들어감. 기록이 없으면 예시 문제가 나옴)</aside>
+<aside>[오답 TOP 3 해설 · 3분 안에 세 문제] 모두 단말기를 내려놓고 앞을 봐 주세요. 오늘 경보가 가장 많이 울린 문제를 같이 볼게요. 이 문장에서 많은 팀이 고른 답은 이것이었어요. 왜 그렇게 골랐을까요? (클릭) 이 답이 틀린 까닭은 여기에 있습니다. (클릭) 정답은 이것이에요. 높임은 안긴문장 안과 밖에서 따로 따지고, 그 사람이 바깥 문장에서 어떤 성분인지까지 확인해야 합니다. (※ 관리자 기록이 있으면 실제로 가장 많이 틀린 문제가 자동으로 들어감. 기록이 없으면 예시 문제가 나옴)</aside>
 </section>
 
 <section id="top-2" data-transition="fade" style="background:#F1ECF6;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:100px 128px;display:flex;flex-direction:column;gap:18px">
@@ -456,7 +444,7 @@
 <div data-build-in="rise 2" style="flex:1;min-height:420px;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border:2px solid #E2D9EE;border-left:12px solid #2B6E4D;border-radius:22px;padding:26px"><p style="font-size:28px;color:#2B6E4D;font-weight:700">정답</p><p class="tAns" style="font-size:38px;line-height:1.5">—</p><p class="tDone" style="font-size:31px;line-height:1.55;color:#5E5870">—</p></div>
 </div>
 <p class="tNote" style="font-size:24px;color:#8E8778"></p>
-<aside>[오답 TOP 3 해설 · 4분 안에 세 문제] 두 번째로 많이 틀린 문제입니다. 많이 고른 답과 그 까닭을 먼저 보고, (클릭) (클릭) 정답과 해설을 확인해요.</aside>
+<aside>[오답 TOP 3 해설 · 3분 안에 세 문제] 두 번째로 많이 틀린 문제입니다. 많이 고른 답과 그 까닭을 먼저 보고, (클릭) (클릭) 정답과 해설을 확인해요.</aside>
 </section>
 
 <section id="top-3" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:100px 128px;display:flex;flex-direction:column;gap:18px">
@@ -468,7 +456,19 @@
 <div data-build-in="rise 2" style="flex:1;min-height:420px;display:flex;flex-direction:column;gap:14px;background:#FFFDF9;border:2px solid #E6DDCB;border-left:12px solid #2B6E4D;border-radius:22px;padding:26px"><p style="font-size:28px;color:#2B6E4D;font-weight:700">정답</p><p class="tAns" style="font-size:38px;line-height:1.5">—</p><p class="tDone" style="font-size:31px;line-height:1.55;color:#5E5870">—</p></div>
 </div>
 <p class="tNote" style="font-size:24px;color:#8E8778"></p>
-<aside>[오답 TOP 3 해설 · 4분 안에 세 문제] 세 번째 문제입니다. 많이 고른 답과 그 까닭을 보고, (클릭) (클릭) 정답과 해설을 확인해요. ‘-시-’가 붙은 서술어의 주어부터 찾고, 안긴문장 안과 밖을 따로 따지는 습관을 기억하세요.</aside>
+<aside>[오답 TOP 3 해설 · 3분 안에 세 문제] 세 번째 문제입니다. 많이 고른 답과 그 까닭을 보고, (클릭) (클릭) 정답과 해설을 확인해요. ‘-시-’가 붙은 서술어의 주어부터 찾고, 안긴문장 안과 밖을 따로 따지는 습관을 기억하세요.</aside>
+</section>
+
+<section id="award" data-transition="fade" style="background:#0E0F13;color:#EDE6D8;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:28px">
+<p style="font-size:30px;font-weight:700;color:#6FDCA4;letter-spacing:1px">기록 확인 및 시상</p>
+<h2 style="font-family:'Do Hyeon', sans-serif;font-size:84px;font-weight:400;line-height:1.2;color:#EDE6D8">누가 가장 먼저 빠져나왔나</h2>
+<div style="display:flex;flex-direction:row;gap:28px;width:1664px">
+<div data-build-in="rise 1" style="flex:1.3;height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#1E2A23;border:3px solid #3F9268;border-radius:24px"><p style="font-family:'Do Hyeon', sans-serif;font-size:52px;color:#E0B252">🏆 최단 탈출</p><p id="awBest" style="font-size:56px;font-weight:700">○팀</p><p id="awBestT" style="font-family:'Nanum Gothic Coding', monospace;font-size:50px;color:#9EF0C6">○○:○○</p></div>
+<div data-build-in="rise 2" style="flex:1;height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#1A1C22;border:2px solid #33363D;border-radius:24px"><p style="font-family:'Do Hyeon', sans-serif;font-size:46px;color:#9EF0C6">경보 최소</p><p id="awFew" style="font-size:50px;font-weight:700">○팀</p><p id="awFewN" style="font-size:30px;color:#B8B0A4"></p></div>
+<div data-build-in="rise 3" style="flex:1;height:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#1A1C22;border:2px solid #33363D;border-radius:24px"><p style="font-family:'Do Hyeon', sans-serif;font-size:46px;color:#E0B252">보너스 왕</p><p id="awBonus" style="font-size:50px;font-weight:700">○팀</p><p id="awBonusN" style="font-size:30px;color:#B8B0A4"></p></div>
+</div>
+<p id="awNote" style="font-size:28px;color:#8E979F">남은 시간이 많을수록 높은 순위 (경보 −30초 · 힌트 −1분 · 보너스 +2분) (관리자 페이지 기록으로 자동 표시)</p>
+<aside>[기록 확인 및 시상 2분] 오늘 기록을 볼게요. (클릭) 가장 빨리 탈출한 팀은 이 팀이고, 남은 시간은 이렇습니다. 축하합니다! (클릭) 경보를 가장 적게 받은 팀, (클릭) 보너스를 가장 많이 푼 팀에게도 박수 한번 쳐 줄게요. (※ 관리자 페이지가 연결돼 있으면 팀 이름과 기록이 자동으로 채워짐. 연결이 안 되면 ○ 자리를 말로 채움)</aside>
 </section>
 
 <section id="wrap" data-transition="fade" style="background:#F7F3EC;color:#2E2A3B;font-family:'Noto Sans KR', sans-serif;padding:128px;display:flex;flex-direction:column;gap:20px">
