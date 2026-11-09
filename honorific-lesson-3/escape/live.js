@@ -120,5 +120,7 @@ async function sendCmd(c, ctl, cmd){
   await setCtl(c, next);
   return next;
 }
-window.ESC_LIVE = {shortUrl, publishCurrent, urlProblem, getJSON, cfg, setCfg, ready, joinUrl, fetchRows, setCtl, getCtl, sendCmd, aggregate, cardList, fmt, label, GAME_URL};
+// 탈출 기록 표시: 남은 시간 또는 초과 시간
+const leftTxt = x => { if (!x) return '—'; if (typeof x.left === 'number') return (x.left >= 0 ? '남은 ' : '초과 ') + fmt(Math.abs(x.left)); return fmt(x.total); };
+window.ESC_LIVE = {leftTxt, shortUrl, publishCurrent, urlProblem, getJSON, cfg, setCfg, ready, joinUrl, fetchRows, setCtl, getCtl, sendCmd, aggregate, cardList, fmt, label, GAME_URL};
 })();

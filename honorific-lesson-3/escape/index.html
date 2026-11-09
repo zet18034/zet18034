@@ -442,7 +442,7 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
         <li><i style="--c:#33363D">🗺</i><span>평면도에서 <b>방을 눌러</b> 들어간다.</span></li>
         <li><i style="--c:var(--red)">＋</i><span>방의 <b>번호</b>를 눌러 물건을 모은다. <b style="color:var(--red)">잠긴 물건</b> 번호 + <b style="color:var(--blue)">도구</b> 번호 = <b>새 카드 번호</b>. 단말기의 <b>번호 입력</b>에 넣는다. 도구는 단서 그림 속에 숨어 있다.</span></li>
         <li><i style="--c:var(--gold)">🔑</i><span>문제를 풀면 번호가 드러난다. 그 번호로 <b style="color:var(--green)">장치 퍼즐</b>을 풀고, 금고 속 서류와 <b>암호 해독표</b>로 열쇠를 얻는다.</span></li>
-        <li><i style="--c:var(--green)">🚨</i><span>틀리면 경보 +30초, 힌트 +1분, 보너스 −30초. 근거는 검토 일지에!</span></li>
+        <li><i style="--c:var(--green)">🚨</i><span>틀리면 경보 남은 시간 −30초, 힌트 −1분, 어려운 보너스를 맞히면 +2분. 근거는 검토 일지에!</span></li>
       </ul>
       <p style="margin-top:14px;font:15px 'Jua'">우리 팀 번호와 팀 이름</p>
       <div class="teams" id="teams"></div>
@@ -465,7 +465,7 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
             <div class="tlabel">● 본부 봉인까지</div>
             <div class="tmr" id="tmr">30:00</div>
             <div class="keys" id="keys"></div>
-            <div class="dline"><span id="dPen">벌점 +00:00</span><span id="dCnt"></span></div>
+            <div class="dline"><span id="dPen">시간 변화 00:00</span><span id="dCnt"></span></div>
             <div class="dbtns">
               <button class="dbtn" id="bNum"><i>🔢</i>번호 입력</button>
               <button class="dbtn" id="bMap"><i>🗺</i>평면도</button>
@@ -485,14 +485,14 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
       <h1>탈출 성공</h1>
       <p style="font:18px 'Jua';color:#C9D2CC;margin-top:8px" id="doneLine"></p>
       <div class="stars" id="stars"></div>
-      <div class="record"><dl id="recordDl"></dl><div class="total"><span>최종 기록</span><b id="recordTotal"></b></div></div>
+      <div class="record"><dl id="recordDl"></dl><div class="total"><span id="recordLabel">남은 시간</span><b id="recordTotal"></b></div></div>
       <p style="margin-top:14px;font:15px 'Jua';color:#8E979F">이 화면을 선생님께 보여 주세요.</p>
     </div>
   </section>
 </main>
 
 <div id="modal" hidden><div class="flip" id="flip"><div class="in"><div class="face back"><b id="backNo">00</b></div><div class="face front" id="front"></div></div></div></div>
-<div id="alarm" hidden><div class="a"><h3>🚨 경보!</h3><p id="alarmTxt"></p><div class="pen">+30초</div><button class="btn red" id="alarmOk">다시 생각해 보기</button></div></div>
+<div id="alarm" hidden><div class="a"><h3>🚨 경보!</h3><p id="alarmTxt"></p><div class="pen">남은 시간 −30초</div><button class="btn red" id="alarmOk">다시 생각해 보기</button></div></div>
 <div id="keyget" hidden><div class="k" id="keyBody"></div></div>
 <div id="pauseCov" hidden><div><h3>일시정지</h3><p id="pauseTxt">시간이 멈췄다. 선생님 설명을 들어 보자.</p><button class="btn sm" id="resume">계속하기</button></div></div>
 <div id="toast"></div>
@@ -513,7 +513,7 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 <script>
 (() => {
 const LIMIT_MIN = Math.max(5, Math.min(90, parseInt(new URLSearchParams(location.search).get('min')) || 30));
-const HINT_PEN = 60, WRONG_PEN = 30, BONUS = 30;
+const HINT_PEN = 60, WRONG_PEN = 30, BONUS = 120;   // 남은 시간에서 경보 −30초, 힌트 −1분, 보너스 +2분
 function h(s){let x=0x811c9dc5;for(const ch of s){x^=ch.codePointAt(0);x=Math.imul(x,0x01000193)>>>0;}return x.toString(16).padStart(8,'0');}
 const PIN = 'e6d166b9';
 const $ = s => document.querySelector(s);
@@ -646,7 +646,7 @@ const QP = new URLSearchParams(location.search);
 const API = QP.get('api') || '', SES = QP.get('s') || '';
 const LIVE = !!(API && SES);
 const LKEY = 'escape-local-events', LCTL = 'escape-local-ctl';
-function summary(){ return {room:S.view, keys:S.keys.length, wrong:S.wrong, hints:S.hints, bonus:S.bonus, solved:Object.keys(S.solved).length, el:Math.round(elapsed()), end:!!S.endAt, total:S.endAt?Math.round(Math.max(0, elapsed()+penalty())):null}; }
+function summary(){ return {room:S.view, keys:S.keys.length, wrong:S.wrong, hints:S.hints, bonus:S.bonus, solved:Object.keys(S.solved).length, el:Math.round(elapsed()), end:!!S.endAt, total:S.endAt?Math.round(elapsed()+penalty()):null, left:Math.round(LIMIT_MIN*60-elapsed()-penalty())}; }
 function send(ty, r, c, o){
   if (!LIVE || !S.team) return;
   S.outbox.push({s:SES, t:S.team, n:S.tname, ty, r:r||'', c:c||'', o:o||'', e:Math.round(elapsed()), x:summary(), at:Date.now()});
@@ -748,10 +748,11 @@ function renderDevice(){
 }
 function tick(){
   if (!S.startAt || S.endAt) return;
-  const e = elapsed(), left = LIMIT_MIN*60 - e, t = $('#tmr');
+  const e = elapsed(), left = LIMIT_MIN*60 - e - penalty(), t = $('#tmr');
+  document.querySelector('.tlabel').textContent = left >= 0 ? '● 본부 봉인까지' : '● 봉인 후 초과 시간';
   t.textContent = left >= 0 ? fmt(left) : '+' + fmt(-left);
   t.classList.toggle('pz', !!S.pausedAt); t.classList.toggle('low', left < 300 && !S.pausedAt);
-  $('#dPen').textContent = '벌점 ' + (penalty() >= 0 ? '+' : '') + fmt(penalty());
+  $('#dPen').textContent = '시간 변화 ' + (penalty() > 0 ? '−' : penalty() < 0 ? '+' : '') + fmt(Math.abs(penalty()));
   $('#dCnt').textContent = `경보 ${S.wrong} · 보너스 ${S.bonus}`;
   if (left < 300) tenseHum();
   if (left < 300 && left > -600 && !S.pausedAt && Date.now() - beatT > 1100) { beatT = Date.now(); sfx.beat(); }
@@ -883,7 +884,7 @@ function iconOf(cd){ return typeof cd.ic === 'function' ? cd.ic() : ICON[cd.ic](
 function cardTile(R, n){
   const cd = R.cards[n], k = sk(R.id, n), sv = S.solved[k];
   const ready = cd.dev && !sv && devReady(R);
-  const status = cd.locked ? '도구와 결합' : cd.tool ? '잠긴 물건과 결합' : cd.dev ? (sv ? '열림!' : devReady(R) ? '퍼즐 풀기' : '전원 꺼짐') : cd.info ? '읽어 보기' : sv ? '해결' : cd.bonus ? '선택 · −30초' : '풀어 보기';
+  const status = cd.locked ? '도구와 결합' : cd.tool ? '잠긴 물건과 결합' : cd.dev ? (sv ? '열림!' : devReady(R) ? '퍼즐 풀기' : '전원 꺼짐') : cd.info ? '읽어 보기' : sv ? '해결' : cd.bonus ? '선택 · +2분' : '풀어 보기';
   return `<button class="card ${cd.c}${S.fresh.includes(k)?' new':''}${ready?' ready':''}" data-n="${n}"><div class="hd"><span class="no">${n}</span><span class="ty">${cd.ty}</span></div><div class="ic">${iconOf(cd)}</div><div class="ft">${cd.title}<br><span style="font-size:12px;color:#6A6370">${status}</span></div>${sv && cd.digit ? `<span class="digit">${cd.digit}</span>` : ''}${sv && cd.opts ? '<span class="stamp">해결</span>' : ''}${cd.bonus && !sv ? '<span class="bribbon">BONUS</span>' : ''}</button>`;
 }
 
@@ -909,13 +910,13 @@ function cardBig(R, n){
   if (cd.info) body += cd.info;
   if (sec && !S.got[R.id].includes(sec.n)) body += `<p class="secretnote">🔍 그림을 자세히 보자. 번호가 숨어 있다면 단말기의 <b>번호 입력</b>에 넣는다.</p>`;
   if (cd.opts) {
-    if (cd.bonus) body += `<div class="bonusnote">⭐ 보너스 카드: 풀지 않아도 탈출할 수 있다. 맞히면 기록 −30초.</div>`;
+    if (cd.bonus) body += `<div class="bonusnote">⭐ 보너스 카드: 어렵지만 맞히면 남은 시간 +2분. 풀지 않아도 탈출할 수 있다.</div>`;
     if (cd.sent) body += `<div class="txt"><div class="sent">${B(cd.sent)}</div></div>`;
     if (cd.head) body += `<div class="txt"><div class="sent" style="font-size:16.5px">${cd.head}</div></div>`;
     body += `<p class="ask">${cd.ask || '이 문장에 대한 설명으로 <em>적절한</em> 것은?'}</p>`;
     if (sv) body += `<div class="solvedbox">${cd.digit?`<span class="dg">${cd.digit}</span><b style="display:block;margin-bottom:4px;color:#6E4E12">드러난 ${cd.dl||'번호'}: ${cd.digit}</b>`:''}${cd.done}</div>${explain(cd)}`;
     else body += `<div class="opts">${cd.opts.map(([id,t])=>`<button class="opt" data-id="${id}"><i>${'①②③④⑤'[+id-1]}</i><span>${B(t)}</span></button>`).join('')}</div>
-      <div class="brow"><button class="btn" id="chk">확인</button>${S.hintUsed[k]?'':'<button class="btn sm ghost" id="hb">💡 힌트 +1분</button>'}</div>${S.hintUsed[k]?`<div class="hintx"><b>힌트</b>${cd.hint}</div>`:''}<p class="msg" id="msg"></p>`;
+      <div class="brow"><button class="btn" id="chk">확인</button>${S.hintUsed[k]?'':'<button class="btn sm ghost" id="hb">💡 힌트 −1분</button>'}</div>${S.hintUsed[k]?`<div class="hintx"><b>힌트</b>${cd.hint}</div>`:''}<p class="msg" id="msg"></p>`;
   }
   if (cd.dev) {
     if (sv) body += `<div class="solvedbox"><span class="dg">🔓</span>장치가 열렸다! 안에서 <b>${R.vault}번 서류</b>가 나왔다. 서류를 풀면 열쇠를 꺼낼 수 있다.</div>`;
@@ -941,7 +942,7 @@ function bindBig(){
       if (sel === cd.ans) return solveCard();
       alarm(cd.traps[sel] || '근거를 다시 따져 보자.', n, sel, R.id);
     };
-    const hb = $('#hb'); if (hb) hb.onclick = () => { if (hb.dataset.arm !== '1') { hb.dataset.arm = '1'; hb.textContent = '정말? +1분'; setTimeout(()=>{ if (hb.isConnected) { hb.dataset.arm=''; hb.textContent='💡 힌트 +1분'; } }, 3000); return; }
+    const hb = $('#hb'); if (hb) hb.onclick = () => { if (hb.dataset.arm !== '1') { hb.dataset.arm = '1'; hb.textContent = '정말? −1분'; setTimeout(()=>{ if (hb.isConnected) { hb.dataset.arm=''; hb.textContent='💡 힌트 −1분'; } }, 3000); return; }
       S.hintUsed[k] = 1; S.hints++; save(); send('hint', R.id, n); sfx.card(); $('#front').innerHTML = cardBig(R, n); bindBig(); tick(); };
   }
   if (cd.dev && !S.solved[k] && devReady(R)) bindMech(R, n, cd);
@@ -1052,7 +1053,7 @@ $('#alarmOk').onclick = () => { $('#alarm').hidden = true; sfx.tap(); };
 function solveCard(skipped){
   const {R, n, cd, k} = cur;
   S.solved[k] = true; if (cd.bonus && !skipped) S.bonus++;
-  S.log.push({n, t:(skipped?'(교사 통과) ':'') + cd.title + (cd.digit ? ` → ${cd.dl||'숫자'} ${cd.digit}` : cd.bonus ? ' → 보너스 −30초' : ' 해결'), c: cd.bonus ? '#B8862E' : '#2B6E4D'});
+  S.log.push({n, t:(skipped?'(교사 통과) ':'') + cd.title + (cd.digit ? ` → ${cd.dl||'숫자'} ${cd.digit}` : cd.bonus ? ' → 보너스 +2분' : ' 해결'), c: cd.bonus ? '#B8862E' : '#2B6E4D'});
   save(); send(cd.bonus ? 'bonus' : 'solve', R.id, n, skipped ? 'skip' : ''); sfx.good(); burst(30);
   $('#front').innerHTML = cardBig(R, n); bindBig(); renderDevice();
 }
@@ -1142,12 +1143,13 @@ function escape(skipped){
 }
 function renderDone(fresh){
   show('done');
-  const e = elapsed(), p = penalty(), total = Math.max(0, e + p), ratio = total / (LIMIT_MIN*60);
+  const e = elapsed(), p = penalty(), total = e + p, left = LIMIT_MIN*60 - total, ratio = total / (LIMIT_MIN*60);
   const stars = ratio <= .55 ? 5 : ratio <= .7 ? 4 : ratio <= .85 ? 3 : ratio <= 1 ? 2 : 1;
   $('#stars').innerHTML = '★'.repeat(stars) + `<i>${'★'.repeat(5-stars)}</i>`;
   $('#doneLine').textContent = `${S.tname || ''}(${S.team}팀)이 봉인 직전, 비상구 비밀번호 ${FINAL_CODE}로 출제 본부를 빠져나왔다.`;
-  $('#recordDl').innerHTML = `<dt>팀</dt><dd>${teamLabel()}</dd><dt>걸린 시간</dt><dd>${fmt(e)}</dd><dt>경보</dt><dd>${S.wrong}번 (+${fmt(S.wrong*WRONG_PEN)})</dd><dt>힌트</dt><dd>${S.hints}번 (+${fmt(S.hints*HINT_PEN)})</dd><dt>보너스</dt><dd>${S.bonus}장 (−${fmt(S.bonus*BONUS)})</dd>`;
-  $('#recordTotal').textContent = fmt(total);
+  $('#recordDl').innerHTML = `<dt>팀</dt><dd>${teamLabel()}</dd><dt>걸린 시간</dt><dd>${fmt(e)}</dd><dt>경보</dt><dd>${S.wrong}번 (−${fmt(S.wrong*WRONG_PEN)})</dd><dt>힌트</dt><dd>${S.hints}번 (−${fmt(S.hints*HINT_PEN)})</dd><dt>보너스</dt><dd>${S.bonus}장 (+${fmt(S.bonus*BONUS)})</dd>`;
+  $('#recordLabel').textContent = left >= 0 ? '남은 시간' : '초과 시간';
+  $('#recordTotal').textContent = fmt(Math.abs(left));
   if (fresh) { burst(180); setTimeout(()=>burst(140), 600); }
 }
 
