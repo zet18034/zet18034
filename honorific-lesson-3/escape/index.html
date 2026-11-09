@@ -401,6 +401,7 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
   <pattern id="carpet" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="16" fill="#4F5B6C"/><circle cx="8" cy="8" r="1.4" fill="#5C687A"/></pattern>
   <pattern id="floorplan" width="30" height="30" patternUnits="userSpaceOnUse"><rect width="30" height="30" fill="#101217"/><path d="M30 0H0V30" fill="none" stroke="#181B22" stroke-width="1"/></pattern>
   <linearGradient id="night" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05060A"/><stop offset="1" stop-color="#151922"/></linearGradient>
+  <radialGradient id="torchW" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF3C8" stop-opacity=".3"/><stop offset="1" stop-color="#FFF3C8" stop-opacity="0"/></radialGradient>
   <radialGradient id="redglow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FF3A2A" stop-opacity=".55"/><stop offset="1" stop-color="#FF3A2A" stop-opacity="0"/></radialGradient>
 </defs></svg>
 
@@ -440,7 +441,7 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
       <p class="memo">23:52. 복도 불이 또 나갔다. 출제실 문은 밖에서 잠겨 있고, 경비실은 전화를 받지 않는다.<br>방금 누가 계단을 내려갔다. 나는 아니다.</p>
       <ul>
         <li><i style="--c:#33363D">🗺</i><span>평면도에서 <b>방을 눌러</b> 들어간다.</span></li>
-        <li><i style="--c:var(--red)">＋</i><span>방의 <b>번호</b>를 눌러 물건을 모은다. <b style="color:var(--red)">잠긴 물건</b> 번호 + <b style="color:var(--blue)">도구</b> 번호 = <b>새 카드 번호</b>. 단말기의 <b>번호 입력</b>에 넣는다. 도구는 단서 그림 속에 숨어 있다.</span></li>
+        <li><i style="--c:var(--red)">＋</i><span>방의 <b>번호</b>를 눌러 물건을 모은다. <b style="color:var(--red)">잠긴 물건</b> 번호 + <b style="color:var(--blue)">도구</b> 번호 = <b>새 카드 번호</b>. 단말기의 <b>번호 입력</b>에 넣는다. 도구는 방 곳곳이나 단서 그림 속에 숨어 있다.</span></li>
         <li><i style="--c:var(--gold)">🔑</i><span>문제를 풀면 번호가 드러난다. 그 번호로 <b style="color:var(--green)">장치 퍼즐</b>을 풀고, 금고 속 서류와 <b>암호 해독표</b>로 열쇠를 얻는다.</span></li>
         <li><i style="--c:var(--green)">🚨</i><span>틀리면 경보 남은 시간 −30초, 힌트 −1분, 어려운 보너스를 맞히면 +2분. 근거는 검토 일지에!</span></li>
       </ul>
@@ -760,7 +761,7 @@ function tick(){
 setInterval(tick, 250);
 document.addEventListener('pointerdown', () => { if (S.startAt && !S.endAt) startHum(); }, {passive:true});
 
-$('#bNum').onclick = () => { if (typeof S.view !== 'number') { toast('방에 들어가서 쓰자.'); return sfx.bad(); } openPad(ROOMS[S.view]); };
+$('#bNum').onclick = () => openPad(typeof S.view === 'number' ? ROOMS[S.view] : null);
 $('#bMap').onclick = () => { if (S.view === 'map') return; sfx.tap(); S.view = 'map'; save(); render(); window.scrollTo({top:0,behavior:'smooth'}); };
 $('#bSnd').onclick = () => { S.mute = !S.mute; save(); if (S.mute) stopHum(); else startHum(); renderDevice(); sfx.tap(); };
 function showPause(){ const t = S.pausedBy === 'teacher'; $('#pauseTxt').textContent = t ? '선생님이 모든 팀의 시간을 멈췄다. 화면을 보자.' : '시간이 멈췄다. 선생님 설명을 들어 보자.'; $('#resume').hidden = t; $('#pauseCov').hidden = false; }
@@ -805,18 +806,29 @@ function renderMap(){
       <rect x="914" y="200" width="72" height="26" rx="4" fill="#1F7A50" class="${all?'':'elight'}"/><text x="950" y="219" font-family="Jua" font-size="16" text-anchor="middle" fill="#CFFFE6">비상구</text>
       <text x="950" y="432" font-family="Jua" font-size="15" text-anchor="middle" fill="${all?'#9EF0C6':'#5A606B'}">${all?'열쇠 4/4 ▶':'열쇠 '+S.keys.length+'/4'}</text>
     </g>
-    <g id="pawn" style="transform:translate(${S.pawn[0]}px,${S.pawn[1]}px)"><circle r="46" fill="rgba(255,240,200,.10)"/><g filter="url(#sh)">${pawnShape()}</g></g>
+    ${mapEggs()}<circle id="mapTorch" r="130" cx="-200" cy="-200" fill="url(#torchW)" pointer-events="none"/><g id="pawn" style="transform:translate(${S.pawn[0]}px,${S.pawn[1]}px)"><circle r="46" fill="rgba(255,240,200,.10)"/><g filter="url(#sh)">${pawnShape()}</g></g>
   </svg>`;
   const target = all ? 'gate' : Math.min(S.open - 1, ROOMS.findIndex(r => !S.keys.includes(r.id)));
   const label = all ? '열쇠 네 개를 모았다. <span class="g">비상구</span>로 가자.' : `<span class="g">${ROOMS[target].name}</span>에 들어가자.`;
   $('#stage').innerHTML = `<div class="mapcol"><button class="next" id="nextBtn"><b>다음 할 일</b><span>${label}</span><span class="go" style="margin-left:auto">눌러서 이동 ▶</span></button><div class="board">${svg}</div></div>`;
   $('#nextBtn').onclick = () => { const g = $('#stage').querySelector(`.roomtile[data-i="${target}"]`); if (g) g.onclick(); };
+  bindMapTorch();
   $('#stage').querySelectorAll('.roomtile').forEach(g => g.onclick = () => {
     const k = g.dataset.i;
     if (k === 'gate') { if (!all) { toast('🔒 열쇠 네 개가 있어야 비상구가 열린다.'); return sfx.bad(); } return walk(GATE, () => openGate()); }
     const i = +k; if (i >= S.open) { toast('🔒 앞 방의 열쇠가 필요하다.'); return sfx.bad(); }
     const d = MAP[i].door; walk([d[0], i < 2 ? d[1]+30 : d[1]-30], () => { S.view = i; save(); sfx.door(); send('room', ROOMS[i].id); render(); window.scrollTo({top:0,behavior:'smooth'}); });
   });
+}
+function mapEggs(){
+  return ROOMS.map((R, i) => { const e = R.hiddenB; if (!e || e.at !== 'map' || S.got[R.id].includes(e.n)) return ''; if (e.win && e.win.room < S.open) return '';
+    return (e.win ? `<rect x="${e.win.x}" y="${e.win.y}" width="${e.win.w}" height="${e.win.h}" rx="3" fill="#0E1014" stroke="#2A2D35" stroke-width="2" pointer-events="none"/>` : '') + `<text class="egg" data-x="${e.x}" data-y="${e.y}" x="${e.x}" y="${e.y}" transform="rotate(${e.r} ${e.x} ${e.y})" text-anchor="middle" font-family="Gowun Batang" font-weight="700" font-size="17" fill="#F2E7BE" opacity=".05" pointer-events="none">${e.n}</text>`; }).join('');
+}
+function bindMapTorch(){
+  const svg = document.querySelector('.board > svg'); if (!svg) return;
+  const glow = svg.querySelector('#mapTorch'), eggs = [...svg.querySelectorAll('.egg')];
+  const mv = e => { const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const m = svg.getScreenCTM(); if (!m) return; const p = pt.matrixTransform(m.inverse()); glow.setAttribute('cx', p.x); glow.setAttribute('cy', p.y); eggs.forEach(t => { const d = Math.hypot(p.x - +t.dataset.x, p.y - +t.dataset.y); t.setAttribute('opacity', d < 110 ? (.05 + (1 - d/110) * .9).toFixed(2) : '.05'); }); };
+  svg.addEventListener('pointermove', mv); svg.addEventListener('pointerdown', mv);
 }
 function pawnShape(){ return `<path d="M0 -46 a13 13 0 0 1 13 13 c0 6 -3 9 -6 11 l20 7 c6 2 8 8 4 12 l-10 6 6 22 h-54 l6 -22 -10 -6 c-4 -4 -2 -10 4 -12 l20 -7 c-3 -2 -6 -5 -6 -11 a13 13 0 0 1 13 -13z" fill="#E0B252" stroke="#05060A" stroke-width="3.5" stroke-linejoin="round"/>`; }
 function walk(to, then){
@@ -830,6 +842,16 @@ function walk(to, then){
 
 // ---------- 방 ----------
 let torch = {x:200, y:240};
+// 방 그림 속 도구: 손전등 아래에서만 보인다
+const TOOL_ART = {
+  opener:'<rect x="-24" y="-3.5" width="20" height="7" rx="2" fill="#6E5240" stroke="#1F1B22" stroke-width="1"/><path d="M-4 -3.5H22L15 3.5H-4Z" fill="#C9CFD6" stroke="#1F1B22" stroke-width="1"/>',
+  smallkey:'<circle cx="-10" r="7" fill="#E0B252" stroke="#1F1B22" stroke-width="1"/><circle cx="-10" r="2.4" fill="#C9C4B8"/><path d="M-3 -2H16V2H13V6H10V2H6V5H3V2H-3Z" fill="#E0B252" stroke="#1F1B22" stroke-width=".8"/>',
+  lamp:'<rect x="-20" y="-5" width="26" height="10" rx="3" fill="#3E424B" stroke="#1F1B22" stroke-width="1"/><path d="M6 -7H16V7H6Z" fill="#5B626E" stroke="#1F1B22" stroke-width="1"/><path d="M16 -5L34 -12V12L16 5Z" fill="#8A5BD6" opacity=".35"/>'
+};
+function toolArt(R){
+  const s = R.secret; if (!s || !s.art || S.got[R.id].includes(s.n)) return '';
+  return `<g transform="translate(${s.x} ${s.y}) rotate(${s.r})" pointer-events="none">${TOOL_ART[s.art]}</g><text x="${s.nx}" y="${s.ny}" text-anchor="middle" font-family="Gowun Batang" font-weight="700" font-size="19" fill="${s.c || '#F2E7BE'}" pointer-events="none">${s.n}</text>`;
+}
 function renderRoom(i){
   const R = ROOMS[i];
   $('#hTitle').textContent = `ROOM ${i+1} · ${R.name}`;
@@ -840,7 +862,7 @@ function renderRoom(i){
   const spots = R.spots.map(s => { const cd = R.cards[s.n]; return `<g class="spot t-${cd.c}${got.includes(s.n)?' got':''}" data-n="${s.n}"><circle class="pulse" cx="${s.x}" cy="${s.y}" r="22"/><circle class="c" cx="${s.x}" cy="${s.y}" r="22"/><text x="${s.x}" y="${s.y+1}">${s.n}</text></g>`; }).join('');
   const cards = got.filter(n => !isUsed(R, n)).map(n => cardTile(R, n)).join('');
   $('#stage').innerHTML = `<div class="tablewrap">
-    <div class="roomcard"><div class="plaque">${R.name}</div><div class="art"><svg viewBox="0 0 400 480" id="roomSvg"><defs><radialGradient id="torchG" gradientUnits="userSpaceOnUse" cx="${torch.x}" cy="${torch.y}" r="170"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".45" stop-color="#000" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity=".9"/></radialGradient></defs>${ART[R.art]}${R.hiddenB ? `<text x="${R.hiddenB.x}" y="${R.hiddenB.y}" transform="rotate(${R.hiddenB.r} ${R.hiddenB.x} ${R.hiddenB.y})" text-anchor="middle" font-family="Gowun Batang" font-weight="700" font-size="19" fill="${R.hiddenB.c || '#F2E7BE'}" opacity=".72" pointer-events="none">${R.hiddenB.n}</text>` : ''}<rect id="torchLayer" width="400" height="480" fill="url(#torchG)"/><rect width="400" height="480" fill="rgba(160,20,10,.10)" class="elight" pointer-events="none"/>${spots}</svg></div>
+    <div class="roomcard"><div class="plaque">${R.name}</div><div class="art"><svg viewBox="0 0 400 480" id="roomSvg"><defs><radialGradient id="torchG" gradientUnits="userSpaceOnUse" cx="${torch.x}" cy="${torch.y}" r="170"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".45" stop-color="#000" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity=".9"/></radialGradient></defs>${ART[R.art]}${toolArt(R)}<rect id="torchLayer" width="400" height="480" fill="url(#torchG)"/><rect width="400" height="480" fill="rgba(160,20,10,.10)" class="elight" pointer-events="none"/>${spots}</svg></div>
       <div class="legend"><span class="lg t-red">잠긴 물건·문제</span><span class="lg t-blue">도구·단서</span><span class="lg t-green">장치 퍼즐</span><span class="lg t-gold">보너스</span></div><p class="cap">${R.cap}<span class="pen">“${R.pen}”</span></p></div>
     <div class="deskcol">${nextStep(R)}<div class="spread">${cards || `<div class="hint0">🔦 손전등으로 왼쪽 방을 비추고 번호 동그라미를 눌러 보자. 그 번호의 카드가 이 책상 위에 펼쳐진다.</div>`}</div></div>
   </div>`;
@@ -871,7 +893,7 @@ function nextStep(R){
   const bar = `<span class="bar">${asks.map(pip).join('')}<i class="${S.solved[sk(R.id,devN)]?'ok':''}" style="border-radius:50%"></i>${pip(vN)}${bonus.map(n => `<i class="bo${S.solved[sk(R.id,n)]?' ok':''}"></i>`).join('')}</span>`;
   let t, go = '바로 가기';
   if (left.length) { t = `아직 살펴보지 않은 번호가 있다: ${left.join(', ')}번`; go = `${left[0]}번 보기`; nextAct = () => openCard(R, left[0], true); }
-  else if (sec && !got.includes(sec.n)) { t = `<span class="g">${sec.from}번 단서의 그림</span>을 잘 살펴보자. 숨은 번호를 <em>번호 입력</em>에 넣으면 도구가 나온다.`; go = '단서 보기'; nextAct = () => openCard(R, sec.from, false); }
+  else if (sec && !got.includes(sec.n)) { if (sec.from) { t = `<span class="g">${sec.from}번 단서의 그림</span>을 잘 살펴보자. 숨은 번호를 <em>번호 입력</em>에 넣으면 도구가 나온다.`; go = '단서 보기'; nextAct = () => openCard(R, sec.from, false); } else { t = `도구가 필요하다. <span class="g">${sec.where}</span>를 손전등으로 비춰 보고, 찾은 번호를 <em>번호 입력</em>에 넣자.`; go = '번호 입력'; nextAct = () => openPad(R); } }
   else if (unsolved.length) { t = `아직 풀지 않은 빨간 카드: <em>${unsolved.join(', ')}번</em>`; go = `${unsolved[0]}번 풀기`; nextAct = () => openCard(R, +unsolved[0], false); }
   else if (pending.length) { t = `<em>잠긴 물건</em> 번호와 <span class="g">도구</span> 번호를 더해 번호 입력에 넣자. (남은 잠긴 물건 ${pending.length}개)`; go = '번호 입력'; nextAct = () => openPad(R); }
   else if (!S.solved[sk(R.id, devN)]) { t = `빨간 카드를 모두 풀었다! <span class="g">${devN}번 장치</span>의 퍼즐을 풀자.`; go = '장치 열기'; nextAct = () => openCard(R, +devN, false); }
@@ -1013,14 +1035,14 @@ function bindMech(R, n, cd){
 }
 // ---------- 번호 입력: 그림 속 숨은 번호, 또는 잠긴 물건 + 도구 ----------
 function openPad(R){
-  const got = S.got[R.id];
+  const got = R ? S.got[R.id] : [];
   cur = {R, n:'NUM', cd:null, k:'num'};
   $('#backNo').textContent = '＋';
-  const parts = got.filter(x => (R.cards[x].locked || R.cards[x].tool) && !isUsed(R, x));
+  const parts = R ? got.filter(x => (R.cards[x].locked || R.cards[x].tool) && !isUsed(R, x)) : [];
   const chip = x => `<span style="--c:${R.cards[x].tool ? 'var(--blue)' : 'var(--red)'}"><b>${x}</b>${R.cards[x].title}</span>`;
   $('#front').innerHTML = `<div class="big blue"><div class="hd"><span class="no">＋</span><div><small>본부 단말기</small><h3>번호 입력</h3></div><button class="x" id="xb" aria-label="닫기">✕</button></div><div class="bd">
-    <p class="ask"><em>잠긴 물건</em> 번호 + <em>도구</em> 번호의 합, 또는 그림에서 찾은 <em>숨은 번호</em>를 넣는다.</p>
-    <div class="parts">${parts.length ? parts.map(chip).join('') : '<span class="none">책상 위에 결합할 물건이 아직 없다</span>'}</div>
+    <p class="ask">${R ? '<em>잠긴 물건</em> 번호 + <em>도구</em> 번호의 합, 또는 어딘가에서 찾은 <em>숨은 번호</em>를 넣는다.' : '어딘가에서 찾은 <em>숨은 번호</em>를 넣는다.'}</p>
+    ${R ? `<div class="parts">${parts.length ? parts.map(chip).join('') : '<span class="none">책상 위에 결합할 물건이 아직 없다</span>'}</div>` : ''}
     <div class="slots">${[0,1].map(()=>'<span></span>').join('')}</div>
     <div class="pad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button data-k="${d}">${d}</button>`).join('')}<button data-k="del">⌫</button><button data-k="0">0</button><button class="go" data-k="go">확인</button></div><p class="msg" id="msg"></p></div></div>`;
   $('#modal').hidden = false; $('#flip').classList.add('show'); sfx.card();
@@ -1028,12 +1050,13 @@ function openPad(R){
   let v = '';
   const paint = () => document.querySelectorAll('.slots span').forEach((s, i) => { s.textContent = v[i] || ''; s.classList.toggle('cur', i === v.length); });
   paint();
-  const reveal = (to, line) => { S.log.push({n:to, t:line, c:'#2C5A86'}); S.fresh.push(sk(R.id, to)); save(); sfx.unlock(); burst(26); window.onkeydown = null; renderRoom(S.view); openCard(R, to, true); };
+  const reveal = (to, line, Rm) => { Rm = Rm || R; S.log.push({n:to, t:line, c:'#2C5A86'}); S.fresh.push(sk(Rm.id, to)); save(); sfx.unlock(); burst(26); window.onkeydown = null; if (typeof S.view === 'number') renderRoom(S.view); openCard(Rm, to, true); };
   const submit = () => {
-    const m = $('#msg'), x = +v, sec = R.secret, c = (R.combos || []).find(q => q.to === x);
+    const m = $('#msg'), x = +v, sec = R && R.secret, c = R ? (R.combos || []).find(q => q.to === x) : null, eggR = ROOMS.find(r => r.hiddenB && r.hiddenB.n === x);
     if (!v) { m.className = 'msg bad'; m.textContent = '번호를 넣어 주세요.'; return; }
-    if (sec && x === sec.n && !got.includes(x) && got.includes(sec.from)) return reveal(x, `숨은 번호 발견 → ${R.cards[x].title}`);
-    if (R.hiddenB && x === R.hiddenB.n && !got.includes(x)) { send('open', R.id, x); return reveal(x, `숨은 보너스 발견 → ${R.cards[x].title}`); }
+    if (sec && x === sec.n && !got.includes(x) && (!sec.from || got.includes(sec.from))) return reveal(x, `숨은 번호 발견 → ${R.cards[x].title}`);
+    if (eggR) { if (S.got[eggR.id].includes(x)) { if (!S.solved[sk(eggR.id, x)]) { window.onkeydown = null; return openCard(eggR, x, false); } m.className = 'msg bad'; m.textContent = '이미 풀었다.'; v = ''; return paint(); } send('open', eggR.id, x); return reveal(x, `숨은 보너스 발견 → ${eggR.cards[x].title}`, eggR); }
+    if (!R) { m.className = 'msg bad'; m.textContent = '아무 일도 일어나지 않는다. 방 안에서 넣어 보자.'; v = ''; return paint(); }
     if (c && !got.includes(x)) {
       if (got.includes(c.a) && got.includes(c.b)) return reveal(x, `${R.cards[c.a].title} + ${R.cards[c.b].title} → 결합 성공`);
       m.className = 'msg bad'; m.textContent = '아직 찾지 못한 물건이 있다.'; v = ''; return paint();
@@ -1086,7 +1109,7 @@ function clearRoom(R, skipped){
   const bLeft = Object.keys(R.cards).filter(x => R.cards[x].bonus && !R.cards[x].hiddenB && !S.solved[sk(R.id, x)]);
   $('#keyBody').innerHTML = `<div class="bigstamp">해제</div><p style="font:15px 'Jua';color:#A8231B;letter-spacing:.2em">ROOM ${i+1} CLEAR</p><h3>${R.name}의 장치가 열렸다</h3>
     <div class="kv"><div class="kk">${R.key}</div><div style="font:17px/1.6 'Jua'">장치 비밀번호 <b>${cd.dev.code}</b>의 일의 자리, 열쇠 숫자 <b style="color:#E0B252">${R.key}</b>를 얻었다.<br><span style="opacity:.8;font-size:15px">${i < ROOMS.length-1 ? `평면도에서 ${ROOMS[i+1].name}이(가) 열렸다.` : '이제 비상구로!'}${bLeft.length ? ` (보너스 카드 ${bLeft.join(', ')}번은 아직 풀 수 있다)` : ''}</span></div></div>
-    <div class="why">${R.why}</div><div class="brow"><button class="btn" id="kOk">평면도로 ▶</button>${bLeft.length?'<button class="btn ghost" id="kStay">이 방에 남아 보너스 풀기</button>':''}</div>`;
+    <div class="why">${R.why}</div>${R.hiddenB && R.hiddenB.at === 'clear' && !S.got[R.id].includes(R.hiddenB.n) ? `<span style="position:absolute;right:13px;bottom:7px;font:700 14px 'Gowun Batang',serif;color:#D2C9B3">${R.hiddenB.n}</span>` : ''}<div class="brow"><button class="btn" id="kOk">평면도로 ▶</button>${bLeft.length?'<button class="btn ghost" id="kStay">이 방에 남아 보너스 풀기</button>':''}</div>`;
   $('#keyget').hidden = false;
   $('#kOk').onclick = () => { $('#keyget').hidden = true; S.view = 'map'; save(); render(); window.scrollTo({top:0,behavior:'smooth'}); };
   const ks = $('#kStay'); if (ks) ks.onclick = () => { $('#keyget').hidden = true; renderRoom(i); renderDevice(); };
