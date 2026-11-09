@@ -55,9 +55,9 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 .keys span{height:50px;border-radius:10px;display:grid;place-items:center;font:700 26px 'Nanum Gothic Coding';background:rgba(110,240,180,.05);border:2px dashed rgba(110,240,180,.25);color:rgba(110,240,180,.35);position:relative}
 .keys span.on{background:linear-gradient(180deg,#E9C36A,#B8862E);border:0;color:#2A1A04;box-shadow:0 4px 0 #6E4E12,0 0 14px rgba(233,195,106,.4)}
 .keys span small{position:absolute;bottom:-18px;font:11px 'Jua';color:#5FBF8E}
-.dbtns{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px;position:relative;z-index:1}
-.dbtn{display:flex;flex-direction:column;align-items:center;gap:5px;border:0;background:transparent;color:#9EF0C6;font:12.5px 'Jua'}
-.dbtn i{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:21px;background:radial-gradient(circle at 35% 30%,#3D4A44,#141B18);box-shadow:0 4px 0 #050807,inset 0 2px 0 rgba(255,255,255,.12),0 0 0 2px #23332B;transition:transform .1s}
+.dbtns{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin-top:18px;position:relative;z-index:1}
+.dbtn{display:flex;flex-direction:column;align-items:center;gap:5px;border:0;padding:0;background:transparent;color:#9EF0C6;font:11.5px 'Jua';white-space:nowrap}
+.dbtn i{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:21px;background:radial-gradient(circle at 35% 30%,#3D4A44,#141B18);box-shadow:0 4px 0 #050807,inset 0 2px 0 rgba(255,255,255,.12),0 0 0 2px #23332B;transition:transform .1s}
 .dbtn:active i{transform:translateY(3px);box-shadow:0 1px 0 #050807}
 .dbtn.hl i{background:radial-gradient(circle at 35% 30%,#7FE0B0,#1F7A50)}
 .log{margin-top:14px;border-radius:14px;background:var(--paper);color:var(--ink);padding:14px;box-shadow:0 10px 22px rgba(0,0,0,.5);max-height:330px;overflow:auto;background-image:radial-gradient(120px 80px at 80% 20%,rgba(120,90,40,.12),transparent 70%)}
@@ -137,13 +137,16 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 
 .spread{display:flex;flex-wrap:wrap;gap:18px;align-content:flex-start;min-height:200px}
 .spread .hint0{font:17px 'Jua';color:#B8B0A4;background:rgba(255,255,255,.03);border:2px dashed rgba(255,255,255,.15);border-radius:14px;padding:18px 20px;width:100%}
-.next{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:12px 16px;border-radius:14px;background:#17191F;box-shadow:0 0 0 2px #2D3038,0 6px 0 #000;font:17px/1.4 'Jua';color:#E8E2D6}
+.next{width:100%;border:0;text-align:left;cursor:pointer;transition:filter .15s,transform .1s;display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:12px 16px;border-radius:14px;background:#17191F;box-shadow:0 0 0 2px #2D3038,0 6px 0 #000;font:17px/1.4 'Jua';color:#E8E2D6}
 .next b{flex:none;min-width:74px;text-align:center;padding:4px 10px;border-radius:8px;background:#A8231B;color:#fff;font-weight:400}
 .next .bar{margin-left:auto;display:flex;gap:4px;flex:none}
 .next .bar i{width:14px;height:14px;border-radius:4px;background:#2D3038;box-shadow:inset 0 0 0 2px #50545E}
 .next .bar i.ok{background:#3F9268;box-shadow:none}
 .next .bar i.bo{border-radius:50%;background:#2D3038;box-shadow:inset 0 0 0 2px #B8862E}
 .next .bar i.bo.ok{background:#E0B252}
+.next:hover{filter:brightness(1.25)}
+.next:active{transform:translateY(2px)}
+.next .go{flex:none;color:#FFD98A;font-size:15px;white-space:nowrap}
 .next em{font-style:normal;color:#FF7A6A}
 .next .g{color:#6FDCA4}
 
@@ -182,7 +185,7 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 .big .hd .x{margin-left:auto;border:0;background:rgba(0,0,0,.25);border-radius:10px;width:36px;height:36px;font-size:18px;color:#fff}
 .big.red{--c:var(--red);--c2:var(--red2)} .big.blue{--c:var(--blue);--c2:var(--blue2)} .big.green{--c:var(--green);--c2:var(--green2)} .big.gold{--c:var(--gold);--c2:var(--gold2)}
 .big .bd{padding:16px 18px 18px;overflow:auto;flex:1 1 auto;min-height:0;overscroll-behavior:contain;background-image:radial-gradient(160px 100px at 85% 90%,rgba(120,80,30,.12),transparent 70%)}
-.big .ill{height:120px;border-radius:10px;background:linear-gradient(180deg,#D9D2C2,#C4BCA9);display:grid;place-items:center;margin-bottom:12px;overflow:hidden}
+.big .ill{position:relative;height:120px;border-radius:10px;background:linear-gradient(180deg,#D9D2C2,#C4BCA9);display:grid;place-items:center;margin-bottom:12px;overflow:hidden}
 .big .ill svg{height:100%;width:auto}
 .big .txt{font-size:16px;line-height:1.75}
 .big .txt small{display:block;font:13px 'Jua';color:var(--mute);margin-bottom:2px}
@@ -212,6 +215,9 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 .explain .ex.ok{background:#E3F2E8}.explain .ex.ok b{color:#2B6E4D}
 .explain .ex.no{background:#F7E6E2}.explain .ex.no b{color:#A8231B}
 .solvedbox .dg{float:right;margin:0 0 6px 10px;min-width:52px;height:52px;border-radius:10px;background:var(--gold2);border:3px solid #1F1B22;display:grid;place-items:center;font:700 28px 'Nanum Gothic Coding';box-shadow:0 4px 0 #1F1B22}
+.secret{position:absolute;font:700 25px 'Gowun Batang',serif;color:#4A4336;opacity:.62;pointer-events:none;text-shadow:0 0 1px rgba(255,255,255,.4)}
+.secretnote{margin-top:10px;padding:8px 12px;border-radius:10px;background:#E2EAF3;border:2px dashed #7E9CBF;font:15px/1.5 'Jua';color:#2C5A86}
+.big .rules .combo{margin-top:10px;padding:9px 12px;border-radius:10px;background:#F6E9C4;border:2px solid #B8862E;font-size:14.5px;line-height:1.55}
 .big .rules{font-size:15px;line-height:1.75}
 .big .rules b{color:var(--red)}
 .big .rules .pen{font:21px/1.25 'Nanum Pen Script';color:#A8231B;margin-top:8px}
@@ -226,6 +232,50 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 .slots{display:flex;gap:8px;justify-content:center;margin-top:12px}
 .slots span{width:52px;height:62px;border-radius:10px;background:#071009;color:#9EF0C6;display:grid;place-items:center;font:700 32px 'Nanum Gothic Coding';box-shadow:inset 0 3px 8px rgba(0,0,0,.6),0 0 0 3px #1F1B22;text-shadow:0 0 8px rgba(110,240,180,.6)}
 .slots span.cur{box-shadow:inset 0 3px 8px rgba(0,0,0,.6),0 0 0 3px #3F9268}
+/* ---------- 번호 입력 ---------- */
+.parts{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:10px 0 2px}
+.parts span{display:flex;align-items:center;gap:6px;padding:3px 11px 3px 4px;border-radius:999px;background:#FBF8F1;border:2px solid var(--c);font:14px 'Jua'}
+.parts b{width:28px;height:28px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font:700 14px 'Gowun Batang'}
+.parts .none{border-color:#B6AE9B;color:var(--mute);padding:5px 12px}
+/* ---------- 장치 퍼즐 ---------- */
+.mech{margin-top:12px;border-radius:14px;background:linear-gradient(160deg,#3B3F48,#20232A);box-shadow:inset 0 0 0 2px #14161B,0 4px 0 #111;padding:14px;color:#E8E2D6}
+.mech .note{font:14px/1.5 'Jua';color:#BFC6CF;text-align:center;margin-bottom:10px}
+.mech .read{margin:10px auto 0;width:max-content;min-width:130px;border-radius:10px;padding:6px 16px;background:#071009;color:#9EF0C6;font:700 26px 'Nanum Gothic Coding';text-align:center;box-shadow:inset 0 0 0 2px #23332B;text-shadow:0 0 8px rgba(110,240,180,.6)}
+.mech .go{margin-top:12px}
+.wheels{display:flex;justify-content:center;align-items:center;gap:20px}
+.wheel{display:grid;justify-items:center;gap:5px}
+.wheel button{width:68px;height:36px;border-radius:9px;border:0;background:linear-gradient(180deg,#8E96A3,#5B626E);color:#fff;font-size:17px;box-shadow:0 3px 0 #2B2F37}
+.wheel button:active{transform:translateY(2px);box-shadow:0 1px 0 #2B2F37}
+.wheel output{width:68px;height:74px;border-radius:10px;background:repeating-linear-gradient(0deg,#E9E2D0 0 6px,#DDD5C1 6px 12px);color:#1F1B22;display:grid;place-items:center;font:700 44px 'Nanum Gothic Coding';box-shadow:inset 0 6px 8px rgba(0,0,0,.35),inset 0 -6px 8px rgba(0,0,0,.35)}
+.wheel small{font:12.5px 'Jua';color:#BFC6CF}
+.cog{font-size:34px;color:#C8A15A;animation:none;transition:transform .25s}
+.fuses{display:grid;gap:7px}
+.fuse{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;border:2px solid #4B505B;background:#2A2D35;color:#E8E2D6;text-align:left;font-size:14.5px;line-height:1.35}
+.fuse .sw{flex:none;width:44px;height:24px;border-radius:12px;background:#14161B;position:relative;box-shadow:inset 0 0 0 2px #50545E}
+.fuse .sw::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#8E96A3;transition:left .12s}
+.fuse .val{margin-left:auto;flex:none;min-width:38px;text-align:center;border-radius:7px;padding:2px 6px;background:#14161B;color:#E0B252;font:700 17px 'Nanum Gothic Coding'}
+.fuse.on{border-color:#FF7A6A;background:#3A2020}
+.fuse.on .sw{background:#A8231B}
+.fuse.on .sw::after{left:23px;background:#FFE2DC}
+.segbox{display:flex;justify-content:center;background:#050606;border-radius:10px;padding:8px;box-shadow:inset 0 0 0 2px #2D3038;margin-bottom:12px}
+.segbox svg{height:92px;width:auto}
+.segbox rect{fill:#1E1110}
+.segbox rect.on{fill:#FF5A4A;filter:drop-shadow(0 0 4px rgba(255,80,60,.8))}
+.levers{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.lev{border-radius:10px;background:#2A2D35;padding:8px 6px;text-align:center}
+.lev b{display:block;font:17px 'Jua';color:#EDE6D8;margin-bottom:6px}
+.lev .ps{display:grid;gap:4px}
+.lev button{height:30px;border-radius:7px;border:2px solid #50545E;background:#14161B;color:#BFC6CF;font:14px 'Jua'}
+.lev button.on{background:#E0B252;border-color:#E0B252;color:#2A1A04;box-shadow:0 0 10px rgba(224,178,82,.55)}
+.wirebox{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 92px;gap:8px 44px}
+.wirebox svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.wirebox path{fill:none;stroke-width:4;stroke-linecap:round}
+.wleft,.wright{display:grid;gap:8px;align-content:center}
+.wl,.wp{position:relative;border-radius:9px;border:2px solid #50545E;background:#2A2D35;color:#E8E2D6;padding:7px 8px;font-size:13.5px;line-height:1.4;text-align:left;min-height:52px}
+.wl b{color:#FFD98A}
+.wl.sel{border-color:#FFD98A;box-shadow:0 0 12px rgba(255,217,138,.5)}
+.wp{text-align:center;font:15px 'Jua'}
+.wp i{display:block;font:700 19px 'Nanum Gothic Coding';font-style:normal;color:#E0B252}
 .msg{min-height:20px;margin-top:10px;text-align:center;font:15px 'Jua'}
 .msg.bad{color:#A8231B}
 .shake{animation:shake .45s}
@@ -282,6 +332,49 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
 #tbtn{position:fixed;left:14px;bottom:12px;z-index:30;padding:6px 11px;border-radius:8px;border:1px solid #33363D;background:rgba(20,22,28,.8);color:#7E8590;font:12px 'Jua'}
 
 @media (max-width:1100px){ .tablewrap{grid-template-columns:minmax(0,1fr)} .roomcard{max-width:440px;margin:0 auto;width:100%} }
+@media (min-width:901px){
+  body.ingame{height:100vh;height:100dvh;overflow:hidden}
+  body.ingame main{height:100%;max-width:1560px;padding:14px 20px}
+  body.ingame #game{height:100%}
+  body.ingame .layout{height:100%;grid-template-rows:minmax(0,1fr);align-items:stretch}
+  body.ingame .layout>div{display:flex;flex-direction:column;min-height:0}
+  body.ingame .head{flex:none;margin-bottom:8px}
+  body.ingame #stage{flex:1;min-height:0}
+  body.ingame .layout>aside{display:flex;flex-direction:column;gap:12px;min-height:0}
+  body.ingame .device{position:relative;top:0;flex:none}
+  body.ingame .log{flex:1;min-height:0;max-height:none;margin-top:0}
+  body.ingame .tablewrap{height:100%;grid-template-rows:minmax(0,1fr);align-items:stretch}
+  body.ingame .roomcard{height:100%;min-height:0;max-width:none;display:flex;flex-direction:column;padding:12px 12px 10px}
+  body.ingame .roomcard .plaque{flex:none;margin-bottom:8px;font-size:22px;padding:3px 22px}
+  body.ingame .roomcard .art{flex:1;min-height:0;display:grid;place-items:center;background:transparent;border:0;overflow:visible}
+  body.ingame .roomcard .art svg{width:auto;height:100%;max-width:100%;border:6px solid #1C1D21;border-radius:6px;background:#000}
+  body.ingame .roomcard .legend,body.ingame .roomcard .cap{flex:none}
+  body.ingame .roomcard .cap{margin-top:6px;font-size:13.5px;line-height:1.45}
+  body.ingame .roomcard .cap .pen{margin-top:2px;font-size:18px}
+  body.ingame .deskcol{display:flex;flex-direction:column;min-height:0;height:100%}
+  body.ingame .deskcol .next{flex:none;margin-bottom:8px}
+  body.ingame .spread{flex:1;min-height:0;overflow:auto;padding:10px 10px 24px;align-content:flex-start;overscroll-behavior:contain}
+  body.ingame .mapcol{display:flex;flex-direction:column;height:100%;min-height:0}
+  body.ingame .mapcol .next{flex:none;margin-bottom:8px}
+  body.ingame .board{flex:1;min-height:0;display:grid;place-items:center}
+  body.ingame .board svg{width:auto;height:100%;max-width:100%}
+}
+@media (min-width:901px) and (max-width:1180px){
+  body.ingame .layout{grid-template-columns:minmax(0,1fr) 250px;gap:14px}
+  body.ingame .tablewrap{grid-template-columns:270px minmax(0,1fr);gap:14px}
+  .dbtn i{width:40px;height:40px;font-size:17px}
+  .card{width:150px;height:216px}
+}
+@media (min-width:901px) and (max-height:800px){
+  body.ingame .roomcard .cap .pen{display:none}
+  .device .scr{padding:10px 12px}
+  .tmr{font-size:34px}
+  .keys span{height:38px;font-size:21px}
+  .dline{margin-top:22px}
+  .dbtns{margin-top:10px}
+  .dbtn i{width:40px;height:40px;font-size:17px}
+}
+@media (min-width:901px) and (max-height:680px){ body.ingame .roomcard .cap,body.ingame .head p{display:none} }
 @media (max-width:900px){
   .layout{grid-template-columns:minmax(0,1fr)}
   .layout > aside{order:-1}
@@ -347,8 +440,8 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
       <p class="memo">23:52. 복도 불이 또 나갔다. 출제실 문은 밖에서 잠겨 있고, 경비실은 전화를 받지 않는다.<br>방금 누가 계단을 내려갔다. 나는 아니다.</p>
       <ul>
         <li><i style="--c:#33363D">🗺</i><span>평면도에서 <b>방을 눌러</b> 들어간다.</span></li>
-        <li><i style="--c:var(--red)">35</i><span>손전등으로 방을 비추며 <b>번호</b>를 눌러 카드를 뒤집는다. 동그라미 색: <b style="color:var(--red)">빨강</b> 문제 · <b style="color:var(--gold)">노랑</b> 보너스 · <b style="color:var(--blue)">파랑</b> 단서 · <b style="color:var(--green)">초록</b> 장치</span></li>
-        <li><i style="--c:var(--gold)">🔑</i><span>문제를 풀면 번호가 드러난다. 단서 카드의 계산법대로 <b>더하거나 빼서</b> 장치를 열면 열쇠를 얻는다.</span></li>
+        <li><i style="--c:var(--red)">＋</i><span>방의 <b>번호</b>를 눌러 물건을 모은다. <b style="color:var(--red)">잠긴 물건</b> 번호 + <b style="color:var(--blue)">도구</b> 번호 = <b>새 카드 번호</b>. 단말기의 <b>번호 입력</b>에 넣는다. 도구는 단서 그림 속에 숨어 있다.</span></li>
+        <li><i style="--c:var(--gold)">🔑</i><span>문제를 풀면 번호가 드러난다. 그 번호로 <b style="color:var(--green)">장치 퍼즐</b>을 풀고, 금고 속 서류와 <b>암호 해독표</b>로 열쇠를 얻는다.</span></li>
         <li><i style="--c:var(--green)">🚨</i><span>틀리면 경보 +30초, 힌트 +1분, 보너스 −30초. 근거는 검토 일지에!</span></li>
       </ul>
       <p style="margin-top:14px;font:15px 'Jua'">우리 팀 번호와 팀 이름</p>
@@ -374,6 +467,7 @@ main{max-width:1380px;margin:0 auto;padding:20px 20px 60px}
             <div class="keys" id="keys"></div>
             <div class="dline"><span id="dPen">벌점 +00:00</span><span id="dCnt"></span></div>
             <div class="dbtns">
+              <button class="dbtn" id="bNum"><i>🔢</i>번호 입력</button>
               <button class="dbtn" id="bMap"><i>🗺</i>평면도</button>
               <button class="dbtn" id="bPause"><i>⏸</i>일시정지</button>
               <button class="dbtn" id="bSnd"><i>🔊</i>소리</button>
@@ -444,6 +538,10 @@ const ICON = {
   scrap:()=>`<svg viewBox="0 0 120 90"><g filter="url(#sh2)"><path d="M22 24 L92 16 L98 62 L30 74Z" fill="#F2EDE2" ${O}/></g><path d="M34 36h44M36 48h40M38 60h30" stroke="#B4AC98" stroke-width="3"/><path d="M84 70 l14 -6" stroke="#1F1B22" stroke-width="3"/></svg>`,
   chart:()=>`<svg viewBox="0 0 120 90"><g filter="url(#sh2)"><rect x="20" y="10" width="80" height="70" fill="#F2EDE2" ${O}/></g><text x="60" y="28" font-family="Jua" font-size="12" text-anchor="middle" fill="#1F1B22">검토 지시서</text><path d="M30 42h60M30 54h50M30 66h56" stroke="#B4AC98" stroke-width="3"/></svg>`,
   envB:()=>ICON.env('#DDE5EE'), envC:()=>ICON.env('#EEE3C0'),
+  opener:()=>`<svg viewBox="0 0 120 90"><g filter="url(#sh2)" transform="rotate(-24 60 45)"><rect x="16" y="38" width="38" height="14" rx="5" fill="#6E5240" ${O}/><path d="M54 38 H104 L90 52 H54Z" fill="#C9CFD6" ${O}/></g></svg>`,
+  smallkey:()=>`<svg viewBox="0 0 120 90"><g filter="url(#sh2)" transform="rotate(-14 60 45)"><circle cx="38" cy="45" r="15" fill="#E0B252" ${O}/><circle cx="38" cy="45" r="5" fill="#D9D2C2" ${O}/><path d="M53 41 H96 V49 H90 V58 H82 V49 H76 V55 H69 V49 H53Z" fill="#E0B252" ${O}/></g></svg>`,
+  driver:()=>`<svg viewBox="0 0 120 90"><g filter="url(#sh2)" transform="rotate(-18 60 45)"><rect x="14" y="33" width="44" height="24" rx="9" fill="#C2342A" ${O}/><rect x="58" y="41" width="38" height="8" fill="#C9CFD6" ${O}/><path d="M96 39 L108 45 L96 51Z" fill="#8E96A3" ${O}/></g></svg>`,
+  lamp:()=>`<svg viewBox="0 0 120 90"><path d="M78 24 L116 6 V84 L78 66Z" fill="#8A5BD6" opacity=".35"/><g filter="url(#sh2)"><rect x="16" y="36" width="46" height="18" rx="5" fill="#3E424B" ${O}/><path d="M62 32 H80 V58 H62Z" fill="#5B626E" ${O}/></g></svg>`,
   key:()=>`<svg viewBox="0 0 120 90"><g filter="url(#sh2)"><circle cx="38" cy="45" r="16" fill="#E0B252" ${O}/><rect x="52" y="40" width="46" height="10" fill="#E0B252" ${O}/><rect x="84" y="50" width="8" height="12" fill="#E0B252" ${O}/></g><circle cx="38" cy="45" r="6" fill="#D9D2C2" ${O}/></svg>`
 };
 
@@ -502,7 +600,7 @@ const reqAsks = R => Object.keys(R.cards).filter(n => R.cards[n].opts && !R.card
 const reqPre = R => reqAsks(R).filter(n => !R.cards[n].vault);   // 장치를 열기 전에 풀어야 하는 빨간 카드
 
 // ==================== 상태 ====================
-const KEY = 'escape-hq-v5';
+const KEY = 'escape-hq-v6';
 let S = load();
 function blank(){ return {team:null, tname:'', startAt:null, endAt:null, paused:0, pausedAt:null, pausedBy:null, open:1, view:'map', got:{r1:[],r2:[],r3:[],r4:[]}, solved:{}, keys:[], wrong:0, hints:0, bonus:0, hintUsed:{}, log:[], fresh:[], pawn:START, mute:false, outbox:[], msgSeen:0, cmdInit:false, cmdDone:[]}; }
 function load(){ try { const v = JSON.parse(localStorage.getItem(KEY)); if (v && typeof v === 'object') return Object.assign(blank(), v); } catch(e){} return blank(); }
@@ -620,7 +718,7 @@ function passRoom(R){
 if (LIVE) { setInterval(pollCtl, 8000); setInterval(flush, 15000); setInterval(() => { if (S.startAt && !S.endAt) send('beat'); }, 60000); }
 
 // ==================== 화면 ====================
-function show(id){ for (const s of ['intro','game','done']) $('#'+s).hidden = s !== id; }
+function show(id){ for (const s of ['intro','game','done']) $('#'+s).hidden = s !== id; document.body.classList.toggle('ingame', id === 'game'); }
 function render(){
   if (!S.startAt) return renderIntro();
   if (S.endAt) return renderDone();
@@ -661,6 +759,7 @@ function tick(){
 setInterval(tick, 250);
 document.addEventListener('pointerdown', () => { if (S.startAt && !S.endAt) startHum(); }, {passive:true});
 
+$('#bNum').onclick = () => { if (typeof S.view !== 'number') { toast('방에 들어가서 쓰자.'); return sfx.bad(); } openPad(ROOMS[S.view]); };
 $('#bMap').onclick = () => { if (S.view === 'map') return; sfx.tap(); S.view = 'map'; save(); render(); window.scrollTo({top:0,behavior:'smooth'}); };
 $('#bSnd').onclick = () => { S.mute = !S.mute; save(); if (S.mute) stopHum(); else startHum(); renderDevice(); sfx.tap(); };
 function showPause(){ const t = S.pausedBy === 'teacher'; $('#pauseTxt').textContent = t ? '선생님이 모든 팀의 시간을 멈췄다. 화면을 보자.' : '시간이 멈췄다. 선생님 설명을 들어 보자.'; $('#resume').hidden = t; $('#pauseCov').hidden = false; }
@@ -707,7 +806,10 @@ function renderMap(){
     </g>
     <g id="pawn" style="transform:translate(${S.pawn[0]}px,${S.pawn[1]}px)"><circle r="46" fill="rgba(255,240,200,.10)"/><g filter="url(#sh)">${pawnShape()}</g></g>
   </svg>`;
-  $('#stage').innerHTML = `<div class="board">${svg}</div>`;
+  const target = all ? 'gate' : Math.min(S.open - 1, ROOMS.findIndex(r => !S.keys.includes(r.id)));
+  const label = all ? '열쇠 네 개를 모았다. <span class="g">비상구</span>로 가자.' : `<span class="g">${ROOMS[target].name}</span>에 들어가자.`;
+  $('#stage').innerHTML = `<div class="mapcol"><button class="next" id="nextBtn"><b>다음 할 일</b><span>${label}</span><span class="go" style="margin-left:auto">눌러서 이동 ▶</span></button><div class="board">${svg}</div></div>`;
+  $('#nextBtn').onclick = () => { const g = $('#stage').querySelector(`.roomtile[data-i="${target}"]`); if (g) g.onclick(); };
   $('#stage').querySelectorAll('.roomtile').forEach(g => g.onclick = () => {
     const k = g.dataset.i;
     if (k === 'gate') { if (!all) { toast('🔒 열쇠 네 개가 있어야 비상구가 열린다.'); return sfx.bad(); } return walk(GATE, () => openGate()); }
@@ -730,46 +832,58 @@ let torch = {x:200, y:240};
 function renderRoom(i){
   const R = ROOMS[i];
   $('#hTitle').textContent = `ROOM ${i+1} · ${R.name}`;
-  $('#hSub').textContent = '손전등으로 방을 비추고 번호를 눌러 카드를 뒤집자. 빨강 문제 · 노랑 보너스 · 파랑 단서 · 초록 장치.';
+  $('#hSub').textContent = '번호를 눌러 카드를 모으자. 잠긴 물건 번호 + 도구 번호 = 새 카드 번호.';
   $('#hAct').innerHTML = `<button class="btn sm ghost" id="backMap">◀ 평면도</button>`;
   $('#backMap').onclick = () => $('#bMap').click();
   const got = S.got[R.id];
   const spots = R.spots.map(s => { const cd = R.cards[s.n]; return `<g class="spot t-${cd.c}${got.includes(s.n)?' got':''}" data-n="${s.n}"><circle class="pulse" cx="${s.x}" cy="${s.y}" r="22"/><circle class="c" cx="${s.x}" cy="${s.y}" r="22"/><text x="${s.x}" y="${s.y+1}">${s.n}</text></g>`; }).join('');
-  const cards = got.map(n => cardTile(R, n)).join('');
+  const cards = got.filter(n => !isUsed(R, n)).map(n => cardTile(R, n)).join('');
   $('#stage').innerHTML = `<div class="tablewrap">
     <div class="roomcard"><div class="plaque">${R.name}</div><div class="art"><svg viewBox="0 0 400 480" id="roomSvg"><defs><radialGradient id="torchG" gradientUnits="userSpaceOnUse" cx="${torch.x}" cy="${torch.y}" r="170"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".45" stop-color="#000" stop-opacity=".18"/><stop offset="1" stop-color="#000" stop-opacity=".9"/></radialGradient></defs>${ART[R.art]}<rect id="torchLayer" width="400" height="480" fill="url(#torchG)"/><rect width="400" height="480" fill="rgba(160,20,10,.10)" class="elight" pointer-events="none"/>${spots}</svg></div>
-      <div class="legend"><span class="lg t-red">문제</span><span class="lg t-gold">보너스</span><span class="lg t-blue">단서</span><span class="lg t-green">장치</span></div><p class="cap">${R.cap}<span class="pen">“${R.pen}”</span></p></div>
-    <div><div class="next">${nextStep(R)}</div><div class="spread">${cards || `<div class="hint0">🔦 손전등으로 왼쪽 방을 비추고 번호 동그라미를 눌러 보자. 그 번호의 카드가 이 책상 위에 펼쳐진다.</div>`}</div></div>
+      <div class="legend"><span class="lg t-red">잠긴 물건·문제</span><span class="lg t-blue">도구·단서</span><span class="lg t-green">장치 퍼즐</span><span class="lg t-gold">보너스</span></div><p class="cap">${R.cap}<span class="pen">“${R.pen}”</span></p></div>
+    <div class="deskcol">${nextStep(R)}<div class="spread">${cards || `<div class="hint0">🔦 손전등으로 왼쪽 방을 비추고 번호 동그라미를 눌러 보자. 그 번호의 카드가 이 책상 위에 펼쳐진다.</div>`}</div></div>
   </div>`;
   const svg = $('#roomSvg'), grad = svg.querySelector('#torchG');
   const move = e => { const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; const m = svg.getScreenCTM(); if (!m) return; const p = pt.matrixTransform(m.inverse()); torch = {x:p.x, y:p.y}; grad.setAttribute('cx', p.x); grad.setAttribute('cy', p.y); };
   svg.addEventListener('pointermove', move); svg.addEventListener('pointerdown', move);
   $('#stage').querySelectorAll('.spot').forEach(g => g.onclick = () => openCard(R, +g.dataset.n, !got.includes(+g.dataset.n)));
   $('#stage').querySelectorAll('.card').forEach(c => c.onclick = () => openCard(R, +c.dataset.n, false));
+  $('#nextBtn').onclick = () => { sfx.tap(); if (nextAct) nextAct(); };
   S.fresh = []; save();
+}
+let nextAct = null;
+const devReady = R => reqPre(R).every(x => S.solved[sk(R.id, x)]);
+const pendingCombos = R => (R.combos || []).filter(c => !S.got[R.id].includes(c.to));
+function isUsed(R, n){   // 결합을 마친 잠긴 물건·도구는 책상에서 치운다
+  const got = S.got[R.id], cs = R.combos || [], cd = R.cards[n];
+  if (cd.locked) return cs.some(c => c.a === n && got.includes(c.to));
+  if (cd.tool) return cs.filter(c => c.b === n).every(c => got.includes(c.to));
+  return false;
 }
 function nextStep(R){
   const got = S.got[R.id], ids = Object.keys(R.cards);
   const asks = reqPre(R), bonus = ids.filter(n => R.cards[n].bonus), devN = ids.find(n => R.cards[n].dev), vN = String(R.vault);
   const unsolved = asks.filter(n => got.includes(+n) && !S.solved[sk(R.id, n)]);
   const left = R.spots.filter(s => !got.includes(s.n) && !R.cards[s.n].bonus).map(s => s.n);
+  const pending = pendingCombos(R), sec = R.secret;
   const pip = n => `<i class="${S.solved[sk(R.id,n)]?'ok':''}"></i>`;
   const bar = `<span class="bar">${asks.map(pip).join('')}<i class="${S.solved[sk(R.id,devN)]?'ok':''}" style="border-radius:50%"></i>${pip(vN)}${bonus.map(n => `<i class="bo${S.solved[sk(R.id,n)]?' ok':''}"></i>`).join('')}</span>`;
-  let t;
-  if (!got.length) t = '손전등으로 방을 비추고 번호 동그라미를 눌러 카드를 뒤집자.';
-  else if (unsolved.length) t = `아직 풀지 않은 빨간 카드: <em>${unsolved.join(', ')}번</em>`;
-  else if (left.length) t = `아직 뒤집지 않은 번호가 있다: ${left.join(', ')}번`;
-  else if (!S.solved[sk(R.id, devN)]) t = `빨간 카드를 모두 풀었다! 단서 카드의 계산법대로 <span class="g">${devN}번 장치</span>를 열자.`;
-  else if (!S.solved[sk(R.id, vN)]) t = `장치 안에서 나온 <em>${vN}번 서류</em>를 풀어야 열쇠 상자를 열 수 있다.`;
-  else if (!S.keys.includes(R.id)) t = `<span class="g">열쇠 상자</span>를 열자. 검토 일지 <em>암호 해독표</em>에서 고른 글자 세 개가 필요하다.`;
-  else t = '이 방은 해제됐다. 평면도로 돌아가자.';
-  return `<b>다음 할 일</b><span>${t}</span>${bar}`;
+  let t, go = '바로 가기';
+  if (left.length) { t = `아직 살펴보지 않은 번호가 있다: ${left.join(', ')}번`; go = `${left[0]}번 보기`; nextAct = () => openCard(R, left[0], true); }
+  else if (sec && !got.includes(sec.n)) { t = `<span class="g">${sec.from}번 단서의 그림</span>을 잘 살펴보자. 숨은 번호를 <em>번호 입력</em>에 넣으면 도구가 나온다.`; go = '단서 보기'; nextAct = () => openCard(R, sec.from, false); }
+  else if (unsolved.length) { t = `아직 풀지 않은 빨간 카드: <em>${unsolved.join(', ')}번</em>`; go = `${unsolved[0]}번 풀기`; nextAct = () => openCard(R, +unsolved[0], false); }
+  else if (pending.length) { t = `<em>잠긴 물건</em> 번호와 <span class="g">도구</span> 번호를 더해 번호 입력에 넣자. (남은 잠긴 물건 ${pending.length}개)`; go = '번호 입력'; nextAct = () => openPad(R); }
+  else if (!S.solved[sk(R.id, devN)]) { t = `빨간 카드를 모두 풀었다! <span class="g">${devN}번 장치</span>의 퍼즐을 풀자.`; go = '장치 열기'; nextAct = () => openCard(R, +devN, false); }
+  else if (!S.solved[sk(R.id, vN)]) { t = `장치 안에서 나온 <em>${vN}번 서류</em>를 풀어야 열쇠 상자를 열 수 있다.`; go = '서류 보기'; nextAct = () => openCard(R, +vN, false); }
+  else if (!S.keys.includes(R.id)) { t = `<span class="g">열쇠 상자</span>를 열자. 검토 일지 <em>암호 해독표</em>에서 고른 글자 세 개가 필요하다.`; go = '상자 열기'; nextAct = () => openKeyBox(R); }
+  else { t = '이 방은 해제됐다. 평면도로 돌아가자.'; go = '평면도'; nextAct = () => $('#bMap').click(); }
+  return `<button class="next" id="nextBtn"><b>다음 할 일</b><span>${t}</span>${bar}<span class="go">${go} ▶</span></button>`;
 }
 function iconOf(cd){ return typeof cd.ic === 'function' ? cd.ic() : ICON[cd.ic](); }
 function cardTile(R, n){
   const cd = R.cards[n], k = sk(R.id, n), sv = S.solved[k];
-  const ready = cd.dev && !sv && reqPre(R).every(x => S.solved[sk(R.id, x)]);
-  const status = cd.dev ? (sv ? '열림!' : '비밀번호 필요') : cd.info ? '읽어 보기' : sv ? '해결' : cd.bonus ? '선택 · −30초' : '풀어 보기';
+  const ready = cd.dev && !sv && devReady(R);
+  const status = cd.locked ? '도구와 결합' : cd.tool ? '잠긴 물건과 결합' : cd.dev ? (sv ? '열림!' : devReady(R) ? '퍼즐 풀기' : '전원 꺼짐') : cd.info ? '읽어 보기' : sv ? '해결' : cd.bonus ? '선택 · −30초' : '풀어 보기';
   return `<button class="card ${cd.c}${S.fresh.includes(k)?' new':''}${ready?' ready':''}" data-n="${n}"><div class="hd"><span class="no">${n}</span><span class="ty">${cd.ty}</span></div><div class="ic">${iconOf(cd)}</div><div class="ft">${cd.title}<br><span style="font-size:12px;color:#6A6370">${status}</span></div>${sv && cd.digit ? `<span class="digit">${cd.digit}</span>` : ''}${sv && cd.opts ? '<span class="stamp">해결</span>' : ''}${cd.bonus && !sv ? '<span class="bribbon">BONUS</span>' : ''}</button>`;
 }
 
@@ -790,8 +904,10 @@ function closeCard(){ $('#modal').hidden = true; cur = null; window.onkeydown = 
 $('#modal').onclick = e => { if (e.target.id === 'modal') closeCard(); };
 function cardBig(R, n){
   const cd = R.cards[n], k = sk(R.id, n), sv = S.solved[k];
-  let body = `<div class="ill">${iconOf(cd)}</div>`;
+  const sec = R.secret && R.secret.from === +n ? R.secret : null;
+  let body = `<div class="ill">${iconOf(cd)}${sec ? `<span class="secret" style="left:${sec.x}%;top:${sec.y}%;transform:rotate(${sec.r}deg)">${sec.n}</span>` : ''}</div>`;
   if (cd.info) body += cd.info;
+  if (sec && !S.got[R.id].includes(sec.n)) body += `<p class="secretnote">🔍 그림을 자세히 보자. 번호가 숨어 있다면 단말기의 <b>번호 입력</b>에 넣는다.</p>`;
   if (cd.opts) {
     if (cd.bonus) body += `<div class="bonusnote">⭐ 보너스 카드: 풀지 않아도 탈출할 수 있다. 맞히면 기록 −30초.</div>`;
     if (cd.sent) body += `<div class="txt"><div class="sent">${B(cd.sent)}</div></div>`;
@@ -803,16 +919,19 @@ function cardBig(R, n){
   }
   if (cd.dev) {
     if (sv) body += `<div class="solvedbox"><span class="dg">🔓</span>장치가 열렸다! 안에서 <b>${R.vault}번 서류</b>가 나왔다. 서류를 풀면 열쇠를 꺼낼 수 있다.</div>`;
-    else body += `<p class="ask">${cd.dev.ask}</p><div class="slots">${Array.from({length:cd.dev.len},()=>`<span></span>`).join('')}</div><div class="pad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button data-k="${d}">${d}</button>`).join('')}<button data-k="del">⌫</button><button data-k="0">0</button><button class="go" data-k="go">열기</button></div><p class="msg" id="msg"></p>`;
+    else if (!devReady(R)) body += `<div class="secretnote" style="background:#F7E6E2;border-color:#A8231B;color:#A8231B">🔒 전원이 들어오지 않는다. 빨간 문제 카드를 모두 풀면 이 장치가 움직인다. (${reqPre(R).filter(x => S.solved[sk(R.id, x)]).length}/${reqPre(R).length})</div>`;
+    else body += `<p class="ask">${cd.dev.ask}</p>${mechHtml(cd)}<p class="msg" id="msg"></p>`;
   }
   const keyBtn = cd.vault && sv && !S.keys.includes(R.id);
-  const closeBtn = keyBtn ? '<div class="brow"><button class="btn red" id="keyb">🔑 열쇠 상자 열기</button></div>' : (cd.info || sv) && !(cd.dev && !sv) ? '<div class="brow"><button class="btn" id="okb">책상에 내려놓기</button></div>' : '';
+  const closeBtn = keyBtn ? '<div class="brow"><button class="btn red" id="keyb">🔑 열쇠 상자 열기</button></div>' : (cd.info || sv) && !(cd.dev && !sv) ? `<div class="brow"><button class="btn" id="okb">책상에 내려놓기</button>${cd.locked || cd.tool || (R.secret && R.secret.from === +n && !S.got[R.id].includes(R.secret.n)) ? '<button class="btn ghost" id="padb">🔢 번호 입력</button>' : ''}</div>` : '';
   return `<div class="big ${cd.c}"><div class="hd"><span class="no">${n}</span><div><small>${cd.ty} 카드</small><h3>${cd.title}</h3></div><button class="x" id="xb" aria-label="닫기">✕</button></div><div class="bd">${body}${closeBtn}</div></div>`;
 }
 function bindBig(){
   const {R, n, cd, k} = cur;
   $('#xb').onclick = closeCard; const okb = $('#okb'); if (okb) okb.onclick = closeCard;
   const kb = $('#keyb'); if (kb) kb.onclick = () => openKeyBox(R);
+  const pb = $('#padb'); if (pb) pb.onclick = () => openPad(R);
+  window.onkeydown = null;
   if (cd.opts && !S.solved[k]) {
     let sel = null;
     document.querySelectorAll('.opt').forEach(b => b.onclick = () => { sfx.tap(); sel = b.dataset.id; document.querySelectorAll('.opt').forEach(x => x.classList.toggle('on', x === b)); });
@@ -825,22 +944,103 @@ function bindBig(){
     const hb = $('#hb'); if (hb) hb.onclick = () => { if (hb.dataset.arm !== '1') { hb.dataset.arm = '1'; hb.textContent = '정말? +1분'; setTimeout(()=>{ if (hb.isConnected) { hb.dataset.arm=''; hb.textContent='💡 힌트 +1분'; } }, 3000); return; }
       S.hintUsed[k] = 1; S.hints++; save(); send('hint', R.id, n); sfx.card(); $('#front').innerHTML = cardBig(R, n); bindBig(); tick(); };
   }
-  if (cd.dev && !S.solved[k]) {
+  if (cd.dev && !S.solved[k] && devReady(R)) bindMech(R, n, cd);
+}
+// ---------- 장치 퍼즐 ----------
+const SEG = {'0':'abcdef','1':'bc','2':'abdeg','3':'abcdg','4':'bcfg','5':'acdfg','6':'acdefg','7':'abc','8':'abcdefg','9':'abcdfg'};
+const SEG_R = {a:[12,4,36,8],b:[50,12,8,34],c:[50,54,8,34],d:[12,88,36,8],e:[2,54,8,34],f:[2,12,8,34],g:[12,46,36,8]};
+const LEVER_MASK = [[[0,3,9],[1,6,12]],[[2,7,10],[5,8,13]],[[4,11,6],[0,12,9]]];   // 틀린 위치의 레버가 뒤집는 숫자판 조각
+const LEVER_START = [1,1,2];
+function mechHtml(cd){
+  const d = cd.dev, go = '<button class="btn go" id="devGo">작동시키기</button>';
+  if (d.kind === 'gear') return `<div class="mech"><p class="note">왼쪽 다이얼을 돌리면 맞물린 오른쪽 다이얼도 같이 돈다.</p><div class="wheels">
+    <div class="wheel"><button data-w="0" data-d="1">▲</button><output id="w0">0</output><button data-w="0" data-d="-1">▼</button><small>큰 톱니</small></div><span class="cog" id="cog">⚙</span>
+    <div class="wheel"><button data-w="1" data-d="1">▲</button><output id="w1">0</output><button data-w="1" data-d="-1">▼</button><small>작은 톱니</small></div></div>${go}</div>`;
+  if (d.kind === 'fuse') return `<div class="mech"><div class="fuses">${d.fuses.map((f, i) => `<button class="fuse" data-i="${i}"><span class="sw"></span><span>${f[0]}</span><span class="val">${f[1]}</span></button>`).join('')}</div><div class="read" id="readout">합 0</div>${go}</div>`;
+  if (d.kind === 'lever') return `<div class="mech"><div class="segbox"><svg viewBox="0 0 136 100" id="segs">${[0,1].map(q => 'abcdefg'.split('').map(s => { const r = SEG_R[s]; return `<rect x="${r[0] + q*76}" y="${r[1]}" width="${r[2]}" height="${r[3]}" rx="3"/>`; }).join('')).join('')}</svg></div><div class="levers">${d.levers.map((l, i) => `<div class="lev"><b>${l[0]}</b><div class="ps">${[1,2,3].map(p => `<button data-l="${i}" data-p="${p}">${p}자리</button>`).join('')}</div></div>`).join('')}</div>${go}</div>`;
+  if (d.kind === 'wire') return `<div class="mech"><p class="note">왼쪽 문장을 누른 뒤 오른쪽 성분을 눌러 선을 잇는다.</p><div class="wirebox" id="wbox"><svg id="wsvg"></svg><div class="wleft">${d.lines.map((l, i) => `<button class="wl" data-i="${i}">${B(l[0])}</button>`).join('')}</div><div class="wright">${d.ports.map(p => `<button class="wp" data-p="${p[0]}">${p[1]}<i>${p[2]}</i></button>`).join('')}</div></div><div class="read" id="readout">코드 ··</div>${go}</div>`;
+  return `<div class="slots">${Array.from({length:d.len},()=>`<span></span>`).join('')}</div><div class="pad">${[1,2,3,4,5,6,7,8,9].map(x=>`<button data-k="${x}">${x}</button>`).join('')}<button data-k="del">⌫</button><button data-k="0">0</button><button class="go" data-k="go">열기</button></div>`;
+}
+function bindMech(R, n, cd){
+  const d = cd.dev, need = reqPre(R).length, have = () => reqPre(R).filter(x => S.solved[sk(R.id, x)]).length;
+  const fail = (v, why) => alarm(have() < need ? `아직 풀지 않은 빨간 카드가 있다. (${have()}/${need}) 카드를 풀어 숫자를 모으자.` : why, n, 'dev:' + v, R.id);
+  const goBtn = $('#devGo');
+  if (d.kind === 'gear') {
+    const v = [0, 0]; let turn = 0;
+    const paint = () => { $('#w0').textContent = v[0]; $('#w1').textContent = v[1]; $('#cog').style.transform = `rotate(${turn}deg)`; };
+    document.querySelectorAll('.wheel button').forEach(b => b.onclick = () => { sfx.tap(); const w = +b.dataset.w, s = +b.dataset.d; turn += s * 40; v[1] = (v[1] + s + 10) % 10; if (w === 0) v[0] = (v[0] + s + 10) % 10; paint(); });
+    goBtn.onclick = () => { const c = v.join(''); if (c === d.code) return solveDevice(); fail(c, '금고가 꿈쩍하지 않는다. 쪽지의 계산법과 맞물린 톱니를 다시 확인하자.'); };
+  } else if (d.kind === 'fuse') {
+    const on = new Set();
+    const sum = () => [...on].reduce((a, i) => a + d.fuses[i][1], 0);
+    document.querySelectorAll('.fuse').forEach(b => b.onclick = () => { sfx.tap(); const i = +b.dataset.i; on.has(i) ? on.delete(i) : on.add(i); b.classList.toggle('on', on.has(i)); $('#readout').textContent = '합 ' + sum(); });
+    goBtn.onclick = () => { const c = String(sum()); if (c === d.code) return solveDevice(); fail(c, '경보가 멎지 않는다. 사람이 아닌 것을 높인 표현만 골랐는지, 합이 해제 코드와 같은지 보자.'); };
+  } else if (d.kind === 'lever') {
+    const pos = LEVER_START.slice(), base = [...d.code].flatMap(x => 'abcdefg'.split('').map(s => SEG[x].includes(s)));
+    const rects = [...document.querySelectorAll('#segs rect')];
+    const paint = () => { const a = base.slice(); d.levers.forEach((l, i) => { const wrong = [1,2,3].filter(p => p !== l[1]), m = wrong.indexOf(pos[i]); if (m >= 0) LEVER_MASK[i][m].forEach(x => a[x] = !a[x]); }); rects.forEach((r, i) => r.classList.toggle('on', a[i])); document.querySelectorAll('.lev button').forEach(b => b.classList.toggle('on', pos[+b.dataset.l] === +b.dataset.p)); };
+    document.querySelectorAll('.lev button').forEach(b => b.onclick = () => { sfx.tap(); pos[+b.dataset.l] = +b.dataset.p; paint(); });
+    paint();
+    goBtn.onclick = () => { if (d.levers.every((l, i) => pos[i] === l[1])) return solveDevice(); fail(pos.join('-'), '접수기가 멈췄다. 서술어마다 꼭 필요한 성분을 세고, 숫자판이 검토 번호를 가리키는지 보자.'); };
+  } else if (d.kind === 'wire') {
+    const links = {}; let sel = null; const COL = ['#FF7A6A','#FFD98A','#8DB8E6'], digit = k => (d.ports.find(p => p[0] === k) || [])[2];
+    const box = $('#wbox'), svg = $('#wsvg');
+    const paint = () => {
+      const b = box.getBoundingClientRect();
+      svg.innerHTML = Object.entries(links).map(([i, k]) => { const a = box.querySelector(`.wl[data-i="${i}"]`).getBoundingClientRect(), p = box.querySelector(`.wp[data-p="${k}"]`).getBoundingClientRect(); const x1 = a.right - b.left, y1 = a.top + a.height/2 - b.top, x2 = p.left - b.left, y2 = p.top + p.height/2 - b.top, m = (x1 + x2) / 2; return `<path stroke="${COL[i]}" d="M${x1} ${y1}C${m} ${y1} ${m} ${y2} ${x2} ${y2}"/>`; }).join('');
+      box.querySelectorAll('.wl').forEach(x => x.classList.toggle('sel', x.dataset.i === sel));
+      $('#readout').textContent = '코드 ' + (links[1] ? digit(links[1]) : '·') + (links[2] ? digit(links[2]) : '·');
+    };
+    box.querySelectorAll('.wl').forEach(b => b.onclick = () => { sfx.tap(); sel = b.dataset.i; paint(); });
+    box.querySelectorAll('.wp').forEach(b => b.onclick = () => { if (sel === null) return; sfx.tap(); Object.keys(links).forEach(i => { if (links[i] === b.dataset.p) delete links[i]; }); links[sel] = b.dataset.p; sel = null; paint(); });
+    goBtn.onclick = () => { const c = (links[1] ? digit(links[1]) : '') + '' + (links[2] ? digit(links[2]) : ''), m = $('#msg'); if (Object.keys(links).length < d.lines.length) { m.className = 'msg bad'; m.textContent = '세 줄을 모두 이어 주세요.'; return; } if (d.lines.every((l, i) => links[i] === l[1])) return solveDevice(); fail(c, '추적기가 튕겨 나왔다. 높임을 받는 사람 뒤의 조사를 다시 보자.'); };
+  } else {
     let v = '';
     const paint = () => document.querySelectorAll('.slots span').forEach((s,i) => { s.textContent = v[i] || ''; s.classList.toggle('cur', i === v.length); });
     paint();
-    const press = kk => { if (kk === 'del') v = v.slice(0,-1); else if (kk === 'go') return submit(); else if (v.length < cd.dev.len) v += kk; paint(); };
+    const press = kk => { if (kk === 'del') v = v.slice(0,-1); else if (kk === 'go') return submit(); else if (v.length < d.len) v += kk; paint(); };
     document.querySelector('.pad').onclick = e => { const kk = e.target.closest('button')?.dataset.k; if (!kk) return; sfx.tap(); press(kk); };
     window.onkeydown = e => { if ($('#modal').hidden || !$('#alarm').hidden) return; if (/^[0-9]$/.test(e.key)) press(e.key); else if (e.key === 'Backspace') press('del'); else if (e.key === 'Enter') press('go'); };
     function submit(){
       const m = $('#msg');
-      if (v.length < cd.dev.len) { m.className = 'msg bad'; m.textContent = '숫자를 끝까지 넣어 주세요.'; return; }
-      if (v === cd.dev.code) return solveDevice();
-      const need = reqPre(R).length, have = reqPre(R).filter(x => S.solved[sk(R.id, x)]).length;
-      alarm(have < need ? `아직 풀지 않은 빨간 카드가 있다. (${have}/${need}) 카드를 풀어 숫자를 모으자.` : '비밀번호가 맞지 않는다. 단서 카드의 계산법(더하기·빼기)을 다시 확인하자.', n, 'dev:' + v, R.id);
+      if (v.length < d.len) { m.className = 'msg bad'; m.textContent = '숫자를 끝까지 넣어 주세요.'; return; }
+      if (v === d.code) return solveDevice();
+      fail(v, '비밀번호가 맞지 않는다. 단서 카드의 계산법(더하기·빼기)을 다시 확인하자.');
       v = ''; paint();
     }
   }
+}
+// ---------- 번호 입력: 그림 속 숨은 번호, 또는 잠긴 물건 + 도구 ----------
+function openPad(R){
+  const got = S.got[R.id];
+  cur = {R, n:'NUM', cd:null, k:'num'};
+  $('#backNo').textContent = '＋';
+  const parts = got.filter(x => (R.cards[x].locked || R.cards[x].tool) && !isUsed(R, x));
+  const chip = x => `<span style="--c:${R.cards[x].tool ? 'var(--blue)' : 'var(--red)'}"><b>${x}</b>${R.cards[x].title}</span>`;
+  $('#front').innerHTML = `<div class="big blue"><div class="hd"><span class="no">＋</span><div><small>본부 단말기</small><h3>번호 입력</h3></div><button class="x" id="xb" aria-label="닫기">✕</button></div><div class="bd">
+    <p class="ask"><em>잠긴 물건</em> 번호 + <em>도구</em> 번호의 합, 또는 그림에서 찾은 <em>숨은 번호</em>를 넣는다.</p>
+    <div class="parts">${parts.length ? parts.map(chip).join('') : '<span class="none">책상 위에 결합할 물건이 아직 없다</span>'}</div>
+    <div class="slots">${[0,1].map(()=>'<span></span>').join('')}</div>
+    <div class="pad">${[1,2,3,4,5,6,7,8,9].map(d=>`<button data-k="${d}">${d}</button>`).join('')}<button data-k="del">⌫</button><button data-k="0">0</button><button class="go" data-k="go">확인</button></div><p class="msg" id="msg"></p></div></div>`;
+  $('#modal').hidden = false; $('#flip').classList.add('show'); sfx.card();
+  $('#xb').onclick = closeCard;
+  let v = '';
+  const paint = () => document.querySelectorAll('.slots span').forEach((s, i) => { s.textContent = v[i] || ''; s.classList.toggle('cur', i === v.length); });
+  paint();
+  const reveal = (to, line) => { S.log.push({n:to, t:line, c:'#2C5A86'}); S.fresh.push(sk(R.id, to)); save(); sfx.unlock(); burst(26); window.onkeydown = null; renderRoom(S.view); openCard(R, to, true); };
+  const submit = () => {
+    const m = $('#msg'), x = +v, sec = R.secret, c = (R.combos || []).find(q => q.to === x);
+    if (!v) { m.className = 'msg bad'; m.textContent = '번호를 넣어 주세요.'; return; }
+    if (sec && x === sec.n && !got.includes(x) && got.includes(sec.from)) return reveal(x, `숨은 번호 발견 → ${R.cards[x].title}`);
+    if (c && !got.includes(x)) {
+      if (got.includes(c.a) && got.includes(c.b)) return reveal(x, `${R.cards[c.a].title} + ${R.cards[c.b].title} → 결합 성공`);
+      m.className = 'msg bad'; m.textContent = '아직 찾지 못한 물건이 있다.'; v = ''; return paint();
+    }
+    m.className = 'msg bad'; m.textContent = got.includes(x) ? '이미 책상에 있는 카드다.' : '맞물리는 것이 없다. 번호를 다시 더해 보자.'; v = ''; paint();
+  };
+  const press = kk => { if (kk === 'del') v = v.slice(0, -1); else if (kk === 'go') return submit(); else if (v.length < 2) v += kk; paint(); };
+  document.querySelector('.pad').onclick = e => { const kk = e.target.closest('button')?.dataset.k; if (!kk) return; sfx.tap(); press(kk); };
+  window.onkeydown = e => { if ($('#modal').hidden || !$('#alarm').hidden) return; if (/^[0-9]$/.test(e.key)) press(e.key); else if (e.key === 'Backspace') press('del'); else if (e.key === 'Enter') press('go'); };
 }
 function alarm(t, n, o, rid){
   S.wrong++; S.log.push({n, t:'🚨 ' + t, c:'#A8231B'}); save(); sfx.bad(); send('wrong', rid || (cur && cur.R ? cur.R.id : 'gate'), n, o || '');
@@ -977,6 +1177,7 @@ $('#teacher').onclick = e => { const t = e.target.closest('button')?.dataset.t; 
   if (t === 'skip') {
     if (!cur || $('#modal').hidden) { toast('카드를 연 상태에서 사용하세요.'); return; }
     if (cur.k === 'gate') return escape(true);
+    if (!cur.cd) { toast('이 창에서는 쓸 수 없습니다. 방 통과를 쓰세요.'); return; }
     if (cur.cd.dev) return solveDevice(true);
     if (cur.cd.opts && !S.solved[cur.k]) return solveCard(true);
   }

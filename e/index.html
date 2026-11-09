@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>출제 본부 접속</title>
+<style>html,body{margin:0;height:100%;background:#0C0D11;color:#E8E2D6;font:18px/1.7 'Noto Sans KR',sans-serif}body{display:grid;place-items:center;text-align:center;padding:24px;box-sizing:border-box}a{color:#E0B252}</style>
+</head>
+<body>
+<div><p id="m">출제 본부에 접속하는 중…</p><p><a id="l" href="../honorific-lesson-3/escape/" hidden>기록 없이 게임 열기</a></p></div>
+<script src="../honorific-lesson-3/escape/short.js"></script>
+<script>
+(async function(){
+  var GAME = '../honorific-lesson-3/escape/', api = (window.ESC_SHORT || {}).api, m = document.getElementById('m');
+  function fail(t){ m.textContent = t; document.getElementById('l').hidden = false; }
+  if (!api) { location.replace(GAME); return; }
+  try {
+    var r = await fetch(api + '?op=ctl&s=__cur&t=' + Date.now()), j = await r.json();
+    if (!j.cur) return fail('선생님이 아직 수업을 열지 않았어요. 잠시 뒤 새로고침해 주세요.');
+    location.replace(GAME + '?api=' + encodeURIComponent(api) + '&s=' + encodeURIComponent(j.cur));
+  } catch (e) { fail('접속하지 못했어요. 인터넷 연결을 확인하고 새로고침해 주세요.'); }
+})();
+</script>
+</body>
+</html>

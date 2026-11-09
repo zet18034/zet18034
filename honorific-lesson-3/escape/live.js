@@ -7,6 +7,9 @@ const GAME_URL = 'https://zet18034.github.io/zet18034/honorific-lesson-3/escape/
 function cfg(){ try { return JSON.parse(localStorage.getItem(CFG_KEY) || '{}'); } catch(e) { return {}; } }
 function setCfg(c){ try { localStorage.setItem(CFG_KEY, JSON.stringify(c)); } catch(e) {} }
 const ready = c => !!(c && c.api && c.s);
+// 짧은 주소(short.js): 설정된 웹 앱 주소와 지금 연결이 같을 때만 쓴다
+const shortUrl = c => { const o = window.ESC_SHORT || {}; return o.api && c && c.api === o.api && c.s ? o.url : ''; };
+async function publishCurrent(c){ if (!ready(c) || c.api === 'local') return; await fetch(`${c.api}?op=ctl&s=__cur&set=${encodeURIComponent(JSON.stringify({cur:c.s}))}`); }
 function joinUrl(c){ return ready(c) ? `${GAME_URL}?api=${encodeURIComponent(c.api)}&s=${encodeURIComponent(c.s)}` : GAME_URL; }
 
 // Apps Script 응답 읽기: 로그인 화면(HTML)이 오거나 요청이 막히면 원인을 알 수 있는 오류를 던진다
@@ -117,5 +120,5 @@ async function sendCmd(c, ctl, cmd){
   await setCtl(c, next);
   return next;
 }
-window.ESC_LIVE = {urlProblem, getJSON, cfg, setCfg, ready, joinUrl, fetchRows, setCtl, getCtl, sendCmd, aggregate, cardList, fmt, label, GAME_URL};
+window.ESC_LIVE = {shortUrl, publishCurrent, urlProblem, getJSON, cfg, setCfg, ready, joinUrl, fetchRows, setCtl, getCtl, sendCmd, aggregate, cardList, fmt, label, GAME_URL};
 })();
