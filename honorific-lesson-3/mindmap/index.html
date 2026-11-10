@@ -38,6 +38,17 @@ body{font-family:'Noto Sans KR',sans-serif;color:var(--ink);word-break:keep-all}
 .k-c{background:var(--card);--b:var(--bd2);border-radius:0;text-align:left;padding:6px 13px}
 .k-p{background:var(--card);--b:var(--bd);border-radius:999px;padding:5px 14px;font-size:21px}
 .k-p::before,.k-p::after{border-radius:999px}
+.rel{width:1130px;margin-left:54px;padding:0;--f:var(--card)}
+.rel table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:24px}
+.rel th,.rel td{border:1.6px solid var(--bd2);padding:17px 4px;text-align:center}
+.rel tr>:first-child{border-left:0}.rel tr>:last-child{border-right:0}.rel thead th{border-top:0}.rel tbody tr:last-child>*{border-bottom:0}
+.rel thead th{background:var(--f1);font:400 28px/1.2 'Do Hyeon',sans-serif;color:#3A3546;padding:13px 4px}
+.rel thead th:first-child{width:300px}
+.rel .grp{background:var(--f1);font:400 32px/1.2 'Do Hyeon',sans-serif;color:#3A3546}
+.rel .grp small{display:block;font:500 18px/1.3 'Noto Sans KR',sans-serif;color:var(--mute);margin-top:4px}
+.rel .lv{background:var(--f2);font:400 27px/1.2 'Do Hyeon',sans-serif;color:#3A3546}
+.rela{position:absolute;left:-50px;top:50%;margin-top:-12px}
+.rela path{fill:none;stroke:var(--a);stroke-width:3.6;stroke-linecap:round;stroke-linejoin:round}
 .postit{position:absolute;width:470px;padding:16px 20px 14px;background:#FCEFA6;color:#4A4230;transform:rotate(-1.6deg);box-shadow:3px 7px 14px rgba(90,70,20,.22);font-size:20px;line-height:1.38}
 .postit::before{content:"";position:absolute;left:50%;top:-14px;width:120px;height:28px;margin-left:-60px;background:rgba(201,168,92,.5);transform:rotate(2deg)}
 .postit.pk{background:#F9D8E0}.postit.mt{background:#D4ECD9}.postit.bl{background:#D6E7F5}
@@ -149,19 +160,18 @@ const P = [
    {x:560,y:721,w:440,r:-1.2,c:'bl',html:'<b>뵙다? 봬요?</b><em>뵙-</em> + 자음 어미: 뵙고, 뵙겠습니다<br><em>뵈-</em> + 모음 어미: 봬요, 봬도'},
    {x:1110,y:721,w:520,r:1,c:'mt',html:'<b>겸양</b>나를 낮춰 상대를 높여요: <em>저, 저희</em><br><span class="no">×</span> 저희 나라 → ○ 우리나라'}] },
 
-{ cols:[210,200,190,640], gap:54, vg:14,
-  tree:n('상대<br>높임<small>주로 종결 어미</small>','root','th-rel',[
-    n('격식체<small>공적인 자리 · 거리감</small>','a',null,[
-      n('하십시오체','b',null,[ c('가십니다 · 가십니까? · 가십시오 · (가시지요) · –') ]),
-      n('하오체','b',null,[ c('가(시)오 · 가(시)오? · 가(시)오 · 갑시다 · 가는구려') ]),
-      n('하게체','b',null,[ c('가네 · 가는가? · 가게 · 가세 · 가는구먼') ]),
-      n('해라체','b',null,[ c('간다 · 가니? · 가(거)라 · 가자 · 가는구나') ]),
-    ]),
-    n('비격식체<small>편한 자리 · 친밀함</small>','a',null,[
-      n('해요체','b',null,[ c('가요 · 가요? · 가(세/셔)요') ]),
-      n('해체','b',null,[ c('가, 가지 · 가?, 가지?') ]),
-    ]),
-  ]), pens:[], deco:[],
+{ cols:[210], gap:54, vg:14,
+  tree:n('상대<br>높임<small>주로 종결 어미</small>','root','th-rel',[]),
+  table:{ head:['평서법','의문법','명령법','청유법','감탄법'], groups:[
+    { name:'격식체', sub:'공적인 자리<br>거리감', rows:[
+      ['하십시오체','가십니다','가십니까?','가십시오','(가시지요)','–'],
+      ['하오체','가(시)오','가(시)오?','가(시)오','갑시다','가는구려'],
+      ['하게체','가네, 감세','가는가?, 가나?','가게','가세','가는구먼'],
+      ['해라체','간다','가니?','가(거)라','가자','가는구나'] ]},
+    { name:'비격식체', sub:'편한 자리<br>친밀함', rows:[
+      ['해요체','가요','가요?','가(세/셔)요','가(세/셔)요','가(세/셔)요'],
+      ['해체','가, 가지','가?, 가지?','가, 가지','가, 가지','가, 가지'] ]},
+  ]}, pens:[], deco:[],
   notes:[{x:1510,y:101,w:360,r:1.3,html:'<b>하십시오체의 빈칸</b>고유한 청유형·감탄형이 없어요. ‘가시지요’는 해요체 ‘-지요’를 빌린 것이에요.'},
    {x:1510,y:321,w:360,r:-1,c:'mt',html:'<b>하오체·하게체</b>‘-시오’ = ‘-시-’ + 하오체 ‘-오’ (미시오)<br>하게체는 낮추지만 <em>대우해 주는</em> 말'},
    {x:1510,y:541,w:360,r:1,c:'bl',html:'<b>‘요’의 정체</b>해체 + ‘요’ = 해요체. ‘요’는 높임을 더하는 <em>보조사</em>예요.'},
@@ -171,6 +181,10 @@ const DECO = {
  heart:`<g fill="none" stroke="#D5CFC4" stroke-width="5" stroke-linecap="round"><path d="M1610 96c-14-18-34-6-22 12l22 22 22-22c12-18-8-30-22-12z"/><path d="M1678 128c-9-12-22-4-14 8l14 14 14-14c8-12-5-20-14-8z"/></g>`,
  tree:`<g transform="translate(110 0)" fill="none" stroke="#CFE1C0" stroke-width="5" stroke-linecap="round"><circle cx="1640" cy="112" r="50"/><circle cx="1642" cy="114" r="47"/><path d="M1640 162V92M1640 122l-20-20M1640 138l23-22"/></g>`,
 };
+function relTable(tb){
+  const rows = tb.groups.map(g => g.rows.map((r, ri) => `<tr>${ri ? '' : `<th class="grp" rowspan="${g.rows.length}">${g.name}<small>${g.sub}</small></th>`}<th class="lv">${r[0]}</th>${r.slice(1).map(v => `<td>${v}</td>`).join('')}</tr>`).join('')).join('');
+  return `<div class="box rel th-rel"><svg class="rela" width="46" height="24" viewBox="0 0 46 24"><path d="M2 12H42M32 4l10 8-10 8"/></svg><table><thead><tr><th colspan="2">등급</th>${tb.head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table></div>`;
+}
 function html(nd, depth, cols){
   const k = nd.k, w = nd.w || cols[Math.min(depth, cols.length - 1)];
   const kids = nd.ch.length ? `<div class="ch">${nd.ch.map(x => html(x, depth + 1, cols)).join('')}</div>` : '';
@@ -180,7 +194,7 @@ P.forEach((p, i) => {
   const s = document.createElement('section'); s.className = 'page';
   s.innerHTML = `<svg class="deco" viewBox="0 0 1920 1080">${(p.deco||[]).map(d => DECO[d]).join('')}</svg>
    <span class="pg">${i + 1} / ${P.length}</span>
-   <div class="tree" style="--gap:${p.gap}px;--vg:${p.vg}px">${html(p.tree, 0, p.cols)}</div><svg class="ln"></svg>
+   <div class="tree" style="--gap:${p.gap}px;--vg:${p.vg}px">${html(p.tree, 0, p.cols)}${p.table ? relTable(p.table) : ''}</div><svg class="ln"></svg>
    ${(p.notes || []).map(a => `<div class="postit ${a.c || ''}"${a.on ? ` data-on="${a.on}"` : ` style="left:${a.x}px;top:${a.y}px;width:${a.w}px;transform:rotate(${a.r || 0}deg)"`}>${a.html}</div>`).join('')}${(p.pens||[]).map(a => `<span class="pen ${a[4]||''}" style="left:${a[1]}px;top:${a[2]}px;transform:rotate(${a[3]}deg)">${a[0]}</span>`).join('')}`;
   document.body.appendChild(s);
 });
