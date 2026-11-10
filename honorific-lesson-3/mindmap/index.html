@@ -42,6 +42,7 @@ h1{position:absolute;left:72px;top:96px;margin:0;font:400 58px/1.15 'Do Hyeon',s
 .k-p::before,.k-p::after{border-radius:999px}
 .postit{position:absolute;width:470px;padding:16px 20px 14px;background:#FCEFA6;color:#4A4230;transform:rotate(-1.6deg);box-shadow:3px 7px 14px rgba(90,70,20,.22);font-size:20px;line-height:1.38}
 .postit::before{content:"";position:absolute;left:50%;top:-14px;width:120px;height:28px;margin-left:-60px;background:rgba(201,168,92,.5);transform:rotate(2deg)}
+.postit.pk{background:#F9D8E0}.postit.mt{background:#D4ECD9}.postit.bl{background:#D6E7F5}
 .postit b{display:block;font:400 36px/1.05 'Nanum Pen Script',cursive;color:#B04568;margin-bottom:5px}
 .postit ol{margin:0;padding-left:24px}
 .postit em{font-style:normal;font-weight:700;color:#8A5A12}
@@ -82,8 +83,9 @@ const P = [
       n('시간 표현 · 피동과 사동 표현','dim',null), n('부정 표현 · 인용 표현','dim',null),
     ]),
   ]),
-  pens:[['문법 요소를 골라 쓰면',1560,520,-2,''],['→ 화자의 태도가 드러나요!',1560,566,-2,'']], deco:[],
-  note:{on:'안은 문장', html:'<b>문장 속 높임 TIP</b><ol><li>[ ] 안긴문장을 떼어 <em>한 문장으로</em> 풀어 본다.</li><li>안과 밖에서 <em>주어를 따로</em> 찾는다. ‘-시-’는 자기 절의 주어를 높인다.</li><li>높임받는 사람 뒤의 <em>조사</em>로 바깥 문장의 성분을 확인한다.</li></ol>'} },
+  pens:[], deco:[],
+  notes:[{on:'안은 문장', html:'<b>문장 속 높임 TIP</b><ol><li>[ ] 안긴문장을 떼어 <em>한 문장으로</em> 풀어 본다.</li><li>안과 밖에서 <em>주어를 따로</em> 찾는다. ‘-시-’는 자기 절의 주어를 높인다.</li><li>높임받는 사람 뒤의 <em>조사</em>로 바깥 문장의 성분을 확인한다.</li></ol>'},
+    {x:1530,y:470,w:330,r:2,c:'pk',html:'<b>기억하기</b>문법 요소를 골라 쓰면 <em>화자의 태도</em>가 드러나요!'}] },
 
 { pill:'1차시 · 문장 종결 표현', title:'문장을 어떻게 끝맺을까?', cols:[230,170,620,470], gap:60, vg:11,
   tree:n('문장 종결<br>표현<small>종결 어미로 구분</small>','root','th-end',[
@@ -95,7 +97,8 @@ const P = [
     n('감탄문','a',null,[ c('혼잣말처럼 <b>느낌을 표현</b> · <b>-구나, -군</b>'+X('이 동네는 서점이 없<em>구나</em>.')) ]),
     n('형식 ≠ 기능','a','th-sub',[ c('“창문 좀 열어 줄 수 있니?”  형식 <b>의문문</b> → 기능 <b>요청</b>'+X('의문문으로 말하면 더 공손하고 부드러운 태도')) ]),
   ]),
-  pens:[['명령문·청유문의 서술어는',1310,620,-2,'pu'],['동사만! (착해라 ×, 바람·기원은 예외)',1310,664,-2,'pu']], deco:['tree'] },
+  pens:[], deco:['tree'],
+  notes:[{x:1290,y:600,w:500,r:1.5,html:'<b>명령문·청유문의 서술어</b><em>동사</em>만 올 수 있어요. 공부해라 ○ / 착해라 ×<br>바람·기원이면 형용사도 가능: 행복해라<br>내 의지로 못 하는 일은 어색: 늙어라'}] },
 
 { pill:'1·2차시 · 높임 표현', title:'누구를 높이는가에 따라 세 가지', cols:[230,230,240,800], gap:62, vg:9,
   tree:n('높임<br>표현<small>높이거나 낮추는<br>정도를 구별</small>','root','th-sub',[
@@ -112,7 +115,8 @@ const P = [
       n('어떻게?','b',null,[ c('주로 <b>종결 어미</b> · 격식체 4단계 + 비격식체 2단계'+X('발표를 시작하겠<em>습니다</em>.'),800) ]),
     ]),
   ]),
-  pens:[['한 문장에 세 가지가 함께!  할머니께서 할아버지께 선물을 드리셨어요.',560,1012,-1,'']], deco:['tape2'] },
+  pens:[], deco:['tape2'],
+  notes:[{x:1200,y:205,w:540,r:-1.2,c:'bl',html:'<b>잠깐!</b>‘주어’는 문장 성분의 이름이에요. 우리가 높이는 건 <em>주어가 가리키는 실제 대상</em>이에요.'}] },
 
 { pill:'1차시 · 주체 높임', title:'주어가 가리키는 대상을 높여요', cols:[210,210,250,740], gap:58, vg:9,
   tree:n('주체<br>높임','root','th-sub',[
@@ -126,11 +130,10 @@ const P = [
       n('밀접한 대상','b',null,[ c('신체·소유물·가족 등을 높여 그 사람을 높임'+X('할머니께서는 아직 <em>귀</em>가 밝<em>으시</em>다.')) ]),
       n('‘-(으)시-’만','b',null,[ c('<span class="no">×</span> 말씀이 계시겠습니다  →  ○ 말씀이 <b>있으시겠습니다</b>') ]),
     ]),
-    n('조심할 것','a','th-gold',[
-      n('사물 높임','b','th-gold',[ c('<span class="no">×</span> 주문하신 음료 나오셨습니다  →  ○ 음료가 <b>나왔습니다</b>') ]),
-      n('압존법','b','th-gold',[ c('듣는 사람보다 낮은 대상은 높이지 않음 · 요즘은 꼭 지키지 않아도 됨') ]),
-    ]),
-  ]), pens:[], deco:['heart'] },
+  ]), pens:[], deco:['heart'],
+  notes:[{x:1170,y:186,w:500,r:1.2,c:'pk',html:'<b>조심! 사물 높임</b><span class="no">×</span> 주문하신 음료 나오셨습니다.<br>○ 음료가 <em>나왔습니다</em>.<br>음료는 손님과 밀접한 관계가 아니에요.'},
+   {x:1170,y:860,w:500,r:-1,html:'<b>압존법</b>듣는 사람보다 낮은 대상은 높이지 않아요.<br>“할아버지, 아버지가 왔습니다.”<br>요즘은 <em>꼭 지키지 않아도</em> 된다고 봐요.'},
+   {x:610,y:872,w:470,r:1,c:'mt',html:'<b>특수 어휘</b>계시다·주무시다는 <em>통째로 한 단어</em>라서 ‘-시-’로 떼어 분석하지 않아요.'}] },
 
 { pill:'2차시 · 객체 높임', title:'받는 사람을 높여요', cols:[210,220,250,720], gap:60, vg:12,
   tree:n('객체<br>높임','root','th-obj',[
@@ -146,27 +149,28 @@ const P = [
       n('뵙- + 자음','b',null,[ c('뵙고, 뵙지, 뵙겠습니다') ]),
       n('뵈- + 모음','b',null,[ c('뵈어요→<b>봬요</b>, 뵈어도→<b>봬도</b>  ·  ‘해요’가 되면 <b>봬요</b>') ]),
     ]),
-    n('더 알기','a','th-gold',[
-      n('옛말의 흔적','b','th-gold',[ c('뵙다·여쭙다의 ‘ㅂ’, ‘-습니다’의 ‘습’') ]),
-      n('겸양','b','th-gold',[ c('나를 낮춰 상대를 높임: <b>저, 저희</b>  ·  <span class="no">×</span> 저희 나라 → ○ 우리나라') ]),
-    ]),
   ]),
-  pens:[['주체 높임의 ‘-시-’ 같은 선어말 어미는 지금 없어요!',1090,1000,-1,'gr']], deco:['tree'] },
+  pens:[], deco:['tree'],
+  notes:[{x:1110,y:196,w:520,r:-1.2,html:'<b>선어말 어미는?</b>주체 높임의 ‘-시-’ 같은 어미는 지금 <em>없어요</em>. 뵙다·여쭙다의 ‘ㅂ’, ‘-습니다’의 ‘습’에 옛말의 흔적이 남았어요.'},
+   {x:1110,y:845,w:520,r:1,c:'mt',html:'<b>겸양</b>나를 낮춰 상대를 높여요: <em>저, 저희</em><br><span class="no">×</span> 저희 나라 → ○ 우리나라'}] },
 
-{ pill:'2차시 · 상대 높임', title:'듣는 사람에 맞춰 말해요', cols:[210,200,190,860], gap:54, vg:9,
+{ pill:'2차시 · 상대 높임', title:'듣는 사람에 맞춰 말해요', cols:[210,200,190,640], gap:54, vg:14,
   tree:n('상대<br>높임<small>주로 종결 어미</small>','root','th-rel',[
     n('격식체<small>공적인 자리 · 거리감</small>','a',null,[
-      n('하십시오체','b',null,[ c('가십니다 · 가십니까? · 가십시오 · (가시지요) · –'+X('고유한 청유형·감탄형이 없어요')) ]),
-      n('하오체','b',null,[ c('가(시)오 · 가(시)오? · 가(시)오 · 갑시다 · 가는구려'+X('‘-시오’ = ‘-시-’ + 하오체 ‘-오’  (미시오, 당기시오)')) ]),
-      n('하게체','b',null,[ c('가네 · 가는가? · 가게 · 가세 · 가는구먼'+X('낮추지만 대우해 주는 말')) ]),
+      n('하십시오체','b',null,[ c('가십니다 · 가십니까? · 가십시오 · (가시지요) · –') ]),
+      n('하오체','b',null,[ c('가(시)오 · 가(시)오? · 가(시)오 · 갑시다 · 가는구려') ]),
+      n('하게체','b',null,[ c('가네 · 가는가? · 가게 · 가세 · 가는구먼') ]),
       n('해라체','b',null,[ c('간다 · 가니? · 가(거)라 · 가자 · 가는구나') ]),
     ]),
     n('비격식체<small>편한 자리 · 친밀함</small>','a',null,[
-      n('해요체','b',null,[ c('가요 · 가요? · 가(세/셔)요'+X('해체 + ‘요’(높임을 더하는 보조사)')) ]),
+      n('해요체','b',null,[ c('가요 · 가요? · 가(세/셔)요') ]),
       n('해체','b',null,[ c('가, 가지 · 가?, 가지?') ]),
     ]),
-    n('화자의 태도','a','th-gold',[ n('담화 맥락','b','th-gold',[ c('<b>존중</b> · <b>예의</b> · <b>친밀감↔거리감</b>이 고른 표현에 드러나요') ]) ]),
-  ]), pens:[], deco:['tape'] },
+  ]), pens:[], deco:[],
+  notes:[{x:1510,y:170,w:360,r:1.3,html:'<b>하십시오체의 빈칸</b>고유한 청유형·감탄형이 없어요. ‘가시지요’는 해요체 ‘-지요’를 빌린 것이에요.'},
+   {x:1510,y:390,w:360,r:-1,c:'mt',html:'<b>하오체·하게체</b>‘-시오’ = ‘-시-’ + 하오체 ‘-오’ (미시오)<br>하게체는 낮추지만 <em>대우해 주는</em> 말'},
+   {x:1510,y:610,w:360,r:1,c:'bl',html:'<b>‘요’의 정체</b>해체 + ‘요’ = 해요체. ‘요’는 높임을 더하는 <em>보조사</em>예요.'},
+   {x:1510,y:800,w:360,r:-1.2,c:'pk',html:'<b>화자의 태도</b><em>존중, 예의, 친밀감↔거리감</em>이 고른 표현에 드러나요.'}] },
 ];
 const DECO = {
  tape:`<g transform="rotate(-12 1640 110)"><rect x="1530" y="88" width="230" height="44" fill="#F2C7A8" opacity=".85"/><g fill="#E8B04A" opacity=".7">${[0,1,2,3,4,5,6].map(i=>`<circle cx="${1550+i*30}" cy="${110+(i%2?-9:6)}" r="5"/>`).join('')}</g></g><g transform="rotate(-6 1610 150)"><rect x="1510" y="132" width="200" height="36" fill="#A9D2D6" opacity=".75"/></g>`,
@@ -185,7 +189,7 @@ P.forEach((p, i) => {
   s.innerHTML = `<svg class="deco" viewBox="0 0 1920 1080">${wave}${(p.deco||[]).map(d => DECO[d]).join('')}</svg>
    <span class="pill">${p.pill}</span><h1>${p.title}</h1><span class="pg">${i + 1} / ${P.length}</span>
    <div class="tree" style="--gap:${p.gap}px;--vg:${p.vg}px">${html(p.tree, 0, p.cols)}</div><svg class="ln"></svg>
-   ${p.note ? `<div class="postit" data-on="${p.note.on}">${p.note.html}</div>` : ''}${(p.pens||[]).map(a => `<span class="pen ${a[4]||''}" style="left:${a[1]}px;top:${a[2]}px;transform:rotate(${a[3]}deg)">${a[0]}</span>`).join('')}`;
+   ${(p.notes || []).map(a => `<div class="postit ${a.c || ''}"${a.on ? ` data-on="${a.on}"` : ` style="left:${a.x}px;top:${a.y}px;width:${a.w}px;transform:rotate(${a.r || 0}deg)"`}>${a.html}</div>`).join('')}${(p.pens||[]).map(a => `<span class="pen ${a[4]||''}" style="left:${a[1]}px;top:${a[2]}px;transform:rotate(${a[3]}deg)">${a[0]}</span>`).join('')}`;
   document.body.appendChild(s);
 });
 function wire(){
@@ -210,7 +214,7 @@ if (solo) { document.body.classList.add('solo'); document.querySelectorAll('.pag
 (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => {
   wire();
   const out = [];
-  document.querySelectorAll('.page').forEach((pg, i) => { if (solo && !pg.classList.contains('on')) return; const r = pg.getBoundingClientRect(); let t = 1e9, b = -1e9, rt = -1e9; pg.querySelectorAll('.box').forEach(e => { const q = e.getBoundingClientRect(); t = Math.min(t, q.top - r.top); b = Math.max(b, q.bottom - r.top); rt = Math.max(rt, q.right - r.left); }); out.push(`${i + 1}: top ${Math.round(t)} bottom ${Math.round(b)} right ${Math.round(rt)}`); });
+  document.querySelectorAll('.page').forEach((pg, i) => { if (solo && !pg.classList.contains('on')) return; const r = pg.getBoundingClientRect(); let t = 1e9, b = -1e9, rt = -1e9; pg.querySelectorAll('.box').forEach(e => { const q = e.getBoundingClientRect(); t = Math.min(t, q.top - r.top); b = Math.max(b, q.bottom - r.top); rt = Math.max(rt, q.right - r.left); }); let ov = 0, nb = 0; pg.querySelectorAll('.postit').forEach(n => { const a = n.getBoundingClientRect(); if (a.bottom - r.top > 1072 || a.right - r.left > 1912 || a.top - r.top < 150) nb++; pg.querySelectorAll('.box').forEach(e => { const q = e.getBoundingClientRect(); if (a.left < q.right && a.right > q.left && a.top < q.bottom && a.bottom > q.top) ov++; }); }); out.push(`${i + 1}: box ${Math.round(t)}-${Math.round(b)} right ${Math.round(rt)} overlap ${ov} out ${nb}`); });
   document.documentElement.dataset.check = out.join(' | ');
 });
 </script>
