@@ -203,9 +203,7 @@
   .rrow .mini { font-size: 22px; font-weight: 700; text-align: center; border-radius: 999px; padding: 4px 0; background: #fff; }
   .ctlcard { padding: 22px 28px; display: flex; flex-direction: column; gap: 14px; }
   #act1-a .nh3-grid { margin-top: 14px; }
-  #act1-a .eqcard { font-size: 56px; padding: 6px; }
-  #act1-a .rrows { gap: 10px; margin-top: 12px; }
-  #act1-a .rrow { padding: 8px 24px; }
+  #act1-a .eqcard { font-size: 60px; padding: 20px 6px; letter-spacing: 0; }
   #act1-a .ctlcard { padding: 16px 28px; gap: 8px; }
 
   /* ---------- slide 7 ---------- */
@@ -229,6 +227,10 @@
   .gen .vline { font-size: 58px; display: flex; align-items: center; gap: 6px; }
   .gen .vline .frac { font-size: 52px; }
   .def-grid .card { min-height: 400px; }
+  #definition .gen { margin-top: 18px; padding: 12px 30px; gap: 6px; }
+  #definition .gen > .m:first-child { font-size: 46px; }
+  #definition .gen .vline { font-size: 46px; }
+  #definition .gen .vline .frac { font-size: 40px; }
 
   /* ---------- slide 9 ---------- */
   .ans-grid { display: grid; grid-template-columns: 1fr 760px; gap: 36px; margin-top: 26px; }
@@ -503,11 +505,11 @@
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 1</span></div>
     <div class="body">
-      <div class="q"><span class="qbadge">활동 1</span><p>암모니아 생성 반응의 화학 반응식을 적고, <b>10초 동안 질소가 1 M 반응</b>했을 때 반응식의 모든 물질의 소모·생성 속도(Δ[X]/Δ<i class="m">t</i>)를 구해 보세요. 암모니아 생성 반응의 반응 속도와 그 이유에 대해 토론해 보세요.</p></div>
+      <div class="q" style="font-size:30px"><span class="qbadge">활동 1</span><p>물의 전기분해 반응의 화학 반응식을 적고, <b>10초 동안 물을 전기분해하여 산소가 1 M 생성</b>되었을 때 산소와 수소의 생성 속도(Δ[X]/Δ<i class="m">t</i>)를 구해 보세요. 물의 전기분해 반응의 반응 속도와 그 이유에 대해 토론해 보세요.</p></div>
       <div class="work" style="height:540px">
         <span class="work-label">풀이 공간 · <kbd>P</kbd> 키를 누르면 화면에 판서할 수 있어요</span>
         <div class="hints">
-          <div class="hint" data-step="1 rise"><b>힌트 1</b>암모니아(NH<sub>3</sub>)는 질소(N<sub>2</sub>)와 수소(H<sub>2</sub>)로 만들어져요. 원자 수를 맞춰 계수를 정해 보세요.</div>
+          <div class="hint" data-step="1 rise"><b>힌트 1</b>물(H<sub>2</sub>O)이 분해되어 수소(H<sub>2</sub>)와 산소(O<sub>2</sub>)가 생겨요. 원자 수를 맞춰 계수를 정해 보세요.</div>
           <div class="hint" data-step="2 rise"><b>힌트 2</b>계수비 = 반응하는 양(M)의 비</div>
           <div class="hint" data-step="3 rise"><b>힌트 3</b>반응물은 소모 속도(−), 생성물은 생성 속도(+)</div>
         </div>
@@ -522,35 +524,72 @@
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도 <small>— 반응 계수와의 관계</small></h2><span class="tag act">활동 1 풀이</span></div>
     <div class="body">
-      <div class="q small"><span class="qbadge">활동 1</span><p>10초 동안 질소가 1 M 반응했을 때 반응식의 모든 물질의 소모·생성 속도(Δ[X]/Δ<i class="m">t</i>)를 구해 보세요. 암모니아 생성 반응의 반응 속도와 그 이유에 대해 토론해 보세요.</p></div>
+      <div class="q small"><span class="qbadge">활동 1</span><p>10초 동안 물을 전기분해하여 산소가 1 M 생성되었을 때 산소와 수소의 생성 속도(Δ[X]/Δ<i class="m">t</i>)를 구해 보세요. 물의 전기분해 반응의 반응 속도와 그 이유에 대해 토론해 보세요.</p></div>
       <p class="note-line" style="margin-top:14px">※ 각 물질의 반응량은 계수에 비례하므로 생성·소모 속도도 계수에 비례합니다. 소모 속도(−), 생성 속도(+)</p>
       <div class="nh3-grid">
         <div>
-          <div class="card eqcard m">N<sub>2</sub> + <span class="cons">3</span>H<sub>2</sub> → <span class="prod">2</span>NH<sub>3</sub></div>
+          <div class="card eqcard m">2H<sub>2</sub>O(<i>l</i>) → <span class="prod">2</span>H<sub>2</sub>(<i>g</i>) + O<sub>2</sub>(<i>g</i>)</div>
           <div class="rrows">
-            <div class="rrow cons" data-step="1 rise"><span class="sp">N<sub>2</sub></span><span><b data-nh3="d0">−1</b> M ÷ <b data-nh3="t">10</b> s</span><span>=</span><span class="res cons" data-nh3="r0">−0.1 M/s</span><span class="mini cons">감소</span></div>
-            <div class="rrow cons" data-step="2 rise"><span class="sp">H<sub>2</sub></span><span><b data-nh3="d1">−3</b> M ÷ <b data-nh3="t">10</b> s</span><span>=</span><span class="res cons" data-nh3="r1">−0.3 M/s</span><span class="mini cons">감소</span></div>
-            <div class="rrow prod" data-step="3 rise"><span class="sp">NH<sub>3</sub></span><span><b data-nh3="d2">+2</b> M ÷ <b data-nh3="t">10</b> s</span><span>=</span><span class="res prod" data-nh3="r2">+0.2 M/s</span><span class="mini prod">증가</span></div>
+            <div class="rrow prod" data-step="1 rise"><span class="sp">O<sub>2</sub></span><span><b data-nh3="d0">+1</b> M ÷ <b data-nh3="t">10</b> s</span><span>=</span><span class="res prod" data-nh3="r0">+0.1 M/s</span><span class="mini prod">증가</span></div>
+            <div class="rrow prod" data-step="2 rise"><span class="sp">H<sub>2</sub></span><span><b data-nh3="d1">+2</b> M ÷ <b data-nh3="t">10</b> s</span><span>=</span><span class="res prod" data-nh3="r1">+0.2 M/s</span><span class="mini prod">증가</span></div>
           </div>
-          <div class="find f3" data-step="4 rise" style="margin-top:14px;padding:10px 20px"><span class="t">토론</span>물질마다 속도가 달라 하나로 말할 수 없다. 속도 비 1 : 3 : 2 = 계수 비이므로 <b>계수로 나누면 하나의 값</b>이 된다.</div>
-          <p data-step="5 pop" style="margin-top:10px;font-size:36px;font-weight:900;text-align:center;color:var(--green)">화학 반응 속도 <i class="m">v</i> = <span data-nh3="v">0.1 M/s</span></p>
+          <p data-step="3 pop" style="margin-top:30px;font-size:46px;font-weight:900;text-align:center;color:var(--green)">화학 반응 속도 <i class="m">v</i> = <span data-nh3="v">0.1 M/s</span></p>
         </div>
         <div class="card ctlcard">
-          <div class="slider"><span>반응한 N<sub>2</sub></span><input type="range" id="nh3-dn" min="0.5" max="3" step="0.5" value="1"><output id="nh3-dn-o">1 M</output></div>
+          <div class="slider"><span>생성된 O<sub>2</sub></span><input type="range" id="nh3-dn" min="0.5" max="3" step="0.5" value="1"><output id="nh3-dn-o">1 M</output></div>
           <div class="slider"><span>반응 시간 Δ<i class="m">t</i></span><input type="range" id="nh3-dt" min="5" max="30" step="5" value="10"><output id="nh3-dt-o">10 s</output></div>
           <svg id="nh3-svg" viewBox="0 0 700 380" width="608" height="330" style="align-self:center"></svg>
-          <div class="ctrl" style="margin-top:0"><button class="btn" id="nh3-play">▶ 반응 재생</button><span style="font-size:22px;color:var(--muted);align-self:center">처음 농도: N<sub>2</sub> 4 M, H<sub>2</sub> 12 M</span></div>
+          <div class="ctrl" style="margin-top:0"><button class="btn" id="nh3-play">▶ 반응 재생</button><span style="font-size:22px;color:var(--muted);align-self:center">처음 농도: O<sub>2</sub> 0 M, H<sub>2</sub> 0 M</span></div>
         </div>
       </div>
     </div>
   </div>
-  <aside>[활동 1 풀이] 클릭할 때마다 N₂, H₂, NH₃의 속도, 토론 정리, 반응 속도 순서로 나옵니다. 오른쪽 슬라이더로 반응량과 시간을 바꾸면 왼쪽 계산이 함께 바뀌어요. 어떤 값을 넣어도 속도 비는 항상 1 : 3 : 2라는 점을 확인시키세요.</aside>
+  <aside>[활동 1 풀이] 클릭할 때마다 O₂의 속도, H₂의 속도, 반응 속도 순서로 나옵니다. 토론은 학생들의 답을 먼저 들어 보세요. 오른쪽 슬라이더로 생성량과 시간을 바꾸면 왼쪽 계산이 함께 바뀌어요. 어떤 값을 넣어도 속도 비는 항상 1 : 2라는 점을 확인시키세요.</aside>
 </section>
 
 <!-- 7 -->
+<section id="act2-q">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 2</span></div>
+    <div class="body">
+      <div class="q"><span class="qbadge">활동 2</span><p>프로페인의 연소 반응 <span class="m" style="font-size:1.1em">C<sub>3</sub>H<sub>8</sub>(<i>g</i>) + 5O<sub>2</sub>(<i>g</i>) → 3CO<sub>2</sub>(<i>g</i>) + 4H<sub>2</sub>O(<i>l</i>)</span> 에서 <b>10초 동안 O<sub>2</sub>가 5 M 소모</b>되었을 때, O<sub>2</sub>의 소모 속도와 반응 속도를 구하고, 이를 통해 CO<sub>2</sub>의 생성 속도(Δ[CO<sub>2</sub>]/Δ<i class="m">t</i>)를 구해 보세요.</p></div>
+      <div class="work" style="height:540px">
+        <span class="work-label">풀이 공간 · <kbd>P</kbd> 키로 판서</span>
+        <div class="hints">
+          <div class="hint" data-step="1 rise"><b>힌트 1</b>먼저 O<sub>2</sub>의 소모 속도 = 변화량 ÷ 시간</div>
+          <div class="hint" data-step="2 rise"><b>힌트 2</b>반응 속도 <i class="m">v</i> = −(소모 속도) ÷ O<sub>2</sub>의 계수</div>
+          <div class="hint" data-step="3 rise"><b>힌트 3</b>CO<sub>2</sub>의 생성 속도 = (CO<sub>2</sub>의 계수) × <i class="m">v</i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside>[활동 2 · 3분] 이번에는 소모 속도에서 출발합니다. O₂의 소모 속도 → 반응 속도 → CO₂의 생성 속도 순서로 구해 보게 하세요.</aside>
+</section>
+
+<!-- 8 -->
+<section id="act2-a">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 2 풀이</span></div>
+    <div class="body">
+      <div class="q small"><span class="qbadge">활동 2</span><p><span class="m">C<sub>3</sub>H<sub>8</sub>(<i>g</i>) + 5O<sub>2</sub>(<i>g</i>) → 3CO<sub>2</sub>(<i>g</i>) + 4H<sub>2</sub>O(<i>l</i>)</span> · 10초 동안 O<sub>2</sub>가 5 M 소모 · O<sub>2</sub>의 소모 속도, 반응 속도, CO<sub>2</sub>의 생성 속도(Δ[CO<sub>2</sub>]/Δ<i class="m">t</i>)</p></div>
+      <div class="ans-grid">
+        <div class="steps">
+          <div class="card stp" data-step="1 rise"><span class="n">1</span><p>O<sub>2</sub>의 소모 속도 = <span class="cons">−5 M</span> ÷ 10 s = <span class="big cons">−0.5 M/s</span></p></div>
+          <div class="card stp" data-step="2 rise"><span class="n">2</span><p>반응 속도 <i class="m">v</i> = 0.5 ÷ <b>5</b> <small style="color:var(--muted)">(O<sub>2</sub>의 계수)</small> = <span class="big" style="color:var(--green)">0.1 M/s</span></p></div>
+          <div class="card stp" data-step="3 rise"><span class="n">3</span><p>CO<sub>2</sub>의 생성 속도 = <b>3</b> × 0.1 = <span class="big prod">+0.3 M/s</span><br><span style="font-size:26px;color:var(--ink-2)">생성물은 (+) 생성 속도, 계수 3 × 반응 속도</span></p></div>
+          <p class="hand" data-step="4 pop" style="font-size:50px;color:var(--blue-deep);text-align:center">계수만 알면 하나로 나머지를 모두 구한다!</p>
+        </div>
+        <div class="card" data-step="3 rise" style="padding:18px 20px"><svg id="c3h8-svg" viewBox="0 0 720 560" width="720" height="560"></svg></div>
+      </div>
+    </div>
+  </div>
+  <aside>[활동 2 풀이] ① O₂의 소모 속도 −0.5 M/s → ② 부호를 맞춰 계수 5로 나누어 v = 0.1 M/s → ③ 계수 3을 곱해 CO₂의 생성 속도 +0.3 M/s. 막대 길이가 계수 1 : 5 : 3에 비례합니다. H₂O는 액체이므로 막대에서 뺐습니다.</aside>
+</section>
+
+<!-- 9 -->
 <section id="definition">
   <div class="panel">
-    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도 <small>— 정의</small></h2><span class="tag">핵심 개념</span></div>
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도 <small>— 정의와 일반식</small></h2><span class="tag">핵심 개념</span></div>
     <div class="body">
       <div class="def-grid">
         <div class="card defcard">
@@ -559,62 +598,25 @@
           <div class="feat"><span class="k">특징 2</span><p><b class="cons">항상 양수(+)</b> — 소모 속도로 구할 때는 (−)를 곱해 양수로 만든다.</p></div>
         </div>
         <div class="card conv">
-          <p class="conv-t">활동 1에 적용해 보기 · N<sub>2</sub> + 3H<sub>2</sub> → 2NH<sub>3</sub></p>
-          <div class="conv-grid">
-            <span class="ch">물질</span><span class="ch">소모·생성 속도</span><span class="ch" data-step="1">÷ 계수</span><span class="ch" data-step="2">부호 → (+)</span>
-            <b>N<sub>2</sub></b><span class="v cons">−0.1</span><span class="v cons" data-step="1 pop">÷ 1 = −0.1</span><span class="v ok" data-step="2 pop">0.1</span>
-            <b>H<sub>2</sub></b><span class="v cons">−0.3</span><span class="v cons" data-step="1 pop">÷ 3 = −0.1</span><span class="v ok" data-step="2 pop">0.1</span>
-            <b>NH<sub>3</sub></b><span class="v prod">+0.2</span><span class="v prod" data-step="1 pop">÷ 2 = +0.1</span><span class="v ok" data-step="2 pop">0.1</span>
+          <p class="conv-t">활동 1, 2의 결과 정리하기</p>
+          <div class="conv-grid" style="grid-template-columns:140px 120px 190px 130px">
+            <span class="ch">물질</span><span class="ch">소모·생성</span><span class="ch" data-step="1">÷ 계수</span><span class="ch" data-step="2">부호 → (+)</span>
+            <b><small style="font-size:20px;color:var(--muted)">활동1</small> O<sub>2</sub></b><span class="v prod">+0.1</span><span class="v prod" data-step="1 pop">÷ 1 = +0.1</span><span class="v ok" data-step="2 pop">0.1</span>
+            <b><small style="font-size:20px;color:var(--muted)">활동1</small> H<sub>2</sub></b><span class="v prod">+0.2</span><span class="v prod" data-step="1 pop">÷ 2 = +0.1</span><span class="v ok" data-step="2 pop">0.1</span>
+            <b><small style="font-size:20px;color:var(--muted)">활동2</small> O<sub>2</sub></b><span class="v cons">−0.5</span><span class="v cons" data-step="1 pop">÷ 5 = −0.1</span><span class="v ok" data-step="2 pop">0.1</span>
+            <b><small style="font-size:20px;color:var(--muted)">활동2</small> CO<sub>2</sub></b><span class="v prod">+0.3</span><span class="v prod" data-step="1 pop">÷ 3 = +0.1</span><span class="v ok" data-step="2 pop">0.1</span>
           </div>
-          <div class="conv-res" data-step="3 rise"><span><i class="m">v</i> = 0.1 M/s</span><small>세 값이 하나로 모였다 → 유일!</small></div>
+          <div class="conv-res" data-step="3 rise"><span><i class="m">v</i> = 0.1 M/s</span><small>반응마다 값이 하나로 모였다 → 유일!</small></div>
         </div>
       </div>
       <div class="card gen" data-step="4 rise">
         <div class="m"><i>a</i>A + <i>b</i>B → <i>c</i>C + <i>d</i>D</div>
         <div class="m vline"><i>v</i> = <span class="cons">−</span><span class="frac"><span>1</span><span><i>a</i></span></span><span class="frac"><span>Δ[A]</span><span>Δ<i>t</i></span></span> = <span class="cons">−</span><span class="frac"><span>1</span><span><i>b</i></span></span><span class="frac"><span>Δ[B]</span><span>Δ<i>t</i></span></span> = <span class="frac"><span>1</span><span><i>c</i></span></span><span class="frac"><span>Δ[C]</span><span>Δ<i>t</i></span></span> = <span class="frac"><span>1</span><span><i>d</i></span></span><span class="frac"><span>Δ[D]</span><span>Δ<i>t</i></span></span></div>
+        <p style="font-size:29px;font-weight:500">반응물: <b class="cons">− 부호</b> &nbsp;·&nbsp; 생성물: <b class="prod">+ 부호</b> &nbsp;·&nbsp; 모든 항에 <b>1/계수</b></p>
       </div>
     </div>
   </div>
-  <aside>[정의 4분] 물질마다 속도가 다르면 "이 반응의 속도"를 하나로 말할 수 없겠죠? 그래서 계수로 나누어 하나로 맞춥니다. 클릭 ① 계수로 나누기 → ② 부호를 양수로 → ③ 모두 0.1로 모임 → ④ 일반식. 반응물 항 앞의 (−)가 특징 2를 나타냅니다.</aside>
-</section>
-
-<!-- 8 -->
-<section id="act2-q">
-  <div class="panel">
-    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 2</span></div>
-    <div class="body">
-      <div class="q"><span class="qbadge">활동 2</span><p>프로페인의 연소 반응 <span class="m" style="font-size:1.1em">C<sub>3</sub>H<sub>8</sub> + 5O<sub>2</sub> → 3CO<sub>2</sub> + 4H<sub>2</sub>O</span> 에서 <b>20초 동안 CO<sub>2</sub>가 6 M 생성</b>되었을 때, CO<sub>2</sub>의 생성 속도와 반응 속도를 구하고, 이를 통해 산소의 소모 속도(Δ[O<sub>2</sub>]/Δ<i class="m">t</i>)를 구해 보세요.</p></div>
-      <div class="work" style="height:540px">
-        <span class="work-label">풀이 공간 · <kbd>P</kbd> 키로 판서</span>
-        <div class="hints">
-          <div class="hint" data-step="1 rise"><b>힌트 1</b>먼저 CO<sub>2</sub>의 생성 속도 = 변화량 ÷ 시간</div>
-          <div class="hint" data-step="2 rise"><b>힌트 2</b>반응 속도 <i class="m">v</i> = 생성 속도 ÷ CO<sub>2</sub>의 계수</div>
-          <div class="hint" data-step="3 rise"><b>힌트 3</b>O<sub>2</sub>의 소모 속도 = −(O<sub>2</sub>의 계수) × <i class="m">v</i></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <aside>[활동 2 · 3분] 이번에는 반대 방향입니다. CO₂의 생성 속도 → 반응 속도 → 산소의 소모 속도 순서로 구해 보게 하세요.</aside>
-</section>
-
-<!-- 9 -->
-<section id="act2-a">
-  <div class="panel">
-    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 2 풀이</span></div>
-    <div class="body">
-      <div class="q small"><span class="qbadge">활동 2</span><p><span class="m">C<sub>3</sub>H<sub>8</sub> + 5O<sub>2</sub> → 3CO<sub>2</sub> + 4H<sub>2</sub>O</span> · 20초 동안 CO<sub>2</sub>가 6 M 생성 · CO<sub>2</sub>의 생성 속도, 반응 속도, O<sub>2</sub>의 소모 속도(Δ[O<sub>2</sub>]/Δ<i class="m">t</i>)</p></div>
-      <div class="ans-grid">
-        <div class="steps">
-          <div class="card stp" data-step="1 rise"><span class="n">1</span><p>CO<sub>2</sub>의 생성 속도 = <span class="prod">+6 M</span> ÷ 20 s = <span class="big prod">+0.3 M/s</span></p></div>
-          <div class="card stp" data-step="2 rise"><span class="n">2</span><p>반응 속도 <i class="m">v</i> = 0.3 ÷ <b>3</b> <small style="color:var(--muted)">(CO<sub>2</sub>의 계수)</small> = <span class="big" style="color:var(--green)">0.1 M/s</span></p></div>
-          <div class="card stp" data-step="3 rise"><span class="n">3</span><p>O<sub>2</sub>의 소모 속도 = −<b>5</b> × 0.1 = <span class="big cons">−0.5 M/s</span><br><span style="font-size:26px;color:var(--ink-2)">반응물은 (−) 소모 속도, 계수 5 × 반응 속도</span></p></div>
-          <p class="hand" data-step="4 pop" style="font-size:50px;color:var(--blue-deep);text-align:center">계수만 알면 하나로 나머지를 모두 구한다!</p>
-        </div>
-        <div class="card" data-step="3 rise" style="padding:18px 20px"><svg id="c3h8-svg" viewBox="0 0 720 560" width="720" height="560"></svg></div>
-      </div>
-    </div>
-  </div>
-  <aside>[활동 2 풀이] ① CO₂ 생성 속도 +0.3 → ② 계수 3으로 나누어 v = 0.1 → ③ 계수 5를 곱해 O₂의 소모 속도 −0.5 M/s. 오른쪽 막대는 나머지 물질까지 보여 줍니다(C₃H₈ −0.1, CO₂ +0.3, H₂O +0.4 M/s). 막대 길이가 계수 1 : 5 : 3 : 4에 비례합니다.</aside>
+  <aside>[일반식 정리 4분] 활동 1, 2에서 구한 값을 모아 정리합니다. 물질마다 속도가 다르면 "이 반응의 속도"를 하나로 말할 수 없겠죠? 그래서 계수로 나누어 하나로 맞춥니다. 클릭 ① 계수로 나누기 → ② 부호를 양수로 → ③ 모두 0.1로 모임 → ④ 일반식. 반응물 항에는 (−), 생성물 항에는 (+)가 붙고, 모든 항에 1/계수가 곱해진다는 점을 짚어 주세요.</aside>
 </section>
 
 <!-- 10 -->
@@ -759,7 +761,7 @@
       </table>
     </div>
   </div>
-  <aside>[개념 정리] 클릭할 때마다 1~3단계, 일반식, 예시 표 순서로 나타납니다. 활동 1에서 풀어 본 내용을 세 단계로 묶어 말로 짚어 주세요. 부호를 맞춘 다음 계수로 나눈다는 순서가 핵심입니다.</aside>
+  <aside>[개념 정리] 클릭할 때마다 1~3단계, 일반식, 예시 표 순서로 나타납니다. 활동 1, 2에서 풀어 본 내용을 세 단계로 묶어 말로 짚어 주세요. 부호를 맞춘 다음 계수로 나눈다는 순서가 핵심입니다.</aside>
 </section>
 
 <!-- 16 -->
@@ -1296,9 +1298,9 @@
 
   /* ================= 5. ammonia: rates ∝ coefficients ================= */
   (function () {
-    var svg = $('nh3-svg'), C0 = [4, 12, 0], coef = [-1, -3, 2], names = ['N2', 'H2', 'NH3'];
-    var colors = ['#2459C9', '#2459C9', '#D9443A'], soft = ['#E4ECFB', '#E4ECFB', '#FCE8E6'];
-    var BASE = 300, PXM = 20, XS = [130, 350, 570], BW = 120; // 20 px per M
+    var svg = $('nh3-svg'), C0 = [0, 0], coef = [1, 2], names = ['O2', 'H2'];
+    var colors = ['#D9443A', '#D9443A'], soft = ['#FCE8E6', '#FCE8E6'];
+    var BASE = 300, PXM = 36, XS = [230, 490], BW = 120; // 36 px per M
     svgEl('line', { x1: 40, x2: 680, y1: BASE, y2: BASE, stroke: '#1C2A39', 'stroke-width': 3 }, svg);
     var timer = svgText(svg, 30, 36, '', 'lbl', 'start', { fill: '#8094A8', 'font-size': 24 });
     var bars = XS.map(function (x, i) {
@@ -1346,19 +1348,19 @@
   /* ================= 8. propane: rate bars ================= */
   (function () {
     var svg = $('c3h8-svg'), v = 0.1;
-    var sp = [['C3H8', -1], ['O2', -5], ['CO2', 3], ['H2O', 4]];
+    var sp = [['C3H8', -1], ['O2', -5], ['CO2', 3]];
     var BASE = 250, K = 360; // px per M/s
     svgText(svg, 360, 36, '각 물질의 속도 = 계수 × v (M/s)', 'lbl', 'middle', { 'font-size': 26, fill: '#44586C' });
     svgEl('line', { x1: 30, x2: 690, y1: BASE, y2: BASE, stroke: '#1C2A39', 'stroke-width': 3 }, svg);
     sp.forEach(function (s, i) {
-      var x = 110 + i * 166, val = s[1] * v, h = Math.abs(val) * K, pos = val > 0;
+      var x = 130 + i * 230, val = s[1] * v, h = Math.abs(val) * K, pos = val > 0;
       var col = pos ? '#D9443A' : '#2459C9', bg = pos ? '#FCE8E6' : '#E4ECFB';
       svgEl('rect', { x: x - 52, y: pos ? BASE - h : BASE, width: 104, height: h, rx: 8, fill: bg, stroke: col, 'stroke-width': 3 }, svg);
       svgText(svg, x, pos ? BASE - h - 14 : BASE + h + 34, signed(val, 2), 'lbl', 'middle', { fill: col, 'font-size': 30 });
       svgChem(svg, x, pos ? BASE + 40 : BASE - 18, s[0], 'lbl', 'middle', { 'font-size': 28, fill: '#1C2A39' });
       svgText(svg, x, pos ? BASE + 72 : BASE - 50, '× ' + Math.abs(s[1]), 'tick', 'middle', { 'font-size': 22 });
     });
-    svgText(svg, 360, 548, '막대 길이 비 = 계수 비 1 : 5 : 3 : 4', 'lbl', 'middle', { 'font-size': 24, fill: '#1F5F8F' });
+    svgText(svg, 360, 548, '막대 길이 비 = 계수 비 1 : 5 : 3', 'lbl', 'middle', { 'font-size': 24, fill: '#1F5F8F' });
   })();
 
   /* ================= 9. average vs instantaneous rate ================= */
