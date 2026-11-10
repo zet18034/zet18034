@@ -6,7 +6,7 @@
 <title>화학 반응 속도</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;500;700;900&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@400;700&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap">
 <style>
   :root {
     --sky: #CFE4F2; --paper: #F7FBFE; --line: #3389C0; --blue: #2F86BF; --blue-deep: #1F5F8F; --blue-soft: #E6F1F9;
@@ -302,6 +302,62 @@
   .sum h3 { font-size: 36px; display: flex; align-items: center; gap: 14px; }
   .sum ul { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 22px; font-size: 30px; line-height: 1.5; }
   .sum .bigf { font-size: 38px; text-align: center; padding: 16px; border-radius: 16px; background: var(--blue-soft); margin-top: auto; min-height: 130px; display: flex; align-items: center; justify-content: center; }
+
+  /* ---------- concept recap (slides 15, 16) ---------- */
+  .rc-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .rc-steps .card { padding: 20px 26px; display: flex; flex-direction: column; gap: 10px; }
+  .rc-steps h3 { display: flex; align-items: center; gap: 14px; font-size: 32px; }
+  .rc-steps p { font-size: 30px; line-height: 1.45; }
+  .rc-gen { margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 56px; padding: 12px 30px; border: 3px solid var(--gold); background: #FFFDF6; }
+  .rc-gen .rx { font-size: 46px; font-weight: 600; white-space: nowrap; }
+  .rc-gen .vline { font-size: 46px; display: flex; align-items: center; gap: 12px; white-space: nowrap; }
+  .rc-gen .vline .frac { font-size: 40px; }
+  .rc-table { width: 100%; margin-top: 20px; border-collapse: separate; border-spacing: 0; background: #fff; border: 2px solid #D3E5F2; border-radius: 18px; overflow: hidden; font-size: 31px; text-align: center; font-variant-numeric: tabular-nums; }
+  .rc-table th, .rc-table td { padding: 13px 14px; border-top: 2px solid #E1EDF6; }
+  .rc-table tr:first-child th { border-top: 0; font-size: 34px; background: var(--blue-soft); }
+  .rc-table th { font-weight: 700; background: #F1F8FD; }
+  .rc-table .ok { font-size: 36px; font-weight: 900; color: var(--green); background: var(--green-soft); border-left: 2px solid #E1EDF6; }
+  .gr-grid { display: grid; grid-template-columns: 720px 1fr; gap: 30px; }
+  .gr-right { display: flex; flex-direction: column; gap: 12px; }
+  .gr-rx { font-size: 42px; font-weight: 600; text-align: center; }
+  .gr-right .stp { padding: 12px 22px; font-size: 27px; gap: 16px; }
+  .gr-right .stp .n { width: 42px; height: 42px; font-size: 24px; }
+  .gr-f { padding: 12px 24px; border: 3px solid var(--gold); background: #FFFDF6; display: flex; align-items: center; justify-content: center; gap: 40px; font-size: 30px; font-weight: 500; white-space: nowrap; }
+  .gr-f .frac { font-size: 28px; }
+  .check-q { margin-top: 18px; padding: 14px 28px; border: 3px dashed #B5D2E7; border-radius: 18px; background: rgba(255,255,255,.75); font-size: 28px; line-height: 1.6; }
+  .check-q .ans { display: flex; gap: 44px; }
+  .check-q .b { display: inline-block; min-width: 118px; padding: 0 8px; border-bottom: 3px solid var(--ink); text-align: center; font-weight: 900; color: var(--prod); line-height: 1.25; }
+  .check-q small { display: block; font-size: 24px; color: var(--ink-2); }
+
+  /* ---------- CSAT-style item (slide 17) ---------- */
+  .exam { height: 100%; display: grid; grid-template-columns: 1fr 1fr; background: #fff; border: 2px solid #111; color: #111; font-family: 'Noto Serif KR', 'Batang', '바탕', serif; font-size: 32px; line-height: 1.55; }
+  .exam-col { padding: 24px 32px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .exam-col + .exam-col { border-left: 2px solid #111; }
+  .exam .no { font-weight: 700; font-size: 36px; margin-right: 8px; }
+  .exam i { font-family: 'STIX Two Text', 'Times New Roman', serif; font-style: italic; }
+  .exam-eq { font-family: 'STIX Two Text', 'Times New Roman', serif; font-size: 40px; text-align: center; }
+  .exam-fig { display: block; margin: 0 auto; }
+  .exam-fig text { font-family: 'Noto Serif KR', 'Batang', '바탕', serif; fill: #111; font-size: 25px; }
+  .exam-box { position: relative; margin-top: 22px; border: 2px solid #111; padding: 34px 20px 20px; display: flex; flex-direction: column; gap: 20px; font-size: 29px; }
+  .exam-box > span { position: absolute; left: 50%; top: -24px; translate: -50% 0; background: #fff; padding: 0 22px; letter-spacing: 12px; white-space: nowrap; }
+  .exam-box p { display: grid; grid-template-columns: 46px 1fr; align-items: baseline; }
+  #deck .exam-opts { margin-top: 26px; display: flex; justify-content: space-between; white-space: nowrap; }
+
+  /* ---------- CSAT-style solution (slide 18) ---------- */
+  .ex-grid { display: grid; grid-template-columns: 590px 1fr; gap: 30px; }
+  .ex-card { padding: 22px 28px; display: flex; flex-direction: column; gap: 14px; min-height: 620px; }
+  .ex-card h3 { display: flex; align-items: center; gap: 14px; font-size: 32px; }
+  .ex-card > p { font-size: 28px; line-height: 1.45; }
+  .ex-table { width: 100%; border-collapse: collapse; font-size: 30px; text-align: center; font-variant-numeric: tabular-nums; }
+  .ex-table th, .ex-table td { padding: 8px 10px; border: 2px solid #D3E5F2; }
+  .ex-table th { background: #F1F8FD; font-weight: 700; }
+  .ex-table tr:last-child td { font-weight: 900; background: var(--gold-soft); }
+  #deck .ex-k { margin-top: auto; text-align: center; padding: 10px; border-radius: 14px; background: var(--blue-soft); font-size: 38px; font-weight: 700; }
+  .ex-item { display: grid; grid-template-columns: 54px 54px 1fr; align-items: center; gap: 8px; padding: 16px 20px; border: 2px solid #E1EDF6; border-radius: 16px; font-size: 29px; line-height: 1.5; flex: 1; }
+  .ex-item .k { font-size: 34px; font-weight: 900; }
+  .ex-item .mk { font-size: 36px; font-weight: 900; }
+  .ex-item.yes .mk { color: var(--green); } .ex-item.no .mk { color: var(--prod); }
+  #deck .ex-ans { margin-top: 20px; font-size: 36px; font-weight: 900; text-align: center; padding: 10px; border-radius: 16px; background: var(--ink); color: #FFD45C; }
 
   /* ---------- viewer chrome ---------- */
   #ink { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; pointer-events: none; touch-action: none; }
@@ -676,6 +732,146 @@
 </section>
 
 <!-- 15 -->
+<section id="recap-eq">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>반응식에서 반응 속도 나타내기</h2><span class="tag">개념 정리</span></div>
+    <div class="body">
+      <div class="rc-steps">
+        <div class="card" data-step="1 rise"><h3><span class="num">1</span>Δ = 나중 − 처음</h3><p>반응물 <b class="cons">소모 속도 &lt; 0</b><br>생성물 <b class="prod">생성 속도 &gt; 0</b></p></div>
+        <div class="card" data-step="2 rise"><h3><span class="num">2</span>부호 맞추기</h3><p><i class="m">v</i>는 항상 양수<br>반응물 앞에만 <b class="cons">−</b> 붙이기</p></div>
+        <div class="card" data-step="3 rise"><h3><span class="num">3</span>계수로 나누기</h3><p>어느 물질로 구해도<br>같은 값 → <b>반응 속도 <i class="m">v</i></b></p></div>
+      </div>
+      <div class="card rc-gen" data-step="4 rise">
+        <span class="rx m"><i>a</i>A + <i>b</i>B → <i>c</i>C + <i>d</i>D</span>
+        <span class="vline m"><i>v</i> = − <span class="frac"><span>1</span><span><i>a</i></span></span><span class="frac"><span>Δ[A]</span><span>Δ<i>t</i></span></span> = − <span class="frac"><span>1</span><span><i>b</i></span></span><span class="frac"><span>Δ[B]</span><span>Δ<i>t</i></span></span> = <span class="frac"><span>1</span><span><i>c</i></span></span><span class="frac"><span>Δ[C]</span><span>Δ<i>t</i></span></span> = <span class="frac"><span>1</span><span><i>d</i></span></span><span class="frac"><span>Δ[D]</span><span>Δ<i>t</i></span></span></span>
+      </div>
+      <table class="rc-table" data-step="5 rise">
+        <tr><th colspan="5">예) N<sub>2</sub> + 3H<sub>2</sub> → 2NH<sub>3</sub></th></tr>
+        <tr><th>물질</th><th>소모·생성 속도 (M/s)</th><th>② 부호 맞추기</th><th>③ ÷ 계수</th><th>반응 속도 <i class="m">v</i></th></tr>
+        <tr><td>N<sub>2</sub></td><td class="cons">−0.1</td><td>−(−0.1) = 0.1</td><td>0.1 ÷ 1 = 0.1</td><td class="ok" rowspan="3">0.1 M/s</td></tr>
+        <tr><td>H<sub>2</sub></td><td class="cons">−0.3</td><td>−(−0.3) = 0.3</td><td>0.3 ÷ 3 = 0.1</td></tr>
+        <tr><td>NH<sub>3</sub></td><td class="prod">+0.2</td><td>그대로 0.2</td><td>0.2 ÷ 2 = 0.1</td></tr>
+      </table>
+    </div>
+  </div>
+  <aside>[개념 정리] 클릭할 때마다 1~3단계, 일반식, 예시 표 순서로 나타납니다. 활동 1에서 풀어 본 내용을 세 단계로 묶어 말로 짚어 주세요. 부호를 맞춘 다음 계수로 나눈다는 순서가 핵심입니다.</aside>
+</section>
+
+<!-- 16 -->
+<section id="recap-graph">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>그래프에서 반응 속도 구하기</h2><span class="tag">개념 정리</span></div>
+    <div class="body">
+      <div class="gr-grid">
+        <div class="card" style="padding:8px">
+          <svg viewBox="0 0 680 480" width="700" height="494" role="img" aria-label="시간에 따른 사산화 이질소 농도 그래프. 20초와 55초를 이은 직선은 평균, 20초의 접선은 순간 반응 속도를 나타낸다.">
+            <line class="axis" x1="100" y1="400" x2="650" y2="400"/><line class="axis" x1="100" y1="400" x2="100" y2="30"/>
+            <line class="guide" x1="100" y1="225.4" x2="204" y2="225.4"/><line class="guide" x1="204" y1="225.4" x2="204" y2="400"/>
+            <line class="guide" x1="100" y1="345.6" x2="386" y2="345.6"/><line class="guide" x1="386" y1="345.6" x2="386" y2="400"/>
+            <path d="M100.0,60.0 L120.8,102.4 L141.6,139.6 L162.4,172.1 L183.2,200.5 L204.0,225.4 L224.8,247.2 L245.6,266.3 L266.4,283.0 L287.2,297.6 L308.0,310.4 L328.8,321.6 L349.6,331.4 L370.4,339.9 L391.2,347.4 L412.0,354.0 L432.8,359.7 L453.6,364.8 L474.4,369.2 L495.2,373.0 L516.0,376.4 L536.8,379.3 L557.6,381.9 L578.4,384.2 L599.2,386.1 L620.0,387.9" fill="none" stroke="#1C2A39" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+            <line x1="140" y1="153.8" x2="290" y2="321.7" stroke="#2459C9" stroke-width="4.5" stroke-linecap="round"/>
+            <line x1="170" y1="203" x2="426" y2="372" stroke="#D9443A" stroke-width="4.5" stroke-linecap="round"/>
+            <circle cx="204" cy="225.4" r="9" fill="#2459C9" stroke="#fff" stroke-width="2"/><circle cx="386" cy="345.6" r="9" fill="#D9443A" stroke="#fff" stroke-width="2"/>
+            <text class="tick" x="90" y="233" text-anchor="end">0.411</text><text class="tick" x="90" y="353" text-anchor="end">0.128</text>
+            <text class="tick" x="204" y="432" text-anchor="middle" fill="#2459C9" style="fill:#2459C9"><tspan>t</tspan><tspan font-size="16" dy="5">1</tspan><tspan dy="-5"> = 20</tspan></text>
+            <text class="tick" x="386" y="432" text-anchor="middle" style="fill:#D9443A"><tspan>t</tspan><tspan font-size="16" dy="5">2</tspan><tspan dy="-5"> = 55</tspan></text>
+            <text class="axlab" x="375" y="470" text-anchor="middle">시간 (s)</text>
+            <text class="axlab" transform="translate(26,120) rotate(-90)" text-anchor="middle">[N₂O₄] (M)</text>
+            <text class="lbl" x="255" y="170" style="fill:#2459C9">접선 → 순간</text>
+            <text class="lbl" x="405" y="320" style="fill:#D9443A">두 점 직선 → 평균</text>
+          </svg>
+        </div>
+        <div class="gr-right">
+          <p class="gr-rx m">N<sub>2</sub>O<sub>4</sub>(<i>g</i>) → 2NO<sub>2</sub>(<i>g</i>)</p>
+          <div class="card stp" data-step="1 rise"><span class="n">1</span><span><b>기울기 구하기</b><br><b class="prod">평균</b> 두 점 직선 · <b class="cons">순간</b> 접선</span></div>
+          <div class="card stp" data-step="2 rise"><span class="n">2</span><span><b>부호 맞추기</b><br>반응물은 기울기 앞에 <b class="cons">−</b>, 생성물은 그대로</span></div>
+          <div class="card stp" data-step="3 rise"><span class="n">3</span><span><b>계수로 나누기</b><br>기울기를 반응식의 계수로 나눔</span></div>
+          <div class="card gr-f m" data-step="4 rise"><span><i>v</i> = − <span class="frac"><span>1</span><span>1</span></span> × 기울기[N<sub>2</sub>O<sub>4</sub>] = + <span class="frac"><span>1</span><span>2</span></span> × 기울기[NO<sub>2</sub>]</span></div>
+        </div>
+      </div>
+      <div class="check-q">
+        <b>✔ 확인</b> &nbsp;<span class="m">2A + B → 3C</span>에서 A의 소모 속도가 −0.4 M/s일 때
+        <div class="ans"><span>① <i class="m">v</i> = <span class="b"><span data-step="5">0.2</span></span> M/s</span>
+        <span>② B의 소모 속도 = <span class="b"><span data-step="6">−0.2</span></span> M/s</span>
+        <span>③ C의 생성 속도 = <span class="b"><span data-step="7">+0.6</span></span> M/s</span></div>
+        <small>⚠ 자주 틀리는 점: 반응물의 − 부호 빠뜨림 / 계수로 나누지 않음 / 반응 속도 <i class="m">v</i>를 음수로 씀</small>
+      </div>
+    </div>
+  </div>
+  <aside>[개념 정리] 클릭하면 1~3단계와 공식이 나오고, 이어서 확인 문제의 답이 ①, ②, ③ 순서로 나타납니다. 평균은 두 점을 이은 직선, 순간은 접선이라는 점을 그래프를 가리키며 말로 설명해 주세요.</aside>
+</section>
+
+<!-- 17 -->
+<section id="csat-q">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>물질과 에너지 · 화학 반응 속도 모의고사 <small>출제자: 장은재</small></h2><span class="tag act">수능형 문제</span></div>
+    <div class="body" style="padding:24px 48px 26px">
+      <div class="exam">
+        <div class="exam-col">
+          <p><span class="no">15.</span>다음은 A(<i>g</i>)가 B(<i>g</i>)를 생성하는 반응의 화학 반응식이다. <i>b</i>는 반응 계수이다.</p>
+          <p class="exam-eq">A(<i>g</i>) → <i>b</i>B(<i>g</i>)</p>
+          <p>그림은 강철 용기에 A(<i>g</i>) 1 M을 넣고 반응시켰을 때, 반응 시간에 따른 전체 기체의 압력을 나타낸 것이다. 2초일 때 A(<i>g</i>)의 몰 농도는 0.5 M이다.</p>
+          <svg class="exam-fig" viewBox="0 0 720 340" width="690" height="326" role="img" aria-label="시간에 따른 전체 기체의 압력 그래프. 0초에 P0, 2초에 2P0이고 이후 증가폭이 줄어든다.">
+            <defs><marker id="ex-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#111"/></marker></defs>
+            <line x1="90" y1="290" x2="665" y2="290" stroke="#111" stroke-width="2.5" marker-end="url(#ex-arrow)"/>
+            <line x1="90" y1="290" x2="90" y2="15" stroke="#111" stroke-width="2.5" marker-end="url(#ex-arrow)"/>
+            <path d="M90,130 H270 V290" fill="none" stroke="#111" stroke-width="2" stroke-dasharray="7 6"/>
+            <path d="M90.0,210.0 L108.0,199.3 L126.0,189.3 L144.0,180.0 L162.0,171.3 L180.0,163.1 L198.0,155.6 L216.0,148.5 L234.0,141.9 L252.0,135.7 L270.0,130.0 L288.0,124.6 L306.0,119.6 L324.0,115.0 L342.0,110.6 L360.0,106.6 L378.0,102.8 L396.0,99.2 L414.0,95.9 L432.0,92.9 L450.0,90.0 L468.0,87.3 L486.0,84.8 L504.0,82.5 L522.0,80.3 L540.0,78.3 L558.0,76.4 L576.0,74.6 L594.0,73.0 L612.0,71.4 L630.0,70.0" fill="none" stroke="#111" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <text x="80" y="218" text-anchor="end"><tspan font-style="italic">P</tspan><tspan font-size="17" dy="6">0</tspan></text>
+            <text x="80" y="138" text-anchor="end">2<tspan font-style="italic">P</tspan><tspan font-size="17" dy="6">0</tspan></text>
+            <text x="80" y="318" text-anchor="end">0</text>
+            <text x="270" y="322" text-anchor="middle">2</text>
+            <text x="110" y="30">전체 압력</text>
+            <text x="620" y="330" text-anchor="middle">시간(초)</text>
+          </svg>
+        </div>
+        <div class="exam-col">
+          <p>이에 대한 설명으로 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은? (단, 온도는 일정하고, 기체는 이상 기체로 거동하며, 제시된 반응 이외의 다른 반응은 일어나지 않는다.) <b>[3점]</b></p>
+          <div class="exam-box">
+            <span>&lt;보기&gt;</span>
+            <p><span>ㄱ.</span><span>0~2초 동안 B(<i>g</i>)의 평균 생성 속도는 0.75&nbsp;M/s이다.</span></p>
+            <p><span>ㄴ.</span><span>2초일 때 A(<i>g</i>)의 부분 압력은 <span class="frac"><span>1</span><span>2</span></span><i>P</i><sub>0</sub>이다.</span></p>
+            <p><span>ㄷ.</span><span>2초일 때 B(<i>g</i>)의 질량 백분율(%)은 75이다.</span></p>
+          </div>
+          <div class="exam-opts"><span>① ㄱ</span><span>② ㄷ</span><span>③ ㄱ, ㄴ</span><span>④ ㄴ, ㄷ</span><span>⑤ ㄱ, ㄴ, ㄷ</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <aside>[수능형 문제] 조용히 시험지처럼 풀게 해 주세요. 압력으로 전체 농도를 먼저 구하는 것이 첫 번째 관문입니다. 정답은 다음 슬라이드에서 ③ ㄱ, ㄴ입니다.</aside>
+</section>
+
+<!-- 18 -->
+<section id="csat-a">
+  <div class="panel">
+    <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>정답 및 해설</h2><span class="tag act">수능형 문제 풀이</span></div>
+    <div class="body">
+      <div class="ex-grid">
+        <div class="card ex-card">
+          <h3><span class="num">1</span>반응 계수 <i class="m">b</i> 구하기</h3>
+          <p data-step="1 rise">부피·온도 일정 → <b>압력 ∝ 전체 농도</b><br><i class="m">P</i><sub>0</sub>일 때 1 M이므로 2<i class="m">P</i><sub>0</sub>이면 전체 <b>2 M</b></p>
+          <table class="ex-table" data-step="2 rise">
+            <tr><th>(M)</th><th>A(<i class="m">g</i>)</th><th><i class="m">b</i>B(<i class="m">g</i>)</th></tr>
+            <tr><th>처음</th><td>1</td><td>0</td></tr>
+            <tr><th>반응</th><td class="cons">−0.5</td><td class="prod">+1.5</td></tr>
+            <tr><th>2초</th><td>0.5</td><td>2 − 0.5 = 1.5</td></tr>
+          </table>
+          <p class="ex-k" data-step="3 pop"><i class="m">b</i> = 1.5 ÷ 0.5 = 3</p>
+        </div>
+        <div class="card ex-card">
+          <h3><span class="num">2</span>&lt;보기&gt; 판단</h3>
+          <div class="ex-item yes" data-step="4 rise"><span class="k">ㄱ</span><span class="mk">○</span><span>B의 평균 생성 속도 = <span class="frac"><span>1.5 M</span><span>2 s</span></span> = <b>0.75 M/s</b></span></div>
+          <div class="ex-item yes" data-step="5 rise"><span class="k">ㄴ</span><span class="mk">○</span><span style="white-space:nowrap">A의 몰 분율 = <span class="frac"><span>0.5</span><span>2</span></span> = <span class="frac"><span>1</span><span>4</span></span> → 부분 압력 = <span class="frac"><span>1</span><span>4</span></span> × 2<i class="m">P</i><sub>0</sub> = <b><span class="frac"><span>1</span><span>2</span></span><i class="m">P</i><sub>0</sub></b></span></div>
+          <div class="ex-item no" data-step="6 rise"><span class="k">ㄷ</span><span class="mk">✕</span><span>A의 절반이 반응해 B가 되었다 (질량 보존)<br>→ 남은 A와 B의 질량이 같으므로 B는 <b>50 %</b></span></div>
+        </div>
+      </div>
+      <p class="ex-ans" data-step="7 pop">정답 ③ ㄱ, ㄴ</p>
+    </div>
+  </div>
+  <aside>[해설] 클릭마다 전체 농도, 양적 관계 표, b = 3, ㄱ, ㄴ, ㄷ, 정답 순서로 나타납니다. ㄷ은 분자량을 몰라도 질량 보존만으로 판단할 수 있다는 점을 강조해 주세요. 반응한 A 0.5 M의 질량이 그대로 B의 질량이 되고, A도 0.5 M이 남아 있으니까요.</aside>
+</section>
+
+<!-- 19 -->
 <section id="summary">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>오늘 배운 내용 정리</h2><span class="tag">정리</span></div>
@@ -696,7 +892,7 @@
   <aside>[정리 2분] 세 카드를 하나씩 띄우며 학생들과 함께 말로 정리해 보세요.</aside>
 </section>
 
-<!-- 16 -->
+<!-- 20 -->
 <section id="thanks">
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><span class="brand">CHEMISTRY LAB</span></div>
