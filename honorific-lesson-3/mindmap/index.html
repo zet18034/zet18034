@@ -15,20 +15,20 @@ body{font-family:'Noto Sans KR',sans-serif;color:var(--ink);word-break:keep-all}
 .page{position:relative;width:1920px;height:1080px;background:var(--paper);overflow:hidden;margin:0 auto 24px}
 .deco{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .pill{position:absolute;left:72px;top:42px;font-size:24px;font-weight:700;color:#B04568;background:var(--card);border:2px solid #C9A85C;border-radius:999px;padding:4px 24px}
-h1{position:absolute;left:72px;top:90px;margin:0;font:400 58px/1.15 'Do Hyeon',sans-serif;color:#2E2A3B}
+h1{position:absolute;left:72px;top:96px;margin:0;font:400 58px/1.15 'Do Hyeon',sans-serif;color:#2E2A3B}
 .pg{position:absolute;right:60px;top:46px;font:30px 'Nanum Pen Script',cursive;color:var(--mute)}
 .tree{position:absolute;left:72px;right:60px;top:178px;bottom:30px;display:flex;align-items:center}
 .t{display:flex;align-items:center;gap:var(--gap,58px)}
 .ch{display:flex;flex-direction:column;gap:var(--vg,10px)}
-.box{position:relative;flex:none;text-align:center;background:var(--f);padding:7px 12px;font-size:22px;line-height:1.32;--b:var(--bd)}
-.box::before,.box::after{content:"";position:absolute;inset:-2px;border:2.4px solid var(--b);pointer-events:none}
+.box{isolation:isolate;position:relative;flex:none;text-align:center;background:var(--f);padding:7px 12px;font-size:22px;line-height:1.32;--b:var(--bd)}
+.box::before,.box::after{z-index:-1;content:"";position:absolute;inset:-2px;border:2.4px solid var(--b);pointer-events:none}
 .box::before{transform:rotate(.55deg)}
 .box::after{transform:rotate(-.4deg);inset:0}
 .box b{color:var(--h)}
 .box .x{display:block;font-family:'Gowun Batang',serif;font-weight:700;font-size:20px;color:var(--mute)}
 .box .x em{font-style:normal;color:var(--h)}
 .no{color:#A8231B;font-weight:700}
-.k-root{--f:#F3EEE6;--bd:#C9A85C;font:400 44px/1.15 'Do Hyeon',sans-serif;border-radius:50%;padding:30px 18px;color:#3A3546}
+.k-root{--f:#F3EEE6;--bd:#C9A85C;font:400 44px/1.15 'Do Hyeon',sans-serif;border-radius:50%;padding:34px 26px;color:#3A3546}
 .k-root::before,.k-root::after{border-radius:50%}
 .k-root::before{transform:rotate(3deg);inset:6px -3px}
 .k-root::after{transform:rotate(-2deg);inset:-5px 2px}
@@ -40,6 +40,8 @@ h1{position:absolute;left:72px;top:90px;margin:0;font:400 58px/1.15 'Do Hyeon',s
 .k-c{background:var(--card);--b:var(--bd2);border-radius:0;text-align:left;padding:6px 13px}
 .k-p{background:var(--card);--b:var(--bd);border-radius:999px;padding:5px 14px;font-size:21px}
 .k-p::before,.k-p::after{border-radius:999px}
+.k-side{background:var(--card);--b:var(--bd);font-size:20px;line-height:1.3;padding:6px 8px;color:var(--mute)}
+.k-side::before{border-style:dashed;transform:none}.k-side::after{display:none}
 .k-dim{background:var(--card);--b:#DCD6CB;color:#8C8596;font-size:21px;padding:6px 10px}
 .th-end{--bd:#B9A3D3;--f1:#E6DCF1;--bd1:#B9A3D3;--f2:#EFE8F6;--bd2:#C7B5DC;--h:#6A58A6;--a:#B9A3D3}
 .th-sub{--bd:#D4A5B5;--f1:#F8E4EA;--bd1:#D4A5B5;--f2:#FBEEF2;--bd2:#DDB6C4;--h:#B04568;--a:#D4A5B5}
@@ -71,11 +73,11 @@ const P = [
     ]),
     n('문법 요소의<br>활용','a','th-gold',[
       n('문장 종결 표현<small>평서 · 의문 · 명령 · 청유 · 감탄</small>','a','th-end'),
-      n('높임 표현<small>누구를 높이느냐에 따라</small>','a','th-sub',[ n('주체 높임','b','th-sub'), n('객체 높임','b','th-obj'), n('상대 높임','b','th-rel') ]),
+      n('높임 표현<small>누구를 높이느냐에 따라</small>','a','th-sub',[ n('주체 높임','b','th-sub'), n('객체 높임','b','th-obj'), n('상대 높임','b','th-rel'), n('문장 속 높임<br>안긴문장 안과 밖을 따로!','side','th-emb') ]),
       n('시간 표현 · 피동과 사동 표현','dim',null), n('부정 표현 · 인용 표현','dim',null),
     ]),
   ]),
-  pens:[['안은 문장 + 높임 = 3차시 방탈출!',1320,330,-2,'pu'],['문법 요소를 골라 쓰면',1240,890,-2,''],['→ 화자의 태도가 드러나요!',1240,936,-2,'']], deco:['tape'] },
+  pens:[['문법 요소를 골라 쓰면',1560,520,-2,''],['→ 화자의 태도가 드러나요!',1560,566,-2,'']], deco:['tape'] },
 
 { pill:'1차시 · 문장 종결 표현', title:'문장을 어떻게 끝맺을까?', cols:[230,170,620,470], gap:60, vg:11,
   tree:n('문장 종결<br>표현<small>종결 어미로 구분</small>','root','th-end',[
@@ -90,7 +92,7 @@ const P = [
   pens:[['명령문·청유문의 서술어는',1310,620,-2,'pu'],['동사만! (착해라 ×, 바람·기원은 예외)',1310,664,-2,'pu']], deco:['tree'] },
 
 { pill:'1·2차시 · 높임 표현', title:'누구를 높이는가에 따라 세 가지', cols:[230,230,240,800], gap:62, vg:9,
-  tree:n('높임 표현<small>높이거나 낮추는<br>정도를 구별</small>','root','th-sub',[
+  tree:n('높임<br>표현<small>높이거나 낮추는<br>정도를 구별</small>','root','th-sub',[
     n('주체 높임','a','th-sub',[
       n('누구를?','b',null,[ c('서술의 주체 = <b>주어</b>가 가리키는 대상',800) ]),
       n('어떻게?','b',null,[ c('<b>-(으)시-</b> · <b>께서</b> · 특수 어휘 (계시다, 주무시다…)'+X('할머니<em>께서</em> <em>오셨</em>어요.'),800) ]),
@@ -159,25 +161,6 @@ const P = [
     ]),
     n('화자의 태도','a','th-gold',[ n('담화 맥락','b','th-gold',[ c('<b>존중</b> · <b>예의</b> · <b>친밀감↔거리감</b>이 고른 표현에 드러나요') ]) ]),
   ]), pens:[], deco:['tape'] },
-
-{ pill:'3차시 · 문장 속 높임', title:'안긴문장 안과 밖을 따로!', cols:[220,210,250,740], gap:58, vg:10,
-  tree:n('안은 문장<br>속 높임','root','th-emb',[
-    n('안긴문장','a',null,[ n('네 가지','b',null,[ c('<b>명사절</b> -음/-기 · <b>관형절</b> -은/-는/-을/-던 · <b>서술절</b> 주어가 둘 · <b>인용절</b> -고/-라고') ]) ]),
-    n('안과 밖','a',null,[
-      n('따로 보기','b',null,[ c('아버지께서는 [삼촌이 할아버지를 모시고 왔음]을 아셨다.<br>안: <b>할아버지</b>(객체 높임)  ·  밖: <b>아버지</b>(주체 높임)') ]),
-      n('서술절','b',null,[ c('할아버지께서는 [손이 유난히 크시다]. → <b>간접 높임</b>') ]),
-    ]),
-    n('대상의 성분','a',null,[
-      n('주어','b',null,[ c('[내가 찾아뵌] <b>선생님께서</b> 웃으셨다.') ]),
-      n('목적어','b',null,[ c('언니는 [내가 찾아뵌] <b>은사님을</b> 만났다.') ]),
-      n('부사어','b',null,[ c('[감기에 걸리신] <b>어머니께</b> 차를 드렸다.') ]),
-    ]),
-    n('함께 볼 문법','a','th-gold',[
-      n('서술어 자릿수','b','th-gold',[ c('크다(1) · 마시다(2) · 주다(3)  ·  ‘교무실에 계신다’의 필수적 부사어') ]),
-      n('‘시’ 구별','b','th-gold',[ c('주셨다: 주- + <b>-시-</b>  ·  마셨다: <b>마시-</b> + -었- (어간)') ]),
-      n('관형사','b','th-gold',[ c('새, 헌, 온갖, 모든, 이·그·저  ·  ‘새로’는 부사') ]),
-    ]),
-  ]), pens:[], deco:['heart'] },
 ];
 const DECO = {
  tape:`<g transform="rotate(-12 1640 110)"><rect x="1530" y="88" width="230" height="44" fill="#F2C7A8" opacity=".85"/><g fill="#E8B04A" opacity=".7">${[0,1,2,3,4,5,6].map(i=>`<circle cx="${1550+i*30}" cy="${110+(i%2?-9:6)}" r="5"/>`).join('')}</g></g><g transform="rotate(-6 1610 150)"><rect x="1510" y="132" width="200" height="36" fill="#A9D2D6" opacity=".75"/></g>`,
@@ -209,7 +192,7 @@ function wire(){
       ch.querySelectorAll(':scope > .t').forEach(k => {
         const b = k.querySelector(':scope > .box'), r = b.getBoundingClientRect();
         const x2 = r.left - b0.left - 8, y2 = r.top + r.height/2 - b0.top, m = (x1 + x2) / 2, col = getComputedStyle(b).getPropertyValue('--a').trim() || '#C9A85C';
-        h += `<path stroke="${col}" d="M${x1} ${y1}C${m} ${y1} ${m} ${y2} ${x2} ${y2}"/><path stroke="${col}" d="M${x2-11} ${y2-8}L${x2} ${y2}L${x2-11} ${y2+8}"/>`;
+        h += `<path stroke="${col}"${b.classList.contains('k-side') ? ' stroke-dasharray="3 9"' : ''} d="M${x1} ${y1}C${m} ${y1} ${m} ${y2} ${x2} ${y2}"/><path stroke="${col}" d="M${x2-11} ${y2-8}L${x2} ${y2}L${x2-11} ${y2+8}"/>`;
       });
     });
     sv.setAttribute('viewBox', '0 0 1920 1080'); sv.innerHTML = h;
