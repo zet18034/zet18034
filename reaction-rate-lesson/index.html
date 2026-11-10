@@ -202,6 +202,11 @@
   .rrow .res { font-weight: 900; text-align: right; }
   .rrow .mini { font-size: 22px; font-weight: 700; text-align: center; border-radius: 999px; padding: 4px 0; background: #fff; }
   .ctlcard { padding: 22px 28px; display: flex; flex-direction: column; gap: 14px; }
+  #act1-a .nh3-grid { margin-top: 14px; }
+  #act1-a .eqcard { font-size: 56px; padding: 6px; }
+  #act1-a .rrows { gap: 10px; margin-top: 12px; }
+  #act1-a .rrow { padding: 8px 24px; }
+  #act1-a .ctlcard { padding: 16px 28px; gap: 8px; }
 
   /* ---------- slide 7 ---------- */
   .def-grid { display: grid; grid-template-columns: 1fr 680px; gap: 32px; }
@@ -498,8 +503,8 @@
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 1</span></div>
     <div class="body">
-      <div class="q"><span class="qbadge">활동 1</span><p>암모니아 생성 반응의 화학 반응식을 적고, <b>10초간 질소가 1 M 반응</b>했을 때 반응식의 모든 물질의 생성·소모 속도를 구하시오.</p></div>
-      <div class="work">
+      <div class="q"><span class="qbadge">활동 1</span><p>암모니아 생성 반응의 화학 반응식을 적고, <b>10초 동안 질소가 1 M 반응</b>했을 때 반응식의 모든 물질의 소모·생성 속도(Δ[X]/Δ<i class="m">t</i>)를 구해 보세요. 암모니아 생성 반응의 반응 속도와 그 이유에 대해 토론해 보세요.</p></div>
+      <div class="work" style="height:540px">
         <span class="work-label">풀이 공간 · <kbd>P</kbd> 키를 누르면 화면에 판서할 수 있어요</span>
         <div class="hints">
           <div class="hint" data-step="1 rise"><b>힌트 1</b>암모니아(NH<sub>3</sub>)는 질소(N<sub>2</sub>)와 수소(H<sub>2</sub>)로 만들어져요. 원자 수를 맞춰 계수를 정해 보세요.</div>
@@ -509,7 +514,7 @@
       </div>
     </div>
   </div>
-  <aside>[활동 1 · 3분] 모둠별로 풀어 보게 하고, 막히면 클릭해서 힌트를 하나씩 공개하세요. P 키로 판서 모드를 켜면 학생 답을 화면에 바로 적을 수 있습니다.</aside>
+  <aside>[활동 1 · 3분] 모둠별로 풀어 보고 반응 속도와 그 이유를 토론하게 하고, 막히면 클릭해서 힌트를 하나씩 공개하세요. P 키로 판서 모드를 켜면 학생 답을 화면에 바로 적을 수 있습니다.</aside>
 </section>
 
 <!-- 6 -->
@@ -517,7 +522,7 @@
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도 <small>— 반응 계수와의 관계</small></h2><span class="tag act">활동 1 풀이</span></div>
     <div class="body">
-      <div class="q small"><span class="qbadge">활동 1</span><p>10초간 질소가 1 M 반응했을 때 반응식의 모든 물질의 생성·소모 속도를 구하시오.</p></div>
+      <div class="q small"><span class="qbadge">활동 1</span><p>10초 동안 질소가 1 M 반응했을 때 반응식의 모든 물질의 소모·생성 속도(Δ[X]/Δ<i class="m">t</i>)를 구해 보세요. 암모니아 생성 반응의 반응 속도와 그 이유에 대해 토론해 보세요.</p></div>
       <p class="note-line" style="margin-top:14px">※ 각 물질의 반응량은 계수에 비례하므로 생성·소모 속도도 계수에 비례합니다. 소모 속도(−), 생성 속도(+)</p>
       <div class="nh3-grid">
         <div>
@@ -527,18 +532,19 @@
             <div class="rrow cons" data-step="2 rise"><span class="sp">H<sub>2</sub></span><span><b data-nh3="d1">−3</b> M ÷ <b data-nh3="t">10</b> s</span><span>=</span><span class="res cons" data-nh3="r1">−0.3 M/s</span><span class="mini cons">감소</span></div>
             <div class="rrow prod" data-step="3 rise"><span class="sp">NH<sub>3</sub></span><span><b data-nh3="d2">+2</b> M ÷ <b data-nh3="t">10</b> s</span><span>=</span><span class="res prod" data-nh3="r2">+0.2 M/s</span><span class="mini prod">증가</span></div>
           </div>
-          <p class="hand" data-step="4 pop" style="font-size:52px;color:var(--blue-deep);margin-top:16px;text-align:center">속도 비 1 : 3 : 2 = 계수 비 1 : 3 : 2 !</p>
+          <div class="find f3" data-step="4 rise" style="margin-top:14px;padding:10px 20px"><span class="t">토론</span>물질마다 속도가 달라 하나로 말할 수 없다. 속도 비 1 : 3 : 2 = 계수 비이므로 <b>계수로 나누면 하나의 값</b>이 된다.</div>
+          <p data-step="5 pop" style="margin-top:10px;font-size:36px;font-weight:900;text-align:center;color:var(--green)">화학 반응 속도 <i class="m">v</i> = <span data-nh3="v">0.1 M/s</span></p>
         </div>
         <div class="card ctlcard">
           <div class="slider"><span>반응한 N<sub>2</sub></span><input type="range" id="nh3-dn" min="0.5" max="3" step="0.5" value="1"><output id="nh3-dn-o">1 M</output></div>
           <div class="slider"><span>반응 시간 Δ<i class="m">t</i></span><input type="range" id="nh3-dt" min="5" max="30" step="5" value="10"><output id="nh3-dt-o">10 s</output></div>
-          <svg id="nh3-svg" viewBox="0 0 700 380" width="700" height="380"></svg>
+          <svg id="nh3-svg" viewBox="0 0 700 380" width="608" height="330" style="align-self:center"></svg>
           <div class="ctrl" style="margin-top:0"><button class="btn" id="nh3-play">▶ 반응 재생</button><span style="font-size:22px;color:var(--muted);align-self:center">처음 농도: N<sub>2</sub> 4 M, H<sub>2</sub> 12 M</span></div>
         </div>
       </div>
     </div>
   </div>
-  <aside>[활동 1 풀이] 클릭할 때마다 한 줄씩 풀이가 나옵니다. 오른쪽 슬라이더로 반응량과 시간을 바꾸면 왼쪽 계산이 함께 바뀌어요. 어떤 값을 넣어도 속도 비는 항상 1 : 3 : 2라는 점을 확인시키세요.</aside>
+  <aside>[활동 1 풀이] 클릭할 때마다 N₂, H₂, NH₃의 속도, 토론 정리, 반응 속도 순서로 나옵니다. 오른쪽 슬라이더로 반응량과 시간을 바꾸면 왼쪽 계산이 함께 바뀌어요. 어떤 값을 넣어도 속도 비는 항상 1 : 3 : 2라는 점을 확인시키세요.</aside>
 </section>
 
 <!-- 7 -->
@@ -577,18 +583,18 @@
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 2</span></div>
     <div class="body">
-      <div class="q"><span class="qbadge">활동 2</span><p>프로페인의 연소 반응 <span class="m" style="font-size:1.1em">C<sub>3</sub>H<sub>8</sub> + 5O<sub>2</sub> → 3CO<sub>2</sub> + 4H<sub>2</sub>O</span> 에서 <b>20초간 CO<sub>2</sub>가 6 M 생성</b>되었을 때 반응 속도를 구하고, 반응 속도를 통해 각 물질의 소모·생성 속도를 구하시오.</p></div>
-      <div class="work">
+      <div class="q"><span class="qbadge">활동 2</span><p>프로페인의 연소 반응 <span class="m" style="font-size:1.1em">C<sub>3</sub>H<sub>8</sub> + 5O<sub>2</sub> → 3CO<sub>2</sub> + 4H<sub>2</sub>O</span> 에서 <b>20초 동안 CO<sub>2</sub>가 6 M 생성</b>되었을 때, CO<sub>2</sub>의 생성 속도와 반응 속도를 구하고, 이를 통해 산소의 소모 속도(Δ[O<sub>2</sub>]/Δ<i class="m">t</i>)를 구해 보세요.</p></div>
+      <div class="work" style="height:540px">
         <span class="work-label">풀이 공간 · <kbd>P</kbd> 키로 판서</span>
         <div class="hints">
           <div class="hint" data-step="1 rise"><b>힌트 1</b>먼저 CO<sub>2</sub>의 생성 속도 = 변화량 ÷ 시간</div>
           <div class="hint" data-step="2 rise"><b>힌트 2</b>반응 속도 <i class="m">v</i> = 생성 속도 ÷ CO<sub>2</sub>의 계수</div>
-          <div class="hint" data-step="3 rise"><b>힌트 3</b>각 물질의 속도 = 계수 × <i class="m">v</i> (반응물은 −)</div>
+          <div class="hint" data-step="3 rise"><b>힌트 3</b>O<sub>2</sub>의 소모 속도 = −(O<sub>2</sub>의 계수) × <i class="m">v</i></div>
         </div>
       </div>
     </div>
   </div>
-  <aside>[활동 2 · 3분] 이번에는 반대 방향입니다. 생성 속도 → 반응 속도 → 다른 물질의 속도 순서로 구해 보게 하세요.</aside>
+  <aside>[활동 2 · 3분] 이번에는 반대 방향입니다. CO₂의 생성 속도 → 반응 속도 → 산소의 소모 속도 순서로 구해 보게 하세요.</aside>
 </section>
 
 <!-- 9 -->
@@ -596,19 +602,19 @@
   <div class="panel">
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 2 풀이</span></div>
     <div class="body">
-      <div class="q small"><span class="qbadge">활동 2</span><p><span class="m">C<sub>3</sub>H<sub>8</sub> + 5O<sub>2</sub> → 3CO<sub>2</sub> + 4H<sub>2</sub>O</span> · 20초간 CO<sub>2</sub>가 6 M 생성</p></div>
+      <div class="q small"><span class="qbadge">활동 2</span><p><span class="m">C<sub>3</sub>H<sub>8</sub> + 5O<sub>2</sub> → 3CO<sub>2</sub> + 4H<sub>2</sub>O</span> · 20초 동안 CO<sub>2</sub>가 6 M 생성 · CO<sub>2</sub>의 생성 속도, 반응 속도, O<sub>2</sub>의 소모 속도(Δ[O<sub>2</sub>]/Δ<i class="m">t</i>)</p></div>
       <div class="ans-grid">
         <div class="steps">
           <div class="card stp" data-step="1 rise"><span class="n">1</span><p>CO<sub>2</sub>의 생성 속도 = <span class="prod">+6 M</span> ÷ 20 s = <span class="big prod">+0.3 M/s</span></p></div>
           <div class="card stp" data-step="2 rise"><span class="n">2</span><p>반응 속도 <i class="m">v</i> = 0.3 ÷ <b>3</b> <small style="color:var(--muted)">(CO<sub>2</sub>의 계수)</small> = <span class="big" style="color:var(--green)">0.1 M/s</span></p></div>
-          <div class="card stp" data-step="3 rise"><span class="n">3</span><p>각 물질의 속도 = <b>계수 × <i class="m">v</i></b><br><span style="font-size:26px;color:var(--ink-2)">반응물은 (−) 소모 속도, 생성물은 (+) 생성 속도</span></p></div>
+          <div class="card stp" data-step="3 rise"><span class="n">3</span><p>O<sub>2</sub>의 소모 속도 = −<b>5</b> × 0.1 = <span class="big cons">−0.5 M/s</span><br><span style="font-size:26px;color:var(--ink-2)">반응물은 (−) 소모 속도, 계수 5 × 반응 속도</span></p></div>
           <p class="hand" data-step="4 pop" style="font-size:50px;color:var(--blue-deep);text-align:center">계수만 알면 하나로 나머지를 모두 구한다!</p>
         </div>
         <div class="card" data-step="3 rise" style="padding:18px 20px"><svg id="c3h8-svg" viewBox="0 0 720 560" width="720" height="560"></svg></div>
       </div>
     </div>
   </div>
-  <aside>[활동 2 풀이] ① CO₂ 생성 속도 +0.3 → ② 계수 3으로 나누어 v = 0.1 → ③ 계수를 곱해 C₃H₈ −0.1, O₂ −0.5, CO₂ +0.3, H₂O +0.4 M/s. 막대 길이가 계수 1 : 5 : 3 : 4에 비례합니다.</aside>
+  <aside>[활동 2 풀이] ① CO₂ 생성 속도 +0.3 → ② 계수 3으로 나누어 v = 0.1 → ③ 계수 5를 곱해 O₂의 소모 속도 −0.5 M/s. 오른쪽 막대는 나머지 물질까지 보여 줍니다(C₃H₈ −0.1, CO₂ +0.3, H₂O +0.4 M/s). 막대 길이가 계수 1 : 5 : 3 : 4에 비례합니다.</aside>
 </section>
 
 <!-- 10 -->
@@ -623,7 +629,7 @@
           <div class="meter ins"><p><i class="m">t</i><sub>1</sub>에서 순간 반응 속도 = <u>접선</u>의 기울기 × (−1)</p><b id="g9-ins">—</b></div>
           <div class="meter ini" id="g9-ini-box" style="display:none"><p>초기 반응 속도 = <i class="m">t</i> = 0 에서 접선 기울기 × (−1)</p><b id="g9-ini">—</b></div>
           <div class="slider" style="grid-template-columns:70px 1fr 100px"><span><i class="m">t</i><sub>1</sub></span><input type="range" id="g9-t1" min="0" max="90" step="1" value="20"><output id="g9-t1-o">20 s</output></div>
-          <div class="slider" style="grid-template-columns:70px 1fr 100px"><span><i class="m">t</i><sub>2</sub></span><input type="range" id="g9-t2" min="2" max="100" step="1" value="55"><output id="g9-t2-o">55 s</output></div>
+          <div class="slider" style="grid-template-columns:70px 1fr 100px"><span><i class="m">t</i><sub>2</sub></span><input type="range" id="g9-t2" min="2" max="100" step="1" value="40"><output id="g9-t2-o">40 s</output></div>
           <div class="ctrl" style="margin-top:4px;align-items:center"><button class="btn" id="g9-zoom">Δ<i class="m">t</i> → 0 ▶</button><label class="check"><input type="checkbox" id="g9-ini-cb">초기 반응 속도</label></div>
           <p class="drag-hint">그래프 위의 점을 직접 끌어도 돼요. Δ<i class="m">t</i>를 줄이면 평균 반응 속도가 순간 반응 속도에 가까워집니다.</p>
         </div>
@@ -640,8 +646,8 @@
     <div class="head"><span class="dots"><i></i><i></i><i></i></span><h2>화학 반응 속도</h2><span class="tag act">활동 3</span></div>
     <div class="body">
       <div class="q small" style="flex-direction:column;gap:6px;border-left-color:var(--prod)">
-        <p><span class="qbadge" style="margin-right:12px">3-1</span>그래프의 반응식이 <b class="m">2A → 3B</b>였다면 20~40 s 사이의 반응 속도를 구하고, B의 20~40 s 사이 평균 생성 속도를 구하시오.</p>
-        <p><span class="qbadge" style="margin-right:12px">3-2</span>(20 s의 순간 반응 속도), (20~40 s의 평균 반응 속도), (40 s의 순간 반응 속도)의 크기를 비교하시오.</p>
+        <p><span class="qbadge" style="margin-right:12px">3-1</span>그래프의 반응식은 <b class="m">2A(<i>g</i>) → 3B(<i>g</i>)</b> 이다. 20 s, 40 s 두 점 사이의 기울기를 구해 보고, 20 s~40 s의 평균 반응 속도를 구해 보세요. 추가로, 20 s~40 s에서 B(<i class="m">g</i>)의 평균 생성 속도를 구해 보세요.</p>
+        <p><span class="qbadge" style="margin-right:12px">3-2</span>그래프에 20 s와 40 s에서 접선을 그려 보고, 두 점에서의 순간 반응 속도를 비교해 보세요.</p>
       </div>
       <div class="g10">
         <div class="work">
@@ -656,7 +662,7 @@
       </div>
     </div>
   </div>
-  <aside>[활동 3 · 4분] 3-1은 그래프에서 두 점의 값을 읽어 평균을 구하고, 3-2는 자를 대어 접선과 직선의 기울기를 비교하게 하세요.</aside>
+  <aside>[활동 3 · 4분] 3-1은 그래프에서 두 점의 값을 읽어 기울기와 평균 반응 속도를 구하고, 3-2는 자를 대어 20 s와 40 s의 접선을 그린 뒤 기울기를 비교하게 하세요.</aside>
 </section>
 
 <!-- 12 -->
@@ -666,23 +672,22 @@
     <div class="body">
       <div class="g10 wide">
         <div class="sol">
-          <p style="font-weight:700"><span class="qbadge" style="margin-right:12px">3-1</span>2A → 3B, 20~40 s</p>
-          <p class="ln" data-step="1 rise">Δ[A] = 0.2 − 0.4 = <b class="cons">−0.2 M</b>, &nbsp;Δ<i class="m">t</i> = 20 s</p>
-          <p class="ln" data-step="2 rise">반응 속도 <i class="m">v</i> = (0.2 M ÷ 20 s) ÷ <b>2</b> = <b style="color:var(--green)">0.005 M/s</b></p>
-          <p class="ln" data-step="3 rise">B의 생성 속도 = <b>3</b> × 0.005 = <b class="prod">+0.015 M/s</b></p>
-          <p style="font-weight:700;margin-top:10px"><span class="qbadge" style="margin-right:12px">3-2</span>기울기로 비교하기 <small style="font-weight:500;color:var(--muted)">(반응 속도 <i class="m">v</i>, 근삿값)</small></p>
+          <p style="font-weight:700"><span class="qbadge" style="margin-right:12px">3-1</span>2A(<i class="m">g</i>) → 3B(<i class="m">g</i>), 20 s~40 s</p>
+          <p class="ln" data-step="1 rise">두 점 사이의 기울기 = <span class="frac"><span>2 − 4</span><span>40 − 20</span></span> = <b class="cons">−0.1 M/s</b></p>
+          <p class="ln" data-step="2 rise">평균 반응 속도 <i class="m">v</i> = 0.1 ÷ <b>2</b> = <b style="color:var(--green)">0.05 M/s</b></p>
+          <p class="ln" data-step="3 rise">B(<i class="m">g</i>)의 평균 생성 속도 = <b>3</b> × 0.05 = <b class="prod">+0.15 M/s</b></p>
+          <p style="font-weight:700;margin-top:10px"><span class="qbadge" style="margin-right:12px">3-2</span>20 s와 40 s의 순간 반응 속도 비교 <small style="font-weight:500;color:var(--muted)">(반응 속도 <i class="m">v</i>, 근삿값)</small></p>
           <div class="legend3">
-            <div class="leg" data-step="4"><i style="background:var(--cons)"></i><span>20 s 순간 (접선)</span><b class="cons">약 0.0069 M/s</b></div>
-            <div class="leg" data-step="5"><i style="background:var(--prod)"></i><span>20~40 s 평균 (두 점 직선)</span><b class="prod">0.005 M/s</b></div>
-            <div class="leg" data-step="6"><i style="background:var(--green)"></i><span>40 s 순간 (접선)</span><b style="color:var(--green)">약 0.0035 M/s</b></div>
+            <div class="leg" data-step="4"><i style="background:var(--cons)"></i><span>20 s 순간 (접선)</span><b class="cons">약 0.069 M/s</b></div>
+            <div class="leg" data-step="5"><i style="background:var(--green)"></i><span>40 s 순간 (접선)</span><b style="color:var(--green)">약 0.035 M/s</b></div>
           </div>
-          <div class="ineq" data-step="7 pop"><span class="c1">20 s 순간</span> &gt; <span class="c2">20~40 s 평균</span> &gt; <span class="c3">40 s 순간</span></div>
+          <div class="ineq" data-step="6 pop"><span class="c1">20 s 순간</span> &gt; <span class="c3">40 s 순간</span></div>
         </div>
         <div class="card" style="padding:14px;align-self:start"><svg id="a-svg-a" viewBox="0 0 680 500" width="768" height="565"></svg></div>
       </div>
     </div>
   </div>
-  <aside>[활동 3 풀이] 3-1: 반응 속도는 A의 소모 속도 0.01 M/s를 계수 2로 나눈 0.005 M/s, B의 생성 속도는 3 × 0.005 = 0.015 M/s. 3-2: 클릭할 때마다 파란 접선(20 s) → 빨간 직선(평균) → 초록 접선(40 s)이 나타납니다. 기울기가 점점 완만해지므로 20 s 순간 > 평균 > 40 s 순간.</aside>
+  <aside>[활동 3 풀이] 3-1: 두 점 사이의 기울기는 −0.1 M/s이고(빨간 직선이 함께 나타납니다), 부호를 맞춰 계수 2로 나눈 평균 반응 속도는 0.05 M/s, B의 평균 생성 속도는 3 × 0.05 = 0.15 M/s입니다. 3-2: 클릭할 때마다 파란 접선(20 s) → 초록 접선(40 s)이 나타납니다. 40 s의 접선이 더 완만하므로 20 s 순간 > 40 s 순간입니다.</aside>
 </section>
 
 <!-- 13 -->
@@ -764,21 +769,21 @@
     <div class="body">
       <div class="gr-grid">
         <div class="card" style="padding:8px">
-          <svg viewBox="0 0 680 480" width="700" height="494" role="img" aria-label="시간에 따른 사산화 이질소 농도 그래프. 20초와 55초를 이은 직선은 평균, 20초의 접선은 순간 반응 속도를 나타낸다.">
+          <svg viewBox="0 0 680 480" width="700" height="494" role="img" aria-label="시간에 따른 사산화 이질소 농도 그래프. 20초와 40초를 이은 직선은 평균, 20초의 접선은 순간 반응 속도를 나타낸다.">
             <line class="axis" x1="100" y1="400" x2="650" y2="400"/><line class="axis" x1="100" y1="400" x2="100" y2="30"/>
-            <line class="guide" x1="100" y1="225.4" x2="204" y2="225.4"/><line class="guide" x1="204" y1="225.4" x2="204" y2="400"/>
-            <line class="guide" x1="100" y1="345.6" x2="386" y2="345.6"/><line class="guide" x1="386" y1="345.6" x2="386" y2="400"/>
-            <path d="M100.0,60.0 L120.8,102.4 L141.6,139.6 L162.4,172.1 L183.2,200.5 L204.0,225.4 L224.8,247.2 L245.6,266.3 L266.4,283.0 L287.2,297.6 L308.0,310.4 L328.8,321.6 L349.6,331.4 L370.4,339.9 L391.2,347.4 L412.0,354.0 L432.8,359.7 L453.6,364.8 L474.4,369.2 L495.2,373.0 L516.0,376.4 L536.8,379.3 L557.6,381.9 L578.4,384.2 L599.2,386.1 L620.0,387.9" fill="none" stroke="#1C2A39" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
-            <line x1="140" y1="153.8" x2="290" y2="321.7" stroke="#2459C9" stroke-width="4.5" stroke-linecap="round"/>
-            <line x1="170" y1="203" x2="426" y2="372" stroke="#D9443A" stroke-width="4.5" stroke-linecap="round"/>
-            <circle cx="204" cy="225.4" r="9" fill="#2459C9" stroke="#fff" stroke-width="2"/><circle cx="386" cy="345.6" r="9" fill="#D9443A" stroke="#fff" stroke-width="2"/>
-            <text class="tick" x="90" y="233" text-anchor="end">0.411</text><text class="tick" x="90" y="353" text-anchor="end">0.128</text>
+            <line class="guide" x1="100" y1="230" x2="204" y2="230"/><line class="guide" x1="204" y1="230" x2="204" y2="400"/>
+            <line class="guide" x1="100" y1="315" x2="308" y2="315"/><line class="guide" x1="308" y1="315" x2="308" y2="400"/>
+            <path d="M100.0,60.0 L120.8,104.0 L141.6,142.3 L162.4,175.7 L183.2,204.7 L204.0,230.0 L224.8,252.0 L245.6,271.2 L266.4,287.8 L287.2,302.4 L308.0,315.0 L328.8,326.0 L349.6,335.6 L370.4,343.9 L391.2,351.2 L412.0,357.5 L432.8,363.0 L453.6,367.8 L474.4,372.0 L495.2,375.6 L516.0,378.8 L536.8,381.5 L557.6,383.9 L578.4,386.0 L599.2,387.8 L620.0,389.4" fill="none" stroke="#1C2A39" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
+            <line x1="140" y1="157.5" x2="290" y2="327.4" stroke="#2459C9" stroke-width="4.5" stroke-linecap="round"/>
+            <line x1="170" y1="202.2" x2="350" y2="349.3" stroke="#D9443A" stroke-width="4.5" stroke-linecap="round"/>
+            <circle cx="204" cy="230" r="9" fill="#2459C9" stroke="#fff" stroke-width="2"/><circle cx="308" cy="315" r="9" fill="#D9443A" stroke="#fff" stroke-width="2"/>
+            <text class="tick" x="90" y="238" text-anchor="end">4</text><text class="tick" x="90" y="323" text-anchor="end">2</text>
             <text class="tick" x="204" y="432" text-anchor="middle" fill="#2459C9" style="fill:#2459C9"><tspan>t</tspan><tspan font-size="16" dy="5">1</tspan><tspan dy="-5"> = 20</tspan></text>
-            <text class="tick" x="386" y="432" text-anchor="middle" style="fill:#D9443A"><tspan>t</tspan><tspan font-size="16" dy="5">2</tspan><tspan dy="-5"> = 55</tspan></text>
+            <text class="tick" x="308" y="432" text-anchor="middle" style="fill:#D9443A"><tspan>t</tspan><tspan font-size="16" dy="5">2</tspan><tspan dy="-5"> = 40</tspan></text>
             <text class="axlab" x="375" y="470" text-anchor="middle">시간 (s)</text>
             <text class="axlab" transform="translate(26,120) rotate(-90)" text-anchor="middle">[N₂O₄] (M)</text>
             <text class="lbl" x="255" y="170" style="fill:#2459C9">접선 → 순간</text>
-            <text class="lbl" x="405" y="320" style="fill:#D9443A">두 점 직선 → 평균</text>
+            <text class="lbl" x="340" y="295" style="fill:#D9443A">두 점 직선 → 평균</text>
           </svg>
         </div>
         <div class="gr-right">
@@ -1321,6 +1326,7 @@
       document.querySelectorAll('[data-nh3]').forEach(function (e) {
         var k = e.getAttribute('data-nh3');
         if (k === 't') e.textContent = dts;
+        else if (k === 'v') e.textContent = fmt(dn / dts, 4) + ' M/s';
         else if (k[0] === 'd') e.textContent = signed(coef[+k[1]] * dn, 2);
         else e.textContent = signed(coef[+k[1]] * dn / dts, 4) + ' M/s';
       });
@@ -1357,9 +1363,9 @@
 
   /* ================= 9. average vs instantaneous rate ================= */
   (function () {
-    var svg = $('g9-svg'), TAU = 30, C0 = 0.8;
+    var svg = $('g9-svg'), TAU = 20 / Math.LN2, C0 = 8;
     var f = function (t) { return C0 * Math.exp(-t / TAU); }, df = function (t) { return -f(t) / TAU; };
-    var P = plot(svg, { l: 128, t: 50, w: 800, h: 590, x: [0, 100], y: [0, 0.8], xt: [0, 20, 40, 60, 80, 100], yt: [0, 0.2, 0.4, 0.6, 0.8], yf: function (y) { return y.toFixed(1); }, xlab: '시간 (s)', ylab: 'N₂O₄의 농도 (M)', fs: 25, yl: 30 });
+    var P = plot(svg, { l: 128, t: 50, w: 800, h: 590, x: [0, 100], y: [0, 8], xt: [0, 20, 40, 60, 80, 100], yt: [0, 2, 4, 6, 8], xlab: '시간 (s)', ylab: 'N₂O₄의 농도 (M)', fs: 25, yl: 30 });
     var L = P.layer;
     svgEl('path', { d: pathOf(P, f, 0, 100, 200), fill: 'none', stroke: '#1C2A39', 'stroke-width': 5 }, L);
     var gx1 = svgEl('path', { 'class': 'guide' }, L), gx2 = svgEl('path', { 'class': 'guide' }, L);
@@ -1377,7 +1383,7 @@
     var h2 = svgEl('circle', { r: 12, fill: '#D9443A', stroke: '#fff', 'stroke-width': 4, style: 'cursor:ew-resize' }, L);
     var t1l = svgText(L, 0, 0, '', 'lbl', 'middle', { fill: '#2459C9', 'font-size': 26 });
     var t2l = svgText(L, 0, 0, '', 'lbl', 'middle', { fill: '#D9443A', 'font-size': 26 });
-    var t1 = 20, t2 = 55, s1 = $('g9-t1'), s2 = $('g9-t2');
+    var t1 = 20, t2 = 40, s1 = $('g9-t1'), s2 = $('g9-t2');
     function lineThrough(el, t0, a, b) {
       var y0 = f(t0), m = df(t0);
       setLine(el, P.sx(a), P.sy(y0 + m * (a - t0)), P.sx(b), P.sy(y0 + m * (b - t0)));
@@ -1386,10 +1392,10 @@
       var c1 = f(t1), c2 = f(t2);
       gx1.setAttribute('d', 'M' + P.sx(0) + ',' + P.sy(c1) + 'L' + P.sx(t1) + ',' + P.sy(c1) + 'L' + P.sx(t1) + ',' + P.sy(0));
       gx2.setAttribute('d', 'M' + P.sx(0) + ',' + P.sy(c2) + 'L' + P.sx(t2) + ',' + P.sy(c2) + 'L' + P.sx(t2) + ',' + P.sy(0));
-      // tangent spans ±0.32 M vertically, clipped to the plot
-      var span = Math.min(30, 0.25 / Math.max(1e-4, -df(t1)));
+      // tangent spans ±2.5 M vertically, clipped to the plot
+      var span = Math.min(30, 2.5 / Math.max(1e-3, -df(t1)));
       lineThrough(tan, t1, Math.max(0, t1 - span), Math.min(100, t1 + span));
-      lineThrough(ini, 0, 0, Math.min(100, 0.75 / (C0 / TAU)));
+      lineThrough(ini, 0, 0, Math.min(100, 7.5 / (C0 / TAU)));
       var ex = (c2 - c1) / (t2 - t1);
       var a = Math.max(0, t1 - 6), b = Math.min(100, t2 + 6);
       setLine(sec, P.sx(a), P.sy(c1 + ex * (a - t1)), P.sx(b), P.sy(c1 + ex * (b - t1)));
@@ -1409,7 +1415,7 @@
       t2l.setAttribute('x', P.sx(t2) + 18); t2l.setAttribute('y', P.sy(0) - 12); t2l.textContent = 't₂';
       var avg = -(c2 - c1) / (t2 - t1);
       $('g9-avg').textContent = fmt(avg, 4) + ' M/s';
-      $('g9-avg-d').textContent = '= −(' + c2.toFixed(3) + ' − ' + c1.toFixed(3) + ') ÷ (' + fmt(t2, 1) + ' − ' + fmt(t1, 1) + ')  ·  NO₂ 생성 속도 = 2v = ' + fmt(2 * avg, 4) + ' M/s';
+      $('g9-avg-d').textContent = '= −(' + c2.toFixed(2) + ' − ' + c1.toFixed(2) + ') ÷ (' + fmt(t2, 1) + ' − ' + fmt(t1, 1) + ')  ·  NO₂ 생성 속도 = 2v = ' + fmt(2 * avg, 4) + ' M/s';
       $('g9-ins').textContent = fmt(-df(t1), 4) + ' M/s';
       $('g9-ini').textContent = fmt(C0 / TAU, 4) + ' M/s';
       s1.value = t1; s2.value = t2; setRangeFill(s1); setRangeFill(s2);
@@ -1452,7 +1458,7 @@
       if (prog >= 1) Z.stop();
     });
     $('g9-zoom').addEventListener('click', function () {
-      if (t2 - t1 <= 1.5) { t2 = Math.min(100, t1 + 35); render(); return; }
+      if (t2 - t1 <= 1.5) { t2 = Math.min(100, t1 + 20); render(); return; }
       from = t2; prog = 0; Z.start();
     });
     render();
@@ -1461,9 +1467,9 @@
 
   /* ================= 10, 11. 2A → 3B concentration graph ================= */
   function graphA(svg, withLines) {
-    var f = function (t) { return 0.8 * Math.pow(0.5, t / 20); };
+    var f = function (t) { return 8 * Math.pow(0.5, t / 20); };
     var df = function (t) { return -f(t) * Math.LN2 / 20; };
-    var P = plot(svg, { l: 120, t: 40, w: 520, h: 360, x: [0, 90], y: [0, 0.9], xt: [0, 20, 40, 60, 80], yt: [0.2, 0.4, 0.6, 0.8], yf: function (y) { return y.toFixed(1) + ' M'; }, xlab: '시간 (s)', ylab: 'A의 농도 (M)' });
+    var P = plot(svg, { l: 120, t: 40, w: 520, h: 360, x: [0, 90], y: [0, 9], xt: [0, 20, 40, 60, 80], yt: [2, 4, 6, 8], yf: function (y) { return y + ' M'; }, xlab: '시간 (s)', ylab: 'A의 농도 (M)' });
     var L = P.layer;
     [20, 40].forEach(function (t) {
       svgEl('path', { d: 'M' + P.sx(0) + ',' + P.sy(f(t)) + 'L' + P.sx(t) + ',' + P.sy(f(t)) + 'L' + P.sx(t) + ',' + P.sy(0), 'class': 'guide' }, L);
@@ -1475,11 +1481,11 @@
         svgEl('line', { x1: P.sx(a), y1: P.sy(f(t0) + df(t0) * (a - t0)), x2: P.sx(b), y2: P.sy(f(t0) + df(t0) * (b - t0)), stroke: color, 'stroke-width': 6, 'stroke-linecap': 'round' }, g);
         svgText(g, lx, ly, label, 'lbl', 'start', { fill: color, 'font-size': 22 });
       };
-      tl(20, 6, 34, '#2459C9', '4', '20 s 접선', P.sx(23), P.sy(0.52));
-      var g = svgEl('g', { 'data-step': '5' }, L);
-      svgEl('line', { x1: P.sx(20), y1: P.sy(0.4), x2: P.sx(40), y2: P.sy(0.2), stroke: '#D9443A', 'stroke-width': 7, 'stroke-linecap': 'round' }, g);
-      svgText(g, P.sx(31), P.sy(0.36), '평균', 'lbl', 'start', { fill: '#D9443A', 'font-size': 22 });
-      tl(40, 26, 60, '#16996A', '6', '40 s 접선', P.sx(51), P.sy(0.17));
+      tl(20, 6, 34, '#2459C9', '4', '20 s 접선', P.sx(23), P.sy(5.2));
+      var g = svgEl('g', { 'data-step': '1' }, L);
+      svgEl('line', { x1: P.sx(20), y1: P.sy(4), x2: P.sx(40), y2: P.sy(2), stroke: '#D9443A', 'stroke-width': 7, 'stroke-linecap': 'round' }, g);
+      svgText(g, P.sx(31), P.sy(3.6), '평균', 'lbl', 'start', { fill: '#D9443A', 'font-size': 22 });
+      tl(40, 26, 60, '#16996A', '5', '40 s 접선', P.sx(51), P.sy(1.7));
     }
     [20, 40].forEach(function (t) { svgEl('circle', { cx: P.sx(t), cy: P.sy(f(t)), r: 9, fill: '#1C2A39', stroke: '#fff', 'stroke-width': 3 }, L); });
   }
