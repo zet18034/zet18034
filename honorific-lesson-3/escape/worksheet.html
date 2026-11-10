@@ -13,7 +13,7 @@
 html{background:#3A3542}
 body{margin:0;font-family:'Noto Sans KR',sans-serif;color:var(--ink);word-break:keep-all;font-size:10.5pt;line-height:1.5}
 .sheet{width:210mm;min-height:297mm;margin:12mm auto;background:var(--paper);padding:12mm 13mm 11mm;position:relative;box-shadow:0 10px 40px rgba(0,0,0,.4);overflow:hidden}
-.sheet::after{content:attr(data-page);position:absolute;right:13mm;bottom:6mm;font:8pt 'Nanum Gothic Coding';color:var(--mute);letter-spacing:.08em}
+.sheet::after{content:attr(data-page);position:absolute;right:13mm;bottom:2mm;font:8pt 'Nanum Gothic Coding';color:var(--mute);letter-spacing:.08em}
 .dh{font-family:'Do Hyeon',sans-serif;font-weight:400}
 .mono{font-family:'Nanum Gothic Coding',monospace}
 h1,h2,h3,p{margin:0}
@@ -112,6 +112,16 @@ body.key .keyonly{display:flex}
 @media screen and (max-width:820px){
   .sheet{transform-origin:top left}
 }
+.sentrow td{padding:.8mm 2mm 1.1mm!important;height:auto!important;border-top:0}
+.sents{display:grid;grid-template-columns:1fr 1fr;gap:.2mm 3mm;font-size:8.3pt;line-height:1.3;text-align:left}
+.sents span{display:block}
+body.key .sents .ok{color:var(--red);font-weight:700}
+.door{margin-top:3mm;padding:2.5mm 5mm}
+.record div{height:9.5mm}
+.room{margin-top:3mm}
+.door .dh{display:inline;font-size:15pt!important}
+.door .note{display:inline;margin-left:3mm}
+.exit{margin-top:2.5mm;padding-top:2mm}
 </style>
 </head>
 <body>
@@ -150,6 +160,16 @@ body.key .cardrow td.j .ch.ok b{background:var(--red)}
 .wordline .boxes > span{font-family:'Gowun Batang',serif!important}
 .keybox{display:inline-grid;place-items:center;width:10mm;height:10mm;border-radius:2mm;background:#F6E2A8;border:1.2pt solid var(--line);font:700 13pt 'Nanum Gothic Coding';margin-left:auto}
 .record div{height:11mm}.door{margin-top:3.5mm;padding:3mm 5mm}.exit{margin-top:3mm;padding-top:2mm}.cardrow td.d{width:12mm}.cardrow td{height:10.5mm;padding:1mm 1.6mm;line-height:1.38}.room{margin-top:3.5mm}.devline{margin-top:1.5mm;padding:1.4mm 3mm}.cardrow.vault{margin-top:1.2mm}.cardrow th{padding:.8mm 1.6mm}.cardrow td.w{width:60mm}.cardrow td.s{text-align:left}
+.sentrow td{padding:.8mm 2mm 1.1mm!important;height:auto!important;border-top:0}
+.sents{display:grid;grid-template-columns:1fr 1fr;gap:.2mm 3mm;font-size:8.3pt;line-height:1.3;text-align:left}
+.sents span{display:block}
+body.key .sents .ok{color:var(--red);font-weight:700}
+.door{margin-top:3mm;padding:2.5mm 5mm}
+.record div{height:9.5mm}
+.room{margin-top:3mm}
+.door .dh{display:inline;font-size:15pt!important}
+.door .note{display:inline;margin-left:3mm}
+.exit{margin-top:2.5mm;padding-top:2mm}
 </style>
 <section class="sheet" data-page="1 / 2">
   <div class="keybar keyonly">교사용 정답본 · 학생에게 배부하지 마세요</div>
@@ -183,7 +203,7 @@ body.key .cardrow td.j .ch.ok b{background:var(--red)}
     <table class="cardrow">
       <tr><th>카드</th><th>문장</th><th style="width:12mm">고른 답</th><th>암호 해독표 (알맞은 것에 ○)</th><th>숫자</th></tr>
       <tr><td class="n"><b>12</b></td><td class="s">아버지께서는 [삼촌이 할아버지를 모시고 왔음]을 뒤늦게 아셨다.</td><td class="d"><span class="ans">⑤</span></td><td class="w j" data-j="r1:12"></td><td class="d"><span class="ans">26</span></td></tr>
-      <tr><td class="n"><b>25</b></td><td class="s">조건: <b>서술절</b>을 안은 문장에서, 서술절의 주어를 높여 문장의 주어를 <b>간접적으로</b> 높인 문장 고르기</td><td class="d"><span class="ans">③</span></td><td class="w j" data-j="r1:25"></td><td class="d"><span class="ans">21</span></td></tr>
+      <tr><td class="n"><b>25</b></td><td class="s" data-sents="r1:25">조건: <b>서술절</b>을 안은 문장 + 서술절의 주어를 높여 <b>간접 높임</b></td><td class="d"><span class="ans">③</span></td><td class="w j" data-j="r1:25"></td><td class="d"><span class="ans">21</span></td></tr>
       <tr class="vt"><td class="n"><b>58</b></td><td class="s"><small>🔒 장치 속 서류 (장치를 열면 나옴)</small>선생님께서 [어머니께 상담 일정을 여쭈어 보라고] 저에게 말씀하셨어요.</td><td class="d"><span class="ans">④</span></td><td class="w j" data-j="r1:58"></td><td class="d"><span class="lk">🔒</span></td></tr>
       <tr class="bo"><td class="n"><b>38</b></td><td class="s"><small style="color:#B8862E">★ 보너스</small>외할머니께서 [삼촌이 모시고 온] 의사 선생님께 [오랫동안 편찮으셨음]을 말씀드리셨다.</td><td class="d"><span class="ans">④</span></td><td class="w"><span class="bn">보너스 · 해독표 없음 (근거 메모)</span><span class="ans">주체(-시-) = 외할머니, 객체(모시다·말씀드리다) = 의사 선생님, 명사절 = 목적어</span></td><td class="d"><span style="font-size:8pt;color:var(--mute)">+2분</span></td></tr>
     </table>
@@ -211,7 +231,7 @@ body.key .cardrow td.j .ch.ok b{background:var(--red)}
       <tr><th>카드</th><th>문장</th><th style="width:12mm">고른 답</th><th>암호 해독표 (알맞은 것에 ○)</th><th>숫자</th></tr>
       <tr><td class="n"><b>16</b></td><td class="s">할머니께서 손녀에게 [직접 뜨신] 목도리를 선물로 주셨다.</td><td class="d"><span class="ans">③</span></td><td class="w j" data-j="r3:16"></td><td class="d"><span class="ans">50</span></td></tr>
       <tr><td class="n"><b>27</b></td><td class="s">삼촌은 [동생이 타 준] 커피를 단숨에 마셨다.</td><td class="d"><span class="ans">②</span></td><td class="w j" data-j="r3:27"></td><td class="d"><span class="ans">34</span></td></tr>
-      <tr class="vt"><td class="n"><b>71</b></td><td class="s"><small>🔒 장치 속 서류 (장치를 열면 나옴)</small>[조건] 관형사가 관형어로 쓰임 + ‘-시-’로 주체 높임 + 두 자리 서술어 → 문장 고르기</td><td class="d"><span class="ans">⑤</span></td><td class="w j" data-j="r3:71"></td><td class="d"><span class="lk">🔒</span></td></tr>
+      <tr class="vt"><td class="n"><b>71</b></td><td class="s"><small>🔒 장치 속 서류 (장치를 열면 나옴)</small>[조건] 관형사 + 주체 높임 ‘-시-’ + <b>두 자리</b> 서술어</td><td class="d"><span class="ans">⑤</span></td><td class="w j" data-j="r3:71"></td><td class="d"><span class="lk">🔒</span></td></tr>
       <tr class="bo"><td class="n"><b>33</b></td><td class="s"><small style="color:#B8862E">★ 보너스</small>[조건] 관형사가 관형어로 쓰임 + 안긴문장 속 ‘-시-’ + 안은문장의 서술어가 세 자리 → 문장 고르기</td><td class="d"><span class="ans">④</span></td><td class="w"><span class="bn">보너스 · 해독표 없음 (근거 메모)</span><span class="ans">모든 = 관형사, 쓰신의 -시-, 주다 = 세 자리 / 모시고의 ‘시’는 어간</span></td><td class="d"><span style="font-size:8pt;color:var(--mute)">+2분</span></td></tr>
     </table>
     <div class="devline"><span class="lbl">44 의견서</span><span class="boxes"><span><span class="ans">8</span></span><span><span class="ans">4</span></span></span><span class="q">단서 카드의 계산법 <span class="ans" style="font-size:11pt">(2번 단서: 판서 번호 + 원고 번호)</span></span><span class="sep"></span><span class="lbl">🔑 열쇠 상자</span><span class="boxes wbox"><span class="wd"></span><span class="wd"></span><span class="wd"></span></span><span class="q">해독표 ○ 글자를 위에서부터</span></div>
@@ -222,7 +242,7 @@ body.key .cardrow td.j .ch.ok b{background:var(--red)}
     <table class="cardrow">
       <tr><th>카드</th><th>문장</th><th style="width:12mm">고른 답</th><th>암호 해독표 (알맞은 것에 ○)</th><th>숫자</th></tr>
       <tr><td class="n"><b>18</b></td><td class="s">언니는 [내가 어제 찾아뵌] 은사님을 오늘 우연히 만났다.</td><td class="d"><span class="ans">①</span></td><td class="w j" data-j="r4:18"></td><td class="d"><span class="ans">63</span></td></tr>
-      <tr><td class="n"><b>29</b></td><td class="s">조건: 안긴문장의 <b>주체</b> 높임 대상이 안은문장에서 <b>부사어</b>로 쓰인 문장 고르기</td><td class="d"><span class="ans">④</span></td><td class="w j" data-j="r4:29"></td><td class="d"><span class="ans">18</span></td></tr>
+      <tr><td class="n"><b>29</b></td><td class="s" data-sents="r4:29">조건: 안긴문장의 <b>주체</b> 높임 대상 → 안은문장의 <b>부사어</b></td><td class="d"><span class="ans">④</span></td><td class="w j" data-j="r4:29"></td><td class="d"><span class="ans">18</span></td></tr>
       <tr class="vt"><td class="n"><b>83</b></td><td class="s"><small>🔒 장치 속 서류 (장치를 열면 나옴)</small>할머니께서는 [아버지께서 모시고 온] 손님께 차를 대접하셨다.</td><td class="d"><span class="ans">⑤</span></td><td class="w j" data-j="r4:83"></td><td class="d"><span class="lk">🔒</span></td></tr>
       <tr class="bo"><td class="n"><b>35</b></td><td class="s"><small style="color:#B8862E">★ 보너스</small>조건: 안긴문장의 <b>객체</b> 높임 대상이 안은문장에서 <b>주어</b>로 쓰인 문장 고르기</td><td class="d"><span class="ans">②</span></td><td class="w"><span class="bn">보너스 · 해독표 없음 (근거 메모)</span><span class="ans">찾아뵌 → 선생님(객체 높임 대상) → ‘선생님께서’ = 주어</span></td><td class="d"><span style="font-size:8pt;color:var(--mute)">+2분</span></td></tr>
     </table>
@@ -250,6 +270,13 @@ body.key .cardrow td.j .ch.ok b{background:var(--red)}
 (function(){
   var key = /[?&]key\b/.test(location.search);
   (window.ESC_ROOMS || []).forEach(function(R){
+    Object.keys(R.cards).forEach(function(n){
+      var td = document.querySelector('td.s[data-sents="' + R.id + ':' + n + '"]'), cd = R.cards[n]; if (!td || !cd.opts) return;
+      var tr = td.parentNode, sub = document.createElement('tr'), cell = document.createElement('td');
+      sub.className = 'sentrow ' + tr.className; cell.colSpan = tr.children.length;
+      cell.innerHTML = '<div class="sents">' + cd.opts.map(function(o){ return '<span' + (o[0] === cd.ans ? ' class="ok"' : '') + '>' + '①②③④⑤'[+o[0] - 1] + ' ' + o[1] + '</span>'; }).join('') + '</div>';
+      sub.appendChild(cell); tr.parentNode.insertBefore(sub, tr.nextSibling);
+    });
     (R.judge || []).forEach(function(row, i){
       var td = document.querySelector('td.j[data-j="' + R.id + ':' + row.n + '"]'); if (!td) return;
       td.innerHTML = '<div class="jq">' + row.q + '</div><div class="jo">' + row.o.map(function(o){ return '<span class="ch' + (o[1] === R.word[i] ? ' ok' : '') + '">' + o[0] + '<b>' + o[1] + '</b></span>'; }).join('') + '</div>';
