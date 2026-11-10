@@ -21,6 +21,7 @@
 - `assets/` — 교과서 107쪽 그림, 게임 화면 캡처(게임 방법 슬라이드용)
 - `lesson-plan/lesson-plan-3.pdf` · `.hwp` · `.hwpx` — 교수·학습 과정안 (교사 발화 포함, 4쪽)
 - `lesson-plan/lesson-plan-3-onepage.pdf` · `.hwp` · `.hwpx` — 교수·학습 과정안 (1쪽 약안)
+- `mindmap/` — 세 차시 복습 마인드맵 10쪽 (`높임 표현 복습 마인드맵.pdf`, 쪽별 이미지, 원본 `index.html`). 3차시 쪽에는 게임 문항의 답이 들어 있어 게임을 마친 뒤에 보여 줍니다.
 - `escape/` — 방탈출 게임, 관리자 페이지, 검토 일지 (아래)
 
 ## 슬라이드 구성

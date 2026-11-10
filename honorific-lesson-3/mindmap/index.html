@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>높임 표현 복습 마인드맵</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gowun+Batang:wght@400;700&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+:root{--ink:#2E2A3B;--mute:#5E5870;--paper:#F7F3EC;--card:#FFFDF9;--line:#E6DDCB;--end:#6A58A6;--sub:#B04568;--obj:#1F7A6C;--rel:#94690F;--emb:#2C5A86;--dark:#2E2A3B}
+*{box-sizing:border-box}
+html,body{margin:0;background:#D9D4CA}
+body{font-family:'Noto Sans KR',sans-serif;color:var(--ink);word-break:keep-all}
+.page{position:relative;width:1920px;height:1080px;background:var(--paper);overflow:hidden;margin:0 auto 24px}
+.page::before{content:"";position:absolute;left:0;top:0;right:0;height:120px;background:#EAE2D3;border-radius:0 0 50% 50%/0 0 26px 26px}
+header{position:absolute;left:60px;right:60px;top:22px;display:flex;align-items:center;gap:20px}
+.tag{font-size:23px;font-weight:700;color:#fff;background:var(--c,#2E2A3B);border-radius:999px;padding:5px 22px;white-space:nowrap}
+h1{margin:0;font:400 54px/1.1 'Do Hyeon',sans-serif}
+.pg{margin-left:auto;font-size:21px;color:var(--mute);white-space:nowrap}
+.map{position:absolute;left:44px;right:44px;top:124px;bottom:26px;display:grid;grid-template-columns:minmax(0,1fr) 240px minmax(0,1fr);column-gap:42px;align-items:center}
+.map.one{grid-template-columns:236px minmax(0,1fr)}
+.side{display:flex;flex-direction:column;justify-content:center;gap:22px;height:100%;min-width:0;position:relative;z-index:1}
+.br{display:flex;align-items:center;gap:34px;--c:var(--ink)}
+.left .br{flex-direction:row-reverse}
+.node{flex:none;width:186px;min-height:96px;padding:10px 10px;border-radius:18px;background:var(--c);color:#fff;text-align:center;display:flex;flex-direction:column;justify-content:center}
+.node b{font:400 38px/1.15 'Do Hyeon',sans-serif}
+.node small{font-size:21px;line-height:1.3;margin-top:3px;opacity:.92}
+.leaves{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+.leaf{background:var(--card);border:3px solid var(--c);border-radius:14px;padding:8px 15px;font-size:30px;line-height:1.34}
+.leaf b{color:var(--c)}
+.leaf .x{display:block;font-family:'Gowun Batang',serif;font-weight:700;font-size:27px;color:var(--mute)}
+.leaf .x em{font-style:normal;color:var(--c)}
+.no{color:#A8231B;font-weight:700}
+.center{position:relative;z-index:1;background:var(--dark);color:#fff;border-radius:26px;padding:26px 16px;text-align:center}
+.center b{display:block;font:400 48px/1.18 'Do Hyeon',sans-serif}
+.center small{display:block;margin-top:10px;font-size:23px;line-height:1.35;color:#E7DFF2}
+svg.ln{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+svg.ln path{fill:none;stroke-width:4.5;stroke-linecap:round}
+table{border-collapse:collapse;width:100%;font-size:33px;background:var(--card)}
+th,td{border:2px solid #D9CFBC;padding:17px 6px;text-align:center}
+th{background:#EFE7D4;font-weight:700}
+td.g{font:400 36px 'Do Hyeon',sans-serif;color:#fff;background:var(--rel)}
+td.b{font-weight:700;color:var(--rel);white-space:nowrap}
+.pen{font:30px/1.2 'Nanum Pen Script',cursive;color:#A8231B}
+.bar{display:flex;justify-content:center;align-items:flex-end;gap:7px;font:700 44px/1 'Gowun Batang',serif}
+.bar span{display:flex;flex-direction:column;align-items:center;gap:10px}
+.bar small{font:700 21px 'Noto Sans KR',sans-serif;color:#fff;border-radius:999px;padding:3px 13px}
+@page{size:1920px 1080px;margin:0}
+@media print{html,body{background:none}.page{margin:0;break-after:page}.page:last-child{break-after:auto}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+body.solo{background:var(--paper)}body.solo .page{display:none;margin:0}body.solo .page.on{display:block}
+</style>
+</head>
+<body>
+<script>
+const X = (s) => `<span class="x">${s}</span>`;
+const END='--end', SUB='--sub', OBJ='--obj', REL='--rel', EMB='--emb';
+const P = [
+{ tag:'전체 지도', c:'#2E2A3B', title:'세 시간 동안 배운 것 한눈에', center:['문장 종결 표현과<br>높임 표현','(1) 문장의 짜임과<br>문법 요소'],
+  L:[
+   {c:END,t:'문장 종결 표현',s:'1차시',i:['평서 · 의문 · 명령 · 청유 · 감탄<br><b>종결 어미</b>로 구분','문장의 <b>형식</b>과 실제 <b>의도(기능)</b>는 다를 수 있다']},
+   {c:EMB,t:'문장 속 높임',s:'3차시',i:['<b>안긴문장 안과 밖</b>을 따로 따진다','높임을 받는 사람이 바깥 문장에서 맡은 <b>성분</b> 확인']},
+   {c:'--dark',t:'화자의 태도',s:'세 시간의 핵심',i:['담화 맥락에 맞게 고른 문법 요소에 <b>화자의 태도</b>가 드러난다']},
+  ],
+  R:[
+   {c:SUB,t:'주체 높임',s:'1차시',i:['<b>주어</b>가 가리키는 대상을 높임','-(으)시- · 께서 · 특수 어휘','직접 높임 / 간접 높임']},
+   {c:OBJ,t:'객체 높임',s:'2차시',i:['<b>목적어·부사어</b>가 가리키는 대상을 높임','께 · 특수 어휘<br>(모시다, 드리다, 뵙다, 여쭙다)']},
+   {c:REL,t:'상대 높임',s:'2차시',i:['<b>듣는 사람(청자)</b>을 높이거나 낮춤','주로 종결 어미로 실현','격식체 4단계 + 비격식체 2단계']},
+  ]},
+{ tag:'1차시', c:'#6A58A6', title:'문장 종결 표현 ① 다섯 가지 문장 유형', center:['문장 종결 표현','문장을 끝맺는<br><b style="display:inline;font:700 20px \'Noto Sans KR\';color:#F6D98A">종결 어미</b>로 구분'],
+  L:[
+   {c:END,t:'평서문',i:['어떤 정보를 <b>진술</b><br><b>-다, -ㅂ니다</b>'+X('준우가 그림을 그<em>립니다</em>.')]},
+   {c:END,t:'의문문',i:['질문하여 <b>대답을 요구</b><br><b>-니, -ㅂ니까</b>'+X('도연이가 피자를 먹<em>습니까</em>?')]},
+   {c:END,t:'감탄문',i:['혼잣말처럼 <b>느낌을 표현</b><br><b>-구나, -군</b>'+X('이 동네는 서점이 없<em>구나</em>.')]},
+  ],
+  R:[
+   {c:END,t:'명령문',s:'동사만',i:['어떤 행동을 하도록 <b>요구</b><br><b>-아라/-어라, -게</b>'+X('그 일은 자네가 하<em>게</em>.')]},
+   {c:END,t:'청유문',s:'동사만',i:['함께 하자고 <b>요청</b><br><b>-자, -ㅂ시다</b>'+X('여기에서 잠시 쉽<em>시다</em>.')]},
+   {c:'--dark',t:'확인 퀴즈',s:'어떤 문장?',i:['“너 수행평가 다 했<b>니</b>?” → <b>의문문</b>','“같이 매점 가<b>자</b>.” → <b>청유문</b>']},
+  ]},
+{ tag:'1차시', c:'#6A58A6', title:'문장 종결 표현 ② 더 깊이 보기', center:['문장 유형을<br>더 깊이','품사 · 기능 ·<br>의문문의 종류'],
+  L:[
+   {c:END,t:'명령문·청유문의 서술어',i:['서술어로 <b>동사</b>만 올 수 있다'+X('공부해라 ○ / 착해라 ×'),'<b>바람·기원</b>이면 형용사도 가능'+X('행복해라, 행복하자'),'<b>의지로 못 하는 일</b>은 동사라도 어색'+X('늙어라, 다치자')]},
+   {c:END,t:'동사·형용사 구별',i:['관형사형 ‘-는’을 붙여 본다'+X('자는 ○ (동사) / 착하는 × (형용사)')]},
+  ],
+  R:[
+   {c:END,t:'형식과 기능',i:['“창문 좀 열어 줄 수 있니?”<br>형식 <b>의문문</b> → 기능 <b>요청</b>','일치하지 않으면 더 <b>공손하고 부드러운</b> 태도가 드러남','“우체국이 어딘지 아세요?” → 위치를 알려 달라는 <b>요청</b>']},
+   {c:END,t:'의문문의 종류',i:['<b>판정 의문문</b>: 긍정·부정의 대답 요구','<b>설명 의문문</b>: 구체적인 설명을 요구','<b>수사 의문문</b>: 대답을 요구하지 않음<br>(서술·감탄·명령을 나타냄)']},
+  ]},
+{ tag:'1차시', c:'#B04568', title:'주체 높임 ① 누구를, 어떻게 높일까', center:['주체 높임','서술의 주체<br>= 주어가 가리키는 대상'],
+  L:[
+   {c:SUB,t:'누구를?',i:['‘주어’는 문장 성분, 높이는 건 <b>주어가 가리키는 대상</b>'+X('<em>선생님께서</em> 나에게 책을 주셨다.'),'화자보다 서술의 주체가 <b>나이나 사회적 지위</b> 등이 높을 때 사용']},
+   {c:SUB,t:'① -(으)시-',s:'선어말 어미',i:['주셨다 = <b>주- + -시- + -었- + -다</b>','받침 없으면 <b>가시다</b>, 받침 있으면 <b>읽으시다</b>']},
+  ],
+  R:[
+   {c:SUB,t:'② 께서',s:'주격 조사',i:['주어 자리의 ‘이/가’ 대신 사용'+X('아버지<em>께서</em> 신문을 읽<em>으신</em>다. → 가장 공손')]},
+   {c:SUB,t:'③ 특수 어휘',i:['있다 → <b>계시다</b> &nbsp; 자다 → <b>주무시다</b>','먹다 → <b>드시다, 잡수시다</b>','아프다 → <b>편찮으시다</b><br>죽다 → <b>돌아가시다</b>','계시다·주무시다는 <b>통째로 한 단어</b><br>(‘-시-’를 떼어 분석하지 않음)']},
+  ]},
+{ tag:'1차시', c:'#B04568', title:'주체 높임 ② 직접 · 간접 높임과 주의할 점', center:['주체 높임<br>더 알기','바르게 높이고<br>있나요?'],
+  L:[
+   {c:SUB,t:'직접 높임',i:['높여야 할 <b>대상 자체</b>를 높임'+X('할머니께서 집에 <em>오셨어요</em>.')]},
+   {c:SUB,t:'간접 높임',i:['대상의 <b>신체, 소유물, 가족</b> 등 밀접한 대상을 높임'+X('할머니께서는 아직 <em>귀</em>가 밝<em>으시</em>다.')+X('아버님은 <em>따님</em>이 아주 예쁘<em>시</em>다.')]},
+   {c:SUB,t:'간접 높임에는',s:'-(으)시-만',i:['<span class="no">×</span> 말씀이 계시겠습니다 / 말씀께서','○ 교장 선생님 말씀이 <b>있으시겠습니다</b>.','직접 있으면 <b>계시다</b><br>간접 높임은 <b>있으시다</b>']},
+  ],
+  R:[
+   {c:SUB,t:'사물 높임',s:'잘못된 표현',i:['<span class="no">×</span> 주문하신 음료 나오셨습니다.','○ 음료가 <b>나왔습니다</b>.','음료는 손님과 <b>밀접한 관계</b>가 아니어서 높일 이유가 없다']},
+   {c:SUB,t:'압존법',s:'존대를 누름',i:['듣는 사람보다 낮은 대상은 높이지 않음'+X('할아버지, 아버지가 왔습니다.'),'요즘은 가정·직장에서 <b>꼭 지키지 않아도 된다</b>고 봄 (표준 언어 예절)']},
+   {c:SUB,t:'높임 인플레이션',i:['더 높일 표현을 찾다가 잘못 번진 것 → <b>사물 높임</b>']},
+  ]},
+{ tag:'2차시', c:'#1F7A6C', title:'객체 높임 받는 사람을 높이는 법', center:['객체 높임','서술의 객체<br>= 목적어·부사어가<br>가리키는 대상'],
+  L:[
+   {c:OBJ,t:'누구를?',i:['<b>목적어</b>가 가리키는 대상'+X('<em>할아버지를</em> 모시고 식당에 갔다.'),'<b>부사어</b>가 가리키는 대상'+X('<em>할아버지께</em> 과일을 드렸다.')]},
+   {c:OBJ,t:'① 께',s:'부사격 조사',i:['‘에게·한테’ 대신 사용'+X('이 문제는 선생님<em>께</em> 여쭤봐.')]},
+   {c:OBJ,t:'② 특수 어휘',i:['데리다 → <b>모시다</b> &nbsp; 주다 → <b>드리다</b>','보다 → <b>뵈다/뵙다</b><br>묻다 → <b>여쭈다/여쭙다</b>']},
+  ],
+  R:[
+   {c:OBJ,t:'뵙다·뵈다',s:'맞춤법',i:['<b>뵙-</b> + 자음 어미: 뵙고, 뵙겠습니다','<b>뵈-</b> + 모음 어미: <b>봬요</b>(뵈어요), <b>봬도</b>','‘하/해’를 넣어 보기: 해요 ○ → <b>봬요</b>']},
+   {c:OBJ,t:'선어말 어미?',i:['지금의 객체 높임에는 <b>없다</b><br>(중세 국어에는 있었음)','뵙다·여쭙다의 ‘ㅂ’, ‘-습니다’의 ‘습’에<br>흔적이 남음']},
+   {c:OBJ,t:'겸양',i:['나를 낮춰 상대를 높임: <b>저, 저희, 제가</b>','<span class="no">×</span> 저희 나라 → ○ <b>우리나라</b>']},
+  ]},
+{ tag:'2차시', c:'#94690F', title:'상대 높임 ① 듣는 사람에 맞춰 말하기', center:['상대 높임','화자가 청자를<br>높이거나 낮춤<br>주로 종결 어미'],
+  L:[
+   {c:REL,t:'격식체',s:'공적·의례적',i:['<b>하십시오체</b> 가십니다 &nbsp; <b>하오체</b> 가오','<b>하게체</b> 가네 &nbsp; <b>해라체</b> 간다','공적인 자리에서 사용, <b>심리적 거리감</b>이 드러나기도 함']},
+   {c:REL,t:'비격식체',s:'편한 상황',i:['<b>해요체</b> 가요 &nbsp; <b>해체</b> 가','화자와 청자의 <b>친밀함</b>이 드러남']},
+   {c:REL,t:'‘요’의 정체',i:['해체 + 요 = 해요체','‘요’는 높임을 더하는 <b>보조사</b>'+X('밥을<em>요</em>, 다 먹었어<em>요</em>.')]},
+  ],
+  R:[
+   {c:REL,t:'하십시오체의 빈칸',i:['고유한 <b>청유형·감탄형</b>이 없음','‘가시지요’는 해요체 ‘-지요’를 빌린 것','윗사람께 ‘-ㅂ시다’(하오체)는 <span class="no">어색</span>'+X('같이 사진 찍<em>으시지요</em>.')]},
+   {c:REL,t:'하오체',i:['‘-시오’ = 주체 높임 ‘-시-’ + 하오체 명령형 ‘-오’','시험지·표지판 속: <b>미시오, 당기시오</b>']},
+   {c:REL,t:'하게체',i:['낮추지만 <b>대우해 주는</b> 말'+X('좋은 건 자네가 먹<em>게</em>.')]},
+  ]},
+{ one:true, tag:'2차시', c:'#94690F', title:'상대 높임 ② 여섯 등급 × 다섯 문장 유형 (가다)', center:['상대 높임<br>표로 정리','같은 사람에게도<br>상황에 따라<br>등급이 달라진다'],
+  R:[{c:REL,t:'‘가다’로<br>말해 보기',html:`<table><tr><th colspan="2">등급</th><th>평서</th><th>의문</th><th>명령</th><th>청유</th><th>감탄</th></tr>
+<tr><td class="g" rowspan="4">격식체</td><td class="b">하십시오체</td><td>가십니다</td><td>가십니까?</td><td>가십시오</td><td>(가시지요)</td><td>–</td></tr>
+<tr><td class="b">하오체</td><td>가(시)오</td><td>가(시)오?</td><td>가(시)오</td><td>갑시다</td><td>가는구려</td></tr>
+<tr><td class="b">하게체</td><td>가네, 감세</td><td>가는가?, 가나?</td><td>가게</td><td>가세</td><td>가는구먼</td></tr>
+<tr><td class="b">해라체</td><td>간다</td><td>가니?</td><td>가(거)라</td><td>가자</td><td>가는구나</td></tr>
+<tr><td class="g" rowspan="2">비격식체</td><td class="b">해요체</td><td>가요</td><td>가요?</td><td>가(세/셔)요</td><td>가(세/셔)요</td><td>가(세/셔)요</td></tr>
+<tr><td class="b">해체</td><td>가, 가지</td><td>가?, 가지?</td><td>가, 가지</td><td>가, 가지</td><td>가, 가지</td></tr></table>`},
+   {c:REL,t:'듣는 사람이<br>바뀌면',i:['교장 선생님께: 창문 좀 닫아 주<b>십시오</b>. (하십시오체) &nbsp;·&nbsp; 친한 선생님께: 닫아 주<b>세요</b>. (해요체)','짝꿍에게: 닫아 <b>줘</b>. (해체) &nbsp;·&nbsp; 어린 동생에게: 닫아 <b>줘라</b>. (해라체)']}]},
+{ tag:'3차시', c:'#2C5A86', title:'문장 속 높임 안긴문장 안과 밖을 따로', center:['문장 속 높임','문장이 길어져도<br>주어부터 찾기'],
+  L:[
+   {c:EMB,t:'안긴문장',s:'종류',i:['<b>명사절</b> -음/-기 &nbsp; <b>관형절</b> -은/-는/-을/-던','<b>서술절</b> 주어가 둘 &nbsp; <b>인용절</b> -고/-라고']},
+   {c:EMB,t:'안과 밖',s:'따로 보기',i:['아버지께서는 [삼촌이 할아버지를 모시고 왔음]을 아셨다.<br>안: <b>할아버지</b>(객체) / 밖: <b>아버지</b>(주체)','할머니께서 손녀에게 [직접 뜨신] 목도리를 주셨다.<br>생략된 주어도 <b>할머니</b>']},
+   {c:EMB,t:'서술절과',s:'간접 높임',i:['할아버지께서는 [손이 유난히 크시다].<br>손 → 할아버지 (<b>간접 높임</b>)']},
+  ],
+  R:[
+   {c:EMB,t:'높임 대상의',s:'성분 찾기',i:['[감기에 걸리신] <b>어머니께</b> 차를 드렸다.<br>주체 높임 대상 → 안은문장의 <b>부사어</b>','언니는 [내가 찾아뵌] <b>은사님을</b> 만났다.<br>객체 높임 대상 → 안은문장의 <b>목적어</b>','[내가 찾아뵌] <b>선생님께서</b> 웃으셨다.<br>객체 높임 대상 → 안은문장의 <b>주어</b>']},
+   {c:EMB,t:'조사로',s:'성분 확인',i:['이/가·께서 = <b>주어</b> &nbsp; 을/를 = <b>목적어</b> &nbsp; 에게·께 = <b>부사어</b>']},
+  ]},
+{ tag:'3차시', c:'#2C5A86', title:'함께 봐야 할 문법과 화자의 태도', center:['높임 + 문법','헷갈리기 쉬운<br>문법 요소'],
+  L:[
+   {c:EMB,t:'서술어 자릿수',i:['<b>한 자리</b> 크다, 웃다 (누가)','<b>두 자리</b> 마시다, 아끼다 (누가, 무엇을)','<b>세 자리</b> 주다, 드리다, 맡기다 (누가, 무엇을, 누구에게)','‘교무실에 계신다’의 ‘교무실에’는 <b>필수적 부사어</b>']},
+   {c:EMB,t:'‘시’ 구별',i:['주셨다: 주- + <b>-시-</b> + -었- + -다 (높임)','마셨다: <b>마시-</b> + -었- + -다 (어간의 일부)','다시다, 모시다의 ‘시’도 어간의 일부']},
+  ],
+  R:[
+   {c:EMB,t:'관형사',i:['<b>새, 헌, 온갖, 모든</b><br><b>이·그·저, 한·두·세·몇</b>','‘새로’는 용언을 꾸미는 <b>부사</b>']},
+   {c:'--dark',t:'화자의 태도',i:['<b>존중</b>: 듣는 사람을 높여 존중','<b>예의</b>: 공적인 자리에 예의를 갖춤','<b>친밀감 ↔ 거리감</b>: 친구에게 해체는 친밀감, ‘-습니다’는 거리감','고르는 표현에 <b>담화 맥락</b>과 태도가 드러난다']},
+  ]},
+];
+const root = document.body;
+P.forEach((p, n) => {
+  const br = (b, side) => `<div class="br" style="--c:var(${b.c})"><div class="node"><b>${b.t}</b>${b.s ? `<small>${b.s}</small>` : ''}</div><div class="leaves">${b.html ? `<div class="leaf" style="padding:0;overflow:hidden">${b.html}</div>` : b.i.map(x => `<div class="leaf">${x}</div>`).join('')}</div></div>`;
+  const center = `<div class="center"><b>${p.center[0]}</b><small>${p.center[1]}</small></div>`;
+  const s = document.createElement('section'); s.className = 'page'; s.style.setProperty('--c', p.c);
+  s.innerHTML = `<header><span class="tag">${p.tag}</span><h1>${p.title}</h1><span class="pg">${n + 1} / ${P.length}</span></header>
+    <div class="map${p.one ? ' one' : ''}">${p.one ? '' : `<div class="side left">${p.L.map(b => br(b)).join('')}</div>`}${center}<div class="side right">${p.R.map(b => br(b)).join('')}</div><svg class="ln"></svg></div>`;
+  root.appendChild(s);
+});
+function wire(){
+  document.querySelectorAll('.map').forEach(m => {
+    const sv = m.querySelector('svg.ln'), b0 = m.getBoundingClientRect(), c = m.querySelector('.center').getBoundingClientRect();
+    if (!b0.width) return;
+    const cy = c.top + c.height/2 - b0.top; let html = '';
+    const curve = (x1, y1, x2, y2, col) => { const k = (x1 + x2) / 2; html += `<path style="stroke:var(${col})" d="M${x1} ${y1}C${k} ${y1} ${k} ${y2} ${x2} ${y2}"/>`; };
+    m.querySelectorAll('.br').forEach(br => {
+      const left = br.closest('.left'), col = br.style.getPropertyValue('--c').replace(/var\(|\)/g, ''), n = br.querySelector('.node').getBoundingClientRect(), ny = n.top + n.height/2 - b0.top;
+      curve(left ? c.left - b0.left : c.right - b0.left, cy, left ? n.right - b0.left : n.left - b0.left, ny, col);
+      br.querySelectorAll('.leaf').forEach(l => { const r = l.getBoundingClientRect(); curve(left ? n.left - b0.left : n.right - b0.left, ny, left ? r.right - b0.left : r.left - b0.left, r.top + r.height/2 - b0.top, col); });
+    });
+    sv.innerHTML = html;
+  });
+}
+const Q = new URLSearchParams(location.search), solo = Q.get('p');
+if (solo) { document.body.classList.add('solo'); document.querySelectorAll('.page')[+solo - 1].classList.add('on'); }
+(document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(() => {
+  wire();
+  // 검사: 쪽 밖으로 넘치거나 머리글과 겹치는 내용
+  const out = [];
+  document.querySelectorAll('.page').forEach((pg, i) => { if (solo && !pg.classList.contains('on')) return; const r = pg.getBoundingClientRect(); let t = 1e9, b = -1e9, over = 0; pg.querySelectorAll('.leaf,.node,.center').forEach(e => { const q = e.getBoundingClientRect(); t = Math.min(t, q.top - r.top); b = Math.max(b, q.bottom - r.top); if (e.scrollWidth > e.clientWidth + 2) over++; }); out.push(`${i + 1}: top ${Math.round(t)} bottom ${Math.round(b)} over ${over}`); });
+  document.documentElement.dataset.check = out.join(' | ');
+});
+</script>
+</body>
+</html>
