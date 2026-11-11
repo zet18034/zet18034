@@ -17,11 +17,8 @@
 ## 파일
 
 - `index.html` — 발표용 웹 슬라이드 (28장)
-- `honorific-lesson-3.pdf` — 전체 28장 PDF (관리자 기록이 없을 때의 예시 화면)
 - `assets/` — 교과서 107쪽 그림, 게임 화면 캡처(게임 방법 슬라이드용)
-- `lesson-plan/lesson-plan-3.pdf` · `.hwp` · `.hwpx` — 교수·학습 과정안 (교사 발화 포함, 4쪽)
-- `lesson-plan/lesson-plan-3-onepage.pdf` · `.hwp` · `.hwpx` — 교수·학습 과정안 (1쪽 약안)
-- `mindmap/` — 세 차시 복습 마인드맵 6쪽 (`높임 표현 복습 마인드맵.pdf`, 쪽별 이미지, 원본 `index.html`)
+- `mindmap/` — 세 차시 복습 마인드맵 6쪽 (쪽별 이미지, 원본 `index.html`)
 - `escape/` — 방탈출 게임, 관리자 페이지, 검토 일지 (아래)
 
 ## 슬라이드 구성
@@ -65,7 +62,7 @@
 - `escape/setup.html` — 관리자 페이지 연결 방법 (처음 한 번, Google 시트 + Apps Script, 약 5분)
 - `escape/apps-script.gs` — Google Apps Script에 붙여 넣을 기록 서버 코드
 - `escape/cards.js` — 방·카드 데이터 · `escape/live.js` — 연결·집계·명령 코드 · `escape/bgm.js` — 배경 음악 (게임·관리자·슬라이드가 함께 씀)
-- `escape/worksheet.html` — 검토 일지 (A4 2쪽, 학생 한 명에 한 부). 카드마다 고른 답과 **암호 해독표**(질문 하나에 세 칸, ○한 칸의 글자가 열쇠 상자 글자)가 있어 게임에 꼭 필요합니다. 판정 내용은 `cards.js`에서 읽어 게임과 어긋나지 않습니다. `worksheet.html?key`는 교사용 정답본. 인쇄용 `worksheet.pdf` · `worksheet-key.pdf`
+- `escape/worksheet.html` — 검토 일지 (A4 2쪽, 학생 한 명에 한 부). 카드마다 고른 답과 **암호 해독표**(질문 하나에 세 칸, ○한 칸의 글자가 열쇠 상자 글자)가 있어 게임에 꼭 필요합니다. 판정 내용은 `cards.js`에서 읽어 게임과 어긋나지 않습니다. `worksheet.html?key`는 교사용 정답본.
 
 ### 수업 당일 순서
 
