@@ -1,0 +1,149 @@
+/* kit/deck.css — 슬라이드 기반 엔진의 CSS (2026-11-18)
+   고정하는 것은 보이지 않는 기반뿐: 1920×1080 무대, 장 전환, 단계 등장, 한국어 줄바꿈, 색 토큰.
+   색·글꼴·레이아웃·장식은 덱마다 새로 디자인한다. 이 파일 뒤에 덱 CSS를 두고 무엇이든 덮어써도 된다. */
+
+/* ── 색 토큰: 기준 색상(--deck-hue)과 채도(--deck-chroma)만 바꾸면 덱 전체 색이 따라온다 ── */
+:root {
+  --deck-hue: 250;
+  --deck-chroma: .13;
+  --deck-font: 'Pretendard Variable', 'Pretendard', 'Noto Sans KR', system-ui, sans-serif;
+  --outside: oklch(.16 .01 var(--deck-hue));      /* 무대 밖 여백(화면 비율이 16:9가 아닐 때) */
+  --slide-dur: .45s;                               /* 장 전환 시간 */
+  --step-dur: .5s;                                 /* 단계 등장 시간 */
+  --step-ease: cubic-bezier(.2, .7, .2, 1);
+  --step-dist: 28px;                               /* 단계 등장 때 움직이는 거리 */
+}
+
+/* data-tone·data-hue가 붙은 요소(장 하나, 칸 하나)는 그 안에서 토큰을 다시 계산한다 */
+.deck, .deck [data-tone], .deck [data-hue], .deck-chrome {
+  --bg: oklch(.985 .006 var(--deck-hue));
+  --surface: oklch(1 0 0);
+  --ink: oklch(.23 .02 var(--deck-hue));
+  --muted: oklch(.52 .02 var(--deck-hue));
+  --line: oklch(.88 .012 var(--deck-hue));
+  --accent: oklch(.57 var(--deck-chroma) var(--deck-hue));
+  --accent-soft: oklch(.93 calc(var(--deck-chroma) * .35) var(--deck-hue));
+  --accent-ink: oklch(.99 0 0);                    /* accent 바탕 위의 글자 */
+}
+.deck[data-tone="dark"], .deck [data-tone="dark"], .deck-chrome[data-tone="dark"] {
+  --bg: oklch(.19 .015 var(--deck-hue));
+  --surface: oklch(.25 .018 var(--deck-hue));
+  --ink: oklch(.95 .008 var(--deck-hue));
+  --muted: oklch(.72 .015 var(--deck-hue));
+  --line: oklch(.36 .02 var(--deck-hue));
+  --accent: oklch(.76 var(--deck-chroma) var(--deck-hue));
+  --accent-soft: oklch(.32 calc(var(--deck-chroma) * .5) var(--deck-hue));
+  --accent-ink: oklch(.18 .02 var(--deck-hue));
+}
+
+/* ── 무대 ── */
+html, body { margin: 0; height: 100%; overflow: hidden; background: var(--outside); }
+.deck {
+  position: fixed; left: 0; top: 0;
+  width: 1920px; height: 1080px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  background: var(--bg); color: var(--ink);
+  font-family: var(--deck-font);
+  font-size: 36px; line-height: 1.5;
+  word-break: keep-all; overflow-wrap: break-word;
+  text-wrap: pretty;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+/* 꾸밈 기본값은 :where로 우선순위 0 — 덱 CSS가 언제나 이긴다 */
+:where(.deck) :where(h1, h2, h3, h4) { margin: 0; line-height: 1.25; text-wrap: balance; }
+:where(.deck) :where(p, ul, ol, figure, blockquote) { margin: 0; }
+:where(.deck [data-tone], .deck [data-hue]) { color: var(--ink); }
+:where(.deck .slide[data-tone], .deck .slide[data-hue]) { background: var(--bg); }
+
+/* ── 장 ──
+   본문은 아래 115px(965px 선)을 비워 둔다: 쪽 번호·진행 표시가 들어가는 자리.
+   레이아웃 점검 스크립트(private/slide-templates/check-layout.js)도 이 선을 본다. */
+.slide {
+  position: absolute; inset: 0;
+  box-sizing: border-box;
+  padding: 96px 120px 128px;
+  visibility: hidden; opacity: 0;
+  transition: opacity var(--slide-dur) ease, visibility 0s linear var(--slide-dur);
+}
+.slide.active { visibility: visible; opacity: 1; transition: opacity var(--slide-dur) ease, visibility 0s; }
+.deck:not(.ready) .slide:first-of-type { visibility: visible; opacity: 1; }   /* 스크립트 전 깜빡임 방지 */
+.deck.vt .slide { transition: none; }   /* View Transitions가 되면 전환은 그쪽이 맡는다 */
+
+/* ── 단계 등장: data-step="1,2,3…"(또는 "+" = 앞 단계+1, "=" = 앞 단계와 같이) ──
+   data-step-off="n" 은 n단계에서 사라짐. data-anim 으로 등장 모양을 고른다. */
+.deck :is([data-step], [data-step-off]) {
+  transition:
+    opacity var(--step-dur) var(--step-ease),
+    transform var(--step-dur) var(--step-ease),
+    filter var(--step-dur) var(--step-ease),
+    visibility 0s;
+}
+.deck :is([data-step], [data-step-off]):not(.on) {
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transform: translateY(var(--step-dist));
+  transition:
+    opacity var(--step-dur) var(--step-ease),
+    transform var(--step-dur) var(--step-ease),
+    filter var(--step-dur) var(--step-ease),
+    visibility 0s linear var(--step-dur);
+}
+.deck [data-anim="fade"]:not(.on)  { transform: none; }
+.deck [data-anim="down"]:not(.on)  { transform: translateY(calc(-1 * var(--step-dist))); }
+.deck [data-anim="left"]:not(.on)  { transform: translateX(calc(-1 * var(--step-dist))); }
+.deck [data-anim="right"]:not(.on) { transform: translateX(var(--step-dist)); }
+.deck [data-anim="zoom"]:not(.on)  { transform: scale(.9); }
+.deck [data-anim="blur"]:not(.on)  { transform: none; filter: blur(10px); }
+.deck [data-anim="none"], .deck [data-anim="none"]:not(.on) { transition: none; transform: none; }
+
+/* ── 글자 하나씩(data-split): 그 요소가 보이게 될 때 한 글자씩 ── */
+.deck .split .w { white-space: nowrap; }
+.deck .split .c {
+  display: inline-block; opacity: 0; transform: translateY(.35em);
+  transition: opacity .35s var(--step-ease), transform .35s var(--step-ease);
+  transition-delay: calc(var(--i) * var(--split-gap, 35ms));
+}
+.deck .split.play .c { opacity: 1; transform: none; }
+
+/* 이전 장으로 돌아갈 때처럼 '이미 다 보인 상태'로 열 때는 움직임 없이 */
+.deck.no-anim :not(.slide) { transition: none !important; }
+
+/* ── 쪽 번호와 남은 단계 점 (덱 CSS에서 자유롭게 바꾸거나 .deck-chrome{display:none}) ── */
+.deck-chrome {
+  position: absolute; right: 64px; bottom: 44px;
+  display: flex; align-items: center; gap: 18px;
+  font: 500 24px/1 var(--deck-font); color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none; z-index: 50;
+}
+.deck-dots { display: flex; gap: 8px; }
+.deck-dots i { width: 9px; height: 9px; border-radius: 50%; background: currentColor; opacity: .3; transition: opacity .2s; }
+.deck-dots i.on { opacity: .9; }
+.deck.hide-chrome .deck-chrome { display: none; }
+
+/* ── 장 전환 (View Transitions, 크롬·엣지·사파리 18+). data-transition="fade|slide|zoom|none" ── */
+.deck.vt { view-transition-name: deck; }
+.deck-chrome { view-transition-name: deck-chrome; }
+::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+::view-transition-group(deck) { animation-duration: var(--slide-dur); }
+::view-transition-old(deck), ::view-transition-new(deck) { animation-duration: var(--slide-dur); animation-timing-function: var(--step-ease); }
+html[data-vt="slide"]::view-transition-old(deck) { animation-name: deck-out-l; }
+html[data-vt="slide"]::view-transition-new(deck) { animation-name: deck-in-r; }
+html[data-vt="slide"][data-vt-dir="prev"]::view-transition-old(deck) { animation-name: deck-out-r; }
+html[data-vt="slide"][data-vt-dir="prev"]::view-transition-new(deck) { animation-name: deck-in-l; }
+html[data-vt="zoom"]::view-transition-old(deck) { animation-name: deck-zoom-out; }
+html[data-vt="zoom"]::view-transition-new(deck) { animation-name: deck-zoom-in; }
+@keyframes deck-out-l { to { opacity: 0; transform: translateX(-6%); } }
+@keyframes deck-out-r { to { opacity: 0; transform: translateX(6%); } }
+@keyframes deck-in-r { from { opacity: 0; transform: translateX(6%); } }
+@keyframes deck-in-l { from { opacity: 0; transform: translateX(-6%); } }
+@keyframes deck-zoom-out { to { opacity: 0; transform: scale(1.04); } }
+@keyframes deck-zoom-in { from { opacity: 0; transform: scale(.96); } }
+
+/* ── 움직임 줄이기 설정: 위치 이동·글자 효과 없이 짧게 나타나기만 ── */
+@media (prefers-reduced-motion: reduce) {
+  .deck :is([data-step], [data-step-off]):not(.on) { transform: none; filter: none; }
+  .deck :is([data-step], [data-step-off]), .slide { transition-duration: .01s !important; }
+  .deck .split .c { opacity: 1; transform: none; transition: none; }
+}
