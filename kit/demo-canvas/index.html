@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>물의 여행 — 캔버스 모드 시험</title>
+<link rel="stylesheet" href="../vendor/pretendard/pretendardvariable-dynamic-subset.css">
+<link rel="stylesheet" href="../deck.css">
+<style>
+  /* 이 덱만의 디자인 */
+  :root { --deck-hue: 225; --deck-chroma: .13; --idle-opacity: .35; }
+  .deck { background: radial-gradient(120% 90% at 50% 0%, oklch(.97 .03 225), oklch(.9 .05 215)); }
+
+  /* 전체 지도(크기 4배 장): 배경 없이 제목과 순환 고리만 */
+  .map { padding: 0; }
+  .map h1 { position: absolute; left: 90px; top: 60px; font-size: 104px; font-weight: 850; letter-spacing: -.03em; color: oklch(.32 .09 235); }
+  .map .sub { position: absolute; left: 94px; top: 200px; width: 520px; font-size: 32px; color: oklch(.45 .06 235); }
+  .map svg { position: absolute; inset: 0; }
+  .map .hint { position: absolute; left: 0; right: 0; bottom: 30px; text-align: center; font-size: 22px; color: oklch(.5 .04 235); }
+
+  /* 정거장 카드 */
+  .card { background: oklch(.995 .004 225); border-radius: 56px; box-shadow: 0 30px 80px oklch(.4 .08 230 / .18); display: grid; grid-template-columns: 1fr 400px; gap: 64px; align-content: start; }
+  .card .kicker { font-size: 28px; font-weight: 750; letter-spacing: .1em; color: var(--accent); margin-bottom: 18px; }
+  .card h2 { font-size: 80px; font-weight: 850; letter-spacing: -.025em; margin-bottom: 40px; }
+  .card ul { list-style: none; padding: 0; display: grid; gap: 24px; font-size: 38px; }
+  .card li { padding-left: 40px; position: relative; }
+  .card li::before { content: ''; position: absolute; left: 0; top: .55em; width: 16px; height: 16px; border-radius: 50%; background: var(--accent); }
+  .card .art { align-self: center; }
+  .card .art svg { width: 100%; height: auto; }
+  .card.narrow { grid-template-columns: 1060px; }
+
+  /* 더 들어가기 표시(응결 카드 오른쪽 아래) */
+  .peek { position: absolute; right: 64px; top: 600px; font-size: 28px; font-weight: 700; color: var(--accent); }
+
+  /* 퀴즈·답(작은 장): 내용은 1920×1080 기준으로 쓰고 data-scale로 작게 놓는다 */
+  .quiz { background: oklch(.99 .01 225); border-radius: 64px; border: 6px solid var(--accent); display: grid; align-content: center; gap: 56px; text-align: center; }
+  .quiz h2 { font-size: 88px; font-weight: 850; letter-spacing: -.02em; }
+  .quiz .choices { display: flex; gap: 48px; justify-content: center; }
+  .quiz button { font: 750 56px var(--deck-font); padding: 36px 72px; border-radius: 999px; border: 0; cursor: pointer; background: var(--accent); color: var(--accent-ink); }
+  .quiz button.alt { background: var(--accent-soft); color: var(--ink); }
+  .quiz p { font-size: 48px; color: var(--muted); }
+  .answer { border-radius: 64px; display: grid; align-content: center; gap: 40px; padding: 96px 140px; }
+  .answer h2 { font-size: 100px; font-weight: 850; }
+  .answer p { font-size: 52px; }
+  .answer button { justify-self: start; font: 700 44px var(--deck-font); padding: 24px 56px; border-radius: 999px; border: 4px solid currentColor; background: transparent; color: inherit; cursor: pointer; }
+  .answer.no { background: oklch(.95 .04 30); color: oklch(.35 .1 30); }
+  .answer.yes { background: oklch(.95 .05 150); color: oklch(.33 .09 150); }
+</style>
+</head>
+<body>
+<main class="deck">
+
+  <!-- 1. 전체 지도: 가운데(0,0), 4배 크기 → 정거장 카드들이 이 위에 놓인다 -->
+  <section class="slide map" id="map" data-x="0" data-y="0" data-scale="4" data-hide-chrome>
+    <h1>물의 여행</h1>
+    <p class="sub">물은 모습을 바꾸며 끊임없이 돌고 돈다</p>
+    <svg viewBox="0 0 1920 1080" aria-hidden="true">
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="oklch(.55 .12 230)"/></marker></defs>
+      <g fill="none" stroke="oklch(.55 .12 230)" stroke-width="7" stroke-dasharray="2 18" stroke-linecap="round" marker-end="url(#ar)">
+        <path d="M470 430 Q 520 330 690 320"/>
+        <path d="M1230 330 Q 1430 320 1480 410"/>
+        <path d="M1450 745 Q 1400 830 1230 830"/>
+        <path d="M690 830 Q 520 830 470 745"/>
+      </g>
+    </svg>
+    <p class="hint">→ 다음 · O 전체 보기 · 전체 보기에서 카드를 누르면 그곳으로</p>
+  </section>
+
+  <!-- 2. 증발 -->
+  <section class="slide card" id="evap" data-x="-2300" data-y="100" data-rotate="-6">
+    <div>
+      <div class="kicker">정거장 1</div>
+      <h2>증발</h2>
+      <ul>
+        <li data-step>햇볕을 받은 바다·강·호수의 물이 수증기가 되어 공기 속으로 올라가요.</li>
+        <li data-step>수증기는 눈에 보이지 않는 기체예요.</li>
+        <li data-step>젖은 빨래가 마르는 것도 증발이에요.</li>
+      </ul>
+    </div>
+    <div class="art"><svg viewBox="0 0 400 400"><circle cx="300" cy="90" r="60" fill="oklch(.85 .15 85)"/><path d="M40 330 Q 100 300 160 330 T 280 330 T 400 330 V400 H0 V330z" fill="oklch(.6 .13 235)"/><g stroke="oklch(.6 .08 235)" stroke-width="10" fill="none" stroke-linecap="round"><path d="M90 280 q -20 -30 0 -60 t 0 -60"/><path d="M170 280 q -20 -30 0 -60 t 0 -60"/><path d="M250 280 q -20 -30 0 -60 t 0 -60"/></g></svg></div>
+  </section>
+
+  <!-- 3. 응결 (오른쪽 아래에 퀴즈 장이 작게 숨어 있다) -->
+  <section class="slide card" id="cond" data-x="0" data-y="-900">
+    <div>
+      <div class="kicker">정거장 2</div>
+      <h2>응결</h2>
+      <ul>
+        <li data-step>하늘 높이 올라간 수증기는 차가워지면 아주 작은 물방울이 돼요.</li>
+        <li data-step>이 물방울이 모여 구름이 돼요.</li>
+        <li data-step>차가운 컵 겉에 물방울이 맺히는 것도 응결이에요.</li>
+      </ul>
+    </div>
+    <div class="art"><svg viewBox="0 0 400 300"><g fill="oklch(.93 .02 235)" stroke="oklch(.7 .05 235)" stroke-width="6"><path d="M90 230 a60 60 0 0 1 20 -116 a80 80 0 0 1 150 -20 a60 60 0 0 1 60 136z"/></g></svg></div>
+    <div class="peek" data-step>더 들여다보기 ↘</div>
+  </section>
+
+  <!-- 4. 퀴즈: 응결 카드 안쪽 작은 자리로 확대해 들어간다. 보기를 누르면 갈림길 -->
+  <section class="slide quiz" id="quiz" data-x="600" data-y="-560" data-scale=".3" data-next="right">
+    <h2>구름은 무엇으로 이루어져 있을까요?</h2>
+    <div class="choices">
+      <button type="button" class="alt" data-go="wrong">수증기</button>
+      <button type="button" data-go="right">작은 물방울</button>
+    </div>
+    <p>보기를 눌러 보세요</p>
+  </section>
+
+  <!-- 5. 갈림길 ㄱ: 틀렸을 때 → 다 보면 퀴즈로 돌아감 -->
+  <section class="slide answer no" id="wrong" data-x="-648" data-y="-640" data-scale=".2" data-next="back" data-hidden>
+    <h2>아쉬워요</h2>
+    <p>수증기는 눈에 보이지 않아요. 구름이 하얗게 보이는 건 작은 물방울과 얼음 알갱이가 빛을 흩뜨리기 때문이에요.</p>
+    <button type="button" data-back>다시 고르기</button>
+  </section>
+
+  <!-- 6. 갈림길 ㄴ: 맞았을 때 → 다음 정거장으로 -->
+  <section class="slide answer yes" id="right" data-x="-228" data-y="-640" data-scale=".2" data-next="rain" data-hidden>
+    <h2>맞아요!</h2>
+    <p>구름은 아주 작은 물방울과 얼음 알갱이가 모인 거예요. 이제 이 물방울이 어디로 가는지 따라가 봐요.</p>
+  </section>
+
+  <!-- 7. 강수 -->
+  <section class="slide card" id="rain" data-x="2300" data-y="100" data-rotate="6">
+    <div>
+      <div class="kicker">정거장 3</div>
+      <h2>비와 눈</h2>
+      <ul>
+        <li data-step>구름 속 물방울이 서로 합쳐져 커지고 무거워지면 떨어져요.</li>
+        <li data-step>그대로 떨어지면 비, 추운 날 얼어서 떨어지면 눈이에요.</li>
+      </ul>
+    </div>
+    <div class="art"><svg viewBox="0 0 400 360"><path d="M90 170 a60 60 0 0 1 20 -116 a80 80 0 0 1 150 -20 a60 60 0 0 1 60 136z" fill="oklch(.8 .03 240)"/><g stroke="oklch(.6 .13 235)" stroke-width="10" stroke-linecap="round"><path d="M120 210 l-16 40"/><path d="M190 220 l-16 40"/><path d="M260 210 l-16 40"/><path d="M150 290 l-16 40"/><path d="M230 290 l-16 40"/></g></svg></div>
+  </section>
+
+  <!-- 8. 모이기 -->
+  <section class="slide card" id="flow" data-x="0" data-y="1100">
+    <div>
+      <div class="kicker">정거장 4</div>
+      <h2>다시 바다로</h2>
+      <ul>
+        <li data-step>땅에 떨어진 물은 강을 따라 흐르거나 땅속으로 스며들어요.</li>
+        <li data-step>결국 바다로 모이고, 다시 햇볕을 받아 증발해요.</li>
+        <li data-step>그래서 물의 양은 줄지 않고 계속 돌고 돌아요.</li>
+      </ul>
+    </div>
+    <div class="art"><svg viewBox="0 0 400 300"><path d="M0 80 C 120 60 120 160 220 170 S 340 230 400 220 V300 H0z" fill="oklch(.65 .12 235)"/><path d="M0 40 C 100 30 140 120 230 130" stroke="oklch(.75 .1 235)" stroke-width="18" fill="none" stroke-linecap="round"/></svg></div>
+  </section>
+
+  <!-- 9. 끝: 전체 보기로 물러난다(내용 없는 장) -->
+  <section class="slide" id="end" data-overview data-hide-chrome></section>
+
+</main>
+<script src="../deck.js"></script>
+</body>
+</html>

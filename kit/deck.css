@@ -141,6 +141,26 @@ html[data-vt="zoom"]::view-transition-new(deck) { animation-name: deck-zoom-in; 
 @keyframes deck-zoom-out { to { opacity: 0; transform: scale(1.04); } }
 @keyframes deck-zoom-in { from { opacity: 0; transform: scale(.96); } }
 
+/* ── 캔버스 모드 (장에 data-x·data-y가 있을 때 deck.js가 .canvas를 붙임) ──
+   모든 장이 큰 캔버스 위에 함께 놓이고, 지금 장이 아닌 것은 흐리게 보인다. */
+:root { --move-dur: 1.1s; --idle-opacity: .2; }
+.deck-canvas { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; }
+.deck.canvas .slide {
+  inset: auto; left: 0; top: 0; width: 1920px; height: 1080px;
+  transform-origin: 0 0;
+  visibility: visible; opacity: var(--idle-opacity);
+  transition: opacity .6s ease;
+}
+.deck.canvas .slide.active { opacity: 1; }
+.deck.canvas .slide[data-overview] { display: none; }
+.deck.canvas .slide[data-hidden]:not(.active) { opacity: 0; pointer-events: none; }   /* 갈림길 답처럼 그 장에 가기 전엔 숨김 */
+/* 지금 장이 아닌 곳은 단계를 다 펼친 모습으로 (지도처럼 보이게) */
+.deck.canvas .slide:not(.active) [data-step]:not([data-step-off]),
+.deck.overview [data-step]:not([data-step-off]) { opacity: 1; visibility: visible; transform: none; filter: none; }
+.deck.overview .slide { opacity: 1; cursor: pointer; }
+.deck.overview .slide > * { pointer-events: none; }
+.deck.overview .slide:hover { outline: 10px solid var(--accent); outline-offset: 6px; }
+
 /* ── 움직임 줄이기 설정: 위치 이동·글자 효과 없이 짧게 나타나기만 ── */
 @media (prefers-reduced-motion: reduce) {
   .deck :is([data-step], [data-step-off]):not(.on) { transform: none; filter: none; }

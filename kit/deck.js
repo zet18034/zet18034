@@ -18,6 +18,56 @@
   /* ── data-hue: 그 요소 안에서만 기준 색상 바꾸기 ── */
   deckEl.querySelectorAll('[data-hue]').forEach(e => e.style.setProperty('--deck-hue', e.dataset.hue));
 
+  /* ── 캔버스 모드: 장에 data-x·data-y(장 가운데 좌표), data-scale(크기), data-rotate(도)가 있으면
+     장들을 큰 캔버스 위에 배치하고 카메라가 날아가며 확대·축소·회전한다. data-overview 장 = 전체 보기 ── */
+  const isCanvas = slides.some(s => s.hasAttribute('data-x') || s.hasAttribute('data-y'));
+  const posOf = s => ({ x: +(s.dataset.x || 0), y: +(s.dataset.y || 0), s: +(s.dataset.scale || 1), r: +(s.dataset.rotate || 0) });
+  let canvasEl = null, camNow = null, camRaf = 0, overviewKey = false;
+  const placed = () => slides.filter(s => !s.hasAttribute('data-overview'));
+  const camApply = c => { canvasEl.style.transform = `translate(${W / 2}px, ${H / 2}px) scale(${1 / c.s}) rotate(${-c.r}deg) translate(${-c.x}px, ${-c.y}px)`; };
+  const overviewCam = () => {
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    placed().forEach(s => {
+      const p = posOf(s), a = p.r * Math.PI / 180, cs = Math.cos(a), sn = Math.sin(a);
+      [[-1, -1], [1, -1], [1, 1], [-1, 1]].forEach(([u, v]) => {
+        const lx = u * W / 2 * p.s, ly = v * H / 2 * p.s;
+        const X = p.x + lx * cs - ly * sn, Y = p.y + lx * sn + ly * cs;
+        x0 = Math.min(x0, X); x1 = Math.max(x1, X); y0 = Math.min(y0, Y); y1 = Math.max(y1, Y);
+      });
+    });
+    return { x: (x0 + x1) / 2, y: (y0 + y1) / 2, s: Math.max((x1 - x0) / W, (y1 - y0) / H) * 1.08, r: 0 };
+  };
+  /* 카메라 이동: 크기는 로그로 보간(확대가 고르게 느껴지게), 멀리 갈 때는 잠깐 물러났다 다가간다 */
+  const camTo = (t, instant) => {
+    cancelAnimationFrame(camRaf);
+    if (!camNow || instant || reduced()) { camNow = t; camApply(t); return; }
+    const f = { ...camNow }, t0 = performance.now();
+    const dur = (parseFloat(getComputedStyle(deckEl).getPropertyValue('--move-dur')) || 1.1) * 1000;
+    const dist = Math.hypot(t.x - f.x, t.y - f.y), base = Math.max(f.s, t.s);
+    const dip = 1 + Math.max(0, dist / (W * base) - .4) * .7;
+    let dr = t.r - f.r; dr = ((dr + 540) % 360) - 180;   // 짧은 쪽으로 돌기
+    const ease = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+    const tick = now => {
+      const k = Math.min((now - t0) / dur, 1), e = ease(k);
+      const ls = Math.log(f.s) + (Math.log(t.s) - Math.log(f.s)) * e;
+      camNow = { x: f.x + (t.x - f.x) * e, y: f.y + (t.y - f.y) * e, r: f.r + dr * e, s: Math.exp(ls) * Math.pow(dip, Math.sin(Math.PI * e)) };
+      camApply(camNow);
+      if (k < 1) camRaf = requestAnimationFrame(tick); else { camNow = t; camApply(t); }
+    };
+    camRaf = requestAnimationFrame(tick);
+  };
+  if (isCanvas) {
+    deckEl.classList.add('canvas'); deckEl.classList.remove('vt');
+    canvasEl = document.createElement('div');
+    canvasEl.className = 'deck-canvas';
+    slides.forEach(s => {
+      canvasEl.appendChild(s);
+      const p = posOf(s);
+      s.style.transform = `translate(${p.x}px, ${p.y}px) rotate(${p.r}deg) scale(${p.s}) translate(${-W / 2}px, ${-H / 2}px)`;
+    });
+    deckEl.prepend(canvasEl);
+  }
+
   /* ── 단계 번호 정리: "+"·빈 값 = 앞 단계+1, "=" = 앞 단계와 같이 ── */
   const STEP_SEL = '[data-step],[data-step-off]';
   const plan = new Map();   // slide -> { items:[{el,on,off}], max }
@@ -160,15 +210,25 @@
     updateUi();
   };
 
+  /* 캔버스 모드에서 카메라·전체 보기 상태를 맞춘다 */
+  const syncView = instantCam => {
+    if (!isCanvas) return;
+    const ov = overviewKey || slides[cur].hasAttribute('data-overview');
+    deckEl.classList.toggle('overview', ov);
+    slides.forEach(s => { s.inert = ov ? false : s !== slides[cur]; });
+    camTo(ov ? overviewCam() : posOf(slides[cur]), instantCam);
+  };
+
   let vtToken = 0;
   const go = (n, target = 0) => {
     n = Math.max(0, Math.min(slides.length - 1, n | 0));
     const s = slides[n], mx = maxOf(s);
     const st = target === 'end' ? mx : Math.max(0, Math.min(mx, target | 0));
-    if (n === cur) { step = st; render(false); return; }
+    if (n === cur) { step = st; render(false); syncView(false); return; }
     const dir = n > cur ? 'next' : 'prev', first = cur < 0;
     cur = n; step = st;
     const instant = first || st > 0;
+    if (isCanvas) { render(instant); syncView(first); return; }
     const type = s.dataset.transition || deckEl.dataset.transition || 'fade';
     if (canVT && !first && !reduced() && type !== 'none' && !document.hidden) {
       const my = ++vtToken;
@@ -177,15 +237,47 @@
       vt.finished.finally(() => { if (my === vtToken) { delete root.dataset.vt; delete root.dataset.vtDir; } });
     } else render(instant);
   };
+  /* ── 갈림길 ──
+     data-go="id|번호": 누르면 그 장으로(돌아올 자리를 기억). data-back: 기억한 자리로.
+     장의 data-next="id|번호|back": 마지막 단계에서 넘기면 갈 곳. 갈림길로 들어온 장에서 ←는 온 자리로. */
+  const findSlide = ref => {
+    if (ref == null || ref === '') return -1;
+    if (/^\d+$/.test(ref)) return Math.min(slides.length, +ref) - 1;
+    const el = document.getElementById(ref);
+    return el ? slides.indexOf(el.closest('.slide')) : -1;
+  };
+  const backStack = [], cameFrom = new Map();
+  const jump = (ref, remember) => {
+    const i = findSlide(ref);
+    if (i < 0) return false;
+    if (remember) backStack.push([cur, step]);
+    cameFrom.set(i, [cur, step]);
+    go(i, 0);
+    return true;
+  };
+  const back = () => {
+    const p = backStack.pop();
+    if (!p) return false;
+    cameFrom.delete(cur);
+    go(p[0], p[1]);
+    return true;
+  };
+  const leaveOverview = () => { if (!overviewKey) return false; overviewKey = false; syncView(false); return true; };
   const next = () => {
+    if (leaveOverview()) return;
     const s = slides[cur];
-    if (step < maxOf(s)) { step++; render(false); }
-    else if (cur < slides.length - 1) go(cur + 1, 0);
+    if (step < maxOf(s)) { step++; render(false); return; }
+    const to = s.dataset.next;
+    if (to === 'back' ? back() : jump(to, false)) return;
+    if (cur < slides.length - 1) { cameFrom.delete(cur + 1); go(cur + 1, 0); }
   };
   const prev = () => {
-    if (step > 0) { step--; render(false); }
-    else if (cur > 0) go(cur - 1, 'end');
+    if (leaveOverview()) return;
+    if (step > 0) { step--; render(false); return; }
+    if (cameFrom.has(cur)) { const [i, st] = cameFrom.get(cur); cameFrom.delete(cur); go(i, st); return; }
+    if (cur > 0) go(cur - 1, 'end');
   };
+  const toggleOverview = on => { if (!isCanvas) return; overviewKey = on ?? !overviewKey; syncView(false); };
 
   /* ── 무대 맞춤 ── */
   const fit = () => {
@@ -206,6 +298,8 @@
     else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(k)) { e.preventDefault(); prev(); }
     else if (k === 'Home') { e.preventDefault(); go(0, 0); }
     else if (k === 'End') { e.preventDefault(); go(slides.length - 1, 'end'); }
+    else if ((k === 'o' || k === 'O') && isCanvas) { e.preventDefault(); toggleOverview(); }
+    else if (k === 'Escape' && overviewKey) { e.preventDefault(); toggleOverview(false); }
     else if (k === 'f' || k === 'F') {
       if (!document.fullscreenElement) Promise.resolve(root.requestFullscreen && root.requestFullscreen()).catch(() => {});
       else if (document.exitFullscreen) document.exitFullscreen();
@@ -215,7 +309,15 @@
   const NO_NAV = 'a, button, input, textarea, select, label, summary, details, video, audio, iframe, [contenteditable], [role="button"], [data-no-nav]';
   document.addEventListener('click', e => {
     if (e.defaultPrevented || e.button !== 0) return;
-    if (e.target instanceof Element && e.target.closest(NO_NAV)) return;
+    const t = e.target instanceof Element ? e.target : null;
+    /* 전체 보기에서 장을 누르면 그 장으로 */
+    if (t && deckEl.classList.contains('overview')) {
+      const s = t.closest('.slide');
+      if (s && !s.hasAttribute('data-overview')) { overviewKey = false; const i = slides.indexOf(s); if (i !== cur) cameFrom.set(i, [cur, step]); go(i, 0); return; }
+    }
+    const g = t && t.closest('[data-go],[data-back]');
+    if (g) { e.preventDefault(); g.hasAttribute('data-back') ? back() : jump(g.dataset.go, true); return; }
+    if (t && t.closest(NO_NAV)) return;
     if (String(getSelection && getSelection())) return;
     (e.clientX < innerWidth / 3 ? prev : next)();
   });
@@ -241,8 +343,10 @@
     get index() { return cur; },
     get step() { return step; },
     get max() { return maxOf(slides[cur]); },
-    next, prev,
+    next, prev, back,
     go: (index, stepN = 0) => go(index, stepN),
+    jump: (ref, remember = true) => jump(ref, remember),
+    overview: on => toggleOverview(on),
     on: (type, fn) => deckEl.addEventListener(type, fn),
   };
 
