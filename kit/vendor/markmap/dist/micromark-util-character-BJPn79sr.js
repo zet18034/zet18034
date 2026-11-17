@@ -1,0 +1,25 @@
+// ../../node_modules/.pnpm/devlop@1.1.0/node_modules/devlop/lib/default.js
+function e() {}
+// ../../node_modules/.pnpm/micromark-util-character@2.1.1/node_modules/micromark-util-character/index.js
+var t = p(/[A-Za-z]/), n = p(/[\dA-Za-z]/), r = p(/[#-'*+\--9=?A-Z^-~]/);
+function i(e) {
+	return e !== null && (e < 32 || e === 127);
+}
+var a = p(/\d/), o = p(/[\dA-Fa-f]/), s = p(/[!-/:-@[-`{-~]/);
+function c(e) {
+	return e !== null && e < -2;
+}
+function l(e) {
+	return e !== null && (e < 0 || e === 32);
+}
+function u(e) {
+	return e === -2 || e === -1 || e === 32;
+}
+var d = p(/\p{P}|\p{S}/u), f = p(/\s/);
+function p(e) {
+	return t;
+	function t(t) {
+		return t !== null && t > -1 && e.test(String.fromCharCode(t));
+	}
+}
+export { a, c, d, f, i, l, n, o, e as p, r, s, t, u };
